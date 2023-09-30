@@ -16,14 +16,21 @@ Week 4 ran from 0000 on 2023/09/25 to 2359 on 2023/10/01.
 
 ## Milestone Goal Recap
 
+A recap of what you did, and what you did not do in relation to you goals 
 
 ## Associated Board Tasks
 
 The tasks identified for this week were:
 
+### Task 1: Task Name
 
+* **Status:** (complete or inprogress)
+* **Assignee(s):**
+* **Associated Milestone Goal:**
+* **Description:** 
 
 ## Details
+
 ### Burnup Chart
 
 ![screenshot of burnupchart](img/burnupchart.png)
@@ -35,3 +42,8 @@ The tasks identified for this week were:
 ### Table View of In Progress Tasks
 
 ![screenshot of in progress board tasks](img/inprogress.png)
+
+### Test Report 
+(if applicable)
+
+![screenshot of in progress board tasks](img/testreport.png)
