@@ -9,7 +9,7 @@ September 24 - October 1, 2023
 
 Screenshot from peer eval:
 
-![Tasks Worked on](./images/jan-yaeger-dhillon/tasks-worked-on.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on.png)
 
 - This week I worked on the Project Plan with my team.
 - The goal for this week was to complete the project plan, which we did.
@@ -18,6 +18,6 @@ Screenshot from peer eval:
 
 Screenshot of Project Board:
 
-![Project Board](./images/jan-yaeger-dhillon/project-board.png)
+![Project Board](./img/jan-yaeger-dhillon/project-board.png)
 
 assignee: 
