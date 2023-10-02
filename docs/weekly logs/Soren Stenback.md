@@ -10,8 +10,8 @@
 
 ### Picture of Project Board
 
-![Week 4 Project Board](https://github.com/COSC-499-W2023/year-long-project-team-9/blob/weekly-log/week-4/id-4-log/docs/weekly%20logs/images/Week4-ProjectBoard-ID4.png)
+![Week 4 Project Board](img/Week4-ProjectBoard-ID4.png)
 
 ### Picture of Week 4's Survey
 
-![Week 4 Survey](https://github.com/COSC-499-W2023/year-long-project-team-9/blob/weekly-log/week-4/id-4-log/docs/weekly%20logs/images/Week4Survey.png)
+![Week 4 Survey](img/Week4Survey.png)
