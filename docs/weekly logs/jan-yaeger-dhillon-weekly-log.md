@@ -20,4 +20,10 @@ Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board.png)
 
-assignee: 
+### In Progress ###
+
+None
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo.png)
