@@ -7,7 +7,7 @@
 - I completed `Write Project Plan - Section 4, Teamwork Distribution and Anticipated Hurdles #8`, `Come up with specific project under Option 3 #2`, `Brainstorm Minimum Viable Product #3`, `Assign and Pick roles #10`, and `Transfer Project Plan into year-long project repository #9` this week.
 
 ### Picture of Project Board
-![Screenshot of week 4 project board tasks](img/baz-tasks-week4.png)
+![Screenshot of week 4 project board tasks](img/baz-sivakua/baz-tasks-week4.png)
 
 ### Picture of week 4's survey
-![Screenshot of week 4 team evaluation](img/baz-survey-week4.png)
+![Screenshot of week 4 team evaluation](img/baz-sivakua/baz-survey-week4.png)
