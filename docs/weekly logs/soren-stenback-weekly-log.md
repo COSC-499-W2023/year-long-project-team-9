@@ -10,8 +10,8 @@
 
 ### Picture of Project Board
 
-![Week 4 Project Board](img/Week4-ProjectBoard-ID4.png)
+![Week 4 Project Board](img/soren-stenback/Week4-ProjectBoard-ID4.png)
 
 ### Picture of Week 4's Survey
 
-![Week 4 Survey](img/Week4Survey.png)
+![Week 4 Survey](img/soren-stenback/Week4-Survey-ID4.png)
