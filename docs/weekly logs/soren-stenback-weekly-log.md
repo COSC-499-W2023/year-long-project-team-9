@@ -24,9 +24,9 @@
 
 ### October 2 - Octomber 8, 2023
 
-- This week I completed ,,,.
-- The goals for this week were to complete ,,,.
-- I completed `,,,`. 
+- This week I worked on the Create Request Figma design.
+- The goals for this week were to begin work on the Figma designs for our webpages to be used in the mini-presentation.
+- I worked on `Create Figma design for Create Request page #27`. 
 
 ### Picture of Project Board
 
