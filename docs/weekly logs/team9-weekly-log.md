@@ -114,15 +114,15 @@ The tasks identified for this week were:
 
 ### Burnup Chart
 
-![screenshot of burnupchart](img/team-weekly-log-img/burnup-week4.png)
+![screenshot of burnupchart](img/team-weekly-log-img/week-4/burnup-week4.png)
 
 ### Table View of Completed Tasks
 
-![screenshot of completed board tasks](img/team-weekly-log-img/completed-week4.png)
+![screenshot of completed board tasks](img/team-weekly-log-img/week-4/completed-week4.png)
 
 ### Table View of In Progress Tasks
 
-![screenshot of in progress board tasks](img/team-weekly-log-img/inprogress-week4.png)
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-4/inprogress-week4.png)
 
 <br>
 # TEAM 9 - WEEK 5
@@ -157,7 +157,7 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** Design the logo for the web-app
 #### Logo
-
+![Logo](img/team-weekly-log-img/week-5/figma-img/logo.png)
 
 ### Task 2: Create Figma design for home page
 
@@ -166,6 +166,7 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** In Figma create a design for the home-page for the web-app
 ##### home page
+![Alt text](img/team-weekly-log-img/week-5/figma-img/home-page.png)
 
 ### Task 3: Create Figma design for Create Request page
 
@@ -174,6 +175,7 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** In Figma create the design for the create request page (a page used by user's to request videos)
 ##### Create Request Page
+![Create Request Page](img/team-weekly-log-img/week-5/figma-img/create-request-page.png)
 
 ### Task 4: Fix Github branching issue
 
@@ -203,21 +205,21 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** In Figma design a page where users can see their requests
 
-##### Your Request Page
-
+##### Your Request Page 
+![Your request page in Figma](img/team-weekly-log-img/week-5/figma-img/your-request.png)
 
 ## Details
 
 ### Burnup Chart
-
+![Alt text](img/team-weekly-log-img/week-5/burnup-week5.png)
 ![screenshot of burnupchart]()
 
 ### Table View of Completed Tasks
 
-![screenshot of completed board tasks]()
+![screenshot of completed board tasks](img/team-weekly-log-img/week-5/completed-week5.png)
 
 ### Table View of In Progress Tasks
 
-![screenshot of in progress board tasks]()
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-5/inprogress-week5.png)
 
 <br>
