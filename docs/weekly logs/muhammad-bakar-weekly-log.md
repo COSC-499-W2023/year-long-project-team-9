@@ -6,9 +6,9 @@
 - The goals for this week complete the project plan, which was achieved.
 - I completed `Write Project Plan - Section 1.1, User Scenarios #5`, `Set up hotfix and devlop branch #11`, `Come up with specific project under Option 3 #2`, `Brainstorm Minimum Viable Product #3`, `Assign and Pick roles #10`, and `Transfer Project Plan into year-long project repository #9`. 
 ### Picture of Project Board
-![Alt text](docs\weekly logs\img\muhammad-bakar\image.png)
+![Alt text](docs\weekly logs\img\muhammad-bakar\mbakar-week-4-board.png)
 ### Picture of week 4's survey
-![Alt text](docs\weekly logs\img\muhammad-bakar\image-1.png)
+![Alt text](docs\weekly logs\img\muhammad-bakar\mbakar-week-4-survey.png)
 ---
 ## Week 5
 ### Octomber 2 2023 - Octomber 8 2023
