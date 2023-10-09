@@ -144,7 +144,7 @@ Week 5 ran from 00:00 on 2023/10/02 to 23:59 on 2023/10/08.
 ## Milestone Goal Recap
 
 ### Milestone Goal 1: Create designs in Figma
-- Started Figma design. The milestone requires completing a logo, and completing four pages: `Your Requests page`, `single request page`, `home page`, and `Create Request Page`. Thus far, we have the design of the logo figured out, and have made progress on the `home page`, `Your Request Page` and  `Create Request Page` completed.
+- Started Figma design. The milestone requires completing a logo, and completing four pages: `Your Requests page`, `single request page`, `home page`, and `Create Request Page`. Thus far, we have the design of the logo figured out, and have made much progress on the `home page`, `Your Request Page` and  `Create Request Page`.
 
 ## Associated Board Tasks
 
@@ -156,7 +156,7 @@ The tasks identified for this week were:
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** Design the logo for the web-app
-#### Logo
+
 ![Logo](img/team-weekly-log-img/week-5/figma-img/logo.png)
 
 ### Task 2: Create Figma design for home page
@@ -165,7 +165,7 @@ The tasks identified for this week were:
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** In Figma create a design for the home-page for the web-app
-##### home page
+
 ![Alt text](img/team-weekly-log-img/week-5/figma-img/home-page.png)
 
 ### Task 3: Create Figma design for Create Request page
@@ -174,7 +174,7 @@ The tasks identified for this week were:
 * **Assignee(s):** Soren Stenback
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** In Figma create the design for the create request page (a page used by user's to request videos)
-##### Create Request Page
+
 ![Create Request Page](img/team-weekly-log-img/week-5/figma-img/create-request-page.png)
 
 ### Task 4: Fix Github branching issue
@@ -205,7 +205,7 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
 * **Description:** In Figma design a page where users can see their requests
 
-##### Your Request Page 
+
 ![Your request page in Figma](img/team-weekly-log-img/week-5/figma-img/your-request.png)
 
 ## Details
