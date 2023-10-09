@@ -211,8 +211,8 @@ The tasks identified for this week were:
 ## Details
 
 ### Burnup Chart
-![Alt text](img/team-weekly-log-img/week-5/burnup-week5.png)
-![screenshot of burnupchart]()
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-5/burnup-week5.png)
 
 ### Table View of Completed Tasks
 
