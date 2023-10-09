@@ -13,7 +13,7 @@
 ---
 
 ## Week 5
-### Octomber 2 2023 - Octomber 8 2023
+### October 2 2023 - Octomber 8 2023
 - This week I worte the team weekly log. Additionally, I helpe come up with the name for the web-app.
 	- I did: 'Come up with a name for the web-app' and 'Fix Github branching issue'
 - Additionally, I attend class, and another group meeting
