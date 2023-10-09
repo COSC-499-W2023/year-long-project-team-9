@@ -17,7 +17,7 @@
 - This week I worte the team weekly log. Additionally, I helpe come up with the name for the web-app.
 	- I did: 'Come up with a name for the web-app' and 'Fix Github branching issue'
 - Additionally, I attend class, and another group meeting
-### Picture of Project Board Week 5
+### Picture of Project Board Week 5 
 ![Week 5 Bakar's Board](img\muhammad-bakar\mbakar-week-5-board.png)
 ### Picture of Week 5's Survey
 ![Week 5 Bakar's Survey](img\muhammad-bakar\mabkar-week-5-survey.png)
