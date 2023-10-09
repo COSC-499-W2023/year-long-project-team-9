@@ -4,7 +4,7 @@
 
 ## Week 4
 
-### September 25 - Octomber 1, 2023
+### September 25 - October 1, 2023
 
 - This week I completed the project plan alongside my team members.
 - The goals for this week complete the project plan, which was achieved. We completed making the project plan and transcribing it to our repo.
@@ -22,7 +22,7 @@
 
 ## Week 5
 
-### October 2 - Octomber 8, 2023
+### October 2 - October 8, 2023
 
 - This week I worked on the Create Request Figma design.
 - The goals for this week were to begin work on the Figma designs for our webpages to be used in the mini-presentation.
