@@ -114,112 +114,14 @@ The tasks identified for this week were:
 
 ### Burnup Chart
 
-![screenshot of burnupchart](img/team-weekly-log-img/week-4/burnup-week4.png)
+![screenshot of burnupchart](img/burnup-week4.png)
 
 ### Table View of Completed Tasks
 
-![screenshot of completed board tasks](img/team-weekly-log-img/week-4/completed-week4.png)
+![screenshot of completed board tasks](img/completed-week4.png)
 
 ### Table View of In Progress Tasks
 
-![screenshot of in progress board tasks](img/team-weekly-log-img/week-4/inprogress-week4.png)
-
-<br>
-# TEAM 9 - WEEK 5
-
-## Team Members
-
-* Existential-Critic  -  Soren Stenback 
-
-* jansdhillon         -  Jan-Yaeger Dhillon
-
-* asiv23              -  Baz Sivakua
-
-* N0tGoingPro         -  Muhammad Bakar
-
-## Work Period
-
-Week 5 ran from 00:00 on 2023/10/02 to 23:59 on 2023/10/08.
-
-## Milestone Goal Recap
-
-### Milestone Goal 1: Create designs in Figma
-- Started Figma design. The milestone requires completing a logo, and completing four pages: `Your Requests page`, `single request page`, `home page`, and `Create Request Page`. Thus far, we have the design of the logo figured out, and have made much progress on the `home page`, `Your Request Page` and  `Create Request Page`.
-
-## Associated Board Tasks
-
-The tasks identified for this week were:
-
-### Task 1: Design logo
-
-* **Status:** Complete
-* **Assignee(s):** Jan-Yaeger Dhillon
-* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
-* **Description:** Design the logo for the web-app
-
-![Logo](img/team-weekly-log-img/week-5/figma-img/logo.png)
-
-### Task 2: Create Figma design for home page
-
-* **Status:** In progress
-* **Assignee(s):** Jan-Yaeger Dhillon
-* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
-* **Description:** In Figma create a design for the home-page for the web-app
-
-![Alt text](img/team-weekly-log-img/week-5/figma-img/home-page.png)
-
-### Task 3: Create Figma design for Create Request page
-
-* **Status:** In progress
-* **Assignee(s):** Soren Stenback
-* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
-* **Description:** In Figma create the design for the create request page (a page used by user's to request videos)
-
-![Create Request Page](img/team-weekly-log-img/week-5/figma-img/create-request-page.png)
-
-### Task 4: Fix Github branching issue
-
-* **Status:** Complete
-* **Assignee(s):** All members
-* **Associated Milestone Goal:** N/A
-* **Description:** During week 4, some group members did not use the branches correctly, thereby requiring a fix 
-
-### Task 5: Come up with a name for the web-app
-
-* **Status:** Complete
-* **Assignee(s):** All members 
-* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
-* **Description:** Come up with a name for the web-app 
-
-### Task 6: Transfer Project Plan into year-long project repository
-
-* **Status:** Complete
-* **Assignee(s):** Soren Stenback and Baz Sivakua 
-* **Associated Milestone Goal:** N/A
-* **Description:** Upload the project plan to the Github repository
-
-### Task 7: Create Figma design for Your Requests page
-
-* **Status:** In progress
-* **Assignee(s):** Baz Sivakua 
-* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
-* **Description:** In Figma design a page where users can see their requests
-
-
-![Your request page in Figma](img/team-weekly-log-img/week-5/figma-img/your-request.png)
-
-## Details
-
-### Burnup Chart
-
-![screenshot of burnupchart](img/team-weekly-log-img/week-5/burnup-week5.png)
-
-### Table View of Completed Tasks
-
-![screenshot of completed board tasks](img/team-weekly-log-img/week-5/completed-week5.png)
-
-### Table View of In Progress Tasks
-
-![screenshot of in progress board tasks](img/team-weekly-log-img/week-5/inprogress-week5.png)
+![screenshot of in progress board tasks](img/inprogress-week4.png)
 
 <br>
