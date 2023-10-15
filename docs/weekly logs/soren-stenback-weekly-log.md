@@ -44,12 +44,11 @@
 
 - This week I worked on the milestone to create a design for the web page to create a video request.
 - The goals for this week were to finalise the Figma designs and set up our coding environments to begin working on the web app.
-- I worked on `Create Figma design for Create Request page #27`. 
 
 ### Picture of Project Board
 
-![Week 5 Project Board](img/soren-stenback/Week6-ProjectBoard-ID4.png)
+![Week 6 Project Board](img/soren-stenback/Week6-ProjectBoard-ID4.png)
 
 ### Picture of Week 6's Survey
 
-![Week 5 Survey](img/soren-stenback/Week6-Survey-ID4.png)
+![Week 6 Survey](img/soren-stenback/Week6-Survey-ID4.png)
