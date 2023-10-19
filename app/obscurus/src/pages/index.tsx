@@ -37,19 +37,22 @@ import { ThemeProvider } from "@/components/ui/themeprovider";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  };
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <div className="bg-background min-h-screen min-w-full font-inter">
-        <div className="p-5">
+    <div className="bg-background min-h-screen min-w-full font-inter flex flex-col gap-10">
+      <div className="grid p-5">
+        {/*first column with 5 sub-columns*/}
+        <div className=" grid grid-flow-col gap-2 p-5">
           <NavigationMenu className="">
             <NavigationMenuList>
-              <NavigationMenuItem className="pr-5 pt-3">
+              <NavigationMenuItem className="grid justify-start min-h-full">
                 <Image src="/logo.svg" width={50} height={50} alt="obscurus" />
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -73,19 +76,42 @@ export default function Home() {
                   <NavigationMenuLink>Link</NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                  <Button variant="outline" size="icon">
-                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" onClick={() => setTheme("light")}/>
-                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" onClick={() => setTheme("dark") } />
-                  </Button>
-              </NavigationMenuItem>
+              <NavigationMenuItem></NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-        </div>
-        <div className="flex justify-center">
-          <h1>content</h1>
+
+          {/*second column with 2 sub-columns*/}
+          <div className="grid  grid-flow-col gap-2 justify-end items-center">
+            <div className="flex justify-end space-x-4">
+              <Button variant="outline" size="icon" onClick={toggleTheme}>
+                {theme === "light" ? (
+                  <Moon className="h-[1.2rem] w-[1.2rem]" />
+                ) : (
+                  <Sun className="h-[1.2rem] w-[1.2rem]" />
+                )}
+              </Button>
+            </div>
+            <div className="grid items-center justify-end">
+              <Button variant="secondary">Sign In</Button>
+            </div>
+          </div>
         </div>
       </div>
-    </ThemeProvider>
+      {/*body*/}
+      <div className="grid grid-cols-1">
+        <Card className="justify-self-center">
+          <CardHeader>
+            <CardTitle>Hello World!</CardTitle>
+            <CardDescription>Welcome to obscurus.</CardDescription>
+          </CardHeader>
+          <CardContent className="text-sm">
+            <p>Sign in to get started!</p>
+          </CardContent>
+          <CardFooter className="text-xs">
+            <p>(c) Jan</p>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 }
