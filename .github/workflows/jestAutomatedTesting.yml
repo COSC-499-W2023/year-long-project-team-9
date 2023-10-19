@@ -22,7 +22,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: '../../app/obscurus/package.json'
+        cache-dependency-path: '/year-long-project-team-9/app/obscurus'
     - name: setting up
       run: npm install
       working-directory: app/obscurus/package-lock.json
