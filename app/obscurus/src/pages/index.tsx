@@ -32,20 +32,26 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { ThemeProvider } from "@/components/ui/themeprovider";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
-  const toggleTheme = () => {
-    if (theme === "dark") {
-      setTheme("light");
-    } else {
-      setTheme("dark");
-    }
-  };
+
   return (
+    <ThemeProvider
+    attribute="class"
+    defaultTheme="system"
+    enableSystem
+    disableTransitionOnChange
+  >
     <div className="bg-background min-h-screen min-w-full font-inter flex flex-col gap-10">
       <div className="grid p-5">
         {/*first column with 5 sub-columns*/}
@@ -53,7 +59,7 @@ export default function Home() {
           <NavigationMenu className="">
             <NavigationMenuList>
               <NavigationMenuItem className="grid justify-start min-h-full">
-                <Image src="/logo.svg" width={50} height={50} alt="obscurus" />
+                <Image className="" src="/logo.svg" alt="obscurus" width={50} height={50} />
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
@@ -83,35 +89,62 @@ export default function Home() {
           {/*second column with 2 sub-columns*/}
           <div className="grid  grid-flow-col gap-2 justify-end items-center">
             <div className="flex justify-end space-x-4">
-              <Button variant="outline" size="icon" onClick={toggleTheme}>
-                {theme === "light" ? (
-                  <Moon className="h-[1.2rem] w-[1.2rem]" />
-                ) : (
-                  <Sun className="h-[1.2rem] w-[1.2rem]" />
-                )}
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Sun className="" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             <div className="grid items-center justify-end">
-              <Button variant="secondary">Sign In</Button>
+              <Button variant="default">Sign In</Button>
             </div>
           </div>
         </div>
       </div>
+
       {/*body*/}
-      <div className="grid grid-cols-1">
-        <Card className="justify-self-center">
-          <CardHeader>
-            <CardTitle>Hello World!</CardTitle>
-            <CardDescription>Welcome to obscurus.</CardDescription>
-          </CardHeader>
-          <CardContent className="text-sm">
-            <p>Sign in to get started!</p>
-          </CardContent>
-          <CardFooter className="text-xs">
-            <p>(c) Jan</p>
-          </CardFooter>
-        </Card>
+      <div className="grid grid-cols-2 items-center justify-items-center pl-16">
+        <div className="grid col-auto gap-5 w-100">
+          <h1 className="text-4xl font-extrabold">
+            Protect Privacy with a Single Click.
+          </h1>
+          <h2 className="font-semibold">
+            Securely Blur Faces in Your Videos with{" "}
+            <span className=" font-extrabold">obscurus</span>
+          </h2>
+          <div className="grid grid-cols-2">
+            <Input
+              className=" justify-self-auto"
+              type="email"
+              placeholder="Email"
+            />
+            <Button className=" justify-self-end px-auto  text-base">Get Started for Free</Button>
+          </div>
+        </div>
+        <div>
+          <Image
+            className=""
+            src="/splash.svg"
+            alt="obscurus"
+            width={300}
+            height={300}
+          />
+        </div>
       </div>
     </div>
+    </ThemeProvider>
   );
 }
