@@ -75,6 +75,14 @@ October 9 - October 22, 2023
 
 ### Tasks Worked On ###
 
+- My goals this week were to lay a strong foundation for the project and did a lot of work towards Milestone #2: Mini Presentation. 
+- I finialized my design for the landing page on Figma and got a strong start on implementing it in Next. 
+- Speaking of, I set up Next.js, Tailwind CSS, TypeScript, and the other front end technologies. 
+- I also set up AWS Amplify for our project and hosted out web app (https://amplify.ds4nt6byy9rfg.amplifyapp.com/). However, I still have yet to fully set up the CLI and configure Amplify. 
+- I also started looking into how I am going to implement Lambda, Step Functions, CodeBuild, and CodePipeline. 
+- Behind the scenes, I have been learning a lot about Docker and containerization which will eventually come into play when we start to implement the video processing. I also attended all meetings and classes.
+- I think I did well this week and aim to continue working hard to achieve optimal results.
+
 Screenshot from peer eval for Week 6:
 
 ![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-6.png)
@@ -94,7 +102,6 @@ Screenshot from peer eval for Week 7:
 ![In Progress](./img/jan-yaeger-dhillon/in-progress-7.png)
 
 ### To Do ###
-
 
 ![TODO](./img/jan-yaeger-dhillon/todo-7.png)
 
