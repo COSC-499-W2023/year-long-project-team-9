@@ -3,7 +3,7 @@
 ## Week 4 ##
 
 ### Applicable Date Range ###
-September 24 - October 1, 2023
+October 9 2023 - Octomber 22 2023
 
 ### Tasks Worked On ###
 
@@ -15,6 +15,14 @@ Screenshot from peer eval:
 - The goal for this week was to complete the project plan, which we did.
 - I completed `Write Project Plan - Section 3, Technology Stack` and collaborated with my team on `Assign and Pick Roles` and `Brainstorm Minimum Viable Product`. I also stepped in to help with `Write Project Plan - Section 4, Teamwork Distribution and Anticipated Hurdles` and `Write Project Plan - Section 2, Major Milestones`.
 - I did a lot of research and planning on the technologies and services we will be using.
+
+## Week 6 and 7
+### October 9 2023 - Octomber 22 2023
+- These past two weeks I worked on Milestone #2: Mini-Presentation, and began thinking about authentication, a goal in Milestone #3: Design Submission.
+- The goals for the past two weeks was to create my figma design and setup Jest, which in turn meant setting up automated testing. All goals were completed.
+- Additionally, I attend class, and all other group meeting
+### Picture of Project Board Week 6 and 7
+![Week 6 and 7 Bakar's Board](img/muhammad-bakar/mbakar-week-6-and-7-board.png)
 
 Screenshot of Project Board:
 
@@ -58,5 +66,44 @@ Screenshot of Project Board:
 - This week I intend to set up a lot of the base technologies for both teh front and back end of the web app, including configuring AWS Amplify and setting up Next.js. I also intend to complete the Figma design for the home page and start working on the actual implementation of the front end.
 
 ![TODO](./img/jan-yaeger-dhillon/todo-5.png)
+
+
+## Week 6 & 7 ##
+
+### Applicable Date Range ###
+October 9 - October 22, 2023
+
+### Tasks Worked On ###
+
+Screenshot from peer eval for Week 6:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-6.png)
+
+Screenshot from peer eval for Week 7:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-7.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed-7.png)
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed-7-2.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress-7.png)
+
+### To Do ###
+
+
+![TODO](./img/jan-yaeger-dhillon/todo-7.png)
+
+Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board-7.png)
+
+
+
+
 
 
