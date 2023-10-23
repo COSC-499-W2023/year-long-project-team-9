@@ -23,6 +23,13 @@
 
 ### Picture of week 4's survey
 ![Screenshot of week 4 team evaluation](img/baz-sivakua/baz-survey-week5.png)
+## Week 6 and 7
+### October 9 - October 22, 2023
+- This week I worked on Milestone 2: Mini presentation, specifically with the goals of finishing the figma designs and starting to code the web application
+- The milestone goals for this week was to finish our Figma designs and start setting up the enviroment for the web applications.
 
+### Picture of Project Board
+![Screenshot of week 4 project board tasks](img/baz-sivakua/baz-tasks-week7.png)
 
-
+### Picture of week 4's survey
+![Screenshot of week 4 team evaluation](img/baz-sivakua/baz-survey-week7.png)

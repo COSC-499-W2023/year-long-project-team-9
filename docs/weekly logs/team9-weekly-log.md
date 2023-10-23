@@ -223,3 +223,174 @@ The tasks identified for this week were:
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-5/inprogress-week5.png)
 
 <br>
+# TEAM 9 - WEEK 6 & 7
+
+## Team Members
+
+* Existential-Critic  -  Soren Stenback 
+
+* jansdhillon         -  Jan-Yaeger Dhillon
+
+* asiv23              -  Baz Sivakua
+
+* N0tGoingPro         -  Muhammad Bakar
+
+## Work Period
+
+Week 6 & 7 ran from 00:00 on 2023/10/09 to 23:59 on 2023/10/22.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Create designs in Figma
+- Completed the Figma designs for the pages outlined in the previous log (`Your Requests page`, `single request page`, `home page`, and `Create Request Page`). 
+
+### Milestone Goal 2: Configure enviorment for coding
+- Configure APIs planned to use in this stage of development including AWS Amplify, Tailwind and Next.js. Additionally, those of us who are unfamilar with the APIs have done research to understand ways to code using them. Set up local enviroment to start coding. 
+
+### Milestone Goal 3: Front-End Coding
+- Start to code the web pages for each of the completed figma designs: `Your Requests page`, `single request page`, `home page`, and `Create Request Page`, with the APIs listed above. 
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Create Figma design for home page
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
+* **Description:** In Figma create a design for the home-page for the web-app with alternate dark mode color scheme.
+
+![homepage](img/team-weekly-log-img/week-7/homepage.png)
+![homepage darkmode](img/team-weekly-log-img/week-7/homepagedark.png)
+
+### Task 2: Create Figma design for Create Request page
+
+* **Status:** Complete
+* **Assignee(s):** Soren Stenback and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
+* **Description:** In Figma create the design for the create request page (a page used by user's to request videos)
+
+![Create Request Page](img/team-weekly-log-img/week-7/createrequests.png)
+
+### Task 3: Create Figma design for Your Requests page
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
+* **Description:** In Figma design a page where users can see their requests
+
+![Your request page in Figma](img/team-weekly-log-img/week-7/yourrequests.png)
+![Your request page in Figma](img/team-weekly-log-img/week-7/yourrequestsedit.png)
+
+### Task 4: Create Figma design for a single request page
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Create designs in Figma
+* **Description:** In Figma design a page where users can submit their videos for processing
+
+![Your request page in Figma](img/team-weekly-log-img/week-7/submitvideo1.png)
+![Your request page in Figma](img/team-weekly-log-img/week-7/submitvideo2.png)
+![Your request page in Figma](img/team-weekly-log-img/week-7/submitvideo3.png)
+![Your request page in Figma](img/team-weekly-log-img/week-7/submitvideo4.png)
+
+### Task 5: Configure Tailwind CSS for the project
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon 
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Configure Tailwind CSS for front end coding
+
+### Task 6: Set up Next.js for the project
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon 
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Configure Next.js for front end coding
+
+### Task 7: Set up Jest for the project
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Configure Jest for front end coding
+
+### Task 8: Configure local development environments
+
+* **Status:** Complete
+* **Assignee(s):** All Members
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Configure local enviorments with all APIs for all member's personal devices
+
+### Task 9: Research AWS Step Functions
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Research use of AWS step functions and how to best use it for our project
+
+### Task 10: Set up AWS CodePipeline
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Based on the research done in Task 8, configure AWS CodePipeline for use in the project
+
+### Task 10: Set up AWS CodePipeline
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Based on the research done in Task 8, configure AWS CodePipeline for use in the project
+
+### Task 10: Set up AWS Amplify for the project
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Set up AWS Amplify for use in the project
+
+### Task 11: Create home page in Next.js
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Start coding page designed in task 1
+
+### Task 12: Create Your Requests page in Next.js
+
+* **Status:** In Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Start coding page designed in task 3
+
+### Task 13: Create home page in Next.js
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Start coding page designed in task 2
+
+### Task 14: Research AWS Page Routing
+
+* **Status:** In Progress
+* **Assignee(s):** Soren Stenback and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Research the use of the AWS Page Routing plug in
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-7/burnup-week7.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-7/completed-week7.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-7/inprogress-week7.png)
+
+<br>

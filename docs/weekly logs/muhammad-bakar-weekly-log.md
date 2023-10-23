@@ -21,3 +21,13 @@
 ![Week 5 Bakar's Board](img/muhammad-bakar/mbakar-week-5-board.png)
 ### Picture of Week 5's Survey
 ![Week 5 Bakar's Survey](img/muhammad-bakar/mbakar-week-5-survey.png)
+
+## Week 6 and 7
+### October 9 2023 - Octomber 22 2023
+- These past two weeks I worked on Milestone #2: Mini-Presentation, and began thinking about authentication, a goal in Milestone #3: Design Submission.
+- The goals for the past two weeks was to create my figma design and setup Jest, which in turn meant setting up automated testing. All goals were completed.
+- Additionally, I attend class, and all other group meeting
+### Picture of Project Board Week 6 and 7
+![Week 6 and 7 Bakar's Board](img/muhammad-bakar/mbakar-week-6-and-7-board.png)
+### Picture of Week 6's and 7's Survey
+![Week 6 and 7 Bakar's Survey](img/muhammad-bakar/mbakar-week-6-and-7-survey.png)
