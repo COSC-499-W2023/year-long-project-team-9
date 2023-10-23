@@ -48,8 +48,22 @@
 
 ### Picture of Project Board
 
-![Week 5 Project Board](img/soren-stenback/Week6-ProjectBoard-ID4.png)
+![Week 6 Project Board](img/soren-stenback/Week6-ProjectBoard-ID4.png)
 
 ### Picture of Week 6's Survey
 
-![Week 5 Survey](img/soren-stenback/Week6-Survey-ID4.png)
+![Week 6 Survey](img/soren-stenback/Week6-Survey-ID4.png)
+
+---
+
+## Week 7
+
+### October 9 - October 15, 2023
+
+- This week I worked on the milestone to research how Next.js uses page routing for web apps.
+- The goals for this week were to begin coding with Next.js and researching functionality for our web app.
+- I worked on `Create Create Request page in Next.js #37` and `Research AWS Page Routing #72`. 
+
+### Picture of Project Board
+
+![Week 7 Project Board](img/soren-stenback/Week7-ProjectBoard-ID4.png)
