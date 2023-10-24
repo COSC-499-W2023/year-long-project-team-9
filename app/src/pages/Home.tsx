@@ -39,6 +39,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NavBar from "./NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,68 +54,7 @@ export default function Home() {
     disableTransitionOnChange
   >
     <div className="bg-background min-h-screen min-w-full font-inter flex flex-col gap-10">
-      <div className="grid p-5">
-        {/*first column with 5 sub-columns*/}
-        <div className=" grid grid-flow-col gap-2 p-5">
-          <NavigationMenu className="">
-            <NavigationMenuList>
-              <NavigationMenuItem className="grid justify-start min-h-full">
-                <Image className="" src="/logo.svg" alt="obscurus" width={50} height={50} />
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Features</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <NavigationMenuLink>Link</NavigationMenuLink>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <NavigationMenuLink>Link</NavigationMenuLink>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>About</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <NavigationMenuLink>Link</NavigationMenuLink>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem></NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-
-          {/*second column with 2 sub-columns*/}
-          <div className="grid  grid-flow-col gap-2 justify-end items-center">
-            <div className="flex justify-end space-x-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Sun className="" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setTheme("light")}>
-                    Light
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("dark")}>
-                    Dark
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("system")}>
-                    System
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <div className="grid items-center justify-end">
-              <Button variant="default">Sign In</Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <NavBar />
       {/*body*/}
       <div className="grid grid-cols-2 items-center justify-items-center pl-16">
         <div className="grid col-auto gap-5 w-100">

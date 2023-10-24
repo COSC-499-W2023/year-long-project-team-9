@@ -1,18 +1,11 @@
 import type { ReactElement } from 'react'
-import Layout from "../components/ui/layout"
-import NestedLayout from '../components/nested-layout'
 import type { NextPageWithLayout } from './_app'
  
-const Page: NextPageWithLayout = () => {
-  return <p>hello world</p>
+import type { NextPage } from 'next';
+import Home from './Home'; // Adjust the path if Home is located in a different directory
+
+const IndexPage: NextPage = () => {
+  return <Home />;
 }
- 
-Page.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <NestedLayout>{page}</NestedLayout>
-    </Layout>
-  )
-}
- 
-export default Page
+
+export default IndexPage;
