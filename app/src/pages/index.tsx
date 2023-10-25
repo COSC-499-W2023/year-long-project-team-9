@@ -87,18 +87,21 @@ ListItem.displayName = "ListItem"
             
             <NavigationMenu className="">
               <NavigationMenuList>
-                <NavigationMenuItem className="grid justify-start min-h-full">
-                  <Image
-                    className=""
-                    src="/logo.svg"
-                    alt="obscurus"
-                    width={50}
-                    height={50}
-                  />
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
-                </NavigationMenuItem>
+                <Link href="/">
+                  <NavigationMenuItem className="grid justify-start min-h-full">
+                    <Image
+                      className=""
+                      src="/logo.svg"
+                      alt="obscurus"
+                      width={50}
+                      height={50}
+                    />
+                  </NavigationMenuItem>
+                  </Link>
+                  <NavigationMenuItem>
+                    <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
+                  </NavigationMenuItem>
+                  
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Features</NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -254,7 +257,7 @@ ListItem.displayName = "ListItem"
               <span className=" font-extrabold">obscurus</span>
             </h2>
             <div className="grid grid-cols-2">
-              <Input className="" type="email" placeholder="Email" />
+              <Input className=" font-bold border-primary" type="email" placeholder="Email" />
               <Button className="sm:text-sm justify-self-center ml-44">Get Started</Button>
             </div>
           </div>
