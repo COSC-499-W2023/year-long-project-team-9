@@ -3,12 +3,7 @@
 
 name: Automated testing
 
-on:
-  pull:
-    branches:
-      - master
-      - develop
-
+on: [push]
 
 defaults:
   run:
