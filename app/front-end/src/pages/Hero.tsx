@@ -4,11 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
-  const callApi = () => {
-    fetch("http://localhost:3000/api/hello").then((res) => {
-      console.log(res.text.name);
-    });
-  };
 
   return (
     <div className="grid grid-cols-2 gap-40 justify-items-center max-w-fit w-full">
@@ -22,7 +17,7 @@ const Hero = () => {
         </div>
         <div className="grid grid-cols-2">
           <Input className="col-span-1" type="email" placeholder="Email" required />
-          <Button className="mx-5" onClick={() => callApi()}>
+          <Button className="mx-5">
             Get Started
           </Button>
         </div>
