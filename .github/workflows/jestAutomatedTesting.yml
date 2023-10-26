@@ -4,7 +4,7 @@
 name: Automated testing
 
 on:
-  push:
+  pull:
     branches:
       - master
       - develop
