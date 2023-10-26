@@ -23,9 +23,9 @@ const NavBar = () => {
   const scroll = useScroll();
 
   return (
-    <div className="grid p-5 sticky top-0 bg-background z-50">
+    <div className="grid p-5 sticky top-0 bg-secondary z-50">
       {/*first column with 5 sub-columns*/}
-      <div className=" grid grid-flow-col gap-2 p-5 bg-background">
+      <div className=" grid grid-flow-col gap-2 p-5">
         <NavigationMenu className="">
           <NavigationMenuList>
           <NavigationMenuLink href="/">

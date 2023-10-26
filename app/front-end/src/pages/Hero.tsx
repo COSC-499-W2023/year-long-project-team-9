@@ -21,7 +21,7 @@ const Hero = () => {
           <span className=" font-extrabold">obscurus</span>
         </div>
         <div className="grid grid-cols-2">
-          <Input className="col-span-1" type="email" placeholder="Email" />
+          <Input className="col-span-1" type="email" placeholder="Email" required />
           <Button className="mx-5" onClick={() => callApi()}>
             Get Started
           </Button>
