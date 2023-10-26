@@ -1,6 +1,4 @@
-import { ThemeProvider } from "@/components/ui/theme-provider";
 import Navbar from "../pages/NavBar";
-// import Footer from './footer'
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
 

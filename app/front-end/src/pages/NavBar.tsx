@@ -12,10 +12,15 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Moon, Sun } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Assuming you have these components
-import { Button } from "@/components/ui/button"; // Assuming you have this componentz
+import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
+import { useRouter } from 'next/router';
+import useScroll  from "@/components/hooks/scroll";
 
 const NavBar = () => {
-  const [theme, setTheme] = React.useState('light'); // Define the state for theme
+  const { setTheme } = useTheme();
+  const router = useRouter();
+  const scroll = useScroll();
 
   return (
     <div className="grid p-5">
@@ -32,25 +37,23 @@ const NavBar = () => {
               <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/Features">
-              <NavigationMenuTrigger>Features</NavigationMenuTrigger>
+              {/*TODO: add ability to jump to features section*/}
+              <NavigationMenuLink>
+              <NavigationMenuTrigger className="font-semibold" onClick={() => scroll("#features")}>Features</NavigationMenuTrigger>
               </NavigationMenuLink>
               <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink href="/">
-                <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="font-semibold">Getting Started</NavigationMenuTrigger>
               </NavigationMenuLink>
               <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>About</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="font-semibold">About</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem></NavigationMenuItem>
