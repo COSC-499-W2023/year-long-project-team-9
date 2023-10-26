@@ -12,7 +12,7 @@ defaults:
   run:
     working-directory: ./app/obscurus/
 
-jobs:
+jobs: 
   build:
 
     runs-on: ubuntu-latest
