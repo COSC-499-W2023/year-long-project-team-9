@@ -5,7 +5,7 @@ name: Automated testing
 
 on:
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: ["master", "develop"]
 
 defaults:
   run:
