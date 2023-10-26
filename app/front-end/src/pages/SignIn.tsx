@@ -1,8 +1,12 @@
+import Layout from '@/components/layout';
+
 const SignInPage = () => {
     return (
-        <div>
-            <h1>Sign In Page</h1>
-        </div>
+        <Layout>
+            <div className="grid justify-center items-center">
+                <h1 className="text-3xl font-extrabold">Sign In</h1>
+            </div>
+        </Layout>
     )
 }
 

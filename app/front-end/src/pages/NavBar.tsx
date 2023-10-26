@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Moon, Sun } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Assuming you have these components
-import { Button } from "@/components/ui/button"; // Assuming you have this component
+import { Button } from "@/components/ui/button"; // Assuming you have this componentz
 
 const NavBar = () => {
   const [theme, setTheme] = React.useState('light'); // Define the state for theme
@@ -23,20 +23,26 @@ const NavBar = () => {
       <div className=" grid grid-flow-col gap-2 p-5">
         <NavigationMenu className="">
           <NavigationMenuList>
+          <NavigationMenuLink href="/">
             <NavigationMenuItem className="grid justify-start min-h-full">
               <Image className="" src="/logo.svg" alt="obscurus" width={50} height={50} />
             </NavigationMenuItem>
+            </NavigationMenuLink>
             <NavigationMenuItem>
               <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
             </NavigationMenuItem>
             <NavigationMenuItem>
+              <NavigationMenuLink href="/Features">
               <NavigationMenuTrigger>Features</NavigationMenuTrigger>
+              </NavigationMenuLink>
               <NavigationMenuContent>
                 <NavigationMenuLink>Link</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+              <NavigationMenuLink href="/">
+                <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+              </NavigationMenuLink>
               <NavigationMenuContent>
                 <NavigationMenuLink>Link</NavigationMenuLink>
               </NavigationMenuContent>
