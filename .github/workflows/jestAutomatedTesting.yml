@@ -5,7 +5,9 @@ name: Automated testing
 
 on:
   push:
-    branches: [master, develop]
+    branches:
+      - master
+      - develop
 
 
 defaults:
