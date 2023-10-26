@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Moon, Sun } from "lucide-react";
+import { Sun } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Assuming you have these components
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
@@ -23,9 +23,9 @@ const NavBar = () => {
   const scroll = useScroll();
 
   return (
-    <div className="grid p-5">
+    <div className="grid p-5 sticky top-0 bg-background z-50">
       {/*first column with 5 sub-columns*/}
-      <div className=" grid grid-flow-col gap-2 p-5">
+      <div className=" grid grid-flow-col gap-2 p-5 bg-background">
         <NavigationMenu className="">
           <NavigationMenuList>
           <NavigationMenuLink href="/">

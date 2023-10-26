@@ -4,26 +4,34 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
+  const callApi = () => {
+    fetch("http://localhost:3000/api/hello").then((res) => {
+      console.log(res.text.name);
+    });
+  };
+
   return (
-    <div className="grid grid-cols-2 gap-10 justify-items-stretch items-center">
-      <div className="grid grid-rows-3 gap-0 ">
+    <div className="grid grid-cols-2 gap-40 justify-items-center max-w-fit w-full">
+      <div className="grid grid-rows-3 gap-1 items-center ">
         <div className="text-4xl font-extrabold">
           Protect Privacy with a Single Click.
         </div>
-        <div className="font-semibold py-5">
+        <div className="font-semibold">
           Securely Blur Faces in Your Videos with{" "}
           <span className=" font-extrabold">obscurus</span>
         </div>
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid grid-cols-2">
           <Input className="col-span-1" type="email" placeholder="Email" />
-          <Button className="mx-auto ">Get Started</Button>
+          <Button className="mx-5" onClick={() => callApi()}>
+            Get Started
+          </Button>
         </div>
       </div>
-      <div className="">
+      <div className="min-h-full relative justify-self-end">
         <svg
-          width="inherit"
-          height="inherit"
-          viewBox="0 0 478 676"
+          width="100%"
+          height="100%"
+          viewBox="64.48 227.88 349.04 246.5"
           style={{ color: "inherit" }}
           xmlns="http://www.w3.org/2000/svg"
         >
