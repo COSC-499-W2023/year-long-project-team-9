@@ -37,7 +37,6 @@ const NavBar = () => {
               <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              {/*TODO: add ability to jump to features section*/}
               <NavigationMenuLink>
               <NavigationMenuTrigger className="font-semibold" onClick={() => scroll("#features")}>Features</NavigationMenuTrigger>
               </NavigationMenuLink>

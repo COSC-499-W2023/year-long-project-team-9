@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import PageLoader from "next/dist/client/page-loader";
 import { Router } from "next/router";
 import LoadingPage from "@/components/LoadingPage";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -21,24 +23,38 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    // Used for page transition
+    // Initialize AOS
+    AOS.init({
+      // Your AOS settings here
+      once: true, // whether animation should happen only once - while scrolling down
+    });
+
+    // Function to handle start of route change
     const start = () => {
-      setLoading(true)
-    }
+      setLoading(true);
+      AOS.refresh(); // Refresh AOS for new content
+    };
+
+    // Function to handle end of route change
     const end = () => {
-      setLoading(false)
-    }
-    Router.events.on("routeChangeStart", start)
-    Router.events.on("routeChangeComplete", end)
-    Router.events.on("routeChangeError", end)
+      setLoading(false);
+      AOS.refresh(); // Refresh AOS for new content
+    };
+
+    // Subscribe to route change events
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
+
+    // Cleanup
     return () => {
-      Router.events.off("routeChangeStart", start)
-      Router.events.off("routeChangeComplete", end)
-      Router.events.off("routeChangeError", end)
-    }
-  }, [])
+      Router.events.off("routeChangeStart", start);
+      Router.events.off("routeChangeComplete", end);
+      Router.events.off("routeChangeError", end);
+    };
+  }, []);
 
   return getLayout(
     <ThemeProvider
