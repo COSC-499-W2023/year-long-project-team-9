@@ -22,7 +22,7 @@ const Hero = () => {
           </Button>
         </div>
       </div>
-      <div className="min-h-full relative justify-self-end">
+      <div className="min-h-full relative justify-self-end  drop-shadow-2xl">
         <svg
           width="100%"
           height="100%"
@@ -56,7 +56,7 @@ const Hero = () => {
             strokeMiterlimit="10"
           />
           <path
-            className="fill-slate-900 stroke-slate-900"
+            className="fill-slate-900 stroke-slate-900 "
             d="M273.888 322.302C277.924 322.302 281.195 319.031 281.195 314.996C281.195 310.96 277.924 307.689 273.888 307.689C269.853 307.689 266.582 310.96 266.582 314.996C266.582 319.031 269.853 322.302 273.888 322.302Z"
             fill="#0F172A"
             stroke="#0F172A"

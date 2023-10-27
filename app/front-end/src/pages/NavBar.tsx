@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Sun } from "lucide-react";
+import { ArrowDownLeftSquare, Sun } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Assuming you have these components
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
@@ -23,7 +23,7 @@ const NavBar = () => {
   const scroll = useScroll();
 
   return (
-    <div className="grid p-5 sticky top-0 bg-secondary z-50">
+    <div className="grid p-5 sticky top-0 bg-gradient-to-b from-secondary to-background z-50 min-w-full ">
       {/*first column with 5 sub-columns*/}
       <div className=" grid grid-flow-col gap-2 p-5">
         <NavigationMenu className="">
@@ -34,7 +34,7 @@ const NavBar = () => {
             </NavigationMenuItem>
             </NavigationMenuLink>
             <NavigationMenuItem>
-              <h1 className=" text-md px-5 font-extrabold">obscurus</h1>
+              <h1 className=" px-5 font-extrabold">obscurus</h1>
             </NavigationMenuItem>
             <NavigationMenuItem>
               {/*TODO: add ability to jump to features section*/}
@@ -45,18 +45,14 @@ const NavBar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/">
-                <NavigationMenuTrigger className="font-semibold">Getting Started</NavigationMenuTrigger>
-              </NavigationMenuLink>
-              <NavigationMenuContent>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
               <NavigationMenuTrigger className="font-semibold">About</NavigationMenuTrigger>
               <NavigationMenuContent>
               </NavigationMenuContent>
             </NavigationMenuItem>
-            <NavigationMenuItem></NavigationMenuItem>
+            <NavigationMenuItem className="grid grid-cols-2 gap-0">
+              <h1 className=" px-5 font-bold text-sm">Make a Request</h1>
+              <ArrowDownLeftSquare className=" justify-self-start rotate-180" size={20} />
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
@@ -65,8 +61,8 @@ const NavBar = () => {
           <div className="flex justify-end space-x-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Sun className="" />
+                <Button className="drop-shadow-sm" variant="outline" size="icon">
+                  <Sun className="bg-secondary" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
