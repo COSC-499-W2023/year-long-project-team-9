@@ -2,9 +2,9 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ArrowBigDown, ArrowBigDownDash, ArrowUpWideNarrowIcon } from "lucide-react";
 
 const Hero = () => {
-
   return (
     <div className="grid grid-cols-2 gap-40 justify-items-center max-w-fit w-full">
       <div className="grid grid-rows-3 gap-1 items-center ">
@@ -16,10 +16,13 @@ const Hero = () => {
           <span className=" font-extrabold">obscurus</span>
         </div>
         <div className="grid grid-cols-2">
-          <Input className="col-span-1" type="email" placeholder="Email" required />
-          <Button className="mx-5">
-            Get Started
-          </Button>
+          <Input
+            className="col-span-1"
+            type="email"
+            placeholder="Email"
+            required
+          />
+          <Button className="mx-5">Get Started</Button>
         </div>
       </div>
       <div className="min-h-full relative justify-self-end">
@@ -80,6 +83,10 @@ const Hero = () => {
             strokeMiterlimit="10"
           />
         </svg>
+      </div>
+      <div className="grid grid-cols-2 gap-3 font-bold text-lg items-center col-span-2">
+        <h1>Features</h1>
+        <ArrowBigDown className="justify-self-start self-end animate-bounce fill-primary" />
       </div>
     </div>
   );

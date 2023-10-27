@@ -1,4 +1,4 @@
-import { ArrowBigDownDash } from "lucide-react";
+import { ArrowBigDownDash, Lock, Sun } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,50 +21,46 @@ import {
 
 const Features = () => {
   return (
-    <div className=" min-h-screen grid grid-cols-2 gap-5 justify-self-center pl-36 top-0">
-      {/* <h1 className="text-xl font-extrabold">Features (TODO)</h1> */}
-      {/* <ArrowBigDownDash
-          className="animate-bounce justify-self-start"
-          size={50}
-        /> */}
-      <Card className="w-[350px] h-[350px]" data-aos="flip-left">
-        <CardHeader>
-          <CardTitle>Create project</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Name of your project" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="framework">Framework</Label>
-                <Select>
-                  <SelectTrigger id="framework">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="next">Next.js</SelectItem>
-                    <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                    <SelectItem value="astro">Astro</SelectItem>
-                    <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Deploy</Button>
-        </CardFooter>
-      </Card>
+    <div className="flex min-h-screen justify-self-start">
+      <div className="grid grid-rows-3 md: grid-cols-3 col-span-2 gap-36">
+        {/* Adjust the gap as per your design needs */}
+        <Card className="w-[350px] h-fit" data-aos="flip-left">
+          <CardHeader>
+            <CardTitle>Ensure privacy</CardTitle>
+            <CardDescription>
+              Easily blur faces in your videos with a single click.
+            </CardDescription>
+            <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
+              <Lock />
+            </CardContent>
+          </CardHeader>
+        </Card>
+        <Card className="w-[350px] h-fit" data-aos="flip-left">
+          <CardHeader>
+            <CardTitle>Ensure privacy</CardTitle>
+            <CardDescription>
+              Easily blur faces in your videos with a single click.
+            </CardDescription>
+            <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
+              <Lock />
+            </CardContent>
+          </CardHeader>
+        </Card>
+        <Card className="w-[350px] h-fit" data-aos="flip-left">
+          <CardHeader>
+            <CardTitle>Ensure privacy</CardTitle>
+            <CardDescription>
+              Easily blur faces in your videos with a single click.
+            </CardDescription>
+            <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
+              <Lock />
+            </CardContent>
+          </CardHeader>
+        </Card>
+      </div>
     </div>
   );
 };
 
 export default Features;
+
