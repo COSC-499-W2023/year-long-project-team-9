@@ -69,11 +69,17 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'fadeIn': 'fadeIn 2s ease-out 300ms forwards',
+        'fadeIn': 'fadeIn 1s ease-out 100ms forwards',
+        'fadeOut': 'fadeOut 1s ease-out 100ms forwards',
+        'spin-slow': 'spin 3s linear infinite',
       },
     },
   },
