@@ -84,10 +84,10 @@ const Hero = () => {
           />
         </svg>
       </div>
-      <div className="grid grid-cols-2 gap-3 font-bold text-lg items-center col-span-2">
+      {/* <div className="grid grid-cols-2 gap-3 font-bold text-lg items-center col-span-2">
         <h1>Features</h1>
         <ArrowBigDown className="justify-self-start self-end animate-bounce fill-primary" />
-      </div>
+      </div> */}
     </div>
   );
 };

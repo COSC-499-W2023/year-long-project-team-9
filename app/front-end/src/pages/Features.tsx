@@ -21,10 +21,14 @@ import {
 
 const Features = () => {
   return (
-    <div className="flex min-h-screen">
+    
+    <div className=" ">
+      <div className="flex flex-col items-center justify-center pb-36 ">
+        <h1 className="text-3xl font-bold">Features</h1>
+        </div>
       <div className="grid grid-rows-3 md: grid-cols-3 gap-36 pr-24">
         {/* Adjust the gap as per your design needs */}
-        <Card className="w-[350px] h-fit" data-aos="flip-left" data-aos-delay="100">
+        <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="100">
           <CardHeader>
             <CardTitle>Ensure privacy</CardTitle>
             <CardDescription>
@@ -35,7 +39,7 @@ const Features = () => {
             </CardContent>
           </CardHeader>
         </Card>
-        <Card className="w-[350px] h-fit" data-aos="flip-left" data-aos-delay="200">
+        <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="200">
           <CardHeader>
             <CardTitle>Ensure privacy</CardTitle>
             <CardDescription>
@@ -46,13 +50,13 @@ const Features = () => {
             </CardContent>
           </CardHeader>
         </Card>
-        <Card className="w-[350px] h-fit" data-aos="flip-left" data-aos-delay="300">
+        <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="300">
           <CardHeader>
             <CardTitle>Ensure privacy</CardTitle>
             <CardDescription>
               Easily blur faces in your videos with a single click.
             </CardDescription>
-            <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
+            <CardContent className=" flex justify-center p-5">
               <Lock />
             </CardContent>
           </CardHeader>
