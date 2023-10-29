@@ -394,3 +394,98 @@ The tasks identified for this week were:
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-7/inprogress-week7.png)
 
 <br>
+# TEAM 9 - WEEK 8
+
+## Team Members
+
+* Existential-Critic  -  Soren Stenback 
+
+* jansdhillon         -  Jan-Yaeger Dhillon
+
+* asiv23              -  Baz Sivakua
+
+* N0tGoingPro         -  Muhammad Bakar
+
+## Work Period
+
+Week 8 ran from 00:00 on 2023/10/23 to 23:59 on 2023/10/29.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Configure enviorment for coding
+- Configure APIs planned to use in this stage of development including AWS Amplify, Tailwind and Next.js. Additionally, those of us who are unfamilar with the APIs have done research to understand ways to code using them. Set up local enviroment to start coding. 
+
+### Milestone Goal 2: Front-End Coding
+- Complete coding for pages `single request page` and `home page`. 
+
+### Milestone Goal 3: Prepare Presentation
+- Prepare pages and documentation for the mini-presentation. Ensure that we can describe everything clearly and within the time constraints. 
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Make AWS Step Function Plan
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar and Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Define a workflow for the project created through AWS services. This will help us plan to coordinate and automate multiple AWS services in the future. 
+
+### Task 2: Create AWS Step Functions Diagram
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar and Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Create a visual workflow diagram using the plan created in the previous task. A visual workflow diagram clearly defines how we intend to carry on with the project.
+
+### Task 3: Set up AWS CodePipeline
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Set up AWS CodePipeline for use in the project
+
+### Task 4: Set up AWS Amplify for the project
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Set up AWS Amplify for use in the project
+
+### Task 5: Create Single Requests page in Next.js
+
+* **Status:** In Progress
+* **Assignee(s):** Soren Stenback and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Start coding the page allowing for users to create a request 
+
+### Task 6: Create Home page in Next.js
+
+* **Status:** In Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Start coding home/landing page for the web application.
+
+### Task 7: Fully explain what the web app is along with buttons to select different options in the web app, such as viewing your account, viewing your inbox, etc.
+
+* **Status:** In Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding and Milestone Goal 3: Prepare Presentation 
+* **Description:** Write the text for the about section of the web application. Alongside working on the introduction of our project in the mini-presentation.
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-8/burnup-week8.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-8/completed-week8.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-8/inprogress-week8.png)
+
+<br>
