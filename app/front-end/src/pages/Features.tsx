@@ -22,11 +22,11 @@ import {
 const Features = () => {
   return (
     
-    <div className=" ">
+    <>
       {/* <div className="flex flex-col items-center justify-center pb-36 ">
         <h1 className="text-3xl font-bold">Features</h1>
         </div> */}
-      <div className="grid grid-rows-3 md: grid-cols-3 gap-36 pr-24">
+      <div className="grid grid-cols-3  items-center justify-center justify-items-center gap-36 min-h-screen">
         {/* Adjust the gap as per your design needs */}
         <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="100">
           <CardHeader>
@@ -62,7 +62,7 @@ const Features = () => {
           </CardHeader>
         </Card>
       </div>
-    </div>
+    </>
   );
 };
 
