@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,11 +11,16 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { ArrowDownLeftSquare, Sun } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Assuming you have these components
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"; // Assuming you have these components
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useRouter } from 'next/router';
-import useScroll  from "@/components/hooks/scroll";
+import { useRouter } from "next/router";
+import useScroll from "@/components/hooks/scroll";
 
 const NavBar = () => {
   const { setTheme } = useTheme();
@@ -23,70 +28,85 @@ const NavBar = () => {
   const scroll = useScroll();
 
   return (
-    <div className="grid p-5 sticky top-0 bg-gradient-to-b from-secondary to-background z-50 min-w-full ">
-      {/*first column with 5 sub-columns*/}
-      <div className=" grid grid-flow-col gap-2 p-5">
-        <NavigationMenu className="">
-          <NavigationMenuList>
+    <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column p-5 justify-between min-w-full">
+      <div className="p-1">
+        <NavigationMenu>
           <NavigationMenuLink href="/">
-            <NavigationMenuItem className="grid justify-start min-h-full">
-              <Image className="" src="/logo.svg" alt="obscurus" width={50} height={50} />
+              <Image
+                className="min-h-full"
+                src="/logo.svg"
+                alt="obscurus"
+                width={50}
+                height={50}
+              />
+          </NavigationMenuLink>
+
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <span className="font-extrabold text-lg p-5 hover:cursor-pointer">
+                obscurus
+              </span>
             </NavigationMenuItem>
+            <NavigationMenuLink>
+              <div
+                className="font-semibold text-md p-5 hover:cursor-pointer"
+                onClick={() => scroll("#features")}
+              >
+                Features
+              </div>
             </NavigationMenuLink>
             <NavigationMenuItem>
-              <h1 className=" px-5 font-extrabold">obscurus</h1>
+              <div
+                className="font-semibold text-md p-5 hover:cursor-pointer"
+                onClick={() => scroll("#about")}
+              >
+                About
+              </div>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              {/*TODO: add ability to jump to features section*/}
-              <NavigationMenuLink>
-              <NavigationMenuTrigger className="font-semibold" onClick={() => scroll("#features")}>Features</NavigationMenuTrigger>
-              </NavigationMenuLink>
-              <NavigationMenuContent>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="font-semibold">About</NavigationMenuTrigger>
-              <NavigationMenuContent>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="grid grid-cols-2 gap-0">
-              <h1 className=" px-5 font-bold text-sm">Make a Request</h1>
-              <ArrowDownLeftSquare className=" justify-self-start rotate-180" size={20} />
+              <div
+                className="font-bold grid grid-cols-2 gap-2 p-5 hover:cursor-pointer"
+                onClick={() => console.log("TODO: Go to Make a Request page")}
+              >
+                <div>Make a Request</div>
+                <ArrowDownLeftSquare
+                  className=" justify-self-start rotate-180 mt-1"
+                  size={20}
+                />
+              </div>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-
-        {/*second column with 2 sub-columns*/}
-        <div className="grid  grid-flow-col gap-2 justify-end items-center">
-          <div className="flex justify-end space-x-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="drop-shadow-sm" variant="outline" size="icon">
-                  <Sun className="bg-secondary" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="grid items-center justify-end">
-            <Link href="/SignIn">
-              <Button variant="default">Sign In</Button>
-            </Link>
-          </div>
+      </div>
+      <div className="grid grid-flow-col gap-2 justify-end items-center">
+        <div className="flex justify-end space-x-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Sun className="bg-secondary" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                System
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="grid items-center justify-end">
+          <Link href="/SignIn">
+            <Button variant="default">Sign In</Button>
+          </Link>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default NavBar;
