@@ -23,9 +23,9 @@ const Features = () => {
   return (
     
     <div className=" ">
-      <div className="flex flex-col items-center justify-center pb-36 ">
+      {/* <div className="flex flex-col items-center justify-center pb-36 ">
         <h1 className="text-3xl font-bold">Features</h1>
-        </div>
+        </div> */}
       <div className="grid grid-rows-3 md: grid-cols-3 gap-36 pr-24">
         {/* Adjust the gap as per your design needs */}
         <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="100">
