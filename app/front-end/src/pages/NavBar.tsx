@@ -5,7 +5,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
@@ -41,7 +40,7 @@ const NavBar = () => {
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
       <div className="p-1">
         <NavigationMenu>
-          <NavigationMenuLink href="/" className="p-5">
+          <Link href="/" className="p-5">
             <Image
               className="min-h-full"
               src="/logo.svg"
@@ -49,17 +48,17 @@ const NavBar = () => {
               width={50}
               height={50}
             />
-          </NavigationMenuLink>
+          </Link>
 
           <NavigationMenuList>
-            <NavigationMenuLink href="/">
+            <Link href="/">
             <NavigationMenuItem>
               <span className="font-extrabold text-lg p-5 hover:cursor-pointer">
                 obscurus
               </span>
             </NavigationMenuItem>
-            </NavigationMenuLink>
-            <NavigationMenuLink href="/CreateRequest">
+            </Link>
+            <Link href="/CreateRequest">
             <NavigationMenuItem>
               <div
                 className="font-bold text-sm p-5 hover:cursor-pointer"
@@ -68,16 +67,16 @@ const NavBar = () => {
                 Create Request
               </div>
             </NavigationMenuItem>
-            </NavigationMenuLink>
-            <NavigationMenuLink href="/MyRequests">
+            </Link>
+            <Link href="/MyRequests">
               <div
                 className="font-bold text-sm p-5 hover:cursor-pointer"
                 // onClick={() => scroll("#features")}
               >
                 My Requests
               </div>
-            </NavigationMenuLink>
-            <NavigationMenuLink href="/BlurVideo">
+            </Link>
+            <Link href="/BlurVideo">
             <NavigationMenuItem>
               <div
                 className="font-bold text-sm grid grid-cols-2 gap-2 p-5 hover:cursor-pointer"
@@ -90,7 +89,7 @@ const NavBar = () => {
                 /> */}
               </div>
             </NavigationMenuItem>
-            </NavigationMenuLink>
+            </Link>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
