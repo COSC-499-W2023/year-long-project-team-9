@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import PageLoader from "next/dist/client/page-loader";
 import { Router } from "next/router";
 import LoadingPage from "@/components/LoadingPage";
+import NavBar from "@/components/ui/NavBar";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -53,6 +54,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       initial={false}
       onExitComplete={() => window.scrollTo(0, 0)}
     >
+      <NavBar />
      
         {loading ? <LoadingPage /> : <Component {...pageProps} />}
       
