@@ -16,7 +16,7 @@ return (
       enableSystem
       disableTransitionOnChange
     >
-  <div className="bg-background min-h-screen min-w-full font-inter flex flex-col gap-10">
+  <div className="bg-background min-h-screen min-w-full  w-100 font-inter">
     <Navbar />
     <main>{children}</main>
     {/* <footer>
