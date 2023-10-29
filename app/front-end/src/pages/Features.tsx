@@ -18,46 +18,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScanFace, ShieldCheck, Gauge } from "lucide-react";
 
 const Features = () => {
   return (
-    
     <>
       {/* <div className="flex flex-col items-center justify-center pb-36 ">
         <h1 className="text-3xl font-bold">Features</h1>
         </div> */}
       <div className="grid grid-cols-3  items-center justify-center justify-items-center gap-36 min-h-screen">
         {/* Adjust the gap as per your design needs */}
-        <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="100">
+        <Card
+          className="w-[250px] h-[250px] justify-center justify-items-center"
+          data-aos="flip-left"
+          data-aos-delay="100"
+        >
           <CardHeader>
-            <CardTitle>Ensure privacy</CardTitle>
+            <CardTitle>Automatic Face Detection & Blurring</CardTitle>
             <CardDescription>
-              Easily blur faces in your videos with a single click.
+            Utilize cutting-edge technology to automatically identify and obscure faces in your videos, ensuring privacy without sacrificing video quality.
             </CardDescription>
             <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
-              <Lock />
+              <ScanFace />
             </CardContent>
           </CardHeader>
         </Card>
-        <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="200">
+        <Card
+          className="w-[250px] h-[250px]"
+          data-aos="flip-left"
+          data-aos-delay="250"
+        >
           <CardHeader>
-            <CardTitle>Ensure privacy</CardTitle>
+            <CardTitle>Real-Time Video Processing</CardTitle>
             <CardDescription>
-              Easily blur faces in your videos with a single click.
+            Experience swift and efficient video editing with our real-time processing capabilities. Make changes and see them instantly, saving you time and effort.
             </CardDescription>
             <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
-              <Lock />
+              <Gauge />
             </CardContent>
           </CardHeader>
         </Card>
-        <Card className="w-[350px] h-[350px]" data-aos="flip-left" data-aos-delay="300">
+        <Card
+          className="w-[250px] h-[250px]"
+          data-aos="flip-left"
+          data-aos-delay="300"
+        >
           <CardHeader>
-            <CardTitle>Ensure privacy</CardTitle>
+            <CardTitle>User Privacy Protection</CardTitle>
             <CardDescription>
-              Easily blur faces in your videos with a single click.
+            Your privacy is our priority. Our app uses secure protocols to protect your videos and personal data, ensuring peace of mind while you edit.
+            &nbsp;
+            &nbsp;
             </CardDescription>
-            <CardContent className=" flex justify-center p-5">
-              <Lock />
+            <CardContent className=" flex justify-center pt-14">
+              <ShieldCheck className="" />
             </CardContent>
           </CardHeader>
         </Card>
@@ -67,4 +81,3 @@ const Features = () => {
 };
 
 export default Features;
-
