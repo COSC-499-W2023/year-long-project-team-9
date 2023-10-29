@@ -40,6 +40,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import AppleLogin from "react-apple-login";
+import MicrosoftLogin from "@/components/ui/MicrosoftLogin";
+import { PublicClientApplication } from "@azure/msal-browser";
+import { AuthError } from "@azure/msal-common";
+
 
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
@@ -48,6 +53,10 @@ const NavBar = () => {
   const [signedIn, setSignedIn] = useState(false);
   const [showSignInDialog, setShowSignInDialog] = useState(false);
 
+
+const [customButton, onCustomButtonChange] = useState(true);
+const [withUserData, onWithUserDataChange] = useState(true);
+const [customClassName, onCustomClassNameChange] = useState("my-button");
 
   const handleAuth = (route: string) => {
     if (signedIn) {
@@ -59,11 +68,11 @@ const NavBar = () => {
 
   const SignIn = () => {
     setSignedIn(true);
-  }
+  };
 
   const SignOut = () => {
     setSignedIn(false);
-  }
+  };
 
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
@@ -110,11 +119,11 @@ const NavBar = () => {
                   onClick={() => console.log("TODO: Go to Make a Request page")}
                 >
                   <div>Upload/Record Video</div> */}
-                  {/* <ArrowDownLeftSquare
+            {/* <ArrowDownLeftSquare
                   className=" justify-self-start rotate-180 mt-1"
                   size={20}
                 /> */}
-                {/* </div>
+            {/* </div>
               </NavigationMenuItem>
             </Link> */}
           </NavigationMenuList>
@@ -153,26 +162,18 @@ const NavBar = () => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Settings
-                </DropdownMenuItem>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={SignOut}>
-                Log out
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={SignOut}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
           <div className="grid items-center justify-end">
             <Dialog open={showSignInDialog} onOpenChange={setShowSignInDialog}>
               <DialogTrigger asChild>
-                <Button variant="default">
-                  Sign In
-                </Button>
+                <Button variant="default">Sign In</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -204,7 +205,35 @@ const NavBar = () => {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button type="submit" onClick={SignIn}>Sign In</Button>
+                  {/* <AppleLogin
+                    clientId={"com.react.apple.login"}
+                    redirectURI={"https://redirectUrl.com"}
+                    responseType={"code"}
+                    responseMode={"query"}
+                    usePopup={false}
+                    designProp={{
+                      height: 30,
+                      width: 140,
+                      color: "black",
+                      border: false,
+                      type: "sign-in",
+                      border_radius: 15,
+                      scale: 1,
+                      locale: "en_US",
+                    }}
+                  /> */}
+                      <MicrosoftLogin
+          withUserData={withUserData}
+          debug={true}
+          clientId={"clientId"}
+          forceRedirectStrategy={true}
+          children={customButton && <Button>Custom button</Button>}
+          useLocalStorageCache={true} authCallback={function (error: AuthError | null, result?: any, instance?: PublicClientApplication | undefined): void {
+              throw new Error("Function not implemented.");
+          } }  />
+                  <Button type="submit" onClick={SignIn}>
+                    Sign In
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
