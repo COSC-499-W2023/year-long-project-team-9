@@ -52,39 +52,45 @@ const NavBar = () => {
           </NavigationMenuLink>
 
           <NavigationMenuList>
+            <NavigationMenuLink href="/">
             <NavigationMenuItem>
               <span className="font-extrabold text-lg p-5 hover:cursor-pointer">
                 obscurus
               </span>
             </NavigationMenuItem>
+            </NavigationMenuLink>
+            <NavigationMenuLink href="/CreateRequest">
             <NavigationMenuItem>
               <div
-                className="font-semibold text-md p-5 hover:cursor-pointer"
-                onClick={() => scroll("#about")}
+                className="font-bold text-sm p-5 hover:cursor-pointer"
+                // onClick={() => scroll("#about")}
               >
                 Create Request
               </div>
             </NavigationMenuItem>
-            <NavigationMenuLink>
+            </NavigationMenuLink>
+            <NavigationMenuLink href="/MyRequests">
               <div
-                className="font-semibold text-md p-5 hover:cursor-pointer"
-                onClick={() => scroll("#features")}
+                className="font-bold text-sm p-5 hover:cursor-pointer"
+                // onClick={() => scroll("#features")}
               >
                 My Requests
               </div>
             </NavigationMenuLink>
+            <NavigationMenuLink href="/BlurVideo">
             <NavigationMenuItem>
               <div
-                className="font-bold grid grid-cols-2 gap-2 p-5 hover:cursor-pointer"
+                className="font-bold text-sm grid grid-cols-2 gap-2 p-5 hover:cursor-pointer"
                 onClick={() => console.log("TODO: Go to Make a Request page")}
               >
                 <div>Upload/Record Video</div>
-                <ArrowDownLeftSquare
+                {/* <ArrowDownLeftSquare
                   className=" justify-self-start rotate-180 mt-1"
                   size={20}
-                />
+                /> */}
               </div>
             </NavigationMenuItem>
+            </NavigationMenuLink>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
