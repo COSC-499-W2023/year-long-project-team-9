@@ -8,6 +8,8 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
+    <>
+    <Navbar />
     <motion.div
     initial={{ x: 300, opacity: 0 }}
     animate={{ x: 0, opacity: 1 }}
@@ -15,12 +17,12 @@ export default function Layout({ children }: LayoutProps) {
     transition={{
       type: "spring",
       stiffness: 260,
-      damping: 20,
+      damping: 50,
     }}
     className="bg-background min-h-screen min-w-full font-inter"
   >
-        <Navbar />
         <main>{children}</main>
     </motion.div>
+    </>
   );
 }
