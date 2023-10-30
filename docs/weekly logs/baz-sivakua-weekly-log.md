@@ -36,3 +36,15 @@
 
 ### Picture of week 4's survey
 ![Screenshot of week 4 team evaluation](img/baz-sivakua/baz-survey-week7.png)
+---
+
+## 8
+### October 23 - October 29, 2023
+- This week I worked on Milestone 2: Mini presentation and some coding for Milestone 3: Design Submission.
+- The goal for this week was to prepare for the presentation and write an About Us section for the web application. 
+
+### Picture of Project Board
+![Screenshot of week 4 project board tasks](img/baz-sivakua/baz-tasks-week8.png)
+
+### Picture of week 4's survey
+![Screenshot of week 4 team evaluation](img/baz-sivakua/baz-survey-week8.png)
