@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import PageLoader from "next/dist/client/page-loader";
 import { Router } from "next/router";
 import LoadingPage from "@/components/LoadingPage";
+import NavBar from "@/components/ui/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -22,6 +23,7 @@ type AppPropsWithLayout = AppProps & {
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
+
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       initial={false}
       onExitComplete={() => window.scrollTo(0, 0)}
     >
+      <NavBar />
      
         {loading ? <LoadingPage /> : <Component {...pageProps} />}
       
