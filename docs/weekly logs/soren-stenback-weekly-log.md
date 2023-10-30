@@ -57,7 +57,7 @@
 
 ## Week 7
 
-### October 9 - October 15, 2023
+### October 16 - October 22, 2023
 
 - This week I worked on the milestone to research how Next.js uses page routing for web apps.
 - The goals for this week were to begin coding with Next.js and researching functionality for our web app.
@@ -65,3 +65,20 @@
 ### Picture of Project Board
 
 ![Week 7 Project Board](img/soren-stenback/Week7-ProjectBoard-ID4.png)
+
+---
+
+## Week 8
+
+### October 23 - October 29, 2023
+
+- This week I worked on Milestone #2, the Mini-Presentation.
+- The goals for this week were to code the landing and Create Request webpages and begin to form our mini-presentation.
+
+### Picture of Project Board
+
+![Week 8 Project Board](img/soren-stenback/Week8-ProjectBoard-ID4.png)
+
+### Picture of Week 8's Survey
+
+![Week 8 Survey](img/soren-stenback/Week8-Survey-ID4.png)
