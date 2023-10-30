@@ -23,11 +23,7 @@ import { ScanFace, ShieldCheck, Gauge } from "lucide-react";
 const Features = () => {
   return (
     <>
-      {/* <div className="flex flex-col items-center justify-center pb-36 ">
-        <h1 className="text-3xl font-bold">Features</h1>
-        </div> */}
       <div className="grid grid-cols-3  items-center justify-center justify-items-center gap-36 min-h-screen">
-        {/* Adjust the gap as per your design needs */}
         <Card
           className="w-[250px] h-[250px] justify-center justify-items-center"
           data-aos="flip-left"
@@ -66,7 +62,8 @@ const Features = () => {
           <CardHeader>
             <CardTitle>User Privacy Protection</CardTitle>
             <CardDescription>
-            Your privacy is our priority. Our app uses secure protocols to protect your videos and personal data, ensuring peace of mind while you edit.
+            Your privacy is our priority. We facilitate secure communication without compromising your privacy.
+            &nbsp;
             &nbsp;
             &nbsp;
             </CardDescription>
