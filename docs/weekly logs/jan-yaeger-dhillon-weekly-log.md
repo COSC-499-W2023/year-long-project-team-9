@@ -102,6 +102,43 @@ Screenshot of Project Board:
 ![Project Board](./img/jan-yaeger-dhillon/project-board-7.png)
 
 
+## Week 8 ##
+
+### Applicable Date Range ###
+October 23 - October 29, 2023
+
+### Tasks Worked On ###
+
+- My goal this week was to lay a strong foundation for the front-end and finish the home page of the web app, including the landing-page, features, and about sections.
+- I finished the home page of the web app and implemented the design I created on Figma. I also set up the routing for the web app and created the features and about sections of the home page.
+- I also started working on the video processing and researched how to implement the video processing using AWS Lambda, Step Functions, and CodePipeline.
+
+Screenshot from peer eval for Week 8:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-8.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed-8.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress-8.png)
+
+- Note that I am waiting to be authorized to use this.
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo-8.png)
+
+-Similarly, I am waiting to be authorized to use this.
+
+Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board-8.png)
+
+
+
 
 
 
