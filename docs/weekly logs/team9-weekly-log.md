@@ -448,7 +448,7 @@ The tasks identified for this week were:
 
 ### Task 4: Set up AWS Amplify for the project
 
-* **Status:** In Progress
+* **Status:** Completed
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
 * **Description:** Set up AWS Amplify for use in the project
@@ -462,7 +462,7 @@ The tasks identified for this week were:
 
 ### Task 6: Create Home page in Next.js
 
-* **Status:** In Progress
+* **Status:** Completed
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Start coding home/landing page for the web application.
@@ -473,6 +473,13 @@ The tasks identified for this week were:
 * **Assignee(s):** Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding and Milestone Goal 3: Prepare Presentation 
 * **Description:** Write the text for the about section of the web application. Alongside working on the introduction of our project in the mini-presentation.
+
+### Task 8: Research Next Page Routing
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Research use of Next Page Routing and how to best use it for our project
 
 ## Details
 
