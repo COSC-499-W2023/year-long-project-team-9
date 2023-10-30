@@ -1,29 +1,107 @@
+{/*Imports*/}
 import Layout from '@/components/layout';
+import React, { useState } from 'react';
+import { Card,CardContent,CardDescription,CardFooter,CardHeader,CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
+{/*Functions*/}
 const CreateRequest = () => {
+    const [title,setTitle] = useState("");
+    const handleTitleChange = (e) => {
+        const {name,value} = e.target
+        setTitle(value)
+    };
+    const [clientList,setClientList] = React.useState([{client:"",clientNo:false},]);
+    const handleClientAdd = () => {
+        setClientList([...clientList,{client:"",clientNo:false}])
+    };
+    const handleClientRemove = (index) => {
+        const list = [...clientList]
+        list.splice(index,1)
+        setClientList(list)
+    };
+    const handleClientChange = (e,index) => {
+        const {name,value} = e.target
+        const list = [...clientList]
+        list[index][name] = value
+        setClientList(list)
+    };
+    const [desc,setDesc] = React.useState("");
+    const handleDescChange = (e) => {
+        const {name,value} = e.target
+        setDesc(value)
+    };
+    const [isBlurred,setBlurred] = React.useState(true);
+    const [terms,setTerms] = React.useState(false)
+    const handleTermsChange = () => {
+        setTerms(!terms)
+    };
+    const [date,setDate] = React.useState<Date | undefined>(new Date());
+    const [noTitle,setNoTitle] = React.useState(false);
+    const handleSubmit = () => {
+        if((title.length < 1) || clientsEmpty()) {
+        if(title.length < 1) {
+            setNoTitle(true)
+        }else {
+            setNoTitle(false)
+        }
+        for(let item of clientList) {
+            if(item.client.length < 1) {
+            item.clientNo = true
+            }else {
+            item.clientNo = false
+            }
+        }
+        }else {
+        setNoTitle(false)
+        window.location.reload()
+        }
+    };
+    const clientsEmpty = () => {
+        for(let item of clientList) {
+        if(item.client.length < 1) {
+            return true
+        }
+        }
+        return false
+    };
     return (
         <Layout>
-            <div className="grid justify-center items-center">
-                <h1 className="text-3xl font-extrabold">Create Request</h1>
+            <div className="grid grid-cols-2 items-center justify-items-center">
+                <Card id="requestCard" className="overflow-auto h-96 w-2/3">
+                    <CardHeader>
+                        <CardTitle>Request Title</CardTitle>
+                        <Input id="reqTitle" name="title" value={title} onChange={(e) => handleTitleChange(e)}/>
+                    </CardHeader>
+                    <CardContent>
+
+                    </CardContent>
+                </Card>
+                <Card id="previewCard" className="overflow-auto h-96 w-2/3">
+                    <CardHeader>
+                        {title.length < 1 && (
+                            <CardTitle className="text-xl">Title</CardTitle>
+                        )}
+                        {title.length >= 1 && (
+                            <CardTitle className="text-xl">{title}</CardTitle>
+                        )}
+                    </CardHeader>
+                    <CardContent>
+
+                    </CardContent>
+                </Card>
             </div>
         </Layout>
     )
 }
 
+{/*Export*/}
 export default CreateRequest;
 
+{/*Imports*/}
 {/*
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -64,70 +142,16 @@ import { Calendar } from "@/components/ui/calendar"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Plus,X,AlertCircle } from "lucide-react";
+*/}
 
-const inter = Inter({ subsets: ["latin"] });
-
+{/*Functions*/}
+{/*
 export default function createRequest() {
   const {theme,setTheme} = useTheme();
-  const [title,setTitle] = React.useState("");
-  const handleTitleChange = (e) => {
-    const {name,value} = e.target
-    setTitle(value)
-  }
-  const [clientList,setClientList] = React.useState([{client:"",clientNo:false},]);
-  const handleClientAdd = () => {
-    setClientList([...clientList,{client:"",clientNo:false}])
-  };
-  const handleClientRemove = (index) => {
-    const list = [...clientList]
-    list.splice(index,1)
-    setClientList(list)
-  };
-  const handleClientChange = (e,index) => {
-    const {name,value} = e.target
-    const list = [...clientList]
-    list[index][name] = value
-    setClientList(list)
-  };
-  const [desc,setDesc] = React.useState("");
-  const handleDescChange = (e) => {
-    const {name,value} = e.target
-    setDesc(value)
-  }
-  const [isBlurred,setBlurred] = React.useState(true);
-  const [terms,setTerms] = React.useState(false)
-  const handleTermsChange = () => {
-    setTerms(!terms)
-  };
-  const [date,setDate] = React.useState<Date | undefined>(new Date());
-  const [noTitle,setNoTitle] = React.useState(false);
-  const handleSubmit = () => {
-    if((title.length < 1) || clientsEmpty()) {
-      if(title.length < 1) {
-        setNoTitle(true)
-      }else {
-        setNoTitle(false)
-      }
-      for(let item of clientList) {
-        if(item.client.length < 1) {
-          item.clientNo = true
-        }else {
-          item.clientNo = false
-        }
-      }
-    }else {
-      setNoTitle(false)
-      window.location.reload()
-    }
-  };
-  const clientsEmpty = () => {
-    for(let item of clientList) {
-      if(item.client.length < 1) {
-        return true
-      }
-    }
-    return false
-  }
+*/}
+
+{/*Body*/}
+{/*
         <div className="grid grid-cols-2 items-center justify-items-center">
             <Card id="info" className="overflow-auto h-96 w-2/3">
                 <CardHeader>
