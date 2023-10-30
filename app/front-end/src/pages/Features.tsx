@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { ScanFace, ShieldCheck, Gauge } from "lucide-react";
 
 const Features = () => {
@@ -69,12 +70,16 @@ const Features = () => {
             </CardDescription>
             <CardContent className=" flex justify-center pt-14">
               <ShieldCheck className="" />
+
             </CardContent>
           </CardHeader>
         </Card>
       </div>
+
     </>
+
   );
 };
 
 export default Features;
+
