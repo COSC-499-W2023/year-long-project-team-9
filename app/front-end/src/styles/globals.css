@@ -74,3 +74,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* .cloud-animate-fadeIn {
+  @apply animate-fadeIn;
+}
+
+.cloud-animate-pulse {
+  @apply animate-pulse;
+  @apply delay-300;
+} */
+
+
+/*Does not work :(*/
+/* .cloud-animate::after {
+  @apply animate-pulse;
+
+} */
+

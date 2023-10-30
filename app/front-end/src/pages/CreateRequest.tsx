@@ -1,13 +1,13 @@
 import Layout from '@/components/layout';
 
-const SignInPage = () => {
+const CreateRequest = () => {
     return (
         <Layout>
             <div className="grid justify-center items-center">
-                <h1 className="text-3xl font-extrabold">Sign In</h1>
+                <h1 className="text-3xl font-extrabold">Create Request</h1>
             </div>
         </Layout>
     )
 }
 
-export default SignInPage;
+export default CreateRequest;
