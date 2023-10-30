@@ -31,3 +31,13 @@
 ![Week 6 and 7 Bakar's Board](img/muhammad-bakar/mbakar-week-6-and-7-board.png)
 ### Picture of Week 6's and 7's Survey
 ![Week 6 and 7 Bakar's Survey](img/muhammad-bakar/mbakar-week-6-and-7-survey.png)
+
+## Week 8
+### October 23 2023 - October 29 2023
+- I worked on Milestone #2: Mini-Presentation, and laid out plans for authentication, since the group wanted to talk a little bit about it in the presentation.
+- My goals for this week was to make sure everyone was on track to complete their work, so that we are ready for the presentation. Happy to say said goal was completed, and everyone is on track to complete the their work for the presentation.
+- I also attend class, and all other group meetings.
+### Picture of Project Board Week 8
+![Week 8 Bakar's Board](img/muhammad-bakar/mbakar-week-8-board.png)
+### Picture of Week 8's Survey
+![Week 8 Bakar's Survey](img/muhammad-bakar/mbakar-week-8-survey.png)
