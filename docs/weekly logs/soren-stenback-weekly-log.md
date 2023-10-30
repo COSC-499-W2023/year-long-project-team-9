@@ -72,7 +72,7 @@
 
 ### October 23 - October 29, 2023
 
-- This week I worked on the milestone to create a Create Request webpage in Next.js.
+- This week I worked on Milestone #2, the Mini-Presentation.
 - The goals for this week were to code the landing and Create Request webpages and begin to form our mini-presentation.
 
 ### Picture of Project Board
