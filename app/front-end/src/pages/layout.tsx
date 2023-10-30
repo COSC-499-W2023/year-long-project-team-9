@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/components/ui/theme-provider';
-import Navbar from './NavBar'
+import Navbar from '@/components/ui/NavBar'
 // import Footer from './footer'
 import { ReactNode } from 'react';
 
