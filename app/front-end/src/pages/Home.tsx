@@ -1,4 +1,5 @@
 import Hero from "./Hero";
+import About from "./About";
 import Features from "./Features";
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
       <div id="features">
       </div>
       <Features />
-      {/* TODO: Call to Action */}
+      <About />
     </div>
   );
 }
