@@ -104,14 +104,14 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                 Create Request
               </div>
             </NavigationMenuItem>
-            <Link href="/MyRequests">
+            <NavigationMenuItem onClick={() => handleAuth("MyRequests")}>
               <div
                 className="font-bold text-sm p-5 hover:cursor-pointer"
                 // onClick={() => scroll("#features")}
               >
                 My Requests
               </div>
-            </Link>
+            </NavigationMenuItem>
             {/* <Link href="/BlurVideo">
               <NavigationMenuItem>
                 <div
