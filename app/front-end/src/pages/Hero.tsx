@@ -9,11 +9,10 @@ const Hero = () => {
     <div className="grid grid-cols-2 gap-40 justify-items-center w-full">
       <div className="grid grid-rows-3 gap-1 items-center ">
         <div className="text-4xl font-extrabold">
-          Protect Privacy with a Single Click.
+          Communicate Privately, Share Confidently.
         </div>
         <div className="text-xl font-semibold">
-          Securely Blur Faces in Your Videos with{" "}
-          <span className=" font-extrabold">obscurus</span>
+        Experience seamless face blurring and video deliviery with <span className=" font-extrabold">obscurus</span>.
         </div>
         <div className="grid grid-cols-2">
           <Tabs defaultValue="blurred">
