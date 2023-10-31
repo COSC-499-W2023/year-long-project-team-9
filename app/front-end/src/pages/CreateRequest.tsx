@@ -87,7 +87,7 @@ const CreateRequest = () => {
     };
     return (
         <Layout>
-            <div className="grid grid-cols-2 items-center gap-5 p-24">
+            <div className="grid grid-cols-2 items-center gap-5 px-24">
                 <Card id="requestCard" className="overflow-auto h-96 w-3/4 justify-self-end">
                     <CardContent className="grid gap-1">
                         <Label className="pt-4 text-sm">Request Title</Label>
@@ -127,23 +127,23 @@ const CreateRequest = () => {
                         <div className="grid grid-cols-2 gap-2">
                             <div className="flex-col">
                                 <Label htmlFor="desc" className="text-sm">Request Description</Label>
-                                <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows={9} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
+                                <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows={8} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
                             </div>
-                            <div className="align-top grid grid-rows-3 gap-7">
-                                <div className=''>
+                            <div className="align-top">
+                                <div className="">
                                     <Label className="text-sm">Video Processing</Label>
                                     <Tabs defaultValue="blurred">
-                                    <TabsList className=''>
-                                        <TabsTrigger value="blurred" className="px-3" onClick={() => setBlurred(true)}><span className='px-1'>Blurred</span></TabsTrigger>
-                                        <TabsTrigger value="notBlurred" className="text-sm" onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
+                                    <TabsList className="w-full">
+                                        <TabsTrigger value="blurred" className="" onClick={() => setBlurred(true)}><span>Blurred</span></TabsTrigger>
+                                        <TabsTrigger value="notBlurred" className="" onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
                                     </TabsList>
                                     </Tabs>
                                 </div>
-                                <div className="">
+                                <div className="mt-5">
                                     <Label className="text-sm">Due Date</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
-                                            <Button variant={"outline"}>
+                                            <Button variant={"outline"} className="text-xs w-full">
                                                 <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
                                                 {date ? format(date, "PPP") : <span>Pick a date</span>}
                                             </Button>
@@ -153,7 +153,7 @@ const CreateRequest = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </div>
-                                <div className="flex items-center space-x-2 w-full">
+                                <div className="flex items-center space-x-2 w-full mt-8">
                                     <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
                                     <label htmlFor="terms" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 pr-3 flex-nowrap m-0">
                                         Accept terms and conditions
@@ -191,22 +191,22 @@ const CreateRequest = () => {
                             <div className="flex-col gap-2">
                             <Label>Request Description</Label>
                             <ul>
-                                {desc && <p className="text-ellipsis overflow-hidden text-sm indent-2">{desc}</p>}
+                                {desc && <p className="text-ellipsis overflow-hidden text-sm">{desc}</p>}
                             </ul>
                             </div>
                             <div className="align-top">
-                                <div className=" mt-5">
+                                <div className="">
                                     <Label>Video Processing</Label>
                                     {isBlurred && (
-                                        <Button className="w-11/12">Blurred</Button>
+                                        <Button className="w-full">Blurred</Button>
                                     )}
                                     {!isBlurred && (
-                                        <Button variant={"outline"} className="w-10/12">Not Blurred</Button>
+                                        <Button variant={"outline"} className="w-full">Not Blurred</Button>
                                     )}
                                 </div>
                                 <div className="pt-7">
                                     <Label>Due Date</Label>
-                                    <Button variant={"outline"}>
+                                    <Button variant={"outline"} className="text-xs w-full">
                                         <CalendarIcon className="mr-2 h-4 w-4" />
                                         {date ? format(date, "PPP") : <span>Pick a date</span>}
                                     </Button>
