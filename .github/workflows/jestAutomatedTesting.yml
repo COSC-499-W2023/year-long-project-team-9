@@ -30,6 +30,6 @@ jobs:
         cache: 'npm'
         cache-dependency-path: '**/package-lock.json'
     - name: setting up
-      run: npm ci
+      run: npm ci && npx playwright install
     - name: running test
       run: npm test
