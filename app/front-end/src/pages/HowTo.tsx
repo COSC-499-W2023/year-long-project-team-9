@@ -30,7 +30,7 @@ import { ScanFace, ShieldCheck, Gauge } from "lucide-react";
 
 const HowTo = () => {
   return (
-    <Layout>
+        <div className="pl-12 pb-64 w-full">
         <div className="flex justify-center">
           <h1 className="text-3xl font-bold mb-10" data-aos="fade-right">How It Works</h1>
         </div>
@@ -46,7 +46,7 @@ const HowTo = () => {
             >
               Step 1: Make a Request
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="font-semibold">
               Start by sending a private video request. Simply enter the
               recipient's email, and we'll send them a secure link to record
               their video. Our intuitive interface ensures that making a request
@@ -61,7 +61,7 @@ const HowTo = () => {
             >
               Step 2: Record & Submit
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="font-semibold">
               Once the recipient receives the request, they can record their
               video response directly through the provided link. Our platform
               offers the option to blur faces for privacy. After recording, the
@@ -76,14 +76,14 @@ const HowTo = () => {
             >
               Step 3: Receive & View
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="font-semibold">
               After the video is submitted, you'll receive a notification. You
               can then view the encrypted, secure video, ensuring complete
               privacy and confidentiality in your communications.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-    </Layout>
+        </div>
   );
 };
 
