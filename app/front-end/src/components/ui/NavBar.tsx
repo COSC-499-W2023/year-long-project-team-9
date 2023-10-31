@@ -41,9 +41,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AppleLogin from "react-apple-login";
-import MicrosoftLogin from "@/components/ui/MicrosoftLogin";
-import { PublicClientApplication } from "@azure/msal-browser";
-import { AuthError } from "@azure/msal-common";
 
 
 const NavBar = () => {
@@ -104,14 +101,14 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                 Create Request
               </div>
             </NavigationMenuItem>
-            <Link href="/MyRequests">
+            <NavigationMenuItem onClick={() => handleAuth("MyRequests")}>
               <div
                 className="font-bold text-sm p-5 hover:cursor-pointer"
                 // onClick={() => scroll("#features")}
               >
                 My Requests
               </div>
-            </Link>
+            </NavigationMenuItem>
             {/* <Link href="/BlurVideo">
               <NavigationMenuItem>
                 <div
@@ -133,18 +130,18 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
         <div className="flex justify-end space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" data-testid="theme-toggle">
                 <Sun size={20} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
+              <DropdownMenuItem onClick={() => setTheme("light")} data-testid="light">
                 Light
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
+              <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
                 Dark
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
+              <DropdownMenuItem onClick={() => setTheme("system")} data-testid="system">
                 System
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -222,15 +219,6 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                       locale: "en_US",
                     }}
                   /> */}
-                      <MicrosoftLogin
-          withUserData={withUserData}
-          debug={true}
-          clientId={"clientId"}
-          forceRedirectStrategy={true}
-          children={customButton && <Button>Custom button</Button>}
-          useLocalStorageCache={true} authCallback={function (error: AuthError | null, result?: any, instance?: PublicClientApplication | undefined): void {
-              throw new Error("Function not implemented.");
-          } }  />
                   <Button type="submit" onClick={SignIn}>
                     Sign In
                   </Button>
