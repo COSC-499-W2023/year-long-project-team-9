@@ -12,7 +12,7 @@ const Hero = () => {
           Communicate Privately, Share Confidently.
         </div>
         <div className="text-xl font-semibold">
-        Experience the new era of secure video communication with <span className=" font-extrabold">obscurus</span>. Your privacy, our commitment.
+        Experience seamless face blurring and video deliviery with <span className=" font-extrabold">obscurus</span>.
         </div>
         <div className="grid grid-cols-2">
           <Tabs defaultValue="blurred">
