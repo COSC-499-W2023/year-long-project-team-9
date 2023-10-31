@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs,TabsContent,TabsList,TabsTrigger } from "@/components/ui/tabs";
+import { Select,SelectContent,SelectGroup,SelectItem,SelectLabel,SelectTrigger,SelectValue } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar";
 import { Popover,PopoverContent,PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,11 +50,12 @@ const CreateRequest = () => {
         setDesc(value)
     };
     const [isBlurred,setBlurred] = React.useState(true);
+    const [language,setLanguage] = React.useState("English")
+    const [date,setDate] = React.useState<Date | undefined>(new Date());
     const [terms,setTerms] = React.useState(false)
     const handleTermsChange = () => {
         setTerms(!terms)
     };
-    const [date,setDate] = React.useState<Date | undefined>(new Date());
     const [noTitle,setNoTitle] = React.useState(false);
     const handleCancel = () => {
         router.push("/")
@@ -127,19 +129,39 @@ const CreateRequest = () => {
                         <div className="grid grid-cols-2 gap-2">
                             <div className="flex-col">
                                 <Label htmlFor="desc" className="text-sm">Request Description</Label>
-                                <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows={8} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
+                                <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows={9} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
                             </div>
                             <div className="align-top">
                                 <div className="">
                                     <Label className="text-sm">Video Processing</Label>
                                     <Tabs defaultValue="blurred">
                                     <TabsList className="w-full">
-                                        <TabsTrigger value="blurred" className="" onClick={() => setBlurred(true)}><span>Blurred</span></TabsTrigger>
+                                        <TabsTrigger value="blurred" className="" onClick={() => setBlurred(true)}>Blurred</TabsTrigger>
                                         <TabsTrigger value="notBlurred" className="" onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
                                     </TabsList>
                                     </Tabs>
                                 </div>
-                                <div className="mt-5">
+                                <div className="mt-1">
+                                    <Label className="text-sm">Language</Label>
+                                    <Select onValueChange={(value) => setLanguage(value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Preferred Language"/>
+                                        </SelectTrigger>
+                                        <SelectContent className="overflow-y-auto max-h-40">
+                                            <SelectItem value={"Arabic"}>Arabic</SelectItem>
+                                            <SelectItem value={"Bengali"}>Bengali</SelectItem>
+                                            <SelectItem value={"English"}>English</SelectItem>
+                                            <SelectItem value={"French"}>French</SelectItem>
+                                            <SelectItem value={"Hindi"}>Hindi</SelectItem>
+                                            <SelectItem value={"Mandarin"}>Mandarin</SelectItem>
+                                            <SelectItem value={"Portuguese"}>Portuguese</SelectItem>
+                                            <SelectItem value={"Russian"}>Russian</SelectItem>
+                                            <SelectItem value={"Spanish"}>Spanish</SelectItem>
+                                            <SelectItem value={"Swahili"}>Swahili</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="mt-1">
                                     <Label className="text-sm">Due Date</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -153,7 +175,7 @@ const CreateRequest = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </div>
-                                <div className="flex items-center space-x-2 w-full mt-8">
+                                <div className="flex items-center space-x-2 w-full mt-2">
                                     <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
                                     <label htmlFor="terms" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 pr-3 flex-nowrap m-0">
                                         Accept terms and conditions
@@ -198,11 +220,15 @@ const CreateRequest = () => {
                                 <div className="">
                                     <Label>Video Processing</Label>
                                     {isBlurred && (
-                                        <Button className="w-full">Blurred</Button>
+                                        <Button className="w-full hover:cursor-default bg-primary ">Blurred</Button>
                                     )}
                                     {!isBlurred && (
                                         <Button variant={"outline"} className="w-full">Not Blurred</Button>
                                     )}
+                                </div>
+                                <div>
+                                    <Label>Language</Label>
+                                    <Button className="w-full">{language}</Button>
                                 </div>
                                 <div className="pt-7">
                                     <Label>Due Date</Label>
