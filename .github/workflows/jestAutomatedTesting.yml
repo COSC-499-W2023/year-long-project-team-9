@@ -5,11 +5,11 @@ name: Automated testing
 
 on:
   pull_request:
-    branches: ["master", "develop"]
+    branches: ["master", "develop", "amplify"]
 
 defaults:
   run:
-    working-directory: ./app/obscurus/
+    working-directory: ./app/front-end/
 
 jobs:
   build:
