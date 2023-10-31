@@ -48,7 +48,7 @@ const HowTo = () => {
             </AccordionTrigger>
             <AccordionContent className="font-semibold">
               Start by sending a private video request. Simply enter the
-              recipient's email, and we'll send them a secure link to record
+              recipient&apos;s email, and we&apos;ll send them a secure link to record
               their video. Our intuitive interface ensures that making a request
               is straightforward and secure.
             </AccordionContent>
@@ -77,7 +77,7 @@ const HowTo = () => {
               Step 3: Receive & View
             </AccordionTrigger>
             <AccordionContent className="font-semibold">
-              After the video is submitted, you'll receive a notification. You
+              After the video is submitted, you&apos;ll receive a notification. You
               can then view the encrypted, secure video, ensuring complete
               privacy and confidentiality in your communications.
             </AccordionContent>
