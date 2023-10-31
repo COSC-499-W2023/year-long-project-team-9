@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest && npx playwright test",
+    "test:e2e": "npx playwright test"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
@@ -39,6 +40,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/aos": "^3.0.6",
