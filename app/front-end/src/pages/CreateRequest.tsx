@@ -14,31 +14,37 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertCircle,Plus,X,Calendar as CalendarIcon } from "lucide-react";
 
+type ClientType = {
+    client: string;
+    clientNo: boolean;
+    [key: string]: string | boolean;
+  };
+
 {/*Functions*/}
 const CreateRequest = () => {
     const router = useRouter()
     const [title,setTitle] = React.useState("");
-    const handleTitleChange = (e) => {
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name,value} = e.target
         setTitle(value)
     };
-    const [clientList,setClientList] = React.useState([{client:"",clientNo:false},]);
+    const [clientList, setClientList] = React.useState<ClientType[]>([{ client: "", clientNo: false }]);
     const handleClientAdd = () => {
         setClientList([...clientList,{client:"",clientNo:false}])
     };
-    const handleClientRemove = (index) => {
+    const handleClientRemove = (index: number) => {
         const list = [...clientList]
         list.splice(index,1)
         setClientList(list)
     };
-    const handleClientChange = (e,index) => {
+    const handleClientChange = (e: React.ChangeEvent<HTMLInputElement>,index: number) => {
         const {name,value} = e.target
         const list = [...clientList]
         list[index][name] = value
         setClientList(list)
     };
     const [desc,setDesc] = React.useState("");
-    const handleDescChange = (e) => {
+    const handleDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const {name,value} = e.target
         setDesc(value)
     };
@@ -81,7 +87,7 @@ const CreateRequest = () => {
     };
     return (
         <Layout>
-            <div className="grid grid-cols-2 items-center gap-5">
+            <div className="grid grid-cols-2 items-center gap-5 p-24">
                 <Card id="requestCard" className="overflow-auto h-96 w-3/4 justify-self-end">
                     <CardContent className="grid gap-1">
                         <Label className="pt-4 text-sm">Request Title</Label>
@@ -98,13 +104,13 @@ const CreateRequest = () => {
                         <div className="grid gap-0.5">
                             <Label htmlFor="client" className="text-sm">Client(s)</Label>
                             {clientList.map((singleClient,index) => (
-                                <div key={index} className="flex w-full">
+                                <div key={index} className="flex w-full gap-2">
                                     {!singleClient.clientNo && (
                                         <Input name="client" id="client" placeholder="Client" className="text-sm h-8" required value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
                                     )}
                                     {singleClient.clientNo && (
-                                        <div className="relative flex-col w-full">
-                                        <Input name="client" id="client" placeholder="Client" className="border-red-500 text-sm h-8" required value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
+                                        <div className="relative flex-col w-full gap-2">
+                                        <Input name="client" id="client" placeholder="Client" className="border-red-500 text-sm h-8 " required value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
                                         <AlertCircle className="text-red-500 absolute right-1 top-1"/>
                                         <p className="text-xs text-red-500">This field is required!</p>
                                         </div>
@@ -121,24 +127,24 @@ const CreateRequest = () => {
                         <div className="grid grid-cols-2 gap-2">
                             <div className="flex-col">
                                 <Label htmlFor="desc" className="text-sm">Request Description</Label>
-                                <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows="9" maxLength="500" value={desc} onChange={(e) => handleDescChange(e)}/>
+                                <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows={9} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
                             </div>
-                            <div className="align-top">
-                                <div>
+                            <div className="align-top grid grid-rows-3 gap-7">
+                                <div className=''>
                                     <Label className="text-sm">Video Processing</Label>
                                     <Tabs defaultValue="blurred">
-                                    <TabsList>
-                                        <TabsTrigger value="blurred" className="text-sm" onClick={() => setBlurred(true)}>Blurred</TabsTrigger>
+                                    <TabsList className=''>
+                                        <TabsTrigger value="blurred" className="px-3" onClick={() => setBlurred(true)}><span className='px-1'>Blurred</span></TabsTrigger>
                                         <TabsTrigger value="notBlurred" className="text-sm" onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
                                     </TabsList>
                                     </Tabs>
                                 </div>
-                                <div className="pt-4">
+                                <div className="">
                                     <Label className="text-sm">Due Date</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant={"outline"}>
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
                                                 {date ? format(date, "PPP") : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
@@ -147,9 +153,9 @@ const CreateRequest = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </div>
-                                <div className="flex items-center space-x-2 pt-10">
+                                <div className="flex items-center space-x-2 w-full">
                                     <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
-                                    <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    <label htmlFor="terms" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 pr-3 flex-nowrap m-0">
                                         Accept terms and conditions
                                     </label>
                                 </div>
@@ -170,7 +176,7 @@ const CreateRequest = () => {
                         <div className="grid gap-2">
                             <Label>Client(s)</Label>
                             {clientList.map((singleClient,index) => (
-                                <ul>
+                                <ul key={index} >
                                     {singleClient.client.length < 1 && (
                                         <li className="truncate text-slate-400 text-sm indent-2">Email</li>
                                     )}
@@ -185,7 +191,7 @@ const CreateRequest = () => {
                             <div className="flex-col gap-2">
                             <Label>Request Description</Label>
                             <ul>
-                                {desc && <p className="text-ellipsis overflow-hidden">{desc}</p>}
+                                {desc && <p className="text-ellipsis overflow-hidden text-sm indent-2">{desc}</p>}
                             </ul>
                             </div>
                             <div className="align-top">
@@ -210,9 +216,9 @@ const CreateRequest = () => {
                     </CardContent>
                 </Card>
                 <div></div>
-                <div id="buttons" className="grid grid-cols-3">
-                    <Button variant={"outline"} className="px-10 py-6 justify-self-end" onClick={handleCancel}>Cancel Request</Button>
-                    <Button className="px-10 py-6 justify-self-end" onClick={handleSubmit}>Submit Request</Button>
+                <div id="buttons" className="grid grid-cols-2 gap-2 w-3/4">
+                    <Button variant={"outline"} className="px-1 py-6 drop-shadow-none bg-transparent" onClick={handleCancel}>Cancel Request</Button>
+                    <Button className=" py-6" onClick={handleSubmit}>Submit Request</Button>
                 </div>
             </div>
         </Layout>

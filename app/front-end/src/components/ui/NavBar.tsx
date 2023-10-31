@@ -41,9 +41,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AppleLogin from "react-apple-login";
-import MicrosoftLogin from "@/components/ui/MicrosoftLogin";
-import { PublicClientApplication } from "@azure/msal-browser";
-import { AuthError } from "@azure/msal-common";
 
 
 const NavBar = () => {
@@ -222,15 +219,6 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                       locale: "en_US",
                     }}
                   /> */}
-                      <MicrosoftLogin
-          withUserData={withUserData}
-          debug={true}
-          clientId={"clientId"}
-          forceRedirectStrategy={true}
-          children={customButton && <Button>Custom button</Button>}
-          useLocalStorageCache={true} authCallback={function (error: AuthError | null, result?: any, instance?: PublicClientApplication | undefined): void {
-              throw new Error("Function not implemented.");
-          } }  />
                   <Button type="submit" onClick={SignIn}>
                     Sign In
                   </Button>
