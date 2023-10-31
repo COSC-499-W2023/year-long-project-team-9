@@ -93,7 +93,8 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                 </span>
               </NavigationMenuItem>
             </Link>
-            <NavigationMenuItem onClick={() => handleAuth("CreateRequest")}>
+            <Link href="CreateRequest">
+            <NavigationMenuItem >
               <div
                 className="font-bold text-sm p-5 hover:cursor-pointer"
                 // onClick={() => scroll("#about")}
@@ -101,6 +102,7 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                 Create Request
               </div>
             </NavigationMenuItem>
+            </Link>
             <NavigationMenuItem onClick={() => handleAuth("MyRequests")}>
               <div
                 className="font-bold text-sm p-5 hover:cursor-pointer"

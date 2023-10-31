@@ -195,16 +195,16 @@ const CreateRequest = () => {
                             </ul>
                             </div>
                             <div className="align-top">
-                                <div className="">
+                                <div className=" mt-5">
                                     <Label>Video Processing</Label>
                                     {isBlurred && (
-                                        <Button className="w-10/12">Blurred</Button>
+                                        <Button className="w-11/12">Blurred</Button>
                                     )}
                                     {!isBlurred && (
                                         <Button variant={"outline"} className="w-10/12">Not Blurred</Button>
                                     )}
                                 </div>
-                                <div className="pt-10">
+                                <div className="pt-7">
                                     <Label>Due Date</Label>
                                     <Button variant={"outline"}>
                                         <CalendarIcon className="mr-2 h-4 w-4" />
@@ -216,9 +216,10 @@ const CreateRequest = () => {
                     </CardContent>
                 </Card>
                 <div></div>
-                <div id="buttons" className="grid grid-cols-2 gap-2 w-3/4">
-                    <Button variant={"outline"} className="px-1 py-6 drop-shadow-none bg-transparent" onClick={handleCancel}>Cancel Request</Button>
-                    <Button className=" py-6" onClick={handleSubmit}>Submit Request</Button>
+                <div id="buttons" className="flex flex-cols w-full justify-center pl-10">
+                    <Button variant={"ghost"} className="justify-self-end" onClick={handleCancel}>Cancel Request</Button>
+                    
+                    <Button variant={"default"} className="justify-self-end" onClick={handleSubmit}>Submit Request</Button>
                 </div>
             </div>
         </Layout>
