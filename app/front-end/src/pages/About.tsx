@@ -9,6 +9,7 @@ const About = () => {
         <svg
           version="1.1"
           id="Layer_1"
+          data-testid="aws"
           xmlns="http://www.w3.org/2000/svg"
           x="0px"
           y="0px"
@@ -67,6 +68,7 @@ const About = () => {
           preserveAspectRatio="xMidYMid"
           data-aos="fade-in"
           data-aos-delay="200"
+          data-testid = "nextjs"
         >
           <g>
             <path
@@ -80,6 +82,7 @@ const About = () => {
           src="https://cdn.worldvectorlogo.com/logos/tailwindcss.svg"
           className=""
           alt="Tailwind CSS"
+          data-testid = "tailwindcss"
           width={100}
           height={100}
         />
