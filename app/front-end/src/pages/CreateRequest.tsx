@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs,TabsContent,TabsList,TabsTrigger } from "@/components/ui/tabs";
+import { Select,SelectContent,SelectGroup,SelectItem,SelectLabel,SelectTrigger,SelectValue } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar";
 import { Popover,PopoverContent,PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,11 +50,12 @@ const CreateRequest = () => {
         setDesc(value)
     };
     const [isBlurred,setBlurred] = React.useState(true);
+    const [language,setLanguage] = React.useState("English")
+    const [date,setDate] = React.useState<Date | undefined>(new Date());
     const [terms,setTerms] = React.useState(false)
     const handleTermsChange = () => {
         setTerms(!terms)
     };
-    const [date,setDate] = React.useState<Date | undefined>(new Date());
     const [noTitle,setNoTitle] = React.useState(false);
     const handleCancel = () => {
         router.push("/")
@@ -87,7 +89,7 @@ const CreateRequest = () => {
     };
     return (
         <Layout>
-            <div className="grid grid-cols-2 items-center gap-5 p-24">
+            <div className="grid grid-cols-2 items-center gap-5 px-24">
                 <Card id="requestCard" className="overflow-auto h-96 w-3/4 justify-self-end">
                     <CardContent className="grid gap-1">
                         <Label className="pt-4 text-sm">Request Title</Label>
@@ -129,21 +131,41 @@ const CreateRequest = () => {
                                 <Label htmlFor="desc" className="text-sm">Request Description</Label>
                                 <Textarea name="desc" id="reqDesc" placeholder="Your message here ..." rows={9} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
                             </div>
-                            <div className="align-top grid grid-rows-3 gap-7">
-                                <div className=''>
+                            <div className="align-top">
+                                <div className="">
                                     <Label className="text-sm">Video Processing</Label>
                                     <Tabs defaultValue="blurred">
-                                    <TabsList className=''>
-                                        <TabsTrigger value="blurred" className="px-3" onClick={() => setBlurred(true)}><span className='px-1'>Blurred</span></TabsTrigger>
-                                        <TabsTrigger value="notBlurred" className="text-sm" onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
+                                    <TabsList className="w-full">
+                                        <TabsTrigger value="blurred" className="" onClick={() => setBlurred(true)}>Blurred</TabsTrigger>
+                                        <TabsTrigger value="notBlurred" className="" onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
                                     </TabsList>
                                     </Tabs>
                                 </div>
-                                <div className="">
+                                <div className="mt-1">
+                                    <Label className="text-sm">Language</Label>
+                                    <Select onValueChange={(value) => setLanguage(value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Preferred Language"/>
+                                        </SelectTrigger>
+                                        <SelectContent className="overflow-y-auto max-h-40">
+                                            <SelectItem value={"Arabic"}>Arabic</SelectItem>
+                                            <SelectItem value={"Bengali"}>Bengali</SelectItem>
+                                            <SelectItem value={"English"}>English</SelectItem>
+                                            <SelectItem value={"French"}>French</SelectItem>
+                                            <SelectItem value={"Hindi"}>Hindi</SelectItem>
+                                            <SelectItem value={"Mandarin"}>Mandarin</SelectItem>
+                                            <SelectItem value={"Portuguese"}>Portuguese</SelectItem>
+                                            <SelectItem value={"Russian"}>Russian</SelectItem>
+                                            <SelectItem value={"Spanish"}>Spanish</SelectItem>
+                                            <SelectItem value={"Swahili"}>Swahili</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="mt-1">
                                     <Label className="text-sm">Due Date</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
-                                            <Button variant={"outline"}>
+                                            <Button variant={"outline"} className="text-xs w-full">
                                                 <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
                                                 {date ? format(date, "PPP") : <span>Pick a date</span>}
                                             </Button>
@@ -153,7 +175,7 @@ const CreateRequest = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </div>
-                                <div className="flex items-center space-x-2 w-full">
+                                <div className="flex items-center space-x-2 w-full mt-2">
                                     <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
                                     <label htmlFor="terms" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 pr-3 flex-nowrap m-0">
                                         Accept terms and conditions
@@ -191,22 +213,26 @@ const CreateRequest = () => {
                             <div className="flex-col gap-2">
                             <Label>Request Description</Label>
                             <ul>
-                                {desc && <p className="text-ellipsis overflow-hidden text-sm indent-2">{desc}</p>}
+                                {desc && <p className="text-ellipsis overflow-hidden text-sm">{desc}</p>}
                             </ul>
                             </div>
                             <div className="align-top">
                                 <div className="">
                                     <Label>Video Processing</Label>
                                     {isBlurred && (
-                                        <Button className="w-10/12">Blurred</Button>
+                                        <Button className="w-full" disabled>Blurred</Button>
                                     )}
                                     {!isBlurred && (
-                                        <Button variant={"outline"} className="w-10/12">Not Blurred</Button>
+                                        <Button className="w-full" disabled>Not Blurred</Button>
                                     )}
                                 </div>
-                                <div className="pt-10">
+                                <div className="mt-7">
+                                    <Label>Language</Label>
+                                    <Button className="w-full" disabled>{language}</Button>
+                                </div>
+                                <div className="mt-7">
                                     <Label>Due Date</Label>
-                                    <Button variant={"outline"}>
+                                    <Button className="text-xs w-full" disabled>
                                         <CalendarIcon className="mr-2 h-4 w-4" />
                                         {date ? format(date, "PPP") : <span>Pick a date</span>}
                                     </Button>
@@ -216,9 +242,9 @@ const CreateRequest = () => {
                     </CardContent>
                 </Card>
                 <div></div>
-                <div id="buttons" className="grid grid-cols-2 gap-2 w-3/4">
-                    <Button variant={"outline"} className="px-1 py-6 drop-shadow-none bg-transparent" onClick={handleCancel}>Cancel Request</Button>
-                    <Button className=" py-6" onClick={handleSubmit}>Submit Request</Button>
+                <div id="buttons" className="flex flex-cols w-full justify-center gap-2">
+                    <Button variant={"ghost"} className="justify-self-start" onClick={handleCancel}>Cancel Request</Button>
+                    <Button variant={"default"} className="justify-self-start" onClick={handleSubmit}>Submit Request</Button>
                 </div>
             </div>
         </Layout>
