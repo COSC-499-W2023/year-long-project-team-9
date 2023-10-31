@@ -220,19 +220,19 @@ const CreateRequest = () => {
                                 <div className="">
                                     <Label>Video Processing</Label>
                                     {isBlurred && (
-                                        <Button className="w-full hover:cursor-default bg-primary ">Blurred</Button>
+                                        <Button className="w-full" disabled>Blurred</Button>
                                     )}
                                     {!isBlurred && (
-                                        <Button variant={"outline"} className="w-full">Not Blurred</Button>
+                                        <Button className="w-full" disabled>Not Blurred</Button>
                                     )}
                                 </div>
-                                <div>
+                                <div className="mt-7">
                                     <Label>Language</Label>
-                                    <Button className="w-full">{language}</Button>
+                                    <Button className="w-full" disabled>{language}</Button>
                                 </div>
-                                <div className="pt-7">
+                                <div className="mt-7">
                                     <Label>Due Date</Label>
-                                    <Button variant={"outline"} className="text-xs w-full">
+                                    <Button className="text-xs w-full" disabled>
                                         <CalendarIcon className="mr-2 h-4 w-4" />
                                         {date ? format(date, "PPP") : <span>Pick a date</span>}
                                     </Button>
@@ -242,10 +242,9 @@ const CreateRequest = () => {
                     </CardContent>
                 </Card>
                 <div></div>
-                <div id="buttons" className="flex flex-cols w-full justify-center pl-10">
-                    <Button variant={"ghost"} className="justify-self-end" onClick={handleCancel}>Cancel Request</Button>
-                    
-                    <Button variant={"default"} className="justify-self-end" onClick={handleSubmit}>Submit Request</Button>
+                <div id="buttons" className="flex flex-cols w-full justify-center gap-2">
+                    <Button variant={"ghost"} className="justify-self-start" onClick={handleCancel}>Cancel Request</Button>
+                    <Button variant={"default"} className="justify-self-start" onClick={handleSubmit}>Submit Request</Button>
                 </div>
             </div>
         </Layout>
