@@ -132,18 +132,18 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
         <div className="flex justify-end space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" data-testid="theme-toggle">
                 <Sun size={20} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
+              <DropdownMenuItem onClick={() => setTheme("light")} data-testid="light">
                 Light
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
+              <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
                 Dark
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
+              <DropdownMenuItem onClick={() => setTheme("system")} data-testid="system">
                 System
               </DropdownMenuItem>
             </DropdownMenuContent>
