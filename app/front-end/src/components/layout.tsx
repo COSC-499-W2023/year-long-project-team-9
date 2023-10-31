@@ -19,7 +19,7 @@ export default function Layout({ children }: LayoutProps) {
       stiffness: 460,
       damping: 150,
     }}
-    className="bg-background min-h-screen min-w-full font-inter"
+    className="bg-background min-w-full font-inter"
   >
         <main>{children}</main>
     </motion.div>
