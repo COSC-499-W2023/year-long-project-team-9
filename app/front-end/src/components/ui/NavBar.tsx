@@ -130,18 +130,18 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
         <div className="flex justify-end space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" data-testid="theme-toggle">
                 <Sun size={20} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
+              <DropdownMenuItem onClick={() => setTheme("light")} data-testid="light">
                 Light
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
+              <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
                 Dark
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
+              <DropdownMenuItem onClick={() => setTheme("system")} data-testid="system">
                 System
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -202,6 +202,23 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                   </div>
                 </div>
                 <DialogFooter>
+                  {/* <AppleLogin
+                    clientId={"com.react.apple.login"}
+                    redirectURI={"https://redirectUrl.com"}
+                    responseType={"code"}
+                    responseMode={"query"}
+                    usePopup={false}
+                    designProp={{
+                      height: 30,
+                      width: 140,
+                      color: "black",
+                      border: false,
+                      type: "sign-in",
+                      border_radius: 15,
+                      scale: 1,
+                      locale: "en_US",
+                    }}
+                  /> */}
                   <Button type="submit" onClick={SignIn}>
                     Sign In
                   </Button>
