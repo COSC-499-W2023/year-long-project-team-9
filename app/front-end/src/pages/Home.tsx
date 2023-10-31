@@ -1,7 +1,6 @@
 import Hero from "./Hero";
 import About from "./About";
 import Features from "./Features";
-import About from "./About";
 
 export default function Home() {
   return (
