@@ -27,8 +27,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: '**/package-lock.json'
+        #cache: 'npm'
+        #cache-dependency-path: '**/package-lock.json's
     - name: setting up
       run: npm ci && npx playwright install
     - name: running test
