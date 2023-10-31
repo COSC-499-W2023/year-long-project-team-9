@@ -19,65 +19,60 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ScanFace, ShieldCheck, Gauge } from "lucide-react";
+import { ScanFace, ShieldCheck, Video } from "lucide-react";
 
 const Features = () => {
   return (
     <>
-      <div className="grid grid-cols-3  items-center justify-center justify-items-center gap-36 min-h-screen">
+      <div className="grid grid-cols-3 items-center justify-center justify-items-center gap-24 min-h-screen">
         <Card
-          className="w-[250px] h-[250px] justify-center justify-items-center"
+          className="w-[275px] h-[250px] justify-center justify-items-center"
           data-aos="flip-left"
           data-aos-delay="100"
         >
           <CardHeader>
-            <CardTitle>Automatic Face Detection & Blurring</CardTitle>
+            <CardTitle>Private Video Requests</CardTitle>
             <CardDescription>
-            Utilize cutting-edge technology to automatically identify and obscure faces in your videos, ensuring privacy without sacrificing video quality.
+              Initiate confidential conversations by sending secure video requests. Our platform ensures your communication remains private and encrypted.
             </CardDescription>
-            <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
-              <ScanFace />
+            <CardContent className="flex justify-center justify-items-center justify-self-center p-5">
+              
+              <ShieldCheck />
             </CardContent>
           </CardHeader>
         </Card>
         <Card
-          className="w-[250px] h-[250px]"
+          className="w-[275px] h-[250px]"
           data-aos="flip-left"
           data-aos-delay="250"
         >
           <CardHeader>
-            <CardTitle>Real-Time Video Processing</CardTitle>
+            <CardTitle>Seamless Video Submission</CardTitle>
             <CardDescription>
-            Experience swift and efficient video editing with our real-time processing capabilities. Make changes and see them instantly, saving you time and effort.
+              Respondents can easily record and submit their videos through a secure link, ensuring a smooth and user-friendly experience.
             </CardDescription>
-            <CardContent className=" flex justify-center justify-items-center justify-self-center p-5">
-              <Gauge />
+            <CardContent className="flex justify-center justify-items-center justify-self-center pt-10">
+            <Video />
             </CardContent>
           </CardHeader>
         </Card>
         <Card
-          className="w-[250px] h-[250px]"
+          className="w-[275px] h-[250px]"
           data-aos="flip-left"
           data-aos-delay="300"
         >
           <CardHeader>
             <CardTitle>User Privacy Protection</CardTitle>
             <CardDescription>
-            Your privacy is our priority. We facilitate secure communication without compromising your privacy.
-            &nbsp;
-            &nbsp;
-            &nbsp;
+            Our advanced face-blurring technology offers respondents an extra layer of privacy, activated by request.
             </CardDescription>
-            <CardContent className=" flex justify-center pt-14">
-              <ShieldCheck className="" />
-
+            <CardContent className="flex justify-center pt-10">
+            <ScanFace />
             </CardContent>
           </CardHeader>
         </Card>
       </div>
-
     </>
-
   );
 };
 
