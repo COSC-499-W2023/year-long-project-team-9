@@ -8,8 +8,8 @@ describe("Hero Component", () => {
   test("renders the hero component and toggles blur", () => {
     render(<Hero />);
 
-    expect(screen.getByText(/Protect Privacy with a Single Click./i)).toBeInTheDocument();
-    expect(screen.getByText(/Securely Blur Faces in Your Videos/i)).toBeInTheDocument();
+    expect(screen.getByText(/Communicate Privately, Share Confidently./i)).toBeInTheDocument();
+    expect(screen.getByText(/Experience seamless face blurring and video deliviery with obscurus./i)).toBeInTheDocument();
 
     const blurredElement = document.querySelector('.opacity-0');
     expect(blurredElement).toBeInTheDocument();
