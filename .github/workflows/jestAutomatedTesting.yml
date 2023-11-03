@@ -6,6 +6,8 @@ name: Automated testing
 on:
   pull_request:
     branches: ["master", "develop", "amplify"]
+  push:
+    branches: ["master", "develop", "amplify"]
 
 defaults:
   run:
