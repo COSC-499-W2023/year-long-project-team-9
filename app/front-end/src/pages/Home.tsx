@@ -1,7 +1,7 @@
-import Hero from "./Hero";
-import About from "./About";
-import Features from "./Features";
-import HowTo from "./HowTo";
+import Hero from "../components/Hero";
+import About from "../components/About";
+import Features from "../components/Features";
+import HowTo from "../components/HowTo";
 import { ArrowBigDownIcon } from "lucide-react";
 
 
@@ -15,8 +15,8 @@ export default function Home() {
           className="grid grid-cols-2 gap-2 pt-16 delay-1000 pl-12"
           id="features"
         >
-          <h1 className="text-xl font-extrabold">Features</h1>
-          <ArrowBigDownIcon className="stroke-primary fill-primary animate-bounce" size={25} />
+          <div className="text-2xl font-extrabold">Features</div>
+          <ArrowBigDownIcon className="stroke-primary fill-primary animate-bounce mt-1" size={30} />
         </div>
       </div>
       <Features />

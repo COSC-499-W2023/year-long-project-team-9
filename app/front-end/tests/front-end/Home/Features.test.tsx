@@ -1,7 +1,7 @@
 // Hero.test.tsx
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import Features from "@/pages/Features";
+import Features from "@/components/Features";
 import "@testing-library/jest-dom";
 import { waitFor } from "@testing-library/dom";
 

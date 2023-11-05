@@ -11,17 +11,17 @@ const Hero = () => {
         <div className="text-4xl font-extrabold">
           Communicate Privately, Share Confidently.
         </div>
-        <div className="text-xl font-semibold">
-        Experience seamless face blurring and video deliviery with <span className=" font-extrabold">obscurus</span>.
+        <div className="text-2xl ">
+        Experience seamless face blurring and video delivery with <span className=" font-extrabold">obscurus</span>.
         </div>
         <div className="grid grid-cols-2">
           <Tabs defaultValue="blurred">
-            <TabsList>
-              <TabsTrigger value="notBlurred" onClick={() => setBlurred(false)}>
-                <div>Not Blurred</div>
+            <TabsList className="p-6 px-2">
+              <TabsTrigger value="notBlurred" onClick={() => setBlurred(false)} className="">
+                <div className="text-xl font-extrabold">Not Blurred</div>
               </TabsTrigger>
               <TabsTrigger value="blurred" onClick={() => setBlurred(true)}>
-                <div>Blurred</div>
+                <div className="text-xl font-extrabold">Blurred</div>
               </TabsTrigger>
             </TabsList>
           </Tabs>

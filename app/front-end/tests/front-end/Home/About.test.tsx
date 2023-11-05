@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import About from '@/pages/About';
+import About from '@/components/About';
 
 
 jest.mock("aos", () => ({
