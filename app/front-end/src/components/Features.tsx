@@ -26,7 +26,7 @@ const Features = () => {
     <>
       <div className="grid grid-cols-3 items-center justify-center justify-items-center gap-24 min-h-screen">
         <Card
-          className="w-[300px] h-[300px] justify-center justify-items-center"
+          className="w-[300px] h-[300px] justify-center justify-items-center drop-shadow-md"
           data-aos="flip-left"
           data-aos-delay="100"
           data-aos-duration="750"
@@ -47,7 +47,7 @@ const Features = () => {
           </CardHeader>
         </Card>
         <Card
-          className="w-[300px] h-[300px]"
+          className="w-[300px] h-[300px] drop-shadow-md"
           data-aos="flip-left"
           data-aos-delay="250"
           data-aos-duration="750"
@@ -64,7 +64,7 @@ const Features = () => {
           </CardHeader>
         </Card>
         <Card
-          className="w-[300px] h-[300px]"
+          className="w-[300px] h-[300px] drop-shadow-md"
           data-aos="flip-left"
           data-aos-delay="300"
           data-aos-duration="750"

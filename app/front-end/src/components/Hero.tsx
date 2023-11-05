@@ -14,8 +14,8 @@ const Hero = () => {
         <div className="text-2xl ">
         Experience seamless face blurring and video delivery with <span className=" font-extrabold">obscurus</span>.
         </div>
-        <div className="grid grid-cols-2">
-          <Tabs defaultValue="blurred">
+        <div className="grid grid-cols-2 drop-shadow-sm">
+          <Tabs defaultValue="blurred" className="">
             <TabsList className="p-6 px-2">
               <TabsTrigger value="notBlurred" onClick={() => setBlurred(false)} className="">
                 <div className="text-xl font-extrabold">Not Blurred</div>
@@ -27,7 +27,7 @@ const Hero = () => {
           </Tabs>
         </div>
       </div>
-      <div className="min-h-full relative justify-self-end  drop-shadow-2xl">
+      <div className="min-h-full relative justify-self-end  drop-shadow-xl">
         <svg
           width="100%"
           height="100%"
