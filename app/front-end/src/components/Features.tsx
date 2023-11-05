@@ -40,8 +40,8 @@ const Features = () => {
             </CardDescription>
             <CardContent className="flex justify-center justify-items-center justify-self-center p-5">
               <ShieldCheck
-                size={60}
-                className="fill-primary stroke-background"
+                size={50}
+                className="stroke-primary"
               />
             </CardContent>
           </CardHeader>
@@ -59,7 +59,7 @@ const Features = () => {
               secure link, ensuring a smooth and user-friendly experience.
             </CardDescription>
             <CardContent className="flex justify-center justify-items-center justify-self-center pt-12">
-              <Video size={50} className="fill-primary" />
+              <Video size={50} className="stroke-primary" />
             </CardContent>
           </CardHeader>
         </Card>
@@ -76,7 +76,7 @@ const Features = () => {
               layer of privacy at the click of a button.
             </CardDescription>
             <CardContent className="flex justify-center pt-12">
-              <ScanFace size={50} className="stroke-primary fill" />
+              <ScanFace size={50} className="stroke-primary" />
             </CardContent>
           </CardHeader>
         </Card>
