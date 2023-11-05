@@ -8,7 +8,7 @@ import {
 
 const HowTo = () => {
   return (
-    <div className="pb-64 w-full text-base">
+    <div className="pb-64 w-full text-base pl-10">
       <div className="flex justify-center">
         <h1 className="text-3xl font-bold mb-10" data-aos="fade-right">
           How It Works
