@@ -12,7 +12,7 @@ export default function Home() {
 
       <div id="features" className="opacity-0 animate-fadeIn transition-opacity delay-1000 duration-1000">
         <div
-          className="grid grid-cols-2 gap-2 pt-16 delay-1000 pl-12"
+          className="grid grid-cols-2 gap-2 pt-16 delay-1000 pl-24"
           id="features"
         >
           <div className="text-2xl font-extrabold">Features</div>

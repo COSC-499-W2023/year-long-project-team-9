@@ -7,7 +7,7 @@ const Hero = () => {
 
   return (
     <div className="grid grid-cols-2 gap-40 justify-items-center w-full">
-      <div className="grid grid-rows-3 gap-1 items-center ">
+      <div className="grid grid-rows-3 gap-4 items-center ">
         <div className="text-4xl font-extrabold">
           Communicate Privately, Share Confidently.
         </div>
