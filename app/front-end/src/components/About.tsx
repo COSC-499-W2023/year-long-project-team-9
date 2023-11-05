@@ -4,7 +4,7 @@ const About = () => {
   return (
     <div className="flex flex-col items-center justify-center ">
       <h1 className="text-3xl font-bold">Powered by</h1>
-      <div className="flex flex-row items-center justify-center p-10 gap-12 align-middle" data-aos="fade-in"
+      <div className="flex flex-row items-center justify-center p-14 gap-20 align-middle" data-aos="fade-in"
           data-aos-delay="100">
         <svg
           version="1.1"
