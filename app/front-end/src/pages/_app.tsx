@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import PageLoader from "next/dist/client/page-loader";
 import { Router } from "next/router";
 import LoadingPage from "@/components/LoadingPage";
-import NavBar from "@/components/ui/NavBar";
+import NavBar from "@/components/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
