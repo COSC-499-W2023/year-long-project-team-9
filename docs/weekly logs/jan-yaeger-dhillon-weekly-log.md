@@ -140,7 +140,7 @@ Screenshot of Project Board:
 ## Week 9 ##
 
 ### Applicable Date Range ###
-October 24 - November 4, 2023
+October 30 - November 5, 2023
 
 ### Tasks Worked On ###
 
