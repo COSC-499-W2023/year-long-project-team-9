@@ -339,42 +339,35 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
 * **Description:** Based on the research done in Task 8, configure AWS CodePipeline for use in the project
 
-### Task 10: Set up AWS CodePipeline
-
-* **Status:** In Progress
-* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
-* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
-* **Description:** Based on the research done in Task 8, configure AWS CodePipeline for use in the project
-
-### Task 10: Set up AWS Amplify for the project
+### Task 12: Set up AWS Amplify for the project
 
 * **Status:** In Progress
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
 * **Description:** Set up AWS Amplify for use in the project
 
-### Task 11: Create home page in Next.js
+### Task 13: Create home page in Next.js
 
 * **Status:** In Progress
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
 * **Description:** Start coding page designed in task 1
 
-### Task 12: Create Your Requests page in Next.js
+### Task 14: Create Your Requests page in Next.js
 
 * **Status:** In Progress
 * **Assignee(s):** Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
 * **Description:** Start coding page designed in task 3
 
-### Task 13: Create home page in Next.js
+### Task 15: Create home page in Next.js
 
 * **Status:** In Progress
 * **Assignee(s):** Jan-Yaeger Dhillon and Soren Stenback
 * **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
 * **Description:** Start coding page designed in task 2
 
-### Task 14: Research AWS Page Routing
+### Task 16: Research AWS Page Routing
 
 * **Status:** In Progress
 * **Assignee(s):** Soren Stenback and Muhammad Bakar
@@ -498,4 +491,76 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-8/inprogress-week8.png)
 
+# TEAM 9 - WEEK 9
+
+## Work Period
+
+Week 9 ran from 00:00 on 2023/10/30 to 23:59 on 2023/11/05.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Configure enviorment for coding
+- Configure APIs planned to use in this stage of development including AWS Amplify, Tailwind and Next.js. Additionally, those of us who are unfamilar with the APIs have done research to understand ways to code using them. Set up local enviroment to start coding. 
+
+### Milestone Goal 2: Front-End Coding
+- Complete coding for pages `single request page` and `home page`. 
+
+### Milestone Goal 3: Mini-Presentation
+- Prepare pages and documentation for the mini-presentation. Ensure that we can describe everything clearly and within the time constraints. Deliver the presentation and give feedback to other teams.
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Plan for AWS CodePipeline
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar and Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Plan how to best implement AWS Codepipeline for our project
+
+### Task 2: Plan for AWS CodeBuild
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar and Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Plan how to best implement AWS CodeBuild for our project
+
+### Task 3: Create Single Requests page in Next.js
+
+* **Status:** Completed
+* **Assignee(s):** Soren Stenback and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Finish coding the page allowing for users to create a request 
+
+### Task 4: Fully explain what the web app is along with buttons to select different options in the web app, such as viewing your account, viewing your inbox, etc.
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding and Milestone Goal 3: Mini-Presentation
+* **Description:** Complete documentaion for web interface. Write the text for the about section of the web application. Alongside working on the introduction of our project in the mini-presentation.
+
+### Task 5: Prepare for Mini-Presentaion 
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** Milestone Goal 3: Mini-Presentation
+* **Description:** Create slides, scripts, etc and practice giving the presentation to ensure we remain within the 5 min time limit.
+
+### Task 6: Give Mini-Presentaion 
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** Milestone Goal 3: Mini-Presentation
+* **Description:** Present what our team has worked on for this milestone for the class. Give reviews to other teams. 
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-9/burnup-week9.png)
+
+### Table View of Completed Tasks
+All tasks for `Milestone 2 - minipresentation` were completed
+![screenshot of completed board tasks](img/team-weekly-log-img/week-9/completed-week9.png)
 ___
