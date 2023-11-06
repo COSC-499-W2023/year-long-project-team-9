@@ -21,3 +21,33 @@
 ![Week 5 Bakar's Board](img/muhammad-bakar/mbakar-week-5-board.png)
 ### Picture of Week 5's Survey
 ![Week 5 Bakar's Survey](img/muhammad-bakar/mbakar-week-5-survey.png)
+
+## Week 6 and 7
+### October 9 2023 - Octomber 22 2023
+- These past two weeks I worked on Milestone #2: Mini-Presentation, and began thinking about authentication, a goal in Milestone #3: Design Submission.
+- The goals for the past two weeks was to create my figma design and setup Jest, which in turn meant setting up automated testing. All goals were completed.
+- Additionally, I attend class, and all other group meeting
+### Picture of Project Board Week 6 and 7
+![Week 6 and 7 Bakar's Board](img/muhammad-bakar/mbakar-week-6-and-7-board.png)
+### Picture of Week 6's and 7's Survey
+![Week 6 and 7 Bakar's Survey](img/muhammad-bakar/mbakar-week-6-and-7-survey.png)
+
+## Week 8
+### October 23 2023 - October 29 2023
+- I worked on Milestone #2: Mini-Presentation, and laid out plans for authentication, since the group wanted to talk a little bit about it in the presentation.
+- My goals for this week was to make sure everyone was on track to complete their work, so that we are ready for the presentation. Happy to say said goal was completed, and everyone is on track to complete the their work for the presentation.
+- I also attend class, and all other group meetings.
+### Picture of Project Board Week 8
+![Week 8 Bakar's Board](img/muhammad-bakar/mbakar-week-8-board.png)
+### Picture of Week 8's Survey
+![Week 8 Bakar's Survey](img/muhammad-bakar/mbakar-week-8-survey.png)
+
+## Week 9
+### October 30 2023 - November 5 2023
+- I worked on Milestone #2: Mini-Presentation. 
+- My goals for this week was to make sure Milestone #2: Mini-Presentation was completed. Although our demo broke, even though everything indicated it would not, I think the goal was completed.
+- I also attended Tuesday’s class, and all other group meetings.
+### Picture of Project Board Week 9
+![Week 9 Bakar's Board](img/muhammad-bakar/mbakar-week-9-board.png)
+### Picture of Week 9's Survey
+![Week 9 Bakar's Survey](img/muhammad-bakar/mbakar-week-9-survey.png)

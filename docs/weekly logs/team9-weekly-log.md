@@ -124,7 +124,8 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-4/inprogress-week4.png)
 
-<br>
+___
+
 # TEAM 9 - WEEK 5
 
 ## Team Members
@@ -222,7 +223,8 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-5/inprogress-week5.png)
 
-<br>
+___
+
 # TEAM 9 - WEEK 6 & 7
 
 ## Team Members
@@ -386,7 +388,8 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-7/inprogress-week7.png)
 
-<br>
+___
+
 # TEAM 9 - WEEK 8
 
 ## Team Members
@@ -488,7 +491,7 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-8/inprogress-week8.png)
 
-<br>
+# TEAM 9 - WEEK 9
 
 ## Work Period
 
@@ -560,3 +563,4 @@ The tasks identified for this week were:
 ### Table View of Completed Tasks
 All tasks for `Milestone 2 - minipresentation` were completed
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-9/completed-week9.png)
+___
