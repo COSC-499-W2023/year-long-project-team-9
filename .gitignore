@@ -59,3 +59,7 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+playwright-report/
+test-results/
+app/front-end/playwright-report/*

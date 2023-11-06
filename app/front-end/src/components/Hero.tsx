@@ -7,27 +7,27 @@ const Hero = () => {
 
   return (
     <div className="grid grid-cols-2 gap-40 justify-items-center w-full">
-      <div className="grid grid-rows-3 gap-1 items-center ">
+      <div className="grid grid-rows-3 gap-4 items-center ">
         <div className="text-4xl font-extrabold">
           Communicate Privately, Share Confidently.
         </div>
-        <div className="text-xl font-semibold">
-        Experience seamless face blurring and video deliviery with <span className=" font-extrabold">obscurus</span>.
+        <div className="text-2xl ">
+        Experience seamless face blurring and video delivery with <span className=" font-extrabold">obscurus</span>.
         </div>
-        <div className="grid grid-cols-2">
-          <Tabs defaultValue="blurred">
-            <TabsList>
-              <TabsTrigger value="notBlurred" onClick={() => setBlurred(false)}>
-                <div>Not Blurred</div>
+        <div className="grid grid-cols-2 drop-shadow-sm">
+          <Tabs defaultValue="blurred" className="">
+            <TabsList className="p-6 px-2">
+              <TabsTrigger value="notBlurred" onClick={() => setBlurred(false)} className="">
+                <div className="text-xl font-extrabold">Not Blurred</div>
               </TabsTrigger>
               <TabsTrigger value="blurred" onClick={() => setBlurred(true)}>
-                <div>Blurred</div>
+                <div className="text-xl font-extrabold">Blurred</div>
               </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
       </div>
-      <div className="min-h-full relative justify-self-end  drop-shadow-2xl">
+      <div className="min-h-full relative justify-self-end  drop-shadow-xl">
         <svg
           width="100%"
           height="100%"

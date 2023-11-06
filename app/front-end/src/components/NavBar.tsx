@@ -9,7 +9,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ArrowDownLeftSquare, Sun, Moon } from "lucide-react";
+import { ArrowDownLeftSquare, Sun, Moon, Bold } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -80,15 +80,15 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
               className="min-h-full"
               src="/logo.svg"
               alt="obscurus"
-              width={50}
-              height={50}
+              width={60}
+              height={60}
             />
           </Link>
 
           <NavigationMenuList>
             <Link href="/">
               <NavigationMenuItem>
-                <span className="font-extrabold text-lg p-5 hover:cursor-pointer">
+                <span className="font-extrabold text-xl p-5 hover:cursor-pointer">
                   obscurus
                 </span>
               </NavigationMenuItem>
@@ -96,7 +96,7 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
             <Link href="CreateRequest">
             <NavigationMenuItem >
               <div
-                className="font-bold text-sm p-5 hover:cursor-pointer"
+                className="font-bold text-base p-5 hover:cursor-pointer"
                 // onClick={() => scroll("#about")}
               >
                 Create Request
@@ -105,35 +105,21 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
             </Link>
             <NavigationMenuItem onClick={() => handleAuth("MyRequests")}>
               <div
-                className="font-bold text-sm p-5 hover:cursor-pointer"
+                className="font-bold text-base p-5 hover:cursor-pointer"
                 // onClick={() => scroll("#features")}
               >
                 My Requests
               </div>
             </NavigationMenuItem>
-            {/* <Link href="/BlurVideo">
-              <NavigationMenuItem>
-                <div
-                  className="font-bold text-sm grid grid-cols-2 gap-2 p-5 hover:cursor-pointer"
-                  onClick={() => console.log("TODO: Go to Make a Request page")}
-                >
-                  <div>Upload/Record Video</div> */}
-            {/* <ArrowDownLeftSquare
-                  className=" justify-self-start rotate-180 mt-1"
-                  size={20}
-                /> */}
-            {/* </div>
-              </NavigationMenuItem>
-            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
       <div className="grid grid-flow-col gap-2 justify-end items-center pr-5 ">
         <div className="flex justify-end space-x-2">
-          <DropdownMenu>
+          <DropdownMenu >
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" data-testid="theme-toggle">
-                <Sun size={20} />
+              <Button variant="ghost" size="icon" data-testid="theme-toggle">
+                <Sun size={25} className="stroke-primary fill-primary"/>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -172,7 +158,7 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
           <div className="grid items-center justify-end">
             <Dialog open={showSignInDialog} onOpenChange={setShowSignInDialog}>
               <DialogTrigger asChild>
-                <Button variant="default">Sign In</Button>
+                <Button variant="default"><span className="font-bold text-base">Sign In</span></Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -222,7 +208,7 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                     }}
                   /> */}
                   <Button type="submit" onClick={SignIn}>
-                    Sign In
+                    <span className="font-bold text-base">Sign In</span>
                   </Button>
                 </DialogFooter>
               </DialogContent>
