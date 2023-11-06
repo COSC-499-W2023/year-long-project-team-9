@@ -137,6 +137,38 @@ Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board-8.png)
 
+## Week 9 ##
+
+### Applicable Date Range ###
+October 24 - November 4, 2023
+
+### Tasks Worked On ###
+
+- My main goal for this week was to do well on the Mini Presentation, which I think we did. That included a lot of front-end coding and testing.
+- My goal after the Mini Presentation was to start working on the system architecture and research how to implement the video processing using AWS Lambda, API Gateway and Step Functions.
+- I have been doing a lot of research on Lambda and SST (Serverless Stack) to implement other AWS services with our app and begin creating our backend.
+- I also touched up the home page including fixing spelling errors, increasing font sizes, and changing wording.
+
+Screenshot from peer eval for Week 9:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-9.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed-9.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress-9.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo-9.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board-9.png)
+
 
 
 
