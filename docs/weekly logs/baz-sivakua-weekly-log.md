@@ -48,3 +48,15 @@
 
 ### Picture of week 8's survey
 ![Screenshot of week 8 team evaluation](img/baz-sivakua/baz-survey-week8.png)
+---
+
+## 9
+### October 30 - November 5, 2023
+- This week I worked on Milestone 2: Mini presentation
+- The goal for this week was to prepare for the presentation, write an About Us section for the web application and document the figma designs.
+
+### Picture of Project Board
+![Screenshot of week 8 project board tasks](img/baz-sivakua/baz-tasks-week9.png)
+
+### Picture of week 8's survey
+![Screenshot of week 8 team evaluation](img/baz-sivakua/baz-survey-week9.png)
