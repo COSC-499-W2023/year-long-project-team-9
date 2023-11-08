@@ -17,7 +17,8 @@ export async function getServerSideProps() {
   }
 
 
-const MyRequests = ({ url }: { url: string }) => {
+// const MyRequests = ({ url }: { url: string }) => {
+const MyRequests = ({ url }: {url: string}) => {
     return (
         <Layout>
             <div className="grid justify-center items-center">

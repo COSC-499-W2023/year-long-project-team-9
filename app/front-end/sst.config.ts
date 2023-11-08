@@ -1,11 +1,11 @@
 import { SSTConfig } from "sst";
-import { Bucket, NextjsSite} from "sst/constructs";
+import { Bucket, NextjsSite } from "sst/constructs";
 
 export default {
   config(_input) {
     return {
       name: "front-end",
-      region: "us-east-1",
+      region: "ca-central-1",
     };
   },
   stacks(app) {
@@ -14,7 +14,6 @@ export default {
       const site = new NextjsSite(stack, "site", {
         bind: [bucket],
       });
-
       stack.addOutputs({
         SiteUrl: site.url,
       });
