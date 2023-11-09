@@ -1,5 +1,5 @@
 import { SSTConfig } from "sst";
-import { Bucket, NextjsSite } from "sst/constructs";
+import { Bucket, NextjsSite, Table, StackContext } from "sst/constructs";
 
 export default {
   config(_input) {
@@ -11,9 +11,19 @@ export default {
   stacks(app) {
     app.stack(function Site({ stack }) {
       const bucket = new Bucket(stack, "public");
-      const site = new NextjsSite(stack, "site", {
-        bind: [bucket],
+      const table = new Table(stack, "counter", {
+        fields: {
+          counter: "string",
+        },
+        primaryIndex: { partitionKey: "counter" },
       });
+      const site = new NextjsSite(stack, "site", {
+        bind: [bucket, table],
+        environment: {
+          TABLE_NAME: table.tableName,
+        },
+      });
+      
       stack.addOutputs({
         SiteUrl: site.url,
       });
