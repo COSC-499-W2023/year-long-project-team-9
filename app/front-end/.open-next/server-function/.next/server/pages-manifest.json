@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/BlurVideo": "pages/BlurVideo.html",
+  "/CreateRequest": "pages/CreateRequest.html",
+  "/Home": "pages/Home.html",
+  "/": "pages/index.html",
+  "/MyRequests": "pages/MyRequests.js",
+  "/404": "pages/404.html"
+}
