@@ -1,0 +1,20 @@
+2023-11-10T07:02:25.414Z    +53ms [debug] Config loaded {"version":"2.35.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"front-end","region":"ca-central-1","stage":"imigh","ssmPrefix":"/sst/front-end/imigh/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":245,"imports":[{"path":"sst","kind":"import-statement","external":true},{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1699599745369.mjs":{"imports":[],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":127}},"bytes":309}}},"paths":{"config":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/sst.config.ts","root":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end","out":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst","artifacts":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/artifacts"}}
+2023-11-10T07:02:26.495Z  +1081ms [debug] Using AWS profile 
+2023-11-10T07:02:26.497Z     +2ms [debug] Created AWS client IoTClient
+2023-11-10T07:02:26.497Z     +0ms [debug] Getting IoT endpoint
+2023-11-10T07:02:26.515Z    +18ms [debug] Synthesizing stacks...
+2023-11-10T07:02:26.520Z     +5ms [debug] Created AWS client STSClient
+2023-11-10T07:02:27.423Z   +903ms [debug] Using IoT endpoint: a2igkx8b6d7mtc-ats.iot.ca-central-1.amazonaws.com
+2023-11-10T07:02:27.423Z     +0ms [debug] Initializing bootstrap context
+2023-11-10T07:02:27.425Z     +2ms [debug] Created AWS client CloudFormationClient
+2023-11-10T07:02:27.481Z    +56ms [debug] Using identity Account: 548311273921 User: AROAX7KPGCHA33UAPS5HU:COSC499-2324-Jan-Yaeger.Dhillon
+2023-11-10T07:02:27.484Z     +3ms [debug] Generating types in /Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/types
+2023-11-10T07:02:27.593Z   +109ms [debug] Running 1 deferred tasks with concurrency: 7
+2023-11-10T07:02:27.962Z   +369ms [debug] Loaded bootstrap status
+2023-11-10T07:02:27.962Z     +0ms [debug] Bootstrap context initialized {"status":"ready","version":"7.2","bucket":"sstbootstrap-cacentral157c8926b-o8ecz5ofu4p8"}
+2023-11-10T07:02:27.963Z     +1ms [debug] Created AWS client S3Client
+2023-11-10T07:02:28.061Z    +98ms [debug] 
+2023-11-10T07:02:28.061Z     +0ms [debug] Loading v2 AWS SDK
+2023-11-10T07:02:28.061Z     +0ms [debug] Finished synthesizing
+2023-11-10T07:02:28.429Z   +368ms [debug] IoT connected
+2023-11-10T07:02:28.538Z   +109ms [debug] Created AWS client LambdaClient
