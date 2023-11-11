@@ -91,9 +91,64 @@ const CreateRequest = () => {
         <Layout>
             {/*Starting point of the layout of the page*/}
             <div className='container grid grid-cols-1 md:grid-cols-2 mt-10 gap-10'>
-                <Card>
-                    
+                {/*The first card*/}
+                <Card className='grid grid-row-3'>
+                    {/*Code for the Request Title input*/}
+                    <CardContent className='p-6'>
+                        <p>Request Title</p>
+                        <Input />
+                    </CardContent>
+                    {/*Code for the Client email input*/}
+                    <CardContent>
+                        <p>Client(s)</p>
+                        <Input placeholder="Email" />
+                    </CardContent>
+                    <CardContent className='grid grid-cols-2 left-justify gap-1'>
+                        {/*Code for Request Description input*/}
+                        <div>
+                            <p>Request Description</p>
+                            <Textarea className='resize-none' rows={9}/>
+                        </div>
+                        <div className='grid grid-row-4'>
+                            {/*Code for Video Processing input*/}
+                            <p>Video Processing</p>
+                            <Tabs defaultValue='blurred' className='pb-1.5'>
+                                <TabsList className='grid w-full grid-cols-2'>
+                                    <TabsTrigger value='notBlurred'>Not Blurred</TabsTrigger>
+                                    <TabsTrigger value='blurred'>Blurred</TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                            {/*Code for Due Date input*/}
+                            <div className='pb-1.5'>
+                                <p>Due Date</p>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button variant={"outline"} className="text-xs w-full">
+                                            <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
+                                            {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0">
+                                        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            {/*Code for Video's Language input*/}
+                            <div className='pb-1.5'>
+                                <p>Video's Language</p>
+                                <Input placeholder="Language" />
+                            </div>
+                            {/*Code for terms and conditions*/}
+                            <div className="flex items-center space-x-2">
+                                <Checkbox id="terms" />
+                                <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    I accept the <a href="" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
+                                </label>
+                            </div>
+                        </div>
+                    </CardContent>
                 </Card>
+                {/*The second card*/}
                 <Card>
                     <CardHeader>
                         <CardTitle>Card Title</CardTitle>
