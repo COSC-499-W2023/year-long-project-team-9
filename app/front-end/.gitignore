@@ -132,6 +132,7 @@ amplifytools.xcconfig
 
 # sst
 .sst
+.sst/**/*
 
 # open-next
 .open-next
