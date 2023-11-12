@@ -92,65 +92,134 @@ const CreateRequest = () => {
             {/*Starting point of the layout of the page*/}
             <div className='container grid grid-cols-1 md:grid-cols-2 mt-10 gap-10'>
                 {/*The first card*/}
-                <Card className='flex flex-col '>
+                <Card className='flex flex-col'>
                     {/*Code for the Request Title input*/}
-                    <CardContent className='p-6'>
-                        <p>Request Title</p>
-                        <Input />
-                    </CardContent>
-                    {/*Code for the Client email input*/}
-                    <CardContent>
-                        <p>Client(s)</p>
-                        <Input placeholder="Email" />
-                    </CardContent>
-                    <CardContent className='grid grid-cols-2 left-justify gap-1'>
-                        {/*Code for Request Description input*/}
-                        <div>
-                            <p>Request Description</p>
-                            <Textarea className='resize-none' rows={9}/>
+                    <CardContent className='grid'>
+                        <div className='pt-4'>
+                            <Label>Request Title</Label>
+                            {!noTitle && (
+                                <Input placeholder='Title' value={title} onChange={(e) => handleTitleChange(e)}/>
+                            )}
+                            {noTitle && (
+                                <div className='relative flex-col items-center'>
+                                    <Input placeholder='Title' className='border-red-500' value={title} onChange={(e) => handleTitleChange(e)}/>
+                                    <AlertCircle className='text-red-500 absolute right-1 top-1.5'/>
+                                    <p className='text-red-500 text-xs'>This field is required!</p>
+                                </div>
+                            )}
                         </div>
-                        <div className='grid grid-row-4'>
-                            {/*Code for Video Processing input*/}
-                            <p>Video Processing</p>
-                            <Tabs defaultValue='blurred' className='pb-1.5'>
-                                <TabsList className='grid w-full grid-cols-2'>
-                                    <TabsTrigger value='notBlurred'>Not Blurred</TabsTrigger>
-                                    <TabsTrigger value='blurred'>Blurred</TabsTrigger>
-                                </TabsList>
-                            </Tabs>
-                            {/*Code for Due Date input*/}
-                            <div className='pb-1.5'>
-                                <p>Due Date</p>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button variant={"outline"} className="w-full">
-                                            <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
-                                            {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0">
-                                        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
-                                    </PopoverContent>
-                                </Popover>
+                        {/*Code for the Client email input*/}
+                        <div className='pt-2'>
+                            <Label>Client(s)</Label>
+                            <Input placeholder="Email" />
+                        </div>
+                        <div className='grid grid-cols-2 left-justify gap-1 pt-2'>
+                            {/*Code for Request Description input*/}
+                            <div>
+                                <Label>Request Description</Label>
+                                <Textarea className='resize-none' rows={9}/>
                             </div>
-                            {/*Code for Video's Language input*/}
-                            <div className='pb-1.5'>
-                                <p>Video's Language</p>
-                                <Input placeholder="Language" />
-                            </div>
-                            {/*Code for terms and conditions*/}
-                            <div className="flex items-center space-x-2">
-                                <Checkbox id="terms" />
-                                <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    I accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
-                                </label>
+                            <div className='grid grid-row-4 pt-2'>
+                                {/*Code for Video Processing input*/}
+                                <Label>Video Processing</Label>
+                                <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
+                                    <TabsList className='grid w-full grid-cols-2'>
+                                        <TabsTrigger value='notBlurred'>Not Blurred</TabsTrigger>
+                                        <TabsTrigger value='blurred'>Blurred</TabsTrigger>
+                                    </TabsList>
+                                </Tabs>
+                                {/*Code for Due Date input*/}
+                                <div className='pb-1.5'>
+                                    <Label>Due Date</Label>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button variant={"outline"} className="w-full">
+                                                <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
+                                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                {/*Code for Video's Language input*/}
+                                <div className='pb-1.5'>
+                                    <Label>Video's Language</Label>
+                                    <Input placeholder="Language" />
+                                </div>
+                                {/*Code for terms and conditions*/}
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="terms" />
+                                    <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        I accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
+
                 {/*The second card*/}
-                <Card className='grid grid-row-3'>
-                    
+                <Card>
+                    <CardContent className='grid'>
+                        <div className='pt-4 grid grid-row-3'>
+                            {title.length < 1 && (
+                                <CardTitle className="break-all text-xl">Title</CardTitle>
+                            )}
+                            {title.length >= 1 && (
+                                <CardTitle className="break-all text-xl">{title}</CardTitle>
+                            )}
+                        </div>
+                        <div>
+                            <Label>Client(s)</Label>
+                            <p className='text-sm'>Email</p>
+                        </div>
+                        <div className='grid grid-cols-2 left-justify gap-1 pt-2'>
+                            {/*Code for Request Description input*/}
+                            <div>
+                                <Label>Request Description</Label>
+                                <Textarea className='resize-none' rows={9}/>
+                            </div>
+                            <div className='grid grid-row-4 pt-2'>
+                                {/*Code for Video Processing input*/}
+                                <Label>Video Processing</Label>
+                                <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
+                                    <TabsList className='grid w-full grid-cols-2'>
+                                        <TabsTrigger value='notBlurred'>Not Blurred</TabsTrigger>
+                                        <TabsTrigger value='blurred'>Blurred</TabsTrigger>
+                                    </TabsList>
+                                </Tabs>
+                                {/*Code for Due Date input*/}
+                                <div className='pb-1.5'>
+                                    <Label>Due Date</Label>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button variant={"outline"} className="w-full">
+                                                <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
+                                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                {/*Code for Video's Language input*/}
+                                <div className='pb-1.5'>
+                                    <Label>Video's Language</Label>
+                                    <Input placeholder="Language" />
+                                </div>
+                                {/*Code for terms and conditions*/}
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="terms" />
+                                    <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        Requester accepted the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
                 </Card>
             </div>
             <div className='container grid grid-cols-1 mt-5 gap-10'>
