@@ -61,6 +61,7 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 /test-results/
 /playwright-report/
+/playwright-report/*
 /blob-report/
 /playwright/.cache/
 
