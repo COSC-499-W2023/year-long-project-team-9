@@ -14,7 +14,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertCircle, Plus, X, Calendar as CalendarIcon } from "lucide-react";
-import {getCurrentDate} from './utils';
 
 type ClientType = {
     client: string;
@@ -88,14 +87,6 @@ const CreateRequest = () => {
         }
         return false
     };
-    const todaysDate = () => {
-        const todaysDate = new Date().toLocaleString();
-        return (
-            <div>
-              <p>Today's Date: {todaysDate}</p>
-            </div>
-        );
-    }
     return (
         <Layout>
             {/*Starting point of the layout of the page*/}
