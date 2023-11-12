@@ -14,6 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertCircle, Plus, X, Calendar as CalendarIcon } from "lucide-react";
+import {getCurrentDate} from './utils';
 
 type ClientType = {
     client: string;
@@ -87,12 +88,20 @@ const CreateRequest = () => {
         }
         return false
     };
+    const todaysDate = () => {
+        const todaysDate = new Date().toLocaleString();
+        return (
+            <div>
+              <p>Today's Date: {todaysDate}</p>
+            </div>
+        );
+    }
     return (
         <Layout>
             {/*Starting point of the layout of the page*/}
             <div className='container grid grid-cols-1 md:grid-cols-2 mt-10 gap-10'>
                 {/*The first card*/}
-                <Card className='grid grid-row-3'>
+                <Card className='flex flex-col '>
                     {/*Code for the Request Title input*/}
                     <CardContent className='p-6'>
                         <p>Request Title</p>
@@ -123,7 +132,7 @@ const CreateRequest = () => {
                                 <p>Due Date</p>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant={"outline"} className="text-xs w-full">
+                                        <Button variant={"outline"} className="w-full">
                                             <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
                                             {date ? format(date, "PPP") : <span>Pick a date</span>}
                                         </Button>
@@ -142,25 +151,22 @@ const CreateRequest = () => {
                             <div className="flex items-center space-x-2">
                                 <Checkbox id="terms" />
                                 <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    I accept the <a href="" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
+                                    I accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
                                 </label>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
                 {/*The second card*/}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Card Title</CardTitle>
-                        <CardDescription>Card Description</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p>Card Content</p>
-                    </CardContent>
-                    <CardFooter>
-                        <p>Card Footer</p>
-                    </CardFooter>
+                <Card className='grid grid-row-3'>
+                    
                 </Card>
+            </div>
+            <div className='container grid grid-cols-1 mt-5 gap-10'>
+                <div id='buttons' className='text-right gap-2'>
+                    <Button variant={'ghost'} className='justify-self-start' onClick={handleCancel}>Cancel Request</Button>
+                    <Button variant={'default'} className='justify-self-start' onClick={handleSubmit}>Submit Request</Button>
+                </div>
             </div>
         </Layout>
     )
