@@ -202,7 +202,7 @@ const CreateRequest = () => {
                         <div className='grid grid-cols-2 left-justify gap-1 pt-2'>
                             <div id='prevDesc'>
                                 <Label>Request Description</Label>
-                                <Textarea className='resize-none' rows={9}/>
+                                <Textarea className='resize-none' placeholder={desc} readOnly rows={9}/>
                             </div>
                             <div className='grid grid-row-4'>
                                 <div id='prevBlurred'>
