@@ -15,12 +15,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, Plus, X, Calendar as CalendarIcon } from 'lucide-react';
 
-type ClientType = {
-    client: string;
-    clientNo: boolean;
-    [key: string]: string | boolean;
-};
-
 {/*Functions*/ }
 const CreateRequest = () => {
     const router = useRouter()
@@ -30,14 +24,23 @@ const CreateRequest = () => {
         setTitle(value)
     };
     const [noTitle,setNoTitle] = React.useState(false);
-    const [clientList,setClientList] = React.useState<ClientType[]>([{client:'',clientNo:false}]);
+    type ClientType = {
+        client: string;
+        [key:string]:string;
+    };
+    const [clientList,setClientList] = React.useState<ClientType[]>([{client:''}]);
+    const [noClientList,setNoClientList] = React.useState([false]);
     const handleClientAdd = () => {
-        setClientList([...clientList,{client:'',clientNo:false}])
+        setClientList([...clientList,{client:''}])
+        setNoClientList([...noClientList,false])
     };
     const handleClientRemove = (index:number) => {
         const list = [...clientList]
+        const noList = [...noClientList]
         list.splice(index,1)
+        noList.splice(index,1)
         setClientList(list)
+        setNoClientList(noList)
     };
     const handleClientChange = (e:React.ChangeEvent<HTMLInputElement>,index:number) => {
         const {name,value} = e.target
@@ -46,8 +49,18 @@ const CreateRequest = () => {
         setClientList(list)
     };
     const clientsEmpty = () => {
-        for (let item of clientList) {
-            if (item.client.length < 1) {
+        for (let i = 0;i < clientList.length;i++) {
+            if(clientList[i].client.length < 1) {
+                noClientList[i] = true
+            }else {
+                noClientList[i] = false
+            }
+        }
+    };
+    const checkNoClient = () => {
+        clientsEmpty()
+        for(let item of noClientList) {
+            if(item) {
                 return true
             }
         }
@@ -74,19 +87,19 @@ const CreateRequest = () => {
         router.push("/")
     };
     const handleSubmit = () => {
-        if (title.length < 1 || !terms) {
+        if (title.length < 1 || !terms || checkNoClient()) {
             if(title.length < 1) {
                 setNoTitle(true)
             }else {
                 setNoTitle(false)
             }
+            clientsEmpty
             if(!terms) {
                 setNoTerms(true)
             }else {
                 setNoTerms(false)
             }
         } else {
-            setNoTitle(false)
             router.reload()
         }
     };
@@ -116,7 +129,16 @@ const CreateRequest = () => {
                             <Label>Client(s)</Label>
                             {clientList.map((singleClient,index) => (
                                 <div key={index} className='flex pt-1 gap-1'>
-                                    <Input name="client" placeholder='Client' value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
+                                    {!noClientList[index] && (
+                                        <Input name="client" placeholder='Client' value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
+                                    )}
+                                    {noClientList[index] && (
+                                        <div className='relative flex-col items-center w-full'>
+                                            <Input name="client" placeholder='Client' className='border-red-500' value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
+                                            <AlertCircle className='text-red-500 absolute right-1 top-1.5'/>
+                                            <p className='text-red-500 text-xs'>This field is required!</p>
+                                        </div>
+                                    )}
                                     {clientList.length-1 === index && clientList.length < 10 && (
                                         <Button onClick={handleClientAdd}><Plus/></Button>
                                     )}
@@ -171,6 +193,9 @@ const CreateRequest = () => {
                                     )}
                                     <Label htmlFor="terms" className="text-sm">Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
                                 </div>
+                                {noTerms && (
+                                    <p className='text-red-500 text-xs'>This field is required!</p>
+                                )}
                             </div>
                         </div>
                     </CardContent>
