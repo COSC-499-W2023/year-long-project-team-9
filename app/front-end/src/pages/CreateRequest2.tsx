@@ -163,9 +163,9 @@ const CreateRequest = () => {
                 {/*The second card*/}
                 <Card>
                     <CardContent className='grid'>
-                        <div className='pt-4 grid grid-row-3'>
+                        <div className='pt-8 grid grid-row-3 pb-6'>
                             {title.length < 1 && (
-                                <CardTitle className="break-all text-xl">Title</CardTitle>
+                                <CardTitle className="break-all text-2xl">Title</CardTitle>
                             )}
                             {title.length >= 1 && (
                                 <CardTitle className="break-all text-xl">{title}</CardTitle>
@@ -182,7 +182,7 @@ const CreateRequest = () => {
                                 <Label>Request Description</Label>
                                 <Textarea className='resize-none' rows={9}/>
                             </div>
-                            <div className='grid grid-row-4 pt-2'>
+                            <div className='grid grid-row-4'>
                                 {/*Code for Video Processing input*/}
                                 <div>
                                     <Label>Video Processing</Label>
