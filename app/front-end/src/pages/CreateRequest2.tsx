@@ -152,7 +152,7 @@ const CreateRequest = () => {
                                 <div className="flex items-center space-x-2">
                                     <Checkbox id="terms" />
                                     <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        I accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
+                                        Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
                                     </label>
                                 </div>
                             </div>
@@ -173,7 +173,8 @@ const CreateRequest = () => {
                         </div>
                         <div>
                             <Label>Client(s)</Label>
-                            <p className='text-sm'>Email</p>
+                            {/*The code below is the entire code for email in preview*/}
+                            <p className='border-1 pr-3 pl-3 pt-1 pb-1 text-sm text-slate-500'>Email</p>
                         </div>
                         <div className='grid grid-cols-2 left-justify gap-1 pt-2'>
                             {/*Code for Request Description input*/}
@@ -183,38 +184,28 @@ const CreateRequest = () => {
                             </div>
                             <div className='grid grid-row-4 pt-2'>
                                 {/*Code for Video Processing input*/}
-                                <Label>Video Processing</Label>
-                                <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
-                                    <TabsList className='grid w-full grid-cols-2'>
-                                        <TabsTrigger value='notBlurred'>Not Blurred</TabsTrigger>
-                                        <TabsTrigger value='blurred'>Blurred</TabsTrigger>
-                                    </TabsList>
-                                </Tabs>
+                                <div>
+                                    <Label>Video Processing</Label>
+                                    <br></br>
+                                    <Button className='w-full' disabled>Blurred</Button>
+                                </div>
                                 {/*Code for Due Date input*/}
                                 <div className='pb-1.5'>
                                     <Label>Due Date</Label>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button variant={"outline"} className="w-full">
-                                                <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
-                                                {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0">
-                                            <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
-                                        </PopoverContent>
-                                    </Popover>
+                                    <br></br>
+                                    <Button className='w-full' disabled>November 12th, 2023</Button>
                                 </div>
                                 {/*Code for Video's Language input*/}
                                 <div className='pb-1.5'>
                                     <Label>Video's Language</Label>
-                                    <Input placeholder="Language" />
+                                    <br></br>
+                                    <Button className='w-full' disabled>Language</Button>
                                 </div>
                                 {/*Code for terms and conditions*/}
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox id="terms" />
-                                    <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        Requester accepted the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
+                                    <Checkbox id="terms" disabled/>
+                                    <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                                        Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
                                     </label>
                                 </div>
                             </div>
