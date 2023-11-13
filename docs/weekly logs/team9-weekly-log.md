@@ -491,6 +491,8 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-8/inprogress-week8.png)
 
+___
+
 # TEAM 9 - WEEK 9
 
 ## Work Period
@@ -564,3 +566,104 @@ The tasks identified for this week were:
 All tasks for `Milestone 2 - minipresentation` were completed
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-9/completed-week9.png)
 ___
+
+# TEAM 9 - WEEK 10
+
+## Work Period
+
+Week 9 ran from 00:00 on 2023/11/06 to 23:59 on 2023/11/12.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Milestone 3 Project Planning
+Ensure all members of the team have a clear understanding of what is required for Milestone 3: Design Submission and which tasks they'll be assigned. 
+
+### Milestone Goal 2: Configure enviorment for coding
+Configure APIs planned to use in this stage of development including AWS Amplify, Tailwind and Next.js. Additionally, those of us who are unfamilar with the APIs have done research to understand ways to code using them. Set up local enviroment to start coding.
+
+### Milestone Goal 3: Front-End Coding
+Complete coding for the different website pages, such as the `Request Listings Page` and `Submission Page`
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Import Milestone #3 tasks from Project Plan
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Milestone 3 Project Planning
+* **Description:** Implement end-to-end testing through Playwrite and unit tests through Jest
+
+### Task 2: Complete General User Interface Design
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** Milestone Goal 1: Milestone 3 Project Planning
+* **Description:** Complete general user interface design with standardised colours, fonts, and layouts, so that future pages will look coherent and consistent with existing pages.  
+
+### Task 3: Implement end-to-end testing and Jest
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Implement end-to-end testing through Playwrite and unit tests through Jest
+
+### Task 4: Init lambda/sst
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Initialize AWS Lambda/sst for use in our project
+
+### Task 5: Fix errors in Create Request Page
+
+* **Status:** Inprogress
+* **Assignee(s):** Soren Stenback and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Fix errors in `Create Request Page` encountered during the mini-presentation with scaling the cards on different size screens.
+
+### Task 6: Init api gateway
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
+* **Description:** Initialize API gateway for use in our project
+
+### Task 7: Complete Submission Page
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Create `Submission Page` which will allow the user to submit a video and process it in response to a request
+
+### Task 8: Make Homepage Responsive
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Edit `Home Page` to be responsive to screen size and allow for good formatting across different screen sizes
+
+### Task 9: Migrate from Pages Router to App Router
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon and Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Migrate from page router to app router in nextjs
+
+### Task 10: Create Request Listings Page
+
+* **Status:** Inprogress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 3: Front-End Coding
+* **Description:** Create `Request Listings Page` which will display the requests a user has made or needs to submit a video for. 
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-10/burnup-week10.png)
+
+### Table View of Completed Tasks
+All tasks for `Milestone 2 - minipresentation` were completed
+![screenshot of completed board tasks](img/team-weekly-log-img/week-10/completed-week10.png)
