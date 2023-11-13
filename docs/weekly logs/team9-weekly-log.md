@@ -665,5 +665,10 @@ The tasks identified for this week were:
 ![screenshot of burnupchart](img/team-weekly-log-img/week-10/burnup-week10.png)
 
 ### Table View of Completed Tasks
-All tasks for `Milestone 2 - minipresentation` were completed
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-10/completed-week10.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-10/inprogress-week10.png)
+
+___
