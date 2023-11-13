@@ -52,6 +52,7 @@
 ### Picture of Week 9's Survey
 ![Week 9 Bakar's Survey](img/muhammad-bakar/mbakar-week-9-survey.png)
 ## Week 10
+### November 6 2023 - November 12 2023
 - I worked on Milestone #3: Design Submission. 
 - My goals for this weeks was to get on the same page with the group on milestone #3 and complete the fixes for the Create Request page.
 	- I got on the same page regarding milestone #3, but failed to complete Create Request because my partner become ill. However, I made considerable progress towards fixing the page. 
