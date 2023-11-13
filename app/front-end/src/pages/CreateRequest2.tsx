@@ -24,15 +24,15 @@ type ClientType = {
 {/*Functions*/ }
 const CreateRequest = () => {
     const router = useRouter()
-    const [title,setTitle] = React.useState("");
+    const [title,setTitle] = React.useState('');
     const handleTitleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const {name,value } = e.target
+        const {name,value} = e.target
         setTitle(value)
     };
     const [noTitle, setNoTitle] = React.useState(false);
-    const [clientList,setClientList] = React.useState<ClientType[]>([{client:"",clientNo:false}]);
+    const [clientList,setClientList] = React.useState<ClientType[]>([{client:'',clientNo:false}]);
     const handleClientAdd = () => {
-        setClientList([...clientList,{client:"",clientNo:false}])
+        setClientList([...clientList,{client:'',clientNo:false}])
     };
     const handleClientRemove = (index:number) => {
         const list = [...clientList]
@@ -40,7 +40,7 @@ const CreateRequest = () => {
         setClientList(list)
     };
     const handleClientChange = (e:React.ChangeEvent<HTMLInputElement>,index:number) => {
-        const {name,value } = e.target
+        const {name,value} = e.target
         const list = [...clientList]
         list[index][name] = value
         setClientList(list)
@@ -53,14 +53,18 @@ const CreateRequest = () => {
         }
         return false
     };
-    const [desc,setDesc] = React.useState("");
+    const [desc,setDesc] = React.useState('');
     const handleDescChange = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
-        const {name,value } = e.target
+        const {name,value} = e.target
         setDesc(value)
     };
     const [isBlurred,setBlurred] = React.useState(true);
-    const [language,setLanguage] = React.useState('English')
     const [date,setDate] = React.useState<Date|undefined>(new Date());
+    const [language,setLanguage] = React.useState('')
+    const handleLanguageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name,value} = e.target
+        setLanguage(value)
+    };
     const [terms,setTerms] = React.useState(false)
     const handleTermsChange = () => {
         setTerms(!terms)
@@ -90,12 +94,12 @@ const CreateRequest = () => {
     return (
         <Layout>
             {/*Starting point of the layout of the page*/}
-            <div className='container grid grid-cols-1 md:grid-cols-2 mt-10 gap-10'>
-                {/*The first card*/}
+            <div className='container grid grid-cols-1 md:grid-cols-2 mt-5 gap-10'>
+                {/*Request Info Card*/}
                 <Card id='requestCard' className='flex flex-col'>
-                    {/*Code for the Request Title input*/}
-                    <CardContent className='grid'>
-                        <div id='' className='pt-4'>
+                    <CardContent className='grid gap-1'>
+                        {/*Code for the Request Title input*/}
+                        <div id='requestTitle' className='pt-4'>
                             <Label>Request Title</Label>
                             {!noTitle && (
                                 <Input placeholder='Title' value={title} onChange={(e) => handleTitleChange(e)}/>
@@ -109,48 +113,58 @@ const CreateRequest = () => {
                             )}
                         </div>
                         {/*Code for the Client email input*/}
-                        <div className='pt-2'>
+                        <div id='requestClients'>
                             <Label>Client(s)</Label>
-                            <Input placeholder="Email" />
+                            {clientList.map((singleClient,index) => (
+                                <div key={index} className='flex pt-1 gap-1'>
+                                    <Input name="client" placeholder='Client' value={singleClient.client} onChange={(e) => handleClientChange(e,index)}/>
+                                    {clientList.length-1 === index && clientList.length < 10 && (
+                                        <Button onClick={handleClientAdd}><Plus/></Button>
+                                    )}
+                                    {clientList.length > 1 && clientList.length-1 != index && (
+                                        <Button onClick={() => handleClientRemove(index)}><X/></Button>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                        <div className='grid grid-cols-2 left-justify gap-1 pt-2'>
+                        <div className='grid grid-cols-2 left-justify gap-1'>
                             {/*Code for Request Description input*/}
-                            <div>
+                            <div id='requestDescription'>
                                 <Label>Request Description</Label>
-                                <Textarea className='resize-none' rows={9}/>
+                                <Textarea className='resize-none' placeholder='Your message here ...' rows={9} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
                             </div>
                             <div className='grid grid-row-4 pt-2'>
                                 {/*Code for Video Processing input*/}
                                 <Label>Video Processing</Label>
                                 <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
                                     <TabsList className='grid w-full grid-cols-2'>
-                                        <TabsTrigger value='notBlurred'>Not Blurred</TabsTrigger>
-                                        <TabsTrigger value='blurred'>Blurred</TabsTrigger>
+                                        <TabsTrigger value='notBlurred' onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
+                                        <TabsTrigger value='blurred' onClick={() => setBlurred(true)}>Blurred</TabsTrigger>
                                     </TabsList>
                                 </Tabs>
                                 {/*Code for Due Date input*/}
-                                <div className='pb-1.5'>
+                                <div id='requestDueDate' className='pb-1.5'>
                                     <Label>Due Date</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
-                                            <Button variant={"outline"} className="w-full">
-                                                <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
-                                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                            <Button variant={'outline'} className='w-full'>
+                                                <CalendarIcon className='mr-2 h-4 w-4 flex-wrap'/>
+                                                {date?format(date,'PPP'):<span>=</span>}
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0">
-                                            <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                                        <PopoverContent className='w-auto p-0'>
+                                            <Calendar mode='single' selected={date} onSelect={setDate} initialFocus/>
                                         </PopoverContent>
                                     </Popover>
                                 </div>
                                 {/*Code for Video's Language input*/}
-                                <div className='pb-1.5'>
-                                    <Label>Video's Language</Label>
-                                    <Input placeholder="Language" />
+                                <div id='requestLanguage' className='pb-1.5'>
+                                    <Label>Video Language</Label>
+                                    <Input placeholder="Language" value={language} onChange={(e) => handleLanguageChange(e)}/>
                                 </div>
                                 {/*Code for terms and conditions*/}
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox id="terms" />
+                                    <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
                                     <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                         Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
                                     </label>
@@ -159,49 +173,63 @@ const CreateRequest = () => {
                         </div>
                     </CardContent>
                 </Card>
-                {/*The second card*/}
+                {/*Request Preview Card*/}
                 <Card id='previewCard'>
                     <CardContent className='grid'>
-                        <div className='pt-8 grid grid-row-3 pb-6'>
+                        <div id='prevTitle' className='pt-6 grid grid-row-3 pb-6'>
                             {title.length < 1 && (
                                 <CardTitle className="break-all text-2xl">Title</CardTitle>
                             )}
                             {title.length >= 1 && (
-                                <CardTitle className="break-all text-xl">{title}</CardTitle>
+                                <CardTitle className="break-all text-2xl">{title}</CardTitle>
                             )}
                         </div>
-                        <div>
+                        <div id='prevClient'>
                             <Label>Client(s)</Label>
-                            {/*The code below is the entire code for email in preview*/}
-                            <p className='border-1 pr-3 pl-3 pt-1 pb-1 text-sm text-slate-500'>Email</p>
+                            {clientList.map((singleClient,index) => (
+                                <ul key={index}>
+                                    {singleClient.client.length < 1 && (
+                                        <p className='break-all text-slate-400 indent-2 pt-2 pb-2'>Email</p>
+                                    )}
+                                    {singleClient.client.length >= 1 && (
+                                        <p className='break-all indent-2 pt-2 pb-2'>{singleClient.client}</p>
+                                    )}
+                                </ul>
+                            ))}
                         </div>
                         <div className='grid grid-cols-2 left-justify gap-1 pt-2'>
-                            {/*Code for Request Description input*/}
-                            <div>
+                            <div id='prevDesc'>
                                 <Label>Request Description</Label>
                                 <Textarea className='resize-none' rows={9}/>
                             </div>
                             <div className='grid grid-row-4'>
-                                {/*Code for Video Processing input*/}
-                                <div>
+                                <div id='prevBlurred'>
                                     <Label>Video Processing</Label>
-                                    <br></br>
-                                    <Button className='w-full' disabled>Blurred</Button>
+                                    {isBlurred && (
+                                        <Button className='w-full' disabled>Blurred</Button>
+                                    )}
+                                    {!isBlurred && (
+                                        <Button className='w-full' disabled>Not Blurred</Button>
+                                    )}
                                 </div>
-                                {/*Code for Due Date input*/}
-                                <div className='pb-1.5'>
+                                <div id='prevDate' className='pb-1.5'>
                                     <Label>Due Date</Label>
                                     <br></br>
-                                    <Button className='w-full' disabled>November 12th, 2023</Button>
+                                    <Button className='w-full' disabled>
+                                        <CalendarIcon className='mr-2 h-4 w-4'/>
+                                        {date?format(date,'PPP'):<span></span>}
+                                    </Button>
                                 </div>
-                                {/*Code for Video's Language input*/}
-                                <div className='pb-1.5'>
-                                    <Label>Video's Language</Label>
-                                    <br></br>
-                                    <Button className='w-full' disabled>Language</Button>
+                                <div id='prevLanguage' className='pb-1.5'>
+                                    <Label>Video Language</Label>
+                                    {language.length < 1 && (
+                                        <Button className='w-full' disabled>Language</Button>
+                                    )}
+                                    {language.length >= 1 && (
+                                        <Button className='w-full' disabled>{language}</Button>
+                                    )}
                                 </div>
-                                {/*Code for terms and conditions*/}
-                                <div className="flex items-center space-x-2">
+                                <div id='prevTerms' className="flex items-center space-x-2">
                                     <Checkbox id="terms" disabled/>
                                     <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
                                         Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
