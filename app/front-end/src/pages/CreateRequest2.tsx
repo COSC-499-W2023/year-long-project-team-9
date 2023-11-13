@@ -29,7 +29,7 @@ const CreateRequest = () => {
         const {name,value} = e.target
         setTitle(value)
     };
-    const [noTitle, setNoTitle] = React.useState(false);
+    const [noTitle,setNoTitle] = React.useState(false);
     const [clientList,setClientList] = React.useState<ClientType[]>([{client:'',clientNo:false}]);
     const handleClientAdd = () => {
         setClientList([...clientList,{client:'',clientNo:false}])
@@ -69,22 +69,21 @@ const CreateRequest = () => {
     const handleTermsChange = () => {
         setTerms(!terms)
     };
+    const [noTerms,setNoTerms] = React.useState(false);
     const handleCancel = () => {
         router.push("/")
     };
     const handleSubmit = () => {
-        if ((title.length < 1) || clientsEmpty()) {
-            if (title.length < 1) {
+        if (title.length < 1 || !terms) {
+            if(title.length < 1) {
                 setNoTitle(true)
-            } else {
+            }else {
                 setNoTitle(false)
             }
-            for (let item of clientList) {
-                if (item.client.length < 1) {
-                    item.clientNo = true
-                } else {
-                    item.clientNo = false
-                }
+            if(!terms) {
+                setNoTerms(true)
+            }else {
+                setNoTerms(false)
             }
         } else {
             setNoTitle(false)
@@ -133,15 +132,17 @@ const CreateRequest = () => {
                                 <Label>Request Description</Label>
                                 <Textarea className='resize-none' placeholder='Your message here ...' rows={9} maxLength={500} value={desc} onChange={(e) => handleDescChange(e)}/>
                             </div>
-                            <div className='grid grid-row-4 pt-2'>
+                            <div className='grid grid-row-4'>
                                 {/*Code for Video Processing input*/}
-                                <Label>Video Processing</Label>
-                                <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
-                                    <TabsList className='grid w-full grid-cols-2'>
-                                        <TabsTrigger value='notBlurred' onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
-                                        <TabsTrigger value='blurred' onClick={() => setBlurred(true)}>Blurred</TabsTrigger>
-                                    </TabsList>
-                                </Tabs>
+                                <div id='requestBlurred'>
+                                    <Label>Video Processing</Label>
+                                    <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
+                                        <TabsList className='grid w-full grid-cols-2'>
+                                            <TabsTrigger value='notBlurred' onClick={() => setBlurred(false)}>Not Blurred</TabsTrigger>
+                                            <TabsTrigger value='blurred' onClick={() => setBlurred(true)}>Blurred</TabsTrigger>
+                                        </TabsList>
+                                    </Tabs>
+                                </div>
                                 {/*Code for Due Date input*/}
                                 <div id='requestDueDate' className='pb-1.5'>
                                     <Label>Due Date</Label>
@@ -163,11 +164,12 @@ const CreateRequest = () => {
                                     <Input placeholder="Language" value={language} onChange={(e) => handleLanguageChange(e)}/>
                                 </div>
                                 {/*Code for terms and conditions*/}
-                                <div className="flex items-center space-x-2">
+                                <div id='requestTerms' className="flex items-center space-x-2">
                                     <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
-                                    <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a>
-                                    </label>
+                                    {noTerms && (
+                                        <AlertCircle className='text-red-500 text-xs'/>
+                                    )}
+                                    <Label htmlFor="terms" className="text-sm">Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
                                 </div>
                             </div>
                         </div>
