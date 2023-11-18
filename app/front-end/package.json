@@ -11,6 +11,7 @@
     "test:e2e": "npx playwright test"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -36,10 +37,12 @@
     "react-apple-login": "^1.1.6",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18",
+    "react-hook-form": "^7.48.2",
     "react-microsoft-login": "^2.0.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "yauzl": "^2.10.0"
+    "yauzl": "^2.10.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.39.0",

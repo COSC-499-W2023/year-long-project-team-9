@@ -1,28 +1,37 @@
-{/*Imports*/ }
+{/*IMPORTS*/ }
 import Layout from '@/components/layout';
 import React from 'react';
-import { format } from 'date-fns';
-import { useRouter } from 'next/router';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle, Plus, X, Calendar as CalendarIcon } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-{/*Functions*/ }
+{/*FUNCTIONS*/ }
+const formSchema = z.object({
+    title:z.string({
+        required_error:'This field is required!',
+    }),
+    clients:z.array(
+        z.object({
+            value:z.string({required_error:'This field is required!'}).email({message:'Please enter a valid email.'}),
+        })
+    ),
+    description:z.string().max(500,{
+        message:'Maximum 500 characters.',
+    }).optional(),
+    blurred:z.boolean(),
+    dueDate:z.date(),
+    language:z.string(),
+    terms:z.boolean({
+        required_error:'This field is required!',
+    }),
+})
 const CreateRequest = () => {
     return (
         <Layout>
-            
+
         </Layout>
     )
 }
 
-{/*Export*/ }
+{/*EXPORT*/ }
 export default CreateRequest;
