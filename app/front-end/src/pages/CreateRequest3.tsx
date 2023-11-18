@@ -1,12 +1,15 @@
-{/*IMPORTS*/ }
+'use client'
+
+{/*IMPORTS*/}
 import Layout from '@/components/layout';
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useFieldArray,useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-{/*FUNCTIONS*/ }
-const formSchema = z.object({
+{/*FUNCTIONS*/}
+{/*Form schema function*/}
+const requestFormSchema = z.object({
     title:z.string({
         required_error:'This field is required!',
     }),
@@ -25,7 +28,28 @@ const formSchema = z.object({
         required_error:'This field is required!',
     }),
 })
+{/*Infer types of form schema*/}
+type RequestFormValues = z.infer<typeof requestFormSchema>
+{/*Default form values function*/}
+const defaultValues:Partial<RequestFormValues> = {
+    title:'',
+    clients:[
+        { value:'' },
+    ],
+    description:'',
+    blurred:true,
+    dueDate:new Date(),
+    language:'',
+    terms:false,
+}
+{/*Main function*/}
 const CreateRequest = () => {
+    {/*Define the form using the provided schema and values*/}
+    const requestForm = useForm<RequestFormValues>({
+        resolver:zodResolver(requestFormSchema),
+        defaultValues,
+        mode:'onChange',
+    })
     return (
         <Layout>
 
@@ -33,5 +57,5 @@ const CreateRequest = () => {
     )
 }
 
-{/*EXPORT*/ }
+{/*EXPORT*/}
 export default CreateRequest;
