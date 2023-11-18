@@ -8,7 +8,7 @@ import { useFieldArray,useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useRouter } from 'next/router';
 import { cn } from "@/lib/utils"
-import { Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form"
+import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,7 @@ export default function CreateRequest() {
         mode:'onChange',
     })
     {/*Control the number and format of fields in the clients array*/}
-    const { fields,append } = useFieldArray({
+    const { fields,append,remove } = useFieldArray({
         name:'clients',
         control:requestForm.control,
     })
@@ -94,7 +94,7 @@ export default function CreateRequest() {
                                             <FormItem>
                                                 <FormLabel>Request Title</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder='Title' {...field}/>
+                                                    <Input placeholder='Title' required {...field}/>
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -103,19 +103,29 @@ export default function CreateRequest() {
                                 </div>
                                 {/*Code for the Client email input*/}
                                 <div id='requestClients'>
+                                    <Label>Client(s)</Label>
                                     {fields.map((field,index) => (
-                                        <FormField
-                                            control={requestForm.control}
-                                            key={field.id}
-                                            name={`clients.${index}.value`}
-                                            render={({field}) => (
-                                                <FormItem>
-                                                    <FormLabel className={cn(index !== 0 && "sr-only")}>
-                                                        Client(s)
-                                                    </FormLabel>
-                                                </FormItem>
+                                        <div key={index} className='flex pt-1 gap-1'>
+                                            <FormField
+                                                control={requestForm.control}
+                                                key={field.id}
+                                                name={`clients.${index}.value`}
+                                                render={({field}) => (
+                                                    <FormItem>
+                                                        <FormControl>
+                                                            <Input placeholder='Email' required {...field}/>
+                                                        </FormControl>
+                                                        <FormMessage/>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            {fields.length-1 === index && fields.length < 10 && (
+                                                <Button type='button' onClick={() => append({value:''})}><Plus/></Button>
                                             )}
-                                        />
+                                            {fields.length-1 != index && fields.length > 1 && (
+                                                <Button type='button' onClick={() => remove(index)}><X/></Button>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
                             </CardContent>
