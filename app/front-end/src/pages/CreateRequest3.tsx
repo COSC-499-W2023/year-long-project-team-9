@@ -90,7 +90,7 @@ export default function CreateRequest() {
                                     <FormField
                                         control={requestForm.control}
                                         name='title'
-                                        render={({ field }) => (
+                                        render={({field}) => (
                                             <FormItem>
                                                 <FormLabel>Request Title</FormLabel>
                                                 <FormControl>
@@ -127,6 +127,23 @@ export default function CreateRequest() {
                                             )}
                                         </div>
                                     ))}
+                                </div>
+                                <div id='descAndDetails' className='grid grid-cols-2 left-justify gap-1'>
+                                    {/*Code for Request Description input*/}
+                                    <div id='requestDescription'>
+                                        <FormField
+                                            control={requestForm.control}
+                                            name='description'
+                                            render={({field}) => (
+                                                <FormItem>
+                                                    <FormLabel>Request Description</FormLabel>
+                                                    <FormControl>
+                                                        <Textarea placeholder='Your message here...' className='resize-none' rows={9} maxLength={500} {...field}/>
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
