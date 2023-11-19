@@ -71,6 +71,10 @@ export default function CreateRequest() {
         name:'clients',
         control:requestForm.control,
     })
+    {/*Handle the cancellation of the form*/}
+    function onCancel() {
+        router.push("/")
+    }
     {/*Handle the submission of the form*/}
     function onSubmit(data:RequestFormValues) {
         console.log(data)
@@ -81,7 +85,7 @@ export default function CreateRequest() {
             <Form {...requestForm}>
                 <form onSubmit={requestForm.handleSubmit(onSubmit)} className='space-y-8'>
                     {/*Starting point of the layout of the page*/}
-                    <div className='container grid grid-cols-1 md:grid-cols-2 mt-5 gap-10'>
+                    <div id='cards' className='container grid grid-cols-1 md:grid-cols-2 mt-5 gap-10'>
                         {/*Request Info Card*/}
                         <Card id='requestCard' className='flex flex-col'>
                             <CardContent className='grid gap-1'>
@@ -151,6 +155,11 @@ export default function CreateRequest() {
                         <Card id='previewCard'>
 
                         </Card>
+                    </div>
+                    <div id='buttons' className='container grid grid-cols-1 mt-5 mb-5 gap-10'>
+                        <div id='cancelSubmit' className='text-right gap-2'>
+                            <Button variant={'ghost'} className='justify-self-start' onClick={handleCancel}>Cancel Request</Button>
+                        </div>
                     </div>
                 </form>
             </Form>
