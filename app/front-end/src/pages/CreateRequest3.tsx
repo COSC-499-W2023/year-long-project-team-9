@@ -72,20 +72,20 @@ export default function CreateRequest() {
         control:requestForm.control,
     })
     {/*Handle the cancellation of the form*/}
-    function onCancel() {
+    function handleCancel() {
         router.push("/")
     }
     {/*Handle the submission of the form*/}
     function onSubmit(data:RequestFormValues) {
         console.log(data)
-        router.reload()
+        // router.reload()
     }
     return (
         <Layout>
             <Form {...requestForm}>
-                <form onSubmit={requestForm.handleSubmit(onSubmit)} className='space-y-8'>
+                <form onSubmit={requestForm.handleSubmit(onSubmit)} className='space-y-2'>
                     {/*Starting point of the layout of the page*/}
-                    <div id='cards' className='container grid grid-cols-1 md:grid-cols-2 mt-5 gap-10'>
+                    <div id='cards' className='container grid grid-cols-1 md:grid-cols-2 mt-1 gap-x-10'>
                         {/*Request Info Card*/}
                         <Card id='requestCard' className='flex flex-col'>
                             <CardContent className='grid gap-1'>
@@ -156,9 +156,10 @@ export default function CreateRequest() {
 
                         </Card>
                     </div>
-                    <div id='buttons' className='container grid grid-cols-1 mt-5 mb-5 gap-10'>
+                    <div id='buttons' className='container grid grid-cols-1 pb-2'>
                         <div id='cancelSubmit' className='text-right gap-2'>
                             <Button variant={'ghost'} className='justify-self-start' onClick={handleCancel}>Cancel Request</Button>
+                            <Button type='submit' className='justify-self-start'>Submit Request</Button>
                         </div>
                     </div>
                 </form>
