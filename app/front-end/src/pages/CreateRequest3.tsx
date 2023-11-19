@@ -7,18 +7,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray,useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useRouter } from 'next/router';
-import { cn } from "@/lib/utils"
 import { Form,FormControl,FormField,FormItem,FormLabel,FormMessage } from "@/components/ui/form"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs,TabsList,TabsTrigger } from '@/components/ui/tabs';
 import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Popover,PopoverContent,PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle, Plus, X, Calendar as CalendarIcon } from 'lucide-react';
+import { AlertCircle,Plus,X,Calendar as CalendarIcon } from 'lucide-react';
 
 {/*FUNCTIONS*/}
 {/*Form schema function*/}
@@ -61,6 +60,7 @@ export default function CreateRequest() {
     {/*Create a router for page routing*/}
     const router = useRouter()
     {/*Define the form using the provided schema and values*/}
+    const { setValue } = useForm<RequestFormValues>()
     const requestForm = useForm<RequestFormValues>({
         resolver:zodResolver(requestFormSchema),
         defaultValues,
@@ -147,6 +147,28 @@ export default function CreateRequest() {
                                                 </FormItem>
                                             )}
                                         />
+                                    </div>
+                                    <div id='details'>
+                                        {/*Code for Video Processing input*/}
+                                        <div id='requestBlurred'>
+                                            <FormField
+                                                control={requestForm.control}
+                                                name='blurred'
+                                                render={({field}) => (
+                                                    <FormItem>
+                                                        <FormLabel>Video Processing</FormLabel>
+                                                        <FormControl>
+                                                        <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
+                                                            <TabsList className='grid w-full grid-cols-2'>
+                                                                <TabsTrigger value='notBlurred' onClick={() => setValue("blurred",false,{shouldValidate:true})}>Not Blurred</TabsTrigger>
+                                                                <TabsTrigger value='blurred' onClick={() => setValue("blurred",true,{shouldValidate:true})}>Blurred</TabsTrigger>
+                                                            </TabsList>
+                                                        </Tabs>
+                                                        </FormControl>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </CardContent>
