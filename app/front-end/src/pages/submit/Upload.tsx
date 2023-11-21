@@ -20,40 +20,14 @@ export async function getServerSideProps() {
   });
   const url = await getSignedUrl(new S3Client({}), command);
 
-  const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
-
-  const get = new GetCommand({
-    TableName: process.env.TABLE_NAME,
-    Key: {
-      counter: "hits",
-    },
-  });
-  const results = await db.send(get);
-
-  let count = results.Item ? results.Item.tally : 0;
-
-  const update = new UpdateCommand({
-    TableName: Table.counter.tableName,
-    Key: {
-      counter: "hits",
-    },
-    UpdateExpression: "SET tally = :count",
-    ExpressionAttributeValues: {
-      ":count": ++count,
-    },
-  });
-
-  await db.send(update);
-
-  return { props: { count, url } };
+  return { props: { url } };
 }
-const TestSST = ({url}:{url: string}, count: string) => {
-  return (
+const Upload = ({ url }: { url: string }) => {
+    return (
     <Layout>
       <div>
-        {count}
         <div className="grid justify-center items-center">
-          <h1 className="text-3xl font-extrabold">My Requests</h1>
+          <h1 className="text-3xl font-extrabold">Record / Upload Video</h1>
           <div>
             <form
               onSubmit={async (e) => {
@@ -103,5 +77,4 @@ const TestSST = ({url}:{url: string}, count: string) => {
   );
 };
 
-export default TestSST;
-
+export default Upload;

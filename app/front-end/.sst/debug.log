@@ -1,21 +1,21 @@
-2023-11-21T21:29:22.115Z    +75ms [debug] Config loaded {"version":"2.35.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"front-end","region":"ca-central-1","stage":"imigh","ssmPrefix":"/sst/front-end/imigh/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":245,"imports":[{"path":"sst","kind":"import-statement","external":true},{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1700602162050.mjs":{"imports":[],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":127}},"bytes":309}}},"paths":{"config":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/sst.config.ts","root":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end","out":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst","artifacts":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/artifacts"}}
-2023-11-21T21:29:23.465Z  +1350ms [debug] Using AWS profile 
-2023-11-21T21:29:23.467Z     +2ms [debug] Created AWS client IoTClient
-2023-11-21T21:29:23.467Z     +0ms [debug] Getting IoT endpoint
-2023-11-21T21:29:23.491Z    +24ms [debug] Synthesizing stacks...
-2023-11-21T21:29:23.498Z     +7ms [debug] Created AWS client STSClient
-2023-11-21T21:29:24.412Z   +914ms [debug] Using IoT endpoint: a2igkx8b6d7mtc-ats.iot.ca-central-1.amazonaws.com
-2023-11-21T21:29:24.412Z     +0ms [debug] Initializing bootstrap context
-2023-11-21T21:29:24.413Z     +1ms [debug] Created AWS client CloudFormationClient
-2023-11-21T21:29:24.451Z    +38ms [debug] Using identity Account: 548311273921 User: AROAX7KPGCHA33UAPS5HU:COSC499-2324-Jan-Yaeger.Dhillon
-2023-11-21T21:29:24.454Z     +3ms [debug] Generating types in /Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/types
-2023-11-21T21:29:24.552Z    +98ms [debug] Running 1 deferred tasks with concurrency: 7
-2023-11-21T21:29:24.959Z   +407ms [debug] Loaded bootstrap status
-2023-11-21T21:29:24.959Z     +0ms [debug] Bootstrap context initialized {"status":"ready","version":"7.2","bucket":"sstbootstrap-cacentral157c8926b-o8ecz5ofu4p8"}
-2023-11-21T21:29:24.960Z     +1ms [debug] Created AWS client S3Client
-2023-11-21T21:29:25.062Z   +102ms [debug] 
-2023-11-21T21:29:25.062Z     +0ms [debug] Loading v2 AWS SDK
-2023-11-21T21:29:25.062Z     +0ms [debug] Finished synthesizing
-2023-11-21T21:29:25.473Z   +411ms [debug] IoT connected
-2023-11-21T21:29:25.494Z    +21ms [debug] Created AWS client LambdaClient
-2023-11-21T21:29:26.032Z   +538ms [debug] Failed to assume arn:aws:iam::548311273921:role/imigh-front-end-Site-siteServerFunctionServiceRole8-XoqLCLPcA5WF. {"name":"AccessDenied","$fault":"client","$metadata":{"httpStatusCode":403,"requestId":"e4e77dbf-ab5d-401c-8fa5-99d809448be5","attempts":1,"totalRetryDelay":0},"Type":"Sender","Code":"AccessDenied","message":"User: arn:aws:sts::548311273921:assumed-role/AWSReservedSSO_COSC499_CapstonePowerUserAccess_e7203ebba10570e8/COSC499-2324-Jan-Yaeger.Dhillon is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::548311273921:role/imigh-front-end-Site-siteServerFunctionServiceRole8-XoqLCLPcA5WF"}
+2023-11-21T21:39:20.448Z    +55ms [debug] Config loaded {"version":"2.35.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"front-end","region":"ca-central-1","stage":"imigh","ssmPrefix":"/sst/front-end/imigh/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":245,"imports":[{"path":"sst","kind":"import-statement","external":true},{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1700602760403.mjs":{"imports":[],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":127}},"bytes":309}}},"paths":{"config":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/sst.config.ts","root":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end","out":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst","artifacts":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/artifacts"}}
+2023-11-21T21:39:21.591Z  +1143ms [debug] Using AWS profile 
+2023-11-21T21:39:21.593Z     +2ms [debug] Created AWS client IoTClient
+2023-11-21T21:39:21.593Z     +0ms [debug] Getting IoT endpoint
+2023-11-21T21:39:21.613Z    +20ms [debug] Synthesizing stacks...
+2023-11-21T21:39:21.618Z     +5ms [debug] Created AWS client STSClient
+2023-11-21T21:39:22.550Z   +932ms [debug] Using IoT endpoint: a2igkx8b6d7mtc-ats.iot.ca-central-1.amazonaws.com
+2023-11-21T21:39:22.551Z     +1ms [debug] Initializing bootstrap context
+2023-11-21T21:39:22.552Z     +1ms [debug] Created AWS client CloudFormationClient
+2023-11-21T21:39:22.623Z    +71ms [debug] Using identity Account: 548311273921 User: AROAX7KPGCHA33UAPS5HU:COSC499-2324-Jan-Yaeger.Dhillon
+2023-11-21T21:39:22.628Z     +5ms [debug] Generating types in /Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/types
+2023-11-21T21:39:22.728Z   +100ms [debug] Running 1 deferred tasks with concurrency: 7
+2023-11-21T21:39:23.080Z   +352ms [debug] Loaded bootstrap status
+2023-11-21T21:39:23.080Z     +0ms [debug] Bootstrap context initialized {"status":"ready","version":"7.2","bucket":"sstbootstrap-cacentral157c8926b-o8ecz5ofu4p8"}
+2023-11-21T21:39:23.081Z     +1ms [debug] Created AWS client S3Client
+2023-11-21T21:39:23.169Z    +88ms [debug] 
+2023-11-21T21:39:23.169Z     +0ms [debug] Loading v2 AWS SDK
+2023-11-21T21:39:23.169Z     +0ms [debug] Finished synthesizing
+2023-11-21T21:39:23.597Z   +428ms [debug] IoT connected
+2023-11-21T21:39:23.757Z   +160ms [debug] Created AWS client LambdaClient
+2023-11-21T21:39:24.355Z   +598ms [debug] Failed to assume arn:aws:iam::548311273921:role/imigh-front-end-Site-siteServerFunctionServiceRole8-XoqLCLPcA5WF. {"name":"AccessDenied","$fault":"client","$metadata":{"httpStatusCode":403,"requestId":"114d0603-ebe1-4df3-97ee-cde9750dfdb8","attempts":1,"totalRetryDelay":0},"Type":"Sender","Code":"AccessDenied","message":"User: arn:aws:sts::548311273921:assumed-role/AWSReservedSSO_COSC499_CapstonePowerUserAccess_e7203ebba10570e8/COSC499-2324-Jan-Yaeger.Dhillon is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::548311273921:role/imigh-front-end-Site-siteServerFunctionServiceRole8-XoqLCLPcA5WF"}
