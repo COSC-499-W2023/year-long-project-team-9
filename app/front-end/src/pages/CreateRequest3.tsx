@@ -14,7 +14,6 @@ import { Popover,PopoverContent,PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle,Plus,X,Calendar as CalendarIcon } from 'lucide-react';
-import { errors } from '@playwright/test';
 
 {/*FUNCTIONS*/ }
 {/*Create a type to determine the data of the form*/}
@@ -32,7 +31,7 @@ const CreateRequest = () => {
     {/*Create a router object to handle cancelling and submitting the form*/}
     const router = useRouter()
     {/*Create a register and handle submit function using React Hook Forms and add default values to form values*/}
-    const {control,register,handleSubmit,formState:{errors},getValues,setValue} = useForm<formSchema>({
+    const {control,register,handleSubmit,getValues,setValue} = useForm<formSchema>({
         defaultValues:{
             title:'',
             clients:[{value:''}],
@@ -84,7 +83,7 @@ const CreateRequest = () => {
         setDesc(value)
     };
     const [isBlurred,setBlurred] = React.useState(true);
-    const [date,setDate] = React.useState<Date|undefined>(new Date());
+    const [date,setDate] = React.useState<Date>(new Date());
     const [language,setLanguage] = React.useState('')
     const handleLanguageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name,value} = e.target
@@ -149,18 +148,19 @@ const CreateRequest = () => {
                                             <PopoverTrigger asChild>
                                                 <Button variant={'outline'} className='w-full'>
                                                     <CalendarIcon className='mr-2 h-4 w-4 flex-wrap'/>
-                                                    {date?format(date,'PPP'):<span>=</span>}
+                                                    {/* {date?format(date,'PPP'):''} */}
+                                                    {getValues('dueDate')?format(getValues('dueDate'),'PPP'):''}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className='w-auto p-0'>
-                                                <Calendar mode='single' selected={date} onSelect={setDate} initialFocus/>
+                                                <Calendar mode='single' selected={date} onSelect={() => setValue('dueDate',date)} initialFocus/>
                                             </PopoverContent>
                                         </Popover>
                                     </div>
                                     {/*Code for Video's Language input*/}
                                     <div id='requestLanguage' className='pb-1.5'>
                                         <Label>Video Language</Label>
-                                        <Input placeholder="Language" required {...register('language',{required:true})} value={language} onChange={(e) => handleLanguageChange(e)}/>
+                                        <Input placeholder="Language" required maxLength={30} {...register('language',{required:true})} value={language} onChange={(e) => handleLanguageChange(e)}/>
                                     </div>
                                     {/*Code for terms and conditions*/}
                                     <div id='requestTerms' className="flex items-center space-x-2">
@@ -199,6 +199,36 @@ const CreateRequest = () => {
                                 <div id='prevDesc'>
                                     <Label>Request Description</Label>
                                     <Textarea className='resize-none' placeholder={desc} readOnly rows={9}/>
+                                </div>
+                                <div className='grid grid-row-4'>
+                                    <div id='prevBlurred'>
+                                        <Label>Video Processing</Label>
+                                        {isBlurred && (
+                                            <Button className='w-full' disabled>Blurred</Button>
+                                        )}
+                                        {!isBlurred && (
+                                            <Button className='w-full' disabled>Not Blurred</Button>
+                                        )}
+                                    </div>
+                                    <div id='prevDate' className='pb-1.5'>
+                                        <Label>Due Date</Label>
+                                        <Button className='w-full' disabled>
+                                            <CalendarIcon className='mr-2 h-4 w-4'/>
+                                            {date?format(date,'PPP'):<span></span>}
+                                        </Button>
+                                    </div>
+                                    <div id='prevLanguage' className='pb-1.5'>
+                                        <Label>Video Language</Label>
+                                        {language.length < 1 && (
+                                            <Button className='w-full' disabled>Language</Button>
+                                        )}
+                                        {language.length >= 1 && (
+                                            <Button className='w-full break-all' disabled>{language}</Button>
+                                        )}
+                                    </div>
+                                    <div id='prevTerms' className="flex items-center space-x-2">
+                                        <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">See the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a> here</Label>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>
