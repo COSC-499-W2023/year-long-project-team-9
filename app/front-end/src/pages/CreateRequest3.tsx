@@ -107,14 +107,14 @@ const CreateRequest = () => {
                             <div id='requestTitle' className='pt-4'>
                                 <Label>Request Title</Label>
                                 {/*Save the input to the title value and set it to update the title variable on change to be used in the preview card*/}
-                                <Input placeholder='Title' required {...register('title',{required:true})} value={title} onChange={(e) => handleTitleChange(e)}/>
+                                <Input placeholder='Title' maxLength={120} required {...register('title',{required:true})} value={title} onChange={(e) => handleTitleChange(e)}/>
                             </div>
                             {/*Code for the Client email input*/}
                             <div id='requestClients'>
                                 <Label>Client(s)</Label>
                                 {fields.map((field,index) => (
                                     <div key={field.id} className='flex pt-1 gap-1'>
-                                        <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
+                                        <Input placeholder='Email' maxLength={320} required {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
                                         {fields.length-1 === index && fields.length < 10 && (
                                             <Button type='button' onClick={handleClientAdd}><Plus/></Button>
                                         )}
