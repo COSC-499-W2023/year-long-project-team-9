@@ -46,6 +46,9 @@ const CreateRequest = () => {
     const {fields,append,remove} = useFieldArray({
         control,
         name:'clients',
+        rules:{
+            required:true
+        }
     })
     {/*Create a function to cancel the request and return to the homepage*/}
     const handleCancel = () => {
@@ -119,12 +122,15 @@ const CreateRequest = () => {
                                 <Label>Client(s)</Label>
                                 {fields.map((field,index) => (
                                     <div key={field.id} className='flex pt-1 gap-1'>
-                                        <Input placeholder='Email' maxLength={320} {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
+                                        <Input placeholder='Email' maxLength={320} aria-invalid={errors.clients?.[index]?.value?'true':'false'} {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
                                         {fields.length-1 === index && fields.length < 10 && (
                                             <Button type='button' onClick={handleClientAdd}><Plus/></Button>
                                         )}
                                         {fields.length-1 != index && fields.length > 1 && (
                                             <Button type='button' onClick={() => handleClientRemove(index)}><X/></Button>
+                                        )}
+                                        {errors.clients?.[index]?.value && errors.clients?.[index]?.value?.type === 'required' && (
+                                            <p role='alert' className='text-red-500 text-xs'>This field is required!</p>
                                         )}
                                     </div>
                                 ))}
