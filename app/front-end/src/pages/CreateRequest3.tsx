@@ -3,7 +3,7 @@ import Layout from '@/components/layout';
 import React from 'react';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import { useForm,SubmitHandler, useFieldArray } from 'react-hook-form';
+import { useForm,SubmitHandler, useFieldArray,Controller } from 'react-hook-form';
 import { Card,CardContent,CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -148,12 +148,17 @@ const CreateRequest = () => {
                                             <PopoverTrigger asChild>
                                                 <Button variant={'outline'} className='w-full'>
                                                     <CalendarIcon className='mr-2 h-4 w-4 flex-wrap'/>
-                                                    {/* {date?format(date,'PPP'):''} */}
-                                                    {getValues('dueDate')?format(getValues('dueDate'),'PPP'):''}
+                                                    {date?format(date,'PPP'):''}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className='w-auto p-0'>
-                                                <Calendar mode='single' selected={date} onSelect={() => setValue('dueDate',date)} initialFocus/>
+                                                <Controller
+                                                    control={control}
+                                                    name='dueDate'
+                                                    render={({field}) => (
+                                                        <Calendar mode='single' selected={date} onSelect={(date) => field.onChange(date)} onDayClick={setDate} initialFocus/>
+                                                    )}
+                                                />
                                             </PopoverContent>
                                         </Popover>
                                     </div>
