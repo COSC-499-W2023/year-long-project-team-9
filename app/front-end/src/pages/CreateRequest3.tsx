@@ -65,12 +65,12 @@ const CreateRequest = () => {
     const handleClientAdd = () => {
         setClientList([...clientList,{client:''}])
         append({value:''})
-        console.log(clientList.length)
     };
     const handleClientRemove = (index:number) => {
         const list = [...clientList]
         list.splice(index,1)
         setClientList(list)
+        remove(index)
     };
     const handleClientChange = (e:React.ChangeEvent<HTMLInputElement>,index:number) => {
         const {name,value} = e.target
@@ -103,12 +103,12 @@ const CreateRequest = () => {
                                 <Label>Client(s)</Label>
                                 {fields.map((field,index) => (
                                     <div key={field.id} className='flex pt-1 gap-1'>
-                                        <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true,pattern:{value:/\S+@\S+\.\S+/,message:''}})}/>
+                                        <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true})}/>
                                         {fields.length-1 === index && fields.length < 10 && (
                                             <Button type='button' onClick={handleClientAdd}><Plus/></Button>
                                         )}
                                         {fields.length-1 != index && fields.length > 1 && (
-                                            <Button type='button' onClick={() => remove(index)}><X/></Button>
+                                            <Button type='button' onClick={() => handleClientRemove(index)}><X/></Button>
                                         )}
                                     </div>
                                 ))}
