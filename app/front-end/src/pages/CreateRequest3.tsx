@@ -84,6 +84,17 @@ const CreateRequest = () => {
         setDesc(value)
     };
     const [isBlurred,setBlurred] = React.useState(true);
+    const [date,setDate] = React.useState<Date|undefined>(new Date());
+    const [language,setLanguage] = React.useState('')
+    const handleLanguageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name,value} = e.target
+        setLanguage(value)
+    };
+    const [terms,setTerms] = React.useState(false)
+    const handleTermsChange = () => {
+        setTerms(!terms)
+        setValue('terms',!getValues('terms'))
+    };
     {/*Main return function to create web page*/}
     return (
         <Layout>
@@ -132,6 +143,30 @@ const CreateRequest = () => {
                                         </Tabs>
                                     </div>
                                     {/*Code for Due Date input*/}
+                                    <div id='requestDueDate' className='pb-1.5'>
+                                        <Label>Due Date</Label>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button variant={'outline'} className='w-full'>
+                                                    <CalendarIcon className='mr-2 h-4 w-4 flex-wrap'/>
+                                                    {date?format(date,'PPP'):<span>=</span>}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className='w-auto p-0'>
+                                                <Calendar mode='single' selected={date} onSelect={setDate} initialFocus/>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    {/*Code for Video's Language input*/}
+                                    <div id='requestLanguage' className='pb-1.5'>
+                                        <Label>Video Language</Label>
+                                        <Input placeholder="Language" required {...register('language',{required:true})} value={language} onChange={(e) => handleLanguageChange(e)}/>
+                                    </div>
+                                    {/*Code for terms and conditions*/}
+                                    <div id='requestTerms' className="flex items-center space-x-2">
+                                        <Checkbox id="terms" required onCheckedChange={handleTermsChange}/>
+                                        <Label htmlFor="terms" className="text-sm">Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>
