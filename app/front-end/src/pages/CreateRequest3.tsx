@@ -64,6 +64,7 @@ const CreateRequest = () => {
     const [clientList,setClientList] = React.useState([{client:''}]);
     const handleClientAdd = () => {
         setClientList([...clientList,{client:''}])
+        append({value:''})
         console.log(clientList.length)
     };
     const handleClientRemove = (index:number) => {
@@ -104,7 +105,7 @@ const CreateRequest = () => {
                                     <div key={field.id} className='flex pt-1 gap-1'>
                                         <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true,pattern:{value:/\S+@\S+\.\S+/,message:''}})}/>
                                         {fields.length-1 === index && fields.length < 10 && (
-                                            <Button type='button' onClick={() => append({value:''})}><Plus/></Button>
+                                            <Button type='button' onClick={handleClientAdd}><Plus/></Button>
                                         )}
                                         {fields.length-1 != index && fields.length > 1 && (
                                             <Button type='button' onClick={() => remove(index)}><X/></Button>
@@ -144,6 +145,12 @@ const CreateRequest = () => {
                                         )}
                                     </ul>
                                 ))}
+                            </div>
+                            <div id='prevDescAndData' className='grid grid-cols-2 left-justify gap-1 pt-2'>
+                                <div id='prevDesc'>
+                                    <Label>Request Description</Label>
+                                    <Textarea className='resize-none' placeholder={desc} readOnly rows={9}/>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
