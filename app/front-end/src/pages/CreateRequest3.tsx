@@ -103,7 +103,7 @@ const CreateRequest = () => {
                                 <Label>Client(s)</Label>
                                 {fields.map((field,index) => (
                                     <div key={field.id} className='flex pt-1 gap-1'>
-                                        <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true})}/>
+                                        <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
                                         {fields.length-1 === index && fields.length < 10 && (
                                             <Button type='button' onClick={handleClientAdd}><Plus/></Button>
                                         )}
