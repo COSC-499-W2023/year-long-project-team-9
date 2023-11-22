@@ -13,7 +13,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover,PopoverContent,PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle,Plus,X,Calendar as CalendarIcon } from 'lucide-react';
+import { Plus,X,Calendar as CalendarIcon } from 'lucide-react';
 
 {/*FUNCTIONS*/ }
 {/*Create a type to determine the data of the form*/}
@@ -31,7 +31,7 @@ const CreateRequest = () => {
     {/*Create a router object to handle cancelling and submitting the form*/}
     const router = useRouter()
     {/*Create a register and handle submit function using React Hook Forms and add default values to form values*/}
-    const {control,register,handleSubmit,setValue} = useForm<formSchema>({
+    const {control,register,handleSubmit,setValue,formState:{errors}} = useForm<formSchema>({
         defaultValues:{
             title:'',
             clients:[{value:''}],
@@ -49,11 +49,12 @@ const CreateRequest = () => {
     })
     {/*Create a function to cancel the request and return to the homepage*/}
     const handleCancel = () => {
-        router.push("/")
+        router.push('/')
     }
     {/*Create a function to submit data*/}
     const onSubmit:SubmitHandler<formSchema> = (data) => {
         console.log(data)
+        alert(JSON.stringify(data))
     }
     const [title,setTitle] = React.useState('');
     const handleTitleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -108,14 +109,17 @@ const CreateRequest = () => {
                             <div id='requestTitle' className='pt-4'>
                                 <Label>Request Title</Label>
                                 {/*Save the input to the title value and set it to update the title variable on change to be used in the preview card*/}
-                                <Input placeholder='Title' maxLength={120} required {...register('title',{required:true})} value={title} onChange={(e) => handleTitleChange(e)}/>
+                                <Input placeholder='Title' maxLength={120} aria-invalid={errors.title?'true':'false'} {...register('title',{required:true})} value={title} onChange={(e) => handleTitleChange(e)}/>
+                                {errors.title && errors.title.type === 'required' && (
+                                    <p role='alert' className='text-red-500 text-xs'>This field is required!</p>
+                                )}
                             </div>
                             {/*Code for the Client email input*/}
                             <div id='requestClients'>
                                 <Label>Client(s)</Label>
                                 {fields.map((field,index) => (
                                     <div key={field.id} className='flex pt-1 gap-1'>
-                                        <Input placeholder='Email' maxLength={320} required {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
+                                        <Input placeholder='Email' maxLength={320} {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
                                         {fields.length-1 === index && fields.length < 10 && (
                                             <Button type='button' onClick={handleClientAdd}><Plus/></Button>
                                         )}
@@ -166,12 +170,15 @@ const CreateRequest = () => {
                                     {/*Code for Video's Language input*/}
                                     <div id='requestLanguage' className='pb-1.5'>
                                         <Label>Video Language</Label>
-                                        <Input placeholder="Language" required maxLength={30} {...register('language',{required:true})} value={language} onChange={(e) => handleLanguageChange(e)}/>
+                                        <Input placeholder='Language' maxLength={30} aria-invalid={errors.language?'true':'false'} {...register('language',{required:true})} value={language} onChange={(e) => handleLanguageChange(e)}/>
+                                        {errors.language && errors.language.type === 'required' && (
+                                            <p role='alert' className='text-red-500 text-xs'>This field is required!</p>
+                                        )}
                                     </div>
                                     {/*Code for terms and conditions*/}
-                                    <div id='requestTerms' className="flex items-center space-x-2">
-                                        <Checkbox id="terms" {...register('terms')} onCheckedChange={handleTermsChange}/>
-                                        <Label htmlFor="terms" className="text-sm">Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
+                                    <div id='requestTerms' className='flex items-center space-x-2'>
+                                        <Checkbox id='terms' {...register('terms')} onCheckedChange={handleTermsChange}/>
+                                        <Label htmlFor='terms' className='text-sm'>Accept the <a href='' target='_blank' className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
                                     </div>
                                 </div>
                             </div>
@@ -182,10 +189,10 @@ const CreateRequest = () => {
                         <CardContent className='grid'>
                             <div id='prevTitle' className='pt-6 grid grid-row-3 pb-6'>
                                 {title.length < 1 && (
-                                    <CardTitle className="break-all text-2xl">Title</CardTitle>
+                                    <CardTitle className='break-all text-2xl'>Title</CardTitle>
                                 )}
                                 {title.length >= 1 && (
-                                    <CardTitle className="break-all text-2xl">{title}</CardTitle>
+                                    <CardTitle className='break-all text-2xl'>{title}</CardTitle>
                                 )}
                             </div>
                             <div id='prevClient'>
@@ -232,8 +239,8 @@ const CreateRequest = () => {
                                             <Button className='w-full break-all' disabled>{language}</Button>
                                         )}
                                     </div>
-                                    <div id='prevTerms' className="flex items-center space-x-2">
-                                        <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">See the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a> here</Label>
+                                    <div id='prevTerms' className='flex items-center space-x-2'>
+                                        <Label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none'>See the <a href='' target='_blank' className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a> here</Label>
                                     </div>
                                 </div>
                             </div>
