@@ -32,7 +32,7 @@ const CreateRequest = () => {
     {/*Create a router object to handle cancelling and submitting the form*/}
     const router = useRouter()
     {/*Create a register and handle submit function using React Hook Forms and add default values to form values*/}
-    const {control,register,handleSubmit,formState:{errors},getValues} = useForm<formSchema>({
+    const {control,register,handleSubmit,formState:{errors},getValues,setValue} = useForm<formSchema>({
         defaultValues:{
             title:'',
             clients:[{value:''}],
@@ -83,6 +83,7 @@ const CreateRequest = () => {
         const {name,value} = e.target
         setDesc(value)
     };
+    const [isBlurred,setBlurred] = React.useState(true);
     {/*Main return function to create web page*/}
     return (
         <Layout>
@@ -118,6 +119,19 @@ const CreateRequest = () => {
                                 <div id='requestDescription'>
                                     <Label>Request Description</Label>
                                     <Textarea className='resize-none' placeholder='Your message here ...' rows={9} maxLength={500} {...register('description')} value={desc} onChange={(e) => handleDescChange(e)}/>
+                                </div>
+                                <div id='requestData' className='grid grid-row-4'>
+                                    {/*Code for Video Processing input*/}
+                                    <div id='requestBlurred'>
+                                        <Label>Video Processing</Label>
+                                        <Tabs defaultValue='blurred' className='pt-0.5 pb-1.5'>
+                                            <TabsList className='grid w-full grid-cols-2'>
+                                                <TabsTrigger value='notBlurred' onClick={() => {setBlurred(false);setValue('blurred',false)}}>Not Blurred</TabsTrigger>
+                                                <TabsTrigger value='blurred' onClick={() => {setBlurred(true);setValue('blurred',true)}}>Blurred</TabsTrigger>
+                                            </TabsList>
+                                        </Tabs>
+                                    </div>
+                                    {/*Code for Due Date input*/}
                                 </div>
                             </div>
                         </CardContent>
