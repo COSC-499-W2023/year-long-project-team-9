@@ -31,7 +31,7 @@ const CreateRequest = () => {
     {/*Create a router object to handle cancelling and submitting the form*/}
     const router = useRouter()
     {/*Create a register and handle submit function using React Hook Forms and add default values to form values*/}
-    const {control,register,handleSubmit,getValues,setValue} = useForm<formSchema>({
+    const {control,register,handleSubmit,setValue} = useForm<formSchema>({
         defaultValues:{
             title:'',
             clients:[{value:''}],
@@ -91,8 +91,9 @@ const CreateRequest = () => {
     };
     const [terms,setTerms] = React.useState(false)
     const handleTermsChange = () => {
-        setTerms(!terms)
-        setValue('terms',!getValues('terms'))
+        const newTerms = !terms
+        setTerms(newTerms)
+        setValue('terms',newTerms)
     };
     {/*Main return function to create web page*/}
     return (
@@ -169,7 +170,7 @@ const CreateRequest = () => {
                                     </div>
                                     {/*Code for terms and conditions*/}
                                     <div id='requestTerms' className="flex items-center space-x-2">
-                                        <Checkbox id="terms" required onCheckedChange={handleTermsChange}/>
+                                        <Checkbox id="terms" onCheckedChange={handleTermsChange}/>
                                         <Label htmlFor="terms" className="text-sm">Accept the <a href="" target="_blank" className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
                                     </div>
                                 </div>
