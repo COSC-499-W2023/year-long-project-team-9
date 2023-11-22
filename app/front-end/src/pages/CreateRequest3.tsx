@@ -177,9 +177,12 @@ const CreateRequest = () => {
                                     </div>
                                     {/*Code for terms and conditions*/}
                                     <div id='requestTerms' className='flex items-center space-x-2'>
-                                        <Checkbox id='terms' {...register('terms')} onCheckedChange={handleTermsChange}/>
+                                        <Checkbox id='terms' {...register('terms',{required:true})} onCheckedChange={handleTermsChange}/>
                                         <Label htmlFor='terms' className='text-sm'>Accept the <a href='' target='_blank' className='text-blue-600 dark:text-blue-500 hover:underline'>terms and conditions</a></Label>
                                     </div>
+                                    {errors.terms && errors.terms.type === 'required' && (
+                                        <p role='alert' className='text-red-500 text-xs'>This field is required!</p>
+                                    )}
                                 </div>
                             </div>
                         </CardContent>
