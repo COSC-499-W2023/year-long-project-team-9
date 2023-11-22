@@ -14,6 +14,7 @@ import { Popover,PopoverContent,PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle,Plus,X,Calendar as CalendarIcon } from 'lucide-react';
+import { errors } from '@playwright/test';
 
 {/*FUNCTIONS*/ }
 {/*Create a type to determine the data of the form*/}
@@ -28,22 +29,131 @@ interface formSchema {
 };
 {/*Create a function to form the CreateRequest page*/}
 const CreateRequest = () => {
-    {/*Create a register and handle submit function using React Hook Forms*/}
-    const {control,register,handleSubmit} = useForm<formSchema>()
+    {/*Create a router object to handle cancelling and submitting the form*/}
+    const router = useRouter()
+    {/*Create a register and handle submit function using React Hook Forms and add default values to form values*/}
+    const {control,register,handleSubmit,formState:{errors},getValues} = useForm<formSchema>({
+        defaultValues:{
+            title:'',
+            clients:[{value:''}],
+            description:'',
+            blurred:true,
+            dueDate:new Date(),
+            language:'',
+            terms:false
+        }
+    })
     {/*Create a field array and appropriate methods to add and remove items*/}
     const {fields,append,remove} = useFieldArray({
         control,
         name:'clients',
     })
+    {/*Create a function to cancel the request and return to the homepage*/}
+    const handleCancel = () => {
+        router.push("/")
+    }
     {/*Create a function to submit data*/}
     const onSubmit:SubmitHandler<formSchema> = (data) => {
         console.log(data)
     }
-    {}
+    const [title,setTitle] = React.useState('');
+    const handleTitleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name,value} = e.target
+        setTitle(value)
+    };
+    const [clientList,setClientList] = React.useState([{client:''}]);
+    const handleClientAdd = () => {
+        setClientList([...clientList,{client:''}])
+        console.log(clientList.length)
+    };
+    const handleClientRemove = (index:number) => {
+        const list = [...clientList]
+        list.splice(index,1)
+        setClientList(list)
+    };
+    const handleClientChange = (e:React.ChangeEvent<HTMLInputElement>,index:number) => {
+        const {name,value} = e.target
+        const list = [...clientList]
+        list[index].client = value
+        setClientList(list)
+    };
+    const [desc,setDesc] = React.useState('');
+    const handleDescChange = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
+        const {name,value} = e.target
+        setDesc(value)
+    };
+    {/*Main return function to create web page*/}
     return (
         <Layout>
             <form onSubmit={handleSubmit(onSubmit)}>
-
+                {/*Div to contain the request card and the preview card*/}
+                <div id='cards' className='container grid grid-cols-1 md:grid-cols-2 mt-5 gap-10'>
+                    {/*Request Info Card*/}
+                    <Card id='requestCard' className='flex flex-col'>
+                        <CardContent className='grid gap-1'>
+                            {/*Code for the Request Title input*/}
+                            <div id='requestTitle' className='pt-4'>
+                                <Label>Request Title</Label>
+                                {/*Save the input to the title value and set it to update the title variable on change to be used in the preview card*/}
+                                <Input placeholder='Title' required {...register('title',{required:true})} value={title} onChange={(e) => handleTitleChange(e)}/>
+                            </div>
+                            {/*Code for the Client email input*/}
+                            <div id='requestClients'>
+                                <Label>Client(s)</Label>
+                                {fields.map((field,index) => (
+                                    <div key={field.id} className='flex pt-1 gap-1'>
+                                        <Input placeholder='Email' required {...register(`clients.${index}.value`,{required:true,pattern:{value:/\S+@\S+\.\S+/,message:''}})}/>
+                                        {fields.length-1 === index && fields.length < 10 && (
+                                            <Button type='button' onClick={() => append({value:''})}><Plus/></Button>
+                                        )}
+                                        {fields.length-1 != index && fields.length > 1 && (
+                                            <Button type='button' onClick={() => remove(index)}><X/></Button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <div id='descAndData' className='grid grid-cols-2 left-justify gap-1'>
+                                {/*Code for Request Description input*/}
+                                <div id='requestDescription'>
+                                    <Label>Request Description</Label>
+                                    <Textarea className='resize-none' placeholder='Your message here ...' rows={9} maxLength={500} {...register('description')} value={desc} onChange={(e) => handleDescChange(e)}/>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    {/*Request Preview Card*/}
+                    <Card id='previewCard'>
+                        <CardContent className='grid'>
+                            <div id='prevTitle' className='pt-6 grid grid-row-3 pb-6'>
+                                {title.length < 1 && (
+                                    <CardTitle className="break-all text-2xl">Title</CardTitle>
+                                )}
+                                {title.length >= 1 && (
+                                    <CardTitle className="break-all text-2xl">{title}</CardTitle>
+                                )}
+                            </div>
+                            <div id='prevClient'>
+                                <Label>Client(s)</Label>
+                                {clientList.map((singleClient,index) => (
+                                    <ul key={index}>
+                                        {singleClient.client.length < 1 && (
+                                            <p className='break-all text-slate-400 indent-2 pt-2 pb-2'>Email</p>
+                                        )}
+                                        {singleClient.client.length >= 1 && (
+                                            <p className='break-all indent-2 pt-2 pb-2'>{singleClient.client}</p>
+                                        )}
+                                    </ul>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+                <div id='buttons' className='container grid grid-cols-1 mt-5 mb-5 gap-10'>
+                    <div id='cancelSubmit' className='text-right gap-2'>
+                        <Button type='button' variant={'ghost'} className='justify-self-start' onClick={handleCancel}>Cancel Request</Button>
+                        <Button type='submit' variant={'default'} className='justify-self-start'>Submit Request</Button>
+                    </div>
+                </div>
             </form>
         </Layout>
     )
