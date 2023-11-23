@@ -199,12 +199,12 @@ const CreateRequest = () => {
                         </p>
                       )}
                       </div>
-                    {fields.length - 1 === index && fields.length < 10 && (
+                    {0 === index && fields.length < 10 && (
                       <Button type="button" onClick={handleClientAdd}>
                         <Plus />
                       </Button>
                     )}
-                    {fields.length - 1 != index && fields.length > 1 && (
+                    {0 != index && fields.length > 1 && (
                       <Button
                         type="button"
                         onClick={() => handleClientRemove(index)}
