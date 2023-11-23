@@ -141,15 +141,15 @@ const CreateRequest = () => {
   return (
     <Layout>
       {/*added by jan*/}
-      <div className="grid justify-center items-center py-5">
+      <div className="grid justify-center items-center ">
         <h1 className="text-3xl font-extrabold">Create Request</h1>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="md:px-24">
         {/*Div to contain the request card and the preview card*/}
         <div
           id="cards"
-          className="container grid grid-cols-1 md:grid-cols-2 pt-10 gap-10"
+          className="container grid grid-cols-1 md:grid-cols-2 pt-10 gap-10 "
         >
           {/*Request Info Card*/}
           <Card id="requestCard" className="flex flex-col">
