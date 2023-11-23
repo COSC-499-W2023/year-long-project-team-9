@@ -122,7 +122,7 @@ const CreateRequest = () => {
                                 <Label>Client(s)</Label>
                                 {fields.map((field,index) => (
                                     <div key={field.id} className='grid grid-cols-12 pt-1 gap-1'>
-                                        <Input placeholder='Email' className='col-span-11' maxLength={320} aria-invalid={errors.clients?.[index]?.value?'true':'false'} {...register(`clients.${index}.value`,{required:true})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
+                                        <Input placeholder='Email' className='col-span-11' maxLength={320} aria-invalid={errors.clients?.[index]?.value?'true':'false'} {...register(`clients.${index}.value`,{required:true,pattern:{value:/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,message:'Please enter a valid email address.'}})} value={clientList[index].client} onChange={(e) => handleClientChange(e,index)}/>
                                         {fields.length-1 === index && fields.length < 10 && (
                                             <Button type='button' className='grid col-span-1' onClick={handleClientAdd}><Plus/></Button>
                                         )}
@@ -131,6 +131,9 @@ const CreateRequest = () => {
                                         )}
                                         {errors.clients?.[index]?.value && errors.clients?.[index]?.value?.type === 'required' && (
                                             <p role='alert' className='text-red-500 text-xs col-span-12'>This field is required!</p>
+                                        )}
+                                        {errors.clients?.[index]?.value && errors.clients?.[index]?.value?.type === 'pattern' && (
+                                            <p role='alert' className='text-red-500 text-xs col-span-12'>{errors.clients?.[index]?.value?.message}</p>
                                         )}
                                     </div>
                                 ))}
