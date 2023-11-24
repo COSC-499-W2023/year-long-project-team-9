@@ -20,7 +20,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-          cache: 'npm'
       - run: cd app/front-end
       - run: npm ci
       - run: npx playwright install --with-deps
