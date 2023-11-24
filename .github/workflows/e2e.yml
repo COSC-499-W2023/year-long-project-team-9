@@ -25,7 +25,7 @@ jobs:
       - name: Start lint and build
         run: npm run build
       - name: Start server
-        run: npm run start
+        run: npm run start &
       - name: Running Playwright E2E tests
         run: npm run test:e2e
 
