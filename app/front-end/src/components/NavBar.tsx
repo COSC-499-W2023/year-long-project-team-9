@@ -41,6 +41,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AppleLogin from "react-apple-login";
+import {useCurrentTheme} from "@/components/hooks/useCurrentTheme"
 
 
 const NavBar = () => {
@@ -70,6 +71,8 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
   const SignOut = () => {
     setSignedIn(false);
   };
+
+
 
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
@@ -109,6 +112,14 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
                 // onClick={() => scroll("#features")}
               >
                 My Requests
+              </div>
+            </NavigationMenuItem>
+            <NavigationMenuItem onClick={() => router.push("submit/Upload")}>
+              <div
+                className="font-bold text-base p-5 hover:cursor-pointer"
+                // onClick={() => scroll("#features")}
+              >
+                Upload
               </div>
             </NavigationMenuItem>
           </NavigationMenuList>

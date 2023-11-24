@@ -13,38 +13,39 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export async function getServerSideProps() {
-  const command = new PutObjectCommand({
-    ACL: "public-read",
-    Key: crypto.randomUUID(),
-    Bucket: Bucket.public.bucketName,
-  });
-  const url = await getSignedUrl(new S3Client({}), command);
 
-  const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+// export async function getServerSideProps() {
+//   const command = new PutObjectCommand({
+//     ACL: "public-read",
+//     Key: crypto.randomUUID(),
+//     Bucket: Bucket.public.bucketName,
+//   });
+//   const url = await getSignedUrl(new S3Client({}), command);
 
-  const get = new GetCommand({
-    TableName: process.env.TABLE_NAME,
-    Key: {
-      counter: "hits",
-    },
-  });
-  const results = await db.send(get);
+//   const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
-  let count = results.Item ? results.Item.tally : 0;
+//   const get = new GetCommand({
+//     TableName: process.env.TABLE_NAME,
+//     Key: {
+//       counter: "hits",
+//     },
+//   });
+//   const results = await db.send(get);
 
-  const update = new UpdateCommand({
-    TableName: Table.counter.tableName,
-    Key: {
-      counter: "hits",
-    },
-    UpdateExpression: "SET tally = :count",
-    ExpressionAttributeValues: {
-      ":count": ++count,
-    },
-  });
+//   let count = results.Item ? results.Item.tally : 0;
 
-  await db.send(update);
+//   const update = new UpdateCommand({
+//     TableName: Table.counter.tableName,
+//     Key: {
+//       counter: "hits",
+//     },
+//     UpdateExpression: "SET tally = :count",
+//     ExpressionAttributeValues: {
+//       ":count": ++count,
+//     },
+//   });
+
+//   await db.send(update);
 
   return { props: { count, url } };
 }
@@ -83,30 +84,6 @@ const TestSST = ({ url, count }: { url: string; count: string }) => {
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
-
-                const file = (e.target as HTMLFormElement).file.files?.[0];
-                if (!file) {
-                  console.error("No file selected");
-                  return;
-                }
-
-                const encodedFilename = encodeURIComponent(file.name);
-                const response = await fetch(url, {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": file.type,
-                    "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
-                  },
-                  body: file,
-                });
-
-                if (!response.ok) {
-                  // Handle the error situation
-                  console.error("Upload failed:", response.statusText);
-                  return;
-                }
-
-                // Assuming the PUT operation returns a URL to the uploaded object
                 const location =
                   response.headers.get("Location") || url.split("?")[0];
                 window.location.href = location;
@@ -138,4 +115,4 @@ const TestSST = ({ url, count }: { url: string; count: string }) => {
   );
 };
 
-export default TestSST;
+// export default TestSST;
