@@ -90,7 +90,6 @@ const CreateRequest = () => {
   }
   const onSubmit: SubmitHandler<formSchema> = (data) => {
     console.log(data);
-    alert(JSON.stringify(data));
   };
   const [title, setTitle] = React.useState("");
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,6 +180,7 @@ const CreateRequest = () => {
                     <div className="flex-col flex-1">
                     <Input
                       className=""
+                      data-testid="client"
                       placeholder="Email"
                       maxLength={320}
                       aria-invalid={
@@ -342,7 +342,7 @@ const CreateRequest = () => {
             <CardContent className="grid">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                 {title.length < 1 && (
-                  <CardTitle className="break-all text-2xl">Title</CardTitle>
+                  <CardTitle className="break-all text-2xl">testtestTitle</CardTitle>
                 )}
                 {title.length >= 1 && (
                   <CardTitle className="break-all text-2xl">{title}</CardTitle>
