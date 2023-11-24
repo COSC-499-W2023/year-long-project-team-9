@@ -9,9 +9,8 @@ describe("Hero Component", () => {
     render(<Hero />);
 
 
-    // expect(screen.getByText(/Communicate Privately, Share Confidently./i)).toBeInTheDocument();
-    // expect(screen.getByText(/Experience seamless face blurring and video deliviery with obscurus./i)).toBeInTheDocument();
-
+    expect(screen.getByText(/Communicate Privately, Share Confidently./i)).toBeInTheDocument();
+    expect(screen.getByText(/Experience seamless face blurring and video delivery with/i)).toBeInTheDocument();
 
     const blurredElement = document.querySelector('.opacity-0');
     expect(blurredElement).toBeInTheDocument();
