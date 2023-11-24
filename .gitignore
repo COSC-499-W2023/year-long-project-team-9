@@ -63,3 +63,4 @@ amplifytools.xcconfig
 playwright-report/
 test-results/
 app/front-end/.sst/debug.log
+app/front-end/playwright-report/*d
