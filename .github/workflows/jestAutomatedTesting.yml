@@ -5,9 +5,9 @@ name: Automated testing
 
 on:
   pull_request:
-    branches: ["master", "develop", "amplify"]
+    branches: ["master", "develop"]
   push:
-    branches: ["master", "develop", "amplify"]
+    branches: ["master", "develop", "amplify", "improve-testing"]
 
 defaults:
   run:
@@ -35,5 +35,7 @@ jobs:
       run: npm ci
     - name: Install Playwright and System Dependencies
       run: npx playwright install --with-deps
-    - name: running test
+    - name: Start the server
+      run: npm start &
+    - name: Running tests
       run: npm test
