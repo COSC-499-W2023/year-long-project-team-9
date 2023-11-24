@@ -74,6 +74,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     >
       <Head>
         <meta name="viewport" content="viewport-fit=cover" />
+        <title>obscurus</title>
       </Head>
       <NavBar />
       
