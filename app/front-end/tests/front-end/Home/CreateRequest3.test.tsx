@@ -61,7 +61,6 @@ describe("CreateRequest Page",() => {
         {/*Fill in a sample title input*/}
         userEvent.type(screen.getByPlaceholderText("Title"),"Test Title");
         {/*Simulate the user clicking on the submit button*/}
-        // fireEvent.click(screen.getByText("Submit Request"));
         fireEvent.submit(screen.getByRole("form"));
         {/*Check if onSubmit did not call, as not all required fields are present*/}
         expect(onSubmit).toHaveBeenCalledTimes(0);
@@ -69,18 +68,16 @@ describe("CreateRequest Page",() => {
     // test("Render the page and check if submission with all required values works.",() => {
     //     {/*Render the CreateRequest page*/}
     //     render(<CreateRequest3/>);
-    //     {/*Check if the title text "Create Request" is present*/}
-    //     expect(screen.getByText("Create Request")).toBeInTheDocument();
     //     {/*Fill in a sample title input*/}
     //     userEvent.type(screen.getByPlaceholderText("Title"),"Test Title");
-    //     {/*Fill in a sample client input*/}
+    //     // {/*Fill in a sample client input*/}
     //     userEvent.type(screen.getByPlaceholderText("Email"),"test@test.ca");
     //     {/*Fill in a sample title input*/}
     //     userEvent.type(screen.getByPlaceholderText("Language"),"English");
     //     {/*Check the terms and conditions checkbox*/}
     //     fireEvent.click(screen.getByRole("checkbox",{name:"Accept the terms and conditions"}));
     //     {/*Simulate the user clicking on the submit button*/}
-    //     fireEvent.click(screen.getByText("Submit Request"));
+    //     fireEvent.submit(screen.getByRole("form"));
     //     {/*Check if onSubmit did not call, as not all required fields are present*/}
     //     expect(onSubmit).toHaveBeenCalled();
     // });
