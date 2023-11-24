@@ -1,0 +1,29 @@
+name: Playwright E2E testing
+
+on:
+  pull_request:
+    branches: ["master", "develop"]
+  push:
+    branches: ["master", "develop", "amplify", "improve-testing"]
+
+defaults:
+  run:
+    working-directory: ./app/front-end/
+
+
+jobs:
+    e2e-test:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - name: Start the server
+        run: npm run start &
+      - name: Running Playwright E2E tests
+        run: npm run test:e2e
