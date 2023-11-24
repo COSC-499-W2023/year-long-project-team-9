@@ -24,5 +24,13 @@ jobs:
       - run: npx playwright install --with-deps
       - name: Start the server
         run: npm run start &
+      - name: Check if the server is ready
+        run: |
+          for i in {1..10}; do
+            curl --fail http://localhost:3000/health && break
+            echo "Waiting for the server to be ready..."
+            sleep 5
+          done
       - name: Running Playwright E2E tests
         run: npm run test:e2e
+
