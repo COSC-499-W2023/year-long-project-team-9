@@ -22,15 +22,10 @@ jobs:
           node-version: '18.x'
       - run: npm ci
       - run: npx playwright install --with-deps
-      - name: Start the server
-        run: npm run dev &
-      - name: Check if the server is ready
-        run: |
-          for i in {1..10}; do
-            curl --fail http://localhost:3000/health && break
-            echo "Waiting for the server to be ready..."
-            sleep 5
-          done
+      - name: Start lint and build
+        run: npm run build
+      - name: Start server
+        run: npm run start
       - name: Running Playwright E2E tests
         run: npm run test:e2e
 
