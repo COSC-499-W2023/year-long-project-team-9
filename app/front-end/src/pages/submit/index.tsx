@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/router";
+import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
+import { useTheme } from "next-themes";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -61,6 +63,7 @@ const Index = ({ url }: { url: string }) => {
   };
 
   const router = useRouter();
+  
 
   return (
     <Layout>
@@ -76,11 +79,12 @@ const Index = ({ url }: { url: string }) => {
           <rect x="49" y="24" width="160" height="12.8" fill="#CBD5E1" />
           <Link href="/submit">
             <circle
+            id="first"
               cx="30"
               cy="30"
               r="27"
-              fill="white"
-              stroke="#0F172A"
+              fill={useCurrentTheme("primary")}
+              stroke={useCurrentTheme("primary")}
               stroke-width="6"
             />
           </Link>
@@ -89,7 +93,7 @@ const Index = ({ url }: { url: string }) => {
             cx="826"
             cy="30"
             r="27"
-            fill="white"
+            fill={useCurrentTheme("background")}
             stroke="#CBD5E1"
             stroke-width="6"
           />
@@ -97,7 +101,7 @@ const Index = ({ url }: { url: string }) => {
             cx="627"
             cy="30"
             r="27"
-            fill="white"
+            fill={useCurrentTheme("background")}
             stroke="#CBD5E1"
             stroke-width="6"
           />
@@ -105,7 +109,7 @@ const Index = ({ url }: { url: string }) => {
             cx="428"
             cy="30"
             r="27"
-            fill="white"
+            fill={useCurrentTheme("background")}
             stroke="#CBD5E1"
             stroke-width="6"
           />
@@ -114,7 +118,7 @@ const Index = ({ url }: { url: string }) => {
               cx="229"
               cy="30"
               r="27"
-              fill="white"
+              fill={useCurrentTheme("background")}
               stroke="#CBD5E1"
               stroke-width="6"
             />
