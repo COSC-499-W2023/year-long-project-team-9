@@ -23,7 +23,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps
       - name: Start the server
-        run: npm run start &
+        run: npm run dev &
       - name: Check if the server is ready
         run: |
           for i in {1..10}; do
