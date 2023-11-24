@@ -73,7 +73,7 @@ describe("CreateRequest Page",() => {
         {/*Fill in a sample title input*/}
         userEvent.type(screen.getByPlaceholderText("Title"),"Test Title");
         {/*Fill in a sample client input*/}
-        userEvent.type(screen.getByTestId("client"),"test@test.ca");
+        userEvent.type(screen.getByPlaceholderText("Email"),"test@test.ca");
         {/*Fill in a sample title input*/}
         userEvent.type(screen.getByPlaceholderText("Language"),"English");
         {/*Check the terms and conditions checkbox*/}
