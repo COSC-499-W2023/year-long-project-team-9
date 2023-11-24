@@ -3,7 +3,7 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import CreateRequest3 from "@/pages/CreateRequest3";
+import CreateRequest from "@/pages/CreateRequest";
 import { useRouter } from "next/router";
 
 {/*MOCKS*/}
@@ -43,13 +43,13 @@ describe("CreateRequest Page",() => {
     const onSubmit = jest.fn().mockImplementation((e) => e.preventDefault());
     test("Render the page and check title text.",() => {
         {/*Render the CreateRequest page*/}
-        render(<CreateRequest3/>);
+        render(<CreateRequest/>);
         {/*Check if the title text "Create Request" is present*/}
         expect(screen.getByText("Create Request")).toBeInTheDocument();
     });
     test("Render the page and check if cancelling the form submission works.",() => {
         {/*Render the CreateRequest page*/}
-        render(<CreateRequest3/>);
+        render(<CreateRequest/>);
         {/*Simulate the user clicking on the cancel button*/}
         fireEvent.click(screen.getByText("Cancel Request"));
         {/*Check if the handleCancel method was called successfully*/}
@@ -57,7 +57,7 @@ describe("CreateRequest Page",() => {
     });
     test("Render the page and check if submission without all required values has validation.",() => {
         {/*Render the CreateRequest page*/}
-        render(<CreateRequest3/>);
+        render(<CreateRequest/>);
         {/*Fill in a sample title input*/}
         userEvent.type(screen.getByPlaceholderText("Title"),"Test Title");
         {/*Simulate the user clicking on the submit button*/}
@@ -67,7 +67,7 @@ describe("CreateRequest Page",() => {
     });
     // test("Render the page and check if submission with all required values works.",() => {
     //     {/*Render the CreateRequest page*/}
-    //     render(<CreateRequest3/>);
+    //     render(<CreateRequest/>);
     //     {/*Fill in a sample title input*/}
     //     userEvent.type(screen.getByPlaceholderText("Title"),"Test Title");
     //     // {/*Fill in a sample client input*/}
