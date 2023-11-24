@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: ["master", "develop"]
   push:
-    branches: ["master", "develop", "amplify", "improve-testing"]
+    branches: ["master", "develop", "amplify", "improve-tests"]
 
 defaults:
   run:
