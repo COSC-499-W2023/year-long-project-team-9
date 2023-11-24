@@ -89,7 +89,7 @@ const CreateRequest = () => {
     /*Create a function to submit data*/
   }
   const onSubmit: SubmitHandler<formSchema> = (data) => {
-    console.log(data);
+    // console.log(data);
   };
   const [title, setTitle] = React.useState("");
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +144,7 @@ const CreateRequest = () => {
         <h1 className="text-3xl font-extrabold">Create Request</h1>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="md:px-24">
+      <form role="form" onSubmit={handleSubmit(onSubmit)} className="md:px-24">
         {/*Div to contain the request card and the preview card*/}
         <div
           id="cards"
