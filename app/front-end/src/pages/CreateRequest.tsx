@@ -341,7 +341,7 @@ const CreateRequest = () => {
             <CardContent className="grid">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                 {title.length < 1 && (
-                  <CardTitle className="break-all text-2xl">testtestTitle</CardTitle>
+                  <CardTitle className="break-all text-2xl">Title</CardTitle>
                 )}
                 {title.length >= 1 && (
                   <CardTitle className="break-all text-2xl">{title}</CardTitle>
