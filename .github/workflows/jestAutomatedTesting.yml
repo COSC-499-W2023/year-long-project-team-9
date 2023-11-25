@@ -5,9 +5,9 @@ name: Automated testing
 
 on:
   pull_request:
-    branches: ["master", "develop", "amplify"]
+    branches: ["master", "develop"]
   push:
-    branches: ["master", "develop", "amplify"]
+    branches: ["master", "develop", "amplify", "improve-tests"]
 
 defaults:
   run:
@@ -33,7 +33,5 @@ jobs:
         #cache-dependency-path: '**/package-lock.json's
     - name: setting up
       run: npm ci
-    - name: Install Playwright and System Dependencies
-      run: npx playwright install --with-deps
-    - name: running test
+    - name: Running tests
       run: npm test

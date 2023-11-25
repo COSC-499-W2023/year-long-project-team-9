@@ -12,7 +12,7 @@ const Hero = () => {
           Communicate Privately, Share Confidently.
         </div>
         <div className="text-2xl ">
-        Experience seamless face blurring and video delivery with <span className=" font-extrabold">obscurus</span>.
+        <p>Experience seamless face blurring and video delivery with <span className=" font-extrabold">obscurus</span>.</p>
         </div>
         <div className="grid grid-cols-2 drop-shadow-sm">
           <Tabs defaultValue="blurred" className="">
