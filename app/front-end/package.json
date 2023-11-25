@@ -11,11 +11,11 @@
     "test:e2e": "node e2eTestRunner.mjs"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.2",
     "@aws-sdk/client-dynamodb": "^3.445.0",
     "@aws-sdk/client-s3": "^3.445.0",
     "@aws-sdk/lib-dynamodb": "^3.445.0",
     "@aws-sdk/s3-request-presigner": "^3.445.0",
+    "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
