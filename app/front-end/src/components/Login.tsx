@@ -77,17 +77,6 @@ const Login = () => {
                                     <span className="pl-2.5">Sign in with Google</span>
                                 </Button>
                             </div>
-                            <div id="microsoftButton">
-                                <Button className="h-41px min-w-min bg-[#FFFFFF] dark:bg-[#2F2F2F] border-[#8C8C8C] dark:border-[#2F2F2F] border-[1px] text-[#5E5E5E] dark:text-[#FFFFFF] text-[15px] font-segoe font-semibold px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
-                                    <Image
-                                        src="/Microsoft_Logo.svg"
-                                        alt="microsoft"
-                                        width={20}
-                                        height={20}
-                                    />
-                                    <span className="pl-2.5">Sign in with Microsoft</span>
-                                </Button>
-                            </div>
                             <div id="facebookButton">
                                 <Button className="h-40px min-w-min bg-white dark:bg-[#1877F2] border-[#1877F2] border-[1px] text-[#1877F2] dark:text-[#FFFFFF] text-sm font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
                                     <Image
@@ -97,6 +86,17 @@ const Login = () => {
                                         height={20}
                                     />
                                     <span className="pl-3">Sign in with Facebook</span>
+                                </Button>
+                            </div>
+                            <div id="microsoftButton">
+                                <Button className="h-41px min-w-min bg-[#FFFFFF] dark:bg-[#2F2F2F] border-[#8C8C8C] dark:border-[#2F2F2F] border-[1px] text-[#5E5E5E] dark:text-[#FFFFFF] text-[15px] font-segoe font-semibold px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                    <Image
+                                        src="/Microsoft_Logo.svg"
+                                        alt="microsoft"
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <span className="pl-2.5">Sign in with Microsoft</span>
                                 </Button>
                             </div>
                         </div>
