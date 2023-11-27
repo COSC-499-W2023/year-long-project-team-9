@@ -208,6 +208,39 @@ Screenshot from peer eval for Week 10:
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-10.png)
 
 
+## Week 11 & 12 ##
+
+### Applicable Date Range ###
+November 13 - November 26, 2023
+
+### Tasks Worked On ###
+
+- My main goal this week was to finish the system architecture and research how to implement the video processing with SST most effectively.
+- Another goal for this week was to start working on the video submission pages, which I did.
+- This week I hope to finalize my work for the milestone and have a solid start on getting the container working with Fargate and ECS.
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-12.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-12.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-12.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-12.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-12.png)
+
+
+
 
 
 
