@@ -68,27 +68,33 @@ const Login = () => {
                         </DialogDescription>
                         </DialogHeader>
                         <div className="flex flex-col items-center gap-2">
-                            <div id="googleButton" className="items-center justify-items-center">
+                            <div id="googleButton" className="">
                                 {theme === "light" && (
-                                    <Button className="h-40px min-w-min bg-white stroke-[#747775] stroke-1 text-[#1F1F1F] text-sm px-3 py-2.5" onClick={SignIn}>
+                                    <Button variant="outline" className="h-40px min-w-min bg-white stroke-[#747775] stroke-1 text-[#1F1F1F] text-sm font-roboto font-medium px-3 py-2.5" onClick={SignIn}>
                                         <Image
-                                        src="/Google_Logo.svg"
-                                        alt="google"
-                                        width={20}
-                                        height={20}
+                                            src="/Google_Logo.svg"
+                                            alt="google"
+                                            width={20}
+                                            height={20}
                                         />
                                         <span className="pl-2.5">Sign in with Google</span>
                                     </Button>
                                 )}
                                 {theme === "dark" && (
                                     <Button className="" onClick={SignIn}>
-                                        <span className="font-bold text-base">Sign in with Google</span>
+                                        <Image
+                                            src="/Google_Logo.svg"
+                                            alt="google"
+                                            width={20}
+                                            height={20}
+                                        />
+                                        <span className="">Sign in with Google</span>
                                     </Button>
                                 )}
                             </div>
                             <div id="microsoftButton" className="grid items-center gap-4 w-full">
                                 <Button className="" onClick={SignIn}>
-                                    <span className="font-bold text-base">Sign in with Microsoft</span>
+                                    <span className="">Sign in with Microsoft</span>
                                 </Button>
                             </div>
                             <div id="facebookButton" className="grid items-center gap-4 w-full">
