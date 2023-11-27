@@ -69,37 +69,24 @@ const Login = () => {
                         </DialogHeader>
                         <div className="flex flex-col items-center gap-2">
                             <div id="googleButton" className="">
-                                {theme === "light" && (
-                                    <Button variant="outline" className="h-40px min-w-min bg-white stroke-[#747775] stroke-1 text-[#1F1F1F] text-sm font-roboto font-medium px-3 py-2.5" onClick={SignIn}>
-                                        <Image
-                                            src="/Google_Logo.svg"
-                                            alt="google"
-                                            width={20}
-                                            height={20}
-                                        />
-                                        <span className="pl-2.5">Sign in with Google</span>
-                                    </Button>
-                                )}
-                                {theme === "dark" && (
-                                    <Button className="" onClick={SignIn}>
-                                        <Image
-                                            src="/Google_Logo.svg"
-                                            alt="google"
-                                            width={20}
-                                            height={20}
-                                        />
-                                        <span className="">Sign in with Google</span>
-                                    </Button>
-                                )}
+                                <Button className="h-40px min-w-min bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                    <Image
+                                        src="/Google_Logo.svg"
+                                        alt="google"
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <span className="pl-2.5">Sign in with Google</span>
+                                </Button>
                             </div>
-                            <div id="microsoftButton" className="grid items-center gap-4 w-full">
+                            <div id="microsoftButton" className="">
                                 <Button className="" onClick={SignIn}>
                                     <span className="">Sign in with Microsoft</span>
                                 </Button>
                             </div>
-                            <div id="facebookButton" className="grid items-center gap-4 w-full">
+                            <div id="facebookButton" className="">
                                 <Button className="" onClick={SignIn}>
-                                    <span className="font-bold text-base">Sign in with Facebook</span>
+                                    <span className="">Sign in with Facebook</span>
                                 </Button>
                             </div>
                         </div>
