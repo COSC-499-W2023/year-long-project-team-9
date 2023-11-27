@@ -20,11 +20,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useTheme } from "next-themes";
 
 {/*FUNCTIONS*/}
 const Login = () => {
-    const { theme } = useTheme();
     const [signedIn, setSignedIn] = useState(false);
     const [showSignInDialog, setShowSignInDialog] = useState(false);
     const SignIn = () => {
