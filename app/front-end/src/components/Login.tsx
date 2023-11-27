@@ -66,7 +66,7 @@ const Login = () => {
                         </DialogDescription>
                         </DialogHeader>
                         <div className="flex flex-col items-center gap-2">
-                            <div id="googleButton" className="">
+                            <div id="googleButton">
                                 <Button className="h-40px min-w-min bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
                                     <Image
                                         src="/Google_Logo.svg"
@@ -77,14 +77,26 @@ const Login = () => {
                                     <span className="pl-2.5">Sign in with Google</span>
                                 </Button>
                             </div>
-                            <div id="microsoftButton" className="">
-                                <Button className="" onClick={SignIn}>
-                                    <span className="">Sign in with Microsoft</span>
+                            <div id="microsoftButton">
+                                <Button className="h-40px min-w-min bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                    <Image
+                                        src="/Google_Logo.svg"
+                                        alt="google"
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <span className="pl-2.5">Sign in with Google</span>
                                 </Button>
                             </div>
-                            <div id="facebookButton" className="">
-                                <Button className="" onClick={SignIn}>
-                                    <span className="">Sign in with Facebook</span>
+                            <div id="facebookButton">
+                                <Button className="h-40px min-w-min bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                    <Image
+                                        src="/Google_Logo.svg"
+                                        alt="google"
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <span className="pl-2.5">Sign in with Google</span>
                                 </Button>
                             </div>
                         </div>
