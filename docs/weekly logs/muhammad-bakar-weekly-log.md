@@ -63,7 +63,7 @@
 ### Picture of Week 10's Survey
 ![Week 10 Bakar's Survey](img/muhammad-bakar/mbakar-week-10-survey.png)
 
-## Week 10
+## Week 12
 ### November 20 2023 - November 26 2023
 - I worked on Milestone #3: Design Submission. 
 - My goals for this weeks was to get Cognito (Authentication) set up and linked to the app. Which I did. See `Dashboard.tsx` (and tests for Dashboard.tsx).
