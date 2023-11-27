@@ -56,7 +56,7 @@ const Login = () => {
                 <div className="grid items-center justify-end">
                     <Dialog open={showSignInDialog} onOpenChange={setShowSignInDialog}>
                     <DialogTrigger asChild>
-                        <Button variant="default"><span className="font-bold text-base">Sign In</span></Button>
+                        <Button><span className="font-bold text-base">Sign In</span></Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
