@@ -73,3 +73,15 @@
 ### Picture of week 8's survey
 ![Screenshot of week 10 team evaluation](img/baz-sivakua/baz-survey-week10.png)
 ---
+
+## Week 11 & 12
+### November 13 - November 26, 2023
+- This week I worked on Milestone 3: Design Submission
+- The goal for this week was to continue coding for the front end and also make sure that the team would be ready for the design document.
+
+### Picture of Project Board
+![Screenshot of week 12 project board tasks](img/baz-sivakua/baz-tasks-week12.png)
+
+### Picture of week 8's survey
+![Screenshot of week 12 team evaluation](img/baz-sivakua/baz-survey-week12.png)
+---
