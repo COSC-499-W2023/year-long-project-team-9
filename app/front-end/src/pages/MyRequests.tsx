@@ -88,8 +88,32 @@ const MyRequests = () => {
     };
     return (
     <Layout>
-        <div className="grid justify-center items-center">
-                <h1 className="text-3xl font-extrabold">My Requests</h1><br/>
+        <div className="items-center gap-5 px-24">
+            <h1 className="text-3xl font-extrabold">My Requests</h1><br/>
+            <Card id="collapsed" className="overflow-auto h-17 justify-self-start">
+                <CardHeader>                    
+                    <Input className="w-1/3" id="searchInput" placeholder="Search..." />
+                    <Button className="w-1/5" type="submit">Search</Button>
+                    <Tabs className="w-1/3" defaultValue="blurred">
+                                    <TabsList className="w-full">
+                                        <TabsTrigger value="oldest" className="">Oldest</TabsTrigger>
+                                        <TabsTrigger value="edited" className="">Edited</TabsTrigger>
+                                        <TabsTrigger value="overdue" className="">Overdue</TabsTrigger>
+                                        <TabsTrigger value="completed" className="">Completed</TabsTrigger>
+                                    </TabsList>
+                                    </Tabs>
+                </CardHeader>
+            </Card>
+                </div>
+            <div className="grid grid-cols-2 items-center gap-5 px-24">
+                <Card id="collapsed" className="overflow-auto h-25 w-3/4 justify-self-start">
+                    <CardHeader>
+                        <CardTitle className="text-xl">Title</CardTitle>
+                        <div className="grid gap-0">
+                            <Label>Client(s): </Label>
+                        </div>
+                    </CardHeader>
+                </Card>
                 <Card id="previewCard" className="overflow-auto h-96 w-3/4 justify-self-start">
                     <CardHeader>
                         {title.length < 1 && (
