@@ -89,7 +89,7 @@ const Login = () => {
                                 </Button>
                             </div>
                             <div id="facebookButton">
-                                <Button className="h-40px min-w-min bg-white dark:bg-[#131314] border-[#2F2F2F] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                <Button className="h-40px min-w-min bg-white dark:bg-[#1877F2] border-[#1877F2] border-[1px] text-[#1877F2] dark:text-[#FFFFFF] text-sm font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
                                     <Image
                                         src="/Facebook_Logo.svg"
                                         alt="facebook"
