@@ -85,7 +85,7 @@ const Login = () => {
                                         width={20}
                                         height={20}
                                     />
-                                    <span className="pl-2.5">Sign in with Google</span>
+                                    <span className="pl-2.5">Sign in with Microsoft</span>
                                 </Button>
                             </div>
                             <div id="facebookButton">
@@ -96,7 +96,7 @@ const Login = () => {
                                         width={20}
                                         height={20}
                                     />
-                                    <span className="pl-2.5">Sign in with Google</span>
+                                    <span className="pl-2.5">Sign in with Facebook</span>
                                 </Button>
                             </div>
                         </div>
