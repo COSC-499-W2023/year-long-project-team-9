@@ -1,6 +1,5 @@
 {/*IMPORTS*/}
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -8,12 +7,7 @@ import {
     DropdownMenuItem,
     DropdownMenuGroup,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,26 +15,17 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useTheme } from "next-themes";
 
 {/*FUNCTIONS*/}
 const Login = () => {
-    const router = useRouter();
+    const { theme } = useTheme();
     const [signedIn, setSignedIn] = useState(false);
     const [showSignInDialog, setShowSignInDialog] = useState(false);
-    const handleAuth = (route: string) => {
-        if (signedIn) {
-          router.push(route);
-        } else {
-          setShowSignInDialog(true);
-        }
-    };
     const SignIn = () => {
         setSignedIn(true);
     };
@@ -83,9 +68,16 @@ const Login = () => {
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
                             <div id="googleButton" className="grid grid-cols-4 items-center gap-4 w-full">
-                                <Button className="w-full col-span-4" onClick={SignIn}>
-                                    <span className="font-bold text-base">Sign in with Google</span>
-                                </Button>
+                                {theme === "light" && (
+                                    <Button className="w-full col-span-4" onClick={SignIn}>
+                                        <span className="font-bold text-base">Sign in with Google</span>
+                                    </Button>
+                                )}
+                                {theme === "dark" && (
+                                    <Button className="w-full col-span-4" onClick={SignIn}>
+                                        <span className="font-bold text-base">Sign in with Google</span>
+                                    </Button>
+                                )}
                             </div>
                             <div id="microsoftButton" className="grid grid-cols-4 items-center gap-4 w-full">
                                 <Button className="w-full col-span-4" onClick={SignIn}>
