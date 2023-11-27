@@ -1,5 +1,6 @@
 {/*IMPORTS*/}
 import React, { useState } from "react";
+import Image from "next/image";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -66,26 +67,32 @@ const Login = () => {
                             Choose your login provider below.
                         </DialogDescription>
                         </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                            <div id="googleButton" className="grid grid-cols-4 items-center gap-4 w-full">
+                        <div className="flex flex-col items-center gap-2">
+                            <div id="googleButton" className="items-center justify-items-center">
                                 {theme === "light" && (
-                                    <Button className="w-full col-span-4" onClick={SignIn}>
-                                        <span className="font-bold text-base">Sign in with Google</span>
+                                    <Button className="h-40px min-w-min bg-white stroke-[#747775] stroke-1 text-[#1F1F1F] text-sm px-3 py-2.5" onClick={SignIn}>
+                                        <Image
+                                        src="/Google_Logo.svg"
+                                        alt="google"
+                                        width={20}
+                                        height={20}
+                                        />
+                                        <span className="pl-2.5">Sign in with Google</span>
                                     </Button>
                                 )}
                                 {theme === "dark" && (
-                                    <Button className="w-full col-span-4" onClick={SignIn}>
+                                    <Button className="" onClick={SignIn}>
                                         <span className="font-bold text-base">Sign in with Google</span>
                                     </Button>
                                 )}
                             </div>
-                            <div id="microsoftButton" className="grid grid-cols-4 items-center gap-4 w-full">
-                                <Button className="w-full col-span-4" onClick={SignIn}>
+                            <div id="microsoftButton" className="grid items-center gap-4 w-full">
+                                <Button className="" onClick={SignIn}>
                                     <span className="font-bold text-base">Sign in with Microsoft</span>
                                 </Button>
                             </div>
-                            <div id="facebookButton" className="grid grid-cols-4 items-center gap-4 w-full">
-                                <Button className="w-full col-span-4" onClick={SignIn}>
+                            <div id="facebookButton" className="grid items-center gap-4 w-full">
+                                <Button className="" onClick={SignIn}>
                                     <span className="font-bold text-base">Sign in with Facebook</span>
                                 </Button>
                             </div>
