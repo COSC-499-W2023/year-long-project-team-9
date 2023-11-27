@@ -54,12 +54,12 @@ describe('NavBar Component', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
   });
 
-//   test('navigates on link click when signed in', () => {
-//     render(<NavBar />);
-//     // Mock a state change to signed in, if needed, before clicking 'Create Request'
-//     fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+  // test('navigates on link click when signed in', () => {
+  //   render(<NavBar />);
+  //   // Mock a state change to signed in, if needed, before clicking 'Create Request'
+  //   fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
 
-//     fireEvent.click(screen.getByText('Create Request'));
-//     expect(nextRouter.useRouter().push).toHaveBeenCalledWith('CreateRequest');
-//   });
-// });
+  //   fireEvent.click(screen.getByText('Create Request'));
+  //   expect(nextRouter.useRouter().push).toHaveBeenCalledWith('CreateRequestPage');
+  // });
+;

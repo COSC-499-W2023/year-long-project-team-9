@@ -1,0 +1,6 @@
+2023-11-24T22:00:19.705Z   +293ms [debug] Config loaded {"version":"2.35.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"front-end","region":"ca-central-1","stage":"imigh","ssmPrefix":"/sst/front-end/imigh/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":245,"imports":[{"path":"sst","kind":"import-statement","external":true},{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1700863219422.mjs":{"imports":[],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":127}},"bytes":309}}},"paths":{"config":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/sst.config.ts","root":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end","out":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst","artifacts":"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/front-end/.sst/artifacts"}}
+2023-11-24T22:00:20.875Z  +1170ms [debug] Using AWS profile 
+2023-11-24T22:00:20.877Z     +2ms [debug] Created AWS client IoTClient
+2023-11-24T22:00:20.877Z     +0ms [debug] Getting IoT endpoint
+2023-11-24T22:00:20.897Z    +20ms [debug] Synthesizing stacks...
+2023-11-24T22:00:20.902Z     +5ms [debug] Created AWS client STSClient

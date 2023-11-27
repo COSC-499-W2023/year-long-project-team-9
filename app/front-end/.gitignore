@@ -64,3 +64,76 @@ amplifytools.xcconfig
 /playwright-report/*
 /blob-report/
 /playwright/.cache/
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+
+# open-next
+.open-next
+
+# sst
+.sst
+.sst/**/*
+
+# open-next
+.open-next
