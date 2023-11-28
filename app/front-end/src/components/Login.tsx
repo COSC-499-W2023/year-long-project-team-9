@@ -1,6 +1,7 @@
 {/*IMPORTS*/}
 import React, { useState } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -23,6 +24,7 @@ import {
 
 {/*FUNCTIONS*/}
 const Login = () => {
+    const { theme } = useTheme();
     const [signedIn, setSignedIn] = useState(false);
     const [showSignInDialog, setShowSignInDialog] = useState(false);
     const SignIn = () => {
@@ -65,7 +67,7 @@ const Login = () => {
                             Choose your login provider below.
                         </DialogDescription>
                         </DialogHeader>
-                        <div className="flex flex-col items-center gap-2">
+                        <div className="flex flex-col items-center gap-4">
                             <div id="googleButton">
                                 <Button className="h-40px min-w-min bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
                                     <Image
@@ -78,18 +80,28 @@ const Login = () => {
                                 </Button>
                             </div>
                             <div id="facebookButton">
-                                <Button className="h-40px min-w-min bg-white dark:bg-[#1877F2] border-[#1877F2] border-[1px] text-[#1877F2] dark:text-[#FFFFFF] text-sm font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
-                                    <Image
-                                        src="/Facebook_Logo.svg"
+                                <Button className="h-40px min-w-min bg-[#FFFFFF] dark:bg-[#1877F2] border-[#1877F2] border-[1px] text-[#1877F2] dark:text-[#FFFFFF] text-sm font-medium px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                    {theme === "light" && (
+                                        <Image
+                                        src="/Facebook_Logo_Light.svg"
                                         alt="facebook"
                                         width={20}
                                         height={20}
-                                    />
+                                        />
+                                    )}
+                                    {theme === "dark" && (
+                                        <Image
+                                        src="/Facebook_Logo_Dark.svg"
+                                        alt="facebook"
+                                        width={20}
+                                        height={20}
+                                        />
+                                    )}
                                     <span className="pl-3">Sign in with Facebook</span>
                                 </Button>
                             </div>
                             <div id="microsoftButton">
-                                <Button className="h-41px min-w-min bg-[#FFFFFF] dark:bg-[#2F2F2F] border-[#8C8C8C] dark:border-[#2F2F2F] border-[1px] text-[#5E5E5E] dark:text-[#FFFFFF] text-[15px] font-segoe font-semibold px-3 py-2.5 hover:bg-transparent" onClick={SignIn}>
+                                <Button className="h-41px min-w-min bg-[#FFFFFF] dark:bg-[#2F2F2F] border-[#8C8C8C] dark:border-[#2F2F2F] border-[1px] text-[#5E5E5E] dark:text-[#FFFFFF] text-[15px] font-segoe font-semibold px-3 py-2.5 hover:bg-transparent rounded-none" onClick={SignIn}>
                                     <Image
                                         src="/Microsoft_Logo.svg"
                                         alt="microsoft"

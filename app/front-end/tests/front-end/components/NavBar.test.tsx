@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NavBar from '@/components/NavBar';
+import Login from '@/components/Login';
 import * as nextRouter from 'next/router';
 import * as nextThemes from 'next-themes';
 
@@ -46,12 +47,11 @@ describe('NavBar Component', () => {
     // expect(nextThemes.useTheme().setTheme).toHaveBeenCalledWith('dark');
   });
 
-  test('sign in dialog opens and can sign in', () => {
+  test('Open Sign In dialogue menu and select Log in with Google', () => {
     render(<NavBar />);
+    render(<Login/>);
     fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-    expect(screen.getByText('Enter your credentials to sign in.')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    expect(screen.getByText('Choose your login provider below.')).toBeInTheDocument();
   });
 
   // test('navigates on link click when signed in', () => {
