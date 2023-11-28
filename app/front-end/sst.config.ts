@@ -22,10 +22,14 @@ export default {
         environment: {
           TABLE_NAME: table.tableName,
         },
+        customDomain: {
+          domainName: "obscurus.me",
+          domainAlias: "www.obscurus.me",
+        },
       });
       
       stack.addOutputs({
-        SiteUrl: site.url,
+        Site: site.customDomainUrl || site.url,
       });
     });
   },
