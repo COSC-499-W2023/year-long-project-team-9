@@ -137,3 +137,8 @@ amplifytools.xcconfig
 
 # open-next
 .open-next
+
+app/front-end/.open-next/**/*
+app/front-end/.sst/**/*
+.open-next/**/*
+.sst/**/*

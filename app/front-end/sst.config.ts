@@ -1,16 +1,17 @@
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 import { SSTConfig } from "sst";
 import { Bucket, NextjsSite, Table, StackContext } from "sst/constructs";
 
 export default {
   config(_input) {
     return {
-      name: "front-end",
+      name: "obscurus",
       region: "ca-central-1",
     };
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
-      const bucket = new Bucket(stack, "public");
+      const bucket =new Bucket(stack, "public");
       const table = new Table(stack, "counter", {
         fields: {
           counter: "string",
@@ -25,6 +26,12 @@ export default {
         customDomain: {
           domainName: "obscurus.me",
           domainAlias: "www.obscurus.me",
+          cdk: {
+            hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+              hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+              zoneName: "obscurus.me",
+            }),
+          },
         },
       });
       
