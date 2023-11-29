@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: ["master", "develop"]
   push:
-    branches: ["master", "develop", "amplify", "improve-tests"]
+    branches: ["master", "develop"]
 
 defaults:
   run:
@@ -22,10 +22,6 @@ jobs:
           node-version: '18.x'
       - run: npm ci
       - run: npx playwright install --with-deps
-      - name: Start lint and build
-        run: npm run build
-      - name: Start server
-        run: npm run start &
       - name: Running Playwright E2E tests
         run: npm run test:e2e
 
