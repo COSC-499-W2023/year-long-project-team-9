@@ -11,6 +11,7 @@ import LoadingPage from "@/components/LoadingPage";
 import NavBar from "@/components/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Head from "next/head";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -57,18 +58,26 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   }, []);
 
   return getLayout(
+    
+    
     <ThemeProvider
     attribute="class"
     defaultTheme="system"
     enableSystem
     disableTransitionOnChange
   >
+    
     <AnimatePresence
       mode="wait"
       initial={false}
       onExitComplete={() => window.scrollTo(0, 0)}
     >
+      <Head>
+        <meta name="viewport" content="viewport-fit=cover" />
+        <title>obscurus</title>
+      </Head>
       <NavBar />
+      
      
         {loading ? <LoadingPage /> : <Component {...pageProps} />}
       
