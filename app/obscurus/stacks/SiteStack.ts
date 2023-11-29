@@ -38,5 +38,7 @@ export default function SiteStack({ stack }: StackContext) {
     // },
   });
 
-  stack.addOutputs({ Site: site.url });
+  stack.addOutputs({
+    SiteUrl: site.url,
+  });
 }
