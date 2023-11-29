@@ -70,5 +70,3 @@ app/front-end/playwright-report/index.html
 app/front-end/.sst/debug.log
 app/front-end/playwright-report/index.html
 app/front-end/.sst/debug.log
-app/front-end/.open-next/**/*
-app/front-end/.sst/**/*
