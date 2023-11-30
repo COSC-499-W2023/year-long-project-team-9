@@ -12,13 +12,12 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
-  const service = new Service(stack, "processVideo", {
+  new Service(stack, "processVideo", {
     path: "./service",
-    bind: [bucket],
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table, service],
+    bind: [bucket, table],
     environment: { TABLE_NAME: table.tableName },
   });
 

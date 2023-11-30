@@ -1,13 +1,12 @@
-FROM python:3.9-slim
+# Start from AWS Python 3.8 base image
+FROM public.ecr.aws/lambda/python:3.8
 
-WORKDIR /app
+# Install the dependencies
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
-COPY . /app
+# Copy our function code
+COPY handler.py ${LAMBDA_TASK_ROOT}
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-EXPOSE 8080
-
-ENV NAME World
-
-CMD ["python", "app.py"]
+# Set the handler function
+CMD [ "handler.main" ]
