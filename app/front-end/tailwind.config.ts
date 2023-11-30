@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     fontFamily: {
       'roboto': ['Roboto','sans-serif'],
-      'segoe': ['"Segoe UI','sans-serif'],
+      'segoe': ['Segoe UI','sans-serif'],
     },
     container: {
       center: true,
