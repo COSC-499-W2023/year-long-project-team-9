@@ -1,0 +1,11 @@
+{
+	"name": "app",
+	"version": "1.0.0",
+	"main": "app.mjs",
+	"dependencies": {
+		"express": "^4.1.4"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.10"
+	}
+}
