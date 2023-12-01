@@ -1,8 +1,8 @@
-FROM node:18-bullseye-slim
+FROM python:3.9-slim
 
 COPY . /app
 WORKDIR /app/
 
-RUN npm install
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["node", "app.mjs"]
+ENTRYPOINT ["python", "app.py"]
