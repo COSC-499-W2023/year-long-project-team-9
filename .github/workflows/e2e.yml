@@ -8,7 +8,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./app/front-end/
+    working-directory: ./app/obscurus/
 
 
 jobs:
