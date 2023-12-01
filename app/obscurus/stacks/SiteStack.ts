@@ -14,7 +14,13 @@ export default function SiteStack({ stack }: StackContext) {
   });
   new Service(stack, "MyService", {
     path: "./service",
+    cdk: {
+      container: {
+        healthCheck: undefined
+      }
+    }
   });
+  
 
   const site = new NextjsSite(stack, "site", {
     bind: [bucket, table],
