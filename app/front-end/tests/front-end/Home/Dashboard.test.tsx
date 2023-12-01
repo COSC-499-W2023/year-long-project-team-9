@@ -24,3 +24,12 @@ test('Title Content', () => {
     const link = screen.getByTestId('link')
     expect(link).toHaveAttribute('href', 'https://obscurususerpool.auth.us-west-2.amazoncognito.com/login?client_id=45sq39c3d2srgg5cm5iclt82m6&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2FDashboard');
 });
+
+{/*Testing if the sign in button is showing*/}
+test('Correct Button', () => {
+    render(<Dashboard/>);
+    const signInButton = screen.getByText('Sign In')
+    expect(signInButton).not.toBeVisible();
+    expect(signInButton).toBeInTheDocument();
+});
+
