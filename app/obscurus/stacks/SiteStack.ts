@@ -12,7 +12,7 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
-  new Service(stack, "processVideo", {
+  new Service(stack, "MyService", {
     path: "./service",
   });
 

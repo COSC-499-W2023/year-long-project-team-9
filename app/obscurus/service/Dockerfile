@@ -1,12 +1,8 @@
-# Start from AWS Python 3.8 base image
-FROM public.ecr.aws/lambda/python:3.8
+FROM node:18-bullseye-slim
 
-# Install the dependencies
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+COPY . /app
+WORKDIR /app/
 
-# Copy our function code
-COPY handler.py ${LAMBDA_TASK_ROOT}
+RUN npm install
 
-# Set the handler function
-CMD [ "handler.main" ]
+ENTRYPOINT ["node", "app.mjs"]
