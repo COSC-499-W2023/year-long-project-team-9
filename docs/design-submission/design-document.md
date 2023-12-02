@@ -33,6 +33,7 @@
 
 ## System Architecture
 
+![System Architecture Diagram](img/system-architecture.png)
 
 ## Database Design
 
