@@ -14,20 +14,20 @@ export default function SiteStack({ stack }: StackContext) {
     primaryIndex: { partitionKey: "counter" },
   });
 
-  new Service(stack, "MyService", {
-    path: "./service",
-    cdk: {
-      container: {
-        healthCheck: {
-          command: ["CMD-SHELL", "curl -f <http://localhost:3000/> || exit 1"],
-          interval: Duration.minutes(1),
-          retries: 1,
-          startPeriod: Duration.minutes(2),
-          timeout: Duration.seconds(60),
-        },
-      },
-    },
-  });
+  // new Service(stack, "MyService", {
+  //   path: "./service",
+  //   cdk: {
+  //     container: {
+  //       healthCheck: {
+  //         command: ["CMD-SHELL", "curl -f <http://localhost:3000/> || exit 1"],
+  //         interval: Duration.minutes(1),
+  //         retries: 1,
+  //         startPeriod: Duration.minutes(2),
+  //         timeout: Duration.seconds(60),
+  //       },
+  //     },
+  //   },
+  // });
 
   const site = new NextjsSite(stack, "site", {
     bind: [bucket, table],
