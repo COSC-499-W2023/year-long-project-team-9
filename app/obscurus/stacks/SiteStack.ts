@@ -20,10 +20,10 @@ export default function SiteStack({ stack }: StackContext) {
       container: {
         healthCheck: {
           command: ["CMD-SHELL", "curl -f http://localhost/ || exit 1"],
-          interval: Duration.minutes(30),
-          retries: 20,
-          startPeriod: Duration.minutes(30),
-          timeout: Duration.minutes(30),
+          interval: Duration.minutes(1),
+          retries: 10,
+          startPeriod: Duration.minutes(10),
+          timeout: Duration.minutes(10),
         },
       },
     },
