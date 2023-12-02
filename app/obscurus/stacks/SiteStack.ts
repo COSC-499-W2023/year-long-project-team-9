@@ -19,11 +19,11 @@ export default function SiteStack({ stack }: StackContext) {
     cdk: {
       container: {
         healthCheck: {
-          command: ["CMD-SHELL", "curl -f <http://localhost/> || exit 1"],
-          interval: Duration.seconds(15),
-          retries: 10,
-          startPeriod: Duration.seconds(15),
-          timeout: Duration.minutes(1),
+          command: ["CMD-SHELL", "curl -f http://localhost/ || exit 1"],
+          interval: Duration.minutes(30),
+          retries: 20,
+          startPeriod: Duration.minutes(30),
+          timeout: Duration.minutes(30),
         },
       },
     },
