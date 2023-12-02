@@ -14,7 +14,6 @@ const Dashboard = () => {
         } else {
             codePresent = false;
         }
-        console.log(codePresent)
     }
     catch(e){
         

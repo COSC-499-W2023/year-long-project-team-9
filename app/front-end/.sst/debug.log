@@ -1,21 +1,21 @@
-2023-12-01T22:16:17.333Z   +139ms [debug] Config loaded {"version":"2.35.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"obscurus","region":"ca-central-1","stage":"imigh","ssmPrefix":"/sst/obscurus/imigh/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":298,"imports":[{"path":"aws-cdk-lib/aws-route53","kind":"import-statement","external":true},{"path":"sst","kind":"import-statement","external":true},{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1701468977215.mjs":{"imports":[],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":126}},"bytes":308}}},"paths":{"config":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end\\sst.config.ts","root":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end","out":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end\\.sst","artifacts":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end\\.sst\\artifacts"}}
-2023-12-01T22:16:19.709Z  +2376ms [debug] Using AWS profile 
-2023-12-01T22:16:19.712Z     +3ms [debug] Created AWS client IoTClient
-2023-12-01T22:16:19.712Z     +0ms [debug] Getting IoT endpoint
-2023-12-01T22:16:19.770Z    +58ms [debug] Synthesizing stacks...
-2023-12-01T22:16:19.783Z    +13ms [debug] Created AWS client STSClient
-2023-12-01T22:16:20.516Z   +733ms [debug] Using IoT endpoint: a2igkx8b6d7mtc-ats.iot.ca-central-1.amazonaws.com
-2023-12-01T22:16:20.516Z     +0ms [debug] Initializing bootstrap context
-2023-12-01T22:16:20.517Z     +1ms [debug] Created AWS client CloudFormationClient
-2023-12-01T22:16:20.566Z    +49ms [debug] Using identity Account: 548311273921 User: AROAX7KPGCHA33UAPS5HU:COSC499-2324-Muhammad.Bakar
-2023-12-01T22:16:20.571Z     +5ms [debug] Generating types in C:\Users\Muhammad\Desktop\499\year-long-project-team-9\app\front-end\.sst\types
-2023-12-01T22:16:20.742Z   +171ms [debug] Running 1 deferred tasks with concurrency: 7
-2023-12-01T22:16:21.145Z   +403ms [debug] Loaded bootstrap status
-2023-12-01T22:16:21.145Z     +0ms [debug] Bootstrap context initialized {"status":"ready","version":"7.2","bucket":"sstbootstrap-cacentral157c8926b-o8ecz5ofu4p8"}
-2023-12-01T22:16:21.146Z     +1ms [debug] Created AWS client S3Client
-2023-12-01T22:16:21.331Z   +185ms [debug] 
-2023-12-01T22:16:21.331Z     +0ms [debug] Loading v2 AWS SDK
-2023-12-01T22:16:21.331Z     +0ms [debug] Finished synthesizing
-2023-12-01T22:16:21.644Z   +313ms [debug] IoT connected
-2023-12-01T22:16:21.653Z     +9ms [debug] Fetching metadata for stack imigh-obscurus-Site failed {"name":"NoSuchKey","$fault":"client","$metadata":{"httpStatusCode":404,"requestId":"7V2F60VPY5XA1WAZ","extendedRequestId":"md7C9DGghFQciiWOy45F3G50LX3ucBYG/sEwgIuojrAislHSkulQ58Hif0qJ6IsSCpR85jkpBg8=","attempts":1,"totalRetryDelay":0},"Code":"NoSuchKey","Key":"stackMetadata/app.obscurus/stage.imigh/stack.imigh-obscurus-Site.json","RequestId":"7V2F60VPY5XA1WAZ","HostId":"md7C9DGghFQciiWOy45F3G50LX3ucBYG/sEwgIuojrAislHSkulQ58Hif0qJ6IsSCpR85jkpBg8=","message":"The specified key does not exist."}
-2023-12-01T22:16:21.655Z     +2ms [debug] Created AWS client SSMClient
+2023-12-02T16:06:08.067Z   +156ms [debug] Config loaded {"version":"2.35.1","cdkVersion":"2.101.1","constructsVersion":"10.2.69","config":{"name":"obscurus","region":"ca-central-1","stage":"imigh","ssmPrefix":"/sst/obscurus/imigh/"},"metafile":{"inputs":{"sst.config.ts":{"bytes":298,"imports":[{"path":"aws-cdk-lib/aws-route53","kind":"import-statement","external":true},{"path":"sst","kind":"import-statement","external":true},{"path":"sst/constructs","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{".sst.config.1701533167931.mjs":{"imports":[],"exports":["default"],"entryPoint":"sst.config.ts","inputs":{"sst.config.ts":{"bytesInOutput":126}},"bytes":308}}},"paths":{"config":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end\\sst.config.ts","root":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end","out":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end\\.sst","artifacts":"C:\\Users\\Muhammad\\Desktop\\499\\year-long-project-team-9\\app\\front-end\\.sst\\artifacts"}}
+2023-12-02T16:06:10.747Z  +2680ms [debug] Using AWS profile 
+2023-12-02T16:06:10.752Z     +5ms [debug] Created AWS client IoTClient
+2023-12-02T16:06:10.752Z     +0ms [debug] Getting IoT endpoint
+2023-12-02T16:06:10.827Z    +75ms [debug] Synthesizing stacks...
+2023-12-02T16:06:10.841Z    +14ms [debug] Created AWS client STSClient
+2023-12-02T16:06:11.627Z   +786ms [debug] Using IoT endpoint: a2igkx8b6d7mtc-ats.iot.ca-central-1.amazonaws.com
+2023-12-02T16:06:11.628Z     +1ms [debug] Initializing bootstrap context
+2023-12-02T16:06:11.629Z     +1ms [debug] Created AWS client CloudFormationClient
+2023-12-02T16:06:11.656Z    +27ms [debug] Using identity Account: 548311273921 User: AROAX7KPGCHA33UAPS5HU:COSC499-2324-Muhammad.Bakar
+2023-12-02T16:06:11.663Z     +7ms [debug] Generating types in C:\Users\Muhammad\Desktop\499\year-long-project-team-9\app\front-end\.sst\types
+2023-12-02T16:06:11.925Z   +262ms [debug] Running 1 deferred tasks with concurrency: 7
+2023-12-02T16:06:12.533Z   +608ms [debug] Loaded bootstrap status
+2023-12-02T16:06:12.534Z     +1ms [debug] Bootstrap context initialized {"status":"ready","version":"7.2","bucket":"sstbootstrap-cacentral157c8926b-o8ecz5ofu4p8"}
+2023-12-02T16:06:12.535Z     +1ms [debug] Created AWS client S3Client
+2023-12-02T16:06:12.830Z   +295ms [debug] 
+2023-12-02T16:06:12.831Z     +1ms [debug] Loading v2 AWS SDK
+2023-12-02T16:06:12.831Z     +0ms [debug] Finished synthesizing
+2023-12-02T16:06:13.138Z   +307ms [debug] Fetching metadata for stack imigh-obscurus-Site failed {"name":"NoSuchKey","$fault":"client","$metadata":{"httpStatusCode":404,"requestId":"ZHF7DN3CN0GJNS92","extendedRequestId":"LJPASLkNoWXQERCj4xVYuIIZG9ep6Zi3cvOYE7acAlMeUSuDTWrXfglIiK4jTaBX92miy9U6UE4=","attempts":1,"totalRetryDelay":0},"Code":"NoSuchKey","Key":"stackMetadata/app.obscurus/stage.imigh/stack.imigh-obscurus-Site.json","RequestId":"ZHF7DN3CN0GJNS92","HostId":"LJPASLkNoWXQERCj4xVYuIIZG9ep6Zi3cvOYE7acAlMeUSuDTWrXfglIiK4jTaBX92miy9U6UE4=","message":"The specified key does not exist."}
+2023-12-02T16:06:13.143Z     +5ms [debug] Created AWS client SSMClient
+2023-12-02T16:06:13.157Z    +14ms [debug] IoT connected
