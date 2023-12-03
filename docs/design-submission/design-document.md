@@ -10,7 +10,7 @@
         - Why you chose this architecture and
         - Why the components are where you put them.
 3. [Database Design](#database-design)
-    - ER Diagram:
+    - ER Diagram: \
     ![ER diagram](./img/er-diagram.png)
     - Quick summary: a user can make many video requests and has preferences. Moreover, the user can be in many chat rooms, each with at leadt two users and a maximum of 10 users. 
     - The center of the ER diagram is the User entity. Placing the user at the center of the ER diagram meant putting them at the center of the user experience and development. That is, placing the user at the center of the ER diagram meant we would develop a web app that places the user at the center. 
