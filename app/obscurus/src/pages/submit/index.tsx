@@ -88,7 +88,7 @@ const Index = ({ url }: { url: string }) => {
               r="27"
               fill={useCurrentTheme("background")}
               stroke={useCurrentTheme("primary")}
-              stroke-width="6"
+              strokeWidth="6"
             />
           </Link>
 
@@ -98,7 +98,7 @@ const Index = ({ url }: { url: string }) => {
             r="27"
             fill={useCurrentTheme("background")}
             stroke="#CBD5E1"
-            stroke-width="6"
+            strokeWidth="6"
           />
           <circle
             cx="627"
@@ -106,7 +106,7 @@ const Index = ({ url }: { url: string }) => {
             r="27"
             fill={useCurrentTheme("background")}
             stroke="#CBD5E1"
-            stroke-width="6"
+            strokeWidth="6"
           />
           <circle
             cx="428"
@@ -114,7 +114,7 @@ const Index = ({ url }: { url: string }) => {
             r="27"
             fill={useCurrentTheme("background")}
             stroke="#CBD5E1"
-            stroke-width="6"
+            strokeWidth="6"
           />
           <Link href="/submit/Upload">
             <circle
@@ -123,7 +123,7 @@ const Index = ({ url }: { url: string }) => {
               r="27"
               fill={useCurrentTheme("background")}
               stroke="#CBD5E1"
-              stroke-width="6"
+              strokeWidth="6"
             />
           </Link>
         </svg>
@@ -132,7 +132,7 @@ const Index = ({ url }: { url: string }) => {
           <div className="text-3xl font-bold py-5">
             Here is the video request from <span className="text-blue-600">Jimmy Conway</span>
           </div>
-          <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-accent h-[500px[">
+          <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-background h-[500px[">
             <CardContent className="grid h-full">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                   <CardTitle className="break-all text-2xl">Meeting</CardTitle>
@@ -156,7 +156,7 @@ const Index = ({ url }: { url: string }) => {
                 <div id="prevDesc">
                   <Label className="font-bold">Request Description</Label>
                   <Textarea
-                    className="resize-none"
+                    className="bg-accent resize-none"
                     value={"Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body v Request body Request body Request body Request body Request body v"}
                     readOnly
                     rows={9}
