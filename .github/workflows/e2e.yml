@@ -10,7 +10,6 @@ defaults:
   run:
     working-directory: ./app/obscurus/
 
-
 jobs:
     e2e-test:
       runs-on: ubuntu-latest
@@ -21,7 +20,8 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm ci
+      - run: npm run build
+      - run: npm run start &
       - run: npx playwright install --with-deps
       - name: Running Playwright E2E tests
         run: npm run test:e2e
-
