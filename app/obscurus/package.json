@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:e2e": "node e2eTestRunner.mjs"
+    "test:e2e": "npx playwright test"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.445.0",
@@ -45,6 +45,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
     "react-microsoft-login": "^2.0.1",
+    "react-webcam": "^7.2.0",
     "resize-observer-polyfill": "^1.5.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",

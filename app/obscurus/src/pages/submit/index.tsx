@@ -19,6 +19,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/router";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import { useTheme } from "next-themes";
+import { CalendarIcon } from "lucide-react";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -67,7 +70,7 @@ const Index = ({ url }: { url: string }) => {
 
   return (
     <Layout>
-      <div className="grid  justify-items-center items-center p-36 gap-10">
+      <div className="grid  justify-items-center items-center p-10 gap-10">
         <svg
           width="50%"
           height="60"
@@ -83,7 +86,7 @@ const Index = ({ url }: { url: string }) => {
               cx="30"
               cy="30"
               r="27"
-              fill={useCurrentTheme("primary")}
+              fill={useCurrentTheme("background")}
               stroke={useCurrentTheme("primary")}
               stroke-width="6"
             />
@@ -125,21 +128,110 @@ const Index = ({ url }: { url: string }) => {
           </Link>
         </svg>
 
-        <div className="flex items-center space-x-2">
-          <Checkbox id="terms" />
-          <label
-            htmlFor="terms"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            I agree to sell my soul
-          </label>
-          <Button
-            type="submit"
-            className=" justify-self-end px-8 font-extrabold"
-            onClick={() => router.push("/submit/Upload")}
-          >
-            Next
-          </Button>
+        <div className="grid py-5 gap-3">
+          <div className="text-3xl font-bold py-5">
+            Here's the video request from <span className="text-blue-600">Jimmy Conway</span>
+          </div>
+          <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-accent h-[500px[">
+            <CardContent className="grid h-full">
+              <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
+                  <CardTitle className="break-all text-2xl">Meeting</CardTitle>
+                
+              </div>
+
+              <div id="prevClient">
+                <Label className="font-bold">From</Label>
+                {/* {clientList.map((singleClient, index) => ( */}
+                  <ul>
+                    {/* {singleClient.client.length < 1 && ( */}
+                      <p className="break-all text-primary indent-2 pt-2 pb-2">
+                        jimmy.conway@gmail.com
+                      </p>
+                  </ul>
+              </div>
+              <div
+                id="prevDescAndData"
+                className="grid grid-cols-2 left-justify gap-5 pt-2"
+              >
+                <div id="prevDesc">
+                  <Label className="font-bold">Request Description</Label>
+                  <Textarea
+                    className="resize-none"
+                    value={"Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body v Request body Request body Request body Request body Request body v"}
+                    readOnly
+                    rows={9}
+
+                  />
+                </div>
+                <div className="grid grid-row-4 font-bold">
+                  <div id="prevBlurred">
+                    <Label className=''>Video Processing</Label>
+                      <div className="w-full ">
+                        Blurred
+                      </div>
+                  </div>
+                  <div id="prevDate" className="pb-1.5 ">
+                    <Label>Due Date</Label>
+                    <div className="flex items-center" >
+                      <CalendarIcon className="mr-2"  height={20} width={20}/>
+                      <div className="text-base">December 3, 2023</div>
+                    </div>
+                  </div>
+                  <div id="prevLanguage" className="pb-1.5">
+                    <Label>Video Language</Label>
+                      <div className="w-full" >
+                        Language
+                      </div>
+                  </div>
+                  {/* <div id="prevTerms" className="flex items-center space-x-2">
+                    <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                      See the{" "}
+                      <a
+                        href=""
+                        target="_blank"
+                        className="text-blue-600 dark:text-blue-500 hover:underline"
+                      >
+                        terms and conditions
+                      </a>{" "}
+                      here
+                    </Label>
+                  </div> */}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <div className="flex items-center gap-10 justify-end py-5">
+            <div className="flex gap-2">
+              <Checkbox id="terms" />
+              <label
+                htmlFor="terms"
+                className="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                I accept this request
+              </label>
+            </div>
+            <div className="flex gap-2">
+              <Checkbox id="terms" />
+              <label
+                htmlFor="terms"
+                className="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                I agree to the{" "}
+                <a className="visited:text-purple-500 text-blue-500">
+                  terms of service
+                </a>
+              </label>
+            </div>
+            <div>
+              <Button
+                type="submit"
+                className=" justify-self-end px-8 font-extrabold"
+                onClick={() => router.push("/submit/Upload")}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
