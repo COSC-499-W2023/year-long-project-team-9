@@ -45,35 +45,58 @@
 ------
 
 #### Serverless Backend
-Our backend architecture is serverless, utilizing AWS Lambda for compute operations, which allows for automatic scaling and management of the infrastructure. This aligns with our need for a cost-effective, low-maintenance solution capable of handling variable workloads.
+Our backend architecture is serverless, utilizing AWS Lambda for compute operations, which allows for automatic scaling and management of the infrastructure. This aligns with our need for a cost-effective, low-maintenance solution capable of handling variable workloads. The serverless approach also allows us to focus on developing our app, instead of managing infrastructure. Further, we wanted to get experience with the serverless approach, as it is becoming increasingly popular and obviously integrates well with AWS. SST provides the Function construct, which allows us to easily create Lambda functions, but we can also use the AWS CDK if needed.
 
-#### Real-time Messaging
-For real-time user messaging, we plan to implement a WebSocket connection using the SST construct for Amazon API Gateway. This service manages the persistent connections needed for real-time bi-directional communication, which is essential for the chat feature of our app.
+
+#### Communication between Users
+For real-time user messaging, we plan to implement a WebSocket connection using the SST construct for Amazon API Gateway. This service manages the persistent connections needed for real-time bi-directional communication, which is essential for the chat feature of our app. Further, we can employ Amazon DynamoDB to store user connection information, which is critical for associating messages with specific users. This approach allows us to easily scale our messaging service, and the serverless nature of API Gateway ensures that we only pay for the resources we use. Finally, this makes it easy to integrate into our Next.js app, as we can use Next.js' API routing to make an API call to our API Gateway endpoint and start the WebSocket connection. Finally, Amazon Simple Email Service (SES) will be used for sending emails, which is critical for sending notifications to users about requests and messages.
 
 #### Video Processing
-Video processing is managed by AWS Step Functions, orchestrating a workflow that involves AWS Lambda for initial processing and Amazon Elastic Container Service (ECS) with AWS Fargate for heavier tasks such as face detection with Amazon Rekognition and blurring with OpenCV.
+Video processing is managed by AWS Step Functions, orchestrating a workflow to handle the video processing. Step Functions helps manage how the system react to the decisions the user makers, such as choosing to re-record the video. After extracting the uploaded video from S3, we can send it to a containerized service running with Fargate on ECS. The container will have a Python environment and use the Amazon Rekognition API to detect faces in the video, and then use OpenCV to blur the faces. SST provides the Service construct, which allows us to easily deploy our service to ECS with Fargate. This approach allows us to easily scale our video processing workflow, and the serverless nature of Fargate ensures that we only pay for the resources we use. Finally, this makes it easy to integrate into our Next.js app, as we can use Next.js' API routing to make an API call to our API Gateway endpoint and start the video processing workflow.
 
 #### Storage and Database
-Amazon S3 is utilized for storing static assets and user-uploaded videos, providing a durable and secure solution. Amazon DynamoDB serves as our database, storing user and connection information, which is critical for associating messages and videos with specific users.
+Amazon S3 is utilized for storing static assets and user-uploaded videos, providing a durable and secure solution. Amazon DynamoDB serves as our database, storing user, messaging, and connection information, which is critical for associating messages and videos with specific users. DynamoDB is a NoSQL database, which is a good fit for our app, as we do not need to store relational data. Further, DynamoDB is a serverless database, which means we do not need to manage the infrastructure, and it is highly scalable, which is important for our app. Finally, it integrates well with other AWS services, like Lambda and API Gateway, which is important for our app. SST provides the Table construct, which allows us to easily create a DynamoDB table, and the Bucket construct, which allows us to easily create an S3 bucket and bind it to our Next.js app.
+
+#### API Routing
+
+We use Next.js' API routing to create API endpoints for our app, which allows us to easily communicate with our backend services. This approach allows us to easily integrate our backend services with our Next.js app. We can also use the Api construct to create endpoints between backend services, which is useful for communication between services, like our messaging service and our video processing service.
 
 #### Authentication and Authorization
-We use Amazon Cognito for user authentication and authorization, which provides a secure and scalable solution for user management. This allows us to easily manage user accounts and permissions, and provides a secure way to authenticate users.
-
+We use Amazon Cognito for user authentication and authorization, which provides a secure and scalable solution for user management. This allows us to easily manage user accounts and permissions, and provides a secure way to authenticate users. However, as we are using Cognito, we are limited to using Cognito's hosted UI for authentication, which means we cannot customize the login page. This is a limitation of Cognito, and we intend to use SST's own `Auth construct in the future, which will allow us to customize the login page and easily integrate the login providers we have chosen, being Google, Facebook, and Microsoft.
 
 #### Continuous Integration and Deployment
-We adopted GitHub Actions for our CI/CD pipeline, automating our testing and deployment process. Our codebase undergoes automated tests, and upon successful completion, SST deploys the latest build to AWS, ensuring that our production environment is always up to date with the latest changes.
+We adopted GitHub Actions for our CI/CD pipeline, automating our testing and deployment process. Our codebase undergoes automated tests, and upon successful completion, Seed reploys the latest build of our SST app to AWS, ensuring that our production environment is always up to date with the latest changes. We can also use the SST CLI to deploy and test our app locally. We had initially planned to use AWS CodeBuild and CodePipeline for our CI/CD pipeline, but we decided to use GitHub Actions instead, as it is easier to use and provides us with more flexibility.
 
+#### UI/UX
+
+We use React and Tailwind CSS for styling our app, which allows us to easily customize the design and build a responsive app. We also use shadcn's UI library for Tailwind CSS, which provides us with beautiful components that we can use to build our app. See the Frameworks section for more information.
 
 #### Testing
 
 We use Jest for front-end unit testing, Vitest for testing AWS infrastructure, and Playwright for end-to-end testing. Our unit tests are run automatically as part of our CI/CD pipeline, and our end-to-end tests are run manually before each deployment. We also use ESLint to ensure that our code adheres to coding standards.
 
 #### Frontend Hosting and Delivery
-Our frontend is built using Next.js and hosted on Amazon CloudFront, which provides a fast content delivery network (CDN) service. This ensures low-latency access to our app globally, improving the user experience by reducing load times.
+Our frontend is built using Next.js and hosted on Amazon CloudFront, which provides a fast content delivery network (CDN) service. This ensures low-latency access to our app globally, improving the user experience by reducing load times. Further, we can use the server-side rendering and static site generation capabilities of Next.js to improve performance and SEO. 
+
+
+#### Design Choices and Changes
+
+----
+
+##### **Change 1: Switch from Amplify to SST:**
+
+Initially, we used AWS Amplify for backend management, but we faced limitations in backend customization and direct AWS service integration. Shifting to SST significantly enhanced our backend flexibility, allowing direct use of AWS services like Lambda, API Gateway, and Step Functions. This change enabled a more customized, scalable solution, better aligned with our application's specific needs. Further, SST's OpenNext Next.js adapter allowed us to deploy our Next.js app directly to AWS, instead of having to deploy to Vercel, which is the default deployment method for Next.js apps. At the time of planning, Amplify was not yet integrated with Next.js, so we chose to use SST instead. However, Amplify has since gotten a Next.js adapter of there own, so we could have used Amplify instead of SST, but we are still happy with our decision to use SST, as it has allowed us to have more control over our backend and has allowed us to learn more about AWS services. While Amplify also offers higher-level abstractions for things like S3 and Authentication, SST has better support for various AWS services, like Fargate and API Gateway, and we are able to use the AWS CDK if needed.
+
+##### **Change 2: Streamlining Architecture:**
+We initially planned to implement technologies like Elasticache and Batch for optimization. However, to focus on our core product, we decided to streamline our architecture, removing these components. This reduction in complexity accelerated development and allowed us to concentrate on delivering essential features, ensuring a solid foundation before considering such optimizations. Further, we have learned it can be best to forgo optimizations until they are needed, as they can be costly to implement and maintain. SST and the CDK enable us to easily add these components in the future if needed or desired. And while the CI/CD of Amplify is nice, we use Seed to deploy our app, which is also very easy to use and allows us to deploy our app from GitHub to AWS.
+
+#### Frameworks
+
+----
 
 The key frameworks we are using for our app are **Next.js** and **Tailwind CSS** for the front-end, and **SST** for the back-end:
 
-#### Next.js
+##### Next.js
 
 ------------------
 
@@ -83,7 +106,7 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 - Thanks to SST's OpenNext Next.js adatper, we are able to get the full functionality of Next.js while still being able to deploy our app on AWS instead of Vercel.
 - The API routing functionality of Next.js allows us to easily create API endpoints for our app and allow our front-end to communicate with our back-end services.
 
-#### TailwindCSS
+##### TailwindCSS
 
 ------------------
 
@@ -92,7 +115,7 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 - Tailwind has many useful utility classes that enable rapid development, with the ability to easily customize the design.
 - We used [shadcn's UI library](https://ui.shadcn.com/) for TailwindCSS, granting us access to beautiful components that we can use to build our app.
 
-#### SST
+##### SST
 
 ------------------
 
@@ -113,6 +136,4 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 
 ## Features
 
-
-## Testing
 
