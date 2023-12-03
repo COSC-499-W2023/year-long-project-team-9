@@ -132,7 +132,7 @@ const Index = ({ url }: { url: string }) => {
           <div className="text-3xl font-bold py-5">
             Here's the video request from <span className="text-blue-600">Jimmy Conway</span>
           </div>
-          <Card id="previewCard" className="drop-shadow-md border-2 border-secondary h-[500px[">
+          <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-accent h-[500px[">
             <CardContent className="grid h-full">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                   <CardTitle className="break-all text-2xl">Meeting</CardTitle>
@@ -166,22 +166,22 @@ const Index = ({ url }: { url: string }) => {
                 <div className="grid grid-row-4 font-bold">
                   <div id="prevBlurred">
                     <Label className=''>Video Processing</Label>
-                      <Button className="w-full ">
+                      <div className="w-full ">
                         Blurred
-                      </Button>
+                      </div>
                   </div>
-                  <div id="prevDate" className="pb-1.5">
+                  <div id="prevDate" className="pb-1.5 ">
                     <Label>Due Date</Label>
-                    <Button className="w-full" variant={"default"}>
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      December 3, 2023
-                    </Button>
+                    <div className="flex items-center" >
+                      <CalendarIcon className="mr-2"  height={20} width={20}/>
+                      <div className="text-base">December 3, 2023</div>
+                    </div>
                   </div>
                   <div id="prevLanguage" className="pb-1.5">
                     <Label>Video Language</Label>
-                      <Button className="w-full" >
+                      <div className="w-full" >
                         Language
-                      </Button>
+                      </div>
                   </div>
                   {/* <div id="prevTerms" className="flex items-center space-x-2">
                     <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
