@@ -133,3 +133,20 @@
 ### Picture of Week 12's Survey
 
 ![Week 12 Survey](img/soren-stenback/Week12-Survey-ID4.png)
+
+---
+
+## Week 13
+
+### November 27 - December 3, 2023
+
+- This week I worked on Milestone #3, the Design Submission.
+- The goals for this week were to do help make the Design presentation and research databases using SST.
+
+### Picture of Project Board
+
+![Week 13 Project Board](img/soren-stenback/Week13-ProjectBoard-ID4.png)
+
+### Picture of Week 13's Survey
+
+![Week 13 Survey](img/soren-stenback/Week13-Survey-ID4.png)
