@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
+import Webcam from "react-webcam";
+import router from "next/router";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -29,6 +31,8 @@ export async function getServerSideProps() {
   return { props: { url } };
 }
 const Upload = ({ url }: { url: string }) => {
+  const [file, setFile] = useState<File | undefined>(undefined);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUploadClick = () => {
@@ -39,6 +43,7 @@ const Upload = ({ url }: { url: string }) => {
     e.preventDefault();
 
     const file = fileInputRef.current?.files?.[0];
+    setFile(file);
     if (!file) {
       console.error("No file selected");
       return;
@@ -72,7 +77,7 @@ const Upload = ({ url }: { url: string }) => {
 
   return (
     <Layout>
-      <div className="grid  justify-items-center items-center p-36 gap-10">
+      <div className="grid  justify-items-center items-center p-10 gap-10">
         <svg
           width="50%"
           height="60"
@@ -126,6 +131,9 @@ const Upload = ({ url }: { url: string }) => {
           />
         </svg>
 
+        <div className="text-3xl font-bold pt-10">
+          Upload or Record Your Video
+        </div>
         <div className="grid justify-items-center border-dashed border-black border rounded-lg w-[500px] bg-secondary dark:border-white">
           <form onSubmit={handleSubmit} className="">
             <div className="grid w-full gap-10 h-full  max-w-sm items-center rounded-xl p-10">
@@ -145,12 +153,11 @@ const Upload = ({ url }: { url: string }) => {
                 />
               </svg>
               <div className="flex justify-center w-full">
-                
                 <Label
                   htmlFor="video"
                   className="text-xl font-bold text-center"
                 >
-                  Upload or Record Your Video
+                  {file ? `Selected file: ${file.name}` : "No file selected."}
                 </Label>
               </div>
               <input
@@ -179,11 +186,7 @@ const Upload = ({ url }: { url: string }) => {
                   </Button>
                 </div>
                 <div className="justify-self-end">
-                  <Button
-                    className=" font-extrabold"
-                  >
-                    Record
-                  </Button>
+                  <Button className=" font-extrabold">Record</Button>
                 </div>
               </div>
               <div className="grid items-center text-sm justify-items-center w-full">
@@ -198,6 +201,22 @@ const Upload = ({ url }: { url: string }) => {
             </div>
           </form>
         </div>
+        {/* <div className="flex  justify-between gap-80 ">
+          <Button
+            type="submit"
+            className=" justify-self-end px-8 font-extrabold"
+            onClick={() => router.push("..")}
+          >
+            Back
+          </Button>
+          <Button
+                type="submit"
+                className=" justify-self-end px-8 font-extrabold"
+                onClick={() => router.push("..")}
+              >
+                Next
+              </Button>
+        </div> */}
       </div>
     </Layout>
   );

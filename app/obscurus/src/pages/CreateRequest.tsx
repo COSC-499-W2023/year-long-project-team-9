@@ -151,7 +151,7 @@ const CreateRequest = () => {
           className="container grid grid-cols-1 md:grid-cols-2 pt-10 gap-10 "
         >
           {/*Request Info Card*/}
-          <Card id="requestCard" className="flex flex-col">
+          <Card id="requestCard" className="flex flex-col drop-shadow-md border-2">
             <CardContent className="grid gap-1">
               {/*Code for the Request Title input*/}
               <div id="requestTitle" className="pt-4">
@@ -337,7 +337,7 @@ const CreateRequest = () => {
             </CardContent>
           </Card>
           {/*Request Preview Card*/}
-          <Card id="previewCard">
+          <Card id="previewCard" className="drop-shadow-md border-2 border-secondary">
             <CardContent className="grid">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                 {title.length < 1 && (
@@ -346,7 +346,9 @@ const CreateRequest = () => {
                 {title.length >= 1 && (
                   <CardTitle className="break-all text-2xl">{title}</CardTitle>
                 )}
+                
               </div>
+
               <div id="prevClient">
                 <Label>Client(s)</Label>
                 {clientList.map((singleClient, index) => (
