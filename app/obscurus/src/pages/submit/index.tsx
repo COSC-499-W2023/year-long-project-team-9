@@ -130,7 +130,7 @@ const Index = ({ url }: { url: string }) => {
 
         <div className="grid py-5 gap-3">
           <div className="text-3xl font-bold py-5">
-            Here's the video request from <span className="text-blue-600">Jimmy Conway</span>
+            Here is the video request from <span className="text-blue-600">Jimmy Conway</span>
           </div>
           <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-accent h-[500px[">
             <CardContent className="grid h-full">
