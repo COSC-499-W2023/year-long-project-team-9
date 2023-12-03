@@ -26,6 +26,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Calendar as CalendarIcon } from "lucide-react";
 
+export async function getStaticProps() {
+  // No fetched data needed
+  return { props: {} };
+}
+
 {
   /*FUNCTIONS*/
 }

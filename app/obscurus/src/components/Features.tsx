@@ -9,19 +9,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { ScanFace, ShieldCheck, Video } from "lucide-react";
+import "aos/dist/aos.css";
+import AOS from 'aos';
+import { useEffect } from "react";
 
 const Features = () => {
+
+
+  useEffect(() => {
+    
+    AOS.init();
+
+  }, []);
+  
   return (
     <>
       <div className="grid grid-cols-3 items-center justify-center justify-items-center gap-24 min-h-screen">

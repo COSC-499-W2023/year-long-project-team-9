@@ -80,7 +80,7 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
         <NavigationMenu>
           <Link href="/" className="p-5">
             <Image
-              className="min-h-full"
+              className="min-h-full min-w-full"
               src="/logo.svg"
               alt="obscurus"
               width={60}

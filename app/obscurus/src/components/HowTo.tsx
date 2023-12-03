@@ -5,8 +5,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useEffect } from "react";
+import AOS from 'aos';
+import "aos/dist/aos.css";
 
 const HowTo = () => {
+
+
+  useEffect(() => {
+    
+    AOS.init();
+
+  }, []);
+
+
   return (
     <div className="pb-64 w-full text-base pl-1 drop-shadow-md">
       <div className="flex justify-center">

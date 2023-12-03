@@ -7,10 +7,8 @@ export default function Document() {
       <Head />
       
       <body>
-        <ThemeProvider>
         <Main />
         <NextScript />
-        </ThemeProvider>
       </body>
     </Html>
   )

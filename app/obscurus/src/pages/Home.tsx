@@ -5,7 +5,13 @@ import HowTo from "../components/HowTo";
 import { ArrowBigDownIcon } from "lucide-react";
 
 
+export async function getStaticProps() {
+  return { props: {} };
+}
+
 export default function Home() {
+
+  
   return (
     <div className="grid items-center justify-items-center justify-center min-h-screen min-w-full p-36">
       <Hero />
