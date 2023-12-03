@@ -1,3 +1,4 @@
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 import {
   StackContext,
   NextjsSite,
@@ -17,12 +18,24 @@ export default function SiteStack({ stack }: StackContext) {
 //     bind: [bucket],
 //   });
 
-  const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table],
-    environment: { TABLE_NAME: table.tableName },
-  });
+const site = new NextjsSite(stack, "site", {
+  bind: [bucket, table],
+  environment: {
+    TABLE_NAME: table.tableName,
+  },
+  customDomain: {
+    domainName: "obscurus.me",
+    domainAlias: "www.obscurus.me",
+    cdk: {
+      hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+        hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+        zoneName: "obscurus.me",
+      }),
+    },
+  },
+});
 
   stack.addOutputs({
-    SiteUrl: site.url,
+    Site: site.customDomainUrl || site.url,
   });
 }
