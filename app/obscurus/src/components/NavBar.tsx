@@ -41,7 +41,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AppleLogin from "react-apple-login";
-import {useCurrentTheme} from "@/components/hooks/useCurrentTheme"
+import {useCurrentTheme} from "@/components/hooks/useCurrentTheme";
+import Login from "../components/Login";
 
 
 const NavBar = () => {
@@ -146,86 +147,7 @@ const [customClassName, onCustomClassNameChange] = useState("my-button");
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {signedIn ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar onClick={() => setSignedIn(false)}>
-                <AvatarImage src="https://github.com/jansdhillon.png" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={SignOut}>Log out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <div className="grid items-center justify-end">
-            <Dialog open={showSignInDialog} onOpenChange={setShowSignInDialog}>
-              <DialogTrigger asChild>
-                <Button variant="default"><span className="font-bold text-base">Sign In</span></Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Sign In</DialogTitle>
-                  <DialogDescription>
-                    Enter your credentials to sign in.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Username
-                    </Label>
-                    <Input
-                      id="username"
-                      type="username"
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="username" className="text-right">
-                      Password
-                    </Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  {/* <AppleLogin
-                    clientId={"com.react.apple.login"}
-                    redirectURI={"https://redirectUrl.com"}
-                    responseType={"code"}
-                    responseMode={"query"}
-                    usePopup={false}
-                    designProp={{
-                      height: 30,
-                      width: 140,
-                      color: "black",
-                      border: false,
-                      type: "sign-in",
-                      border_radius: 15,
-                      scale: 1,
-                      locale: "en_US",
-                    }}
-                  /> */}
-                  <Button type="submit" onClick={SignIn}>
-                    <span className="font-bold text-base">Sign In</span>
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-        )}
+        <Login/>
       </div>
     </div>
   );

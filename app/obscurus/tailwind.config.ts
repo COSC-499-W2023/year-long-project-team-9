@@ -8,6 +8,10 @@ module.exports = {
     './src/**/*.{ts,tsx}',
 	],
   theme: {
+    fontFamily: {
+      'roboto': ['Roboto','sans-serif'],
+      'segoe': ['Segoe UI','sans-serif'],
+    },
     container: {
       center: true,
       padding: "2rem",
