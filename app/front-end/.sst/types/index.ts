@@ -24,6 +24,24 @@ declare module "sst/node/table" {
   }
 }
 
+import "sst/node/table";
+declare module "sst/node/table" {
+  export interface TableResources {
+    "Users": {
+      tableName: string;
+    }
+  }
+}
+
+import "sst/node/table";
+declare module "sst/node/table" {
+  export interface TableResources {
+    "Rooms": {
+      tableName: string;
+    }
+  }
+}
+
 import "sst/node/site";
 declare module "sst/node/site" {
   export interface NextjsSiteResources {
