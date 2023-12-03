@@ -10,8 +10,11 @@
         - Why you chose this architecture and
         - Why the components are where you put them.
 3. [Database Design](#database-design)
-    - ER Diagram
-    - Explain why the data is modeled this way and whether there is another way to model it but why this is better. Was there a time when you thought of having something different but chose this instead? If so, explain what that was and why that decision was canned.
+    - ER Diagram:
+    ![ER diagram](./img/er-diagram.png)
+    - Quick summary: a user can make many video requests and has preferences. Moreover, the user can be in many chat rooms, each with at leadt two users and a maximum of 10 users. 
+    - The center of the ER diagram is the User entity. Placing the user at the center of the ER diagram meant putting them at the center of the user experience and development. That is, placing the user at the center of the ER diagram meant we would develop a web app that places the user at the center. 
+        - Of course, another possible way to model the web app is to place the Request entity at the center. Such a diagram would have the consequence that, for example, there would be only one chat room per request. However, the ladder approach would not have worked since we wish to develop a project that could easily be extended beyond the MVP. By having the requests at the center, the user will only be able to interact with other features mediated through request, leading to a one-dimensional web app. Early in the process, around the time of conceptualizing the MVP, there was some thought given to this ladder approach. However, such a model was abandoned for the reason mentioned above. 
 4. [User Interface Design](#ui-design)
     - Navigation Diagram
     - Diagram of forgone alternative
