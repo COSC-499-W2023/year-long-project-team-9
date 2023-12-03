@@ -41,7 +41,32 @@
 
 ------
 
-The system architecture we selected for this project is serverless. This means the system is run by using various AWS managed services and does not require the maintenance of servers. 
+#### Serverless Backend
+Our backend architecture is serverless, utilizing AWS Lambda for compute operations, which allows for automatic scaling and management of the infrastructure. This aligns with our need for a cost-effective, low-maintenance solution capable of handling variable workloads.
+
+#### Real-time Messaging
+For real-time user messaging, we plan to implement a WebSocket connection using the SST construct for Amazon API Gateway. This service manages the persistent connections needed for real-time bi-directional communication, which is essential for the chat feature of our app.
+
+#### Video Processing
+Video processing is managed by AWS Step Functions, orchestrating a workflow that involves AWS Lambda for initial processing and Amazon Elastic Container Service (ECS) with AWS Fargate for heavier tasks such as face detection with Amazon Rekognition and blurring with OpenCV.
+
+#### Storage and Database
+Amazon S3 is utilized for storing static assets and user-uploaded videos, providing a durable and secure solution. Amazon DynamoDB serves as our database, storing user and connection information, which is critical for associating messages and videos with specific users.
+
+#### Authentication and Authorization
+We use Amazon Cognito for user authentication and authorization, which provides a secure and scalable solution for user management. This allows us to easily manage user accounts and permissions, and provides a secure way to authenticate users.
+
+
+#### Continuous Integration and Deployment
+We adopted GitHub Actions for our CI/CD pipeline, automating our testing and deployment process. Our codebase undergoes automated tests, and upon successful completion, SST deploys the latest build to AWS, ensuring that our production environment is always up to date with the latest changes.
+
+
+#### Testing
+
+We use Jest for front-end unit testing, Vitest for testing AWS infrastructure, and Playwright for end-to-end testing. Our unit tests are run automatically as part of our CI/CD pipeline, and our end-to-end tests are run manually before each deployment. We also use ESLint to ensure that our code adheres to coding standards.
+
+#### Frontend Hosting and Delivery
+Our frontend is built using Next.js and hosted on Amazon CloudFront, which provides a fast content delivery network (CDN) service. This ensures low-latency access to our app globally, improving the user experience by reducing load times.
 
 The key frameworks we are using for our app are **Next.js** and **Tailwind CSS** for the front-end, and **SST** for the back-end:
 
@@ -75,24 +100,6 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 - SST allows us to easily deploy our app to AWS, and provides a local development environment for us to test our Lambda functions locally.
 - SST, through OpenNext, allows us to deploy our Next.js app directly to AWS with full functionality, instead of having to deploy to Vercel, which is the default deployment method for Next.js apps.
 
-
-#### AWS Services
-
-------------------
-
-
-SST provides a wrapper for the AWS CDK, which allows us to create AWS infrastructure with code, so we can easily create the AWS services we need for our app without losing the ability to customize the underlying CDK.
-
-The AWS services we are using for our app are as follows:
-- **Lambda**: We are using Lambda to run our back-end code. We are using Lambda functions to handle API requests, and to handle the logic for our app. [SST provides a wrapper construct for Lambda functions](https://docs.sst.dev/constructs/Function).
-- **DynamoDB**: We are using DynamoDB as our database. We are using DynamoDB to store our user data, as well as our data for our app. [SST provides a wrapper construct for DynamoDB](https://docs.sst.dev/constructs/Table).
-- **Cognito**: We are using Cognito to handle user authentication. We are using Cognito to handle user sign-up, sign-in, and sign-out. However, we intend to switch to SST's own Auth service, which is free, open-source and stateless.
-- **S3**: We are using S3 to store our app's static assets. We are using S3 to store our app's images, as well as our app's CSS and JS files. SST provides the Bucket construct for S3 which makes it easier to use while still allowing for the customization of the underlying CDK.
-- **API Gateway**: We are using API Gateway to handle API requests. We are using API Gateway to route API requests to our Lambda functions. SST provides a wrapper for API Gateway that makes it easier to use.
-- **CloudFront**: We are using CloudFront to serve our app's static assets. We are using CloudFront to serve our app's images, as well as our app's CSS and JS files. This is managed by SST.
-- **Route 53**: We are using Route 53 to handle our app's domain name. We are using Route 53 to route our app's domain name to our app's CloudFront distribution.
-- **CloudWatch**: We are using CloudWatch to handle our app's logging. We are using CloudWatch to log our app's API requests, as well as our app's Lambda function invocations. This is managed by SST.
-- **IAM**: We are using IAM to handle our app's permissions. We are using IAM to grant our app's Lambda functions permission to access our app's DynamoDB tables. This is managed by SST.
 
 
 ## Database Design
