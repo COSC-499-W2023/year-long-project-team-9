@@ -125,7 +125,7 @@ const Upload = ({ url }: { url: string }) => {
             cx="229"
             cy="30"
             r="27"
-            fill={primary}
+            fill={background}
             stroke={primary}
             stroke-width="6"
           />

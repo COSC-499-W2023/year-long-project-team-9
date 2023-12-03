@@ -86,7 +86,7 @@ const Index = ({ url }: { url: string }) => {
               cx="30"
               cy="30"
               r="27"
-              fill={useCurrentTheme("primary")}
+              fill={useCurrentTheme("background")}
               stroke={useCurrentTheme("primary")}
               stroke-width="6"
             />
