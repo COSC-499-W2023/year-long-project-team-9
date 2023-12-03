@@ -12,7 +12,7 @@ exec('next build', (err, stdout, stderr) => {
   }
 
   // Start the Next.js server
-  const server = spawn('npm', ['run', 'start']);
+  const server = spawn('npm', ['run', 'dev']);
 
   server.stdout.on('data', (data) => {
     console.log(`Server: ${data}`);
