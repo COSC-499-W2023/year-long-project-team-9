@@ -29,7 +29,6 @@
     - Sign In Page - Soren Stenback
         - For medical reasons, the professor granted Soren Stenback the option not to commit to further work. For these reasons, feature 8 is not present. 
         
-
 6. Other
     - Development Philosophy: Emphasizing agile development for rapid feature rollouts and responsiveness to user feedback.
     - CI/CD Strategy: Implementing a robust CI/CD pipeline using GitHub Actions and Seed for consistent, error-free deployments.
@@ -163,10 +162,10 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 - Moreover, given that is a NoSQL database, it is resilient to change in data. Given early development phases comes with many unexpected changes, DynamoDB is equipped well to handle unexpected changes. 
 
 ## UI Design
-Navigaton Diagram: 
+Navigaton Diagram: \
 ![Navigation Diagram](img/navdiagram.png)
 
-Forgone Alternative:
+Forgone Alternative: \
 ![Alt Navigation Diagram](img/navdiagram2.png)
 We chose this design over the forgone alternative because we found it redundant to have a dashboard page. We found that many functions of this dashboard page were better implemented in other areas, such as the navigation bar and request listings page. Additionally, if we implemented a dashboard, once you finished a function on another page, such as creating a request, the page would redirect automatically to the dashboard, which we found restrictive and limiting to the user. 
 
