@@ -140,7 +140,7 @@ const CreateRequest = () => {
   return (
     <Layout>
       {/*added by jan*/}
-      <div className="grid justify-center items-center ">
+      <div className="grid justify-center items-center pt-10 ">
         <h1 className="text-3xl font-extrabold">Create Request</h1>
       </div>
 

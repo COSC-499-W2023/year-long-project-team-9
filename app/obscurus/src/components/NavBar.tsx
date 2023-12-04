@@ -114,13 +114,13 @@ const NavBar = () => {
                 </div>
               </NavigationMenuItem>
             </Link>
-            <Link href="submit">
+            {/* <Link href="submit">
             <NavigationMenuItem>
               <div  className="font-bold text-base p-5 hover:cursor-pointer">
                 Upload Video
               </div>
             </NavigationMenuItem>
-            </Link>
+            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
