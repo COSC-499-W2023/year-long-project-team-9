@@ -350,7 +350,7 @@ const CreateRequest = () => {
               </div>
 
               <div id="prevClient">
-                <Label>Client(s)</Label>
+                <Label className="font-bold">From</Label>
                 {clientList.map((singleClient, index) => (
                   <ul key={index}>
                     {singleClient.client.length < 1 && (
@@ -371,7 +371,7 @@ const CreateRequest = () => {
                 className="grid grid-cols-2 left-justify gap-5 pt-2"
               >
                 <div id="prevDesc">
-                  <Label className="">Request Description</Label>
+                  <Label className="font-bold">Request Description</Label>
                   <Textarea
                     className="bg-accent resize-none"
                     placeholder={desc}

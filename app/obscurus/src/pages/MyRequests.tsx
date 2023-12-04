@@ -263,91 +263,17 @@ const MyRequests = () => {
             <CardContent className="grid">
               {selectedRequest ? (
                 <>
-                  <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
-                    <CardTitle className="break-all text-2xl">
-                      {selectedRequest.reqtitle}
-                    </CardTitle>
-                  </div>
-
-                  <div id="prevClient">
-                    <Label className="font-bold">From</Label>
-                    <div className="break-all text-primary indent-2 pt-2 pb-2 font-bold">
-                      {selectedRequest.senderEmail}
-                    </div>
-                  </div>
-
-                  <div
-                    id="prevDescAndData"
-                    className="grid grid-cols-2 left-justify gap-5 pt-2"
-                  >
-                    <div id="prevDesc">
-                      <Label className="">Request Description</Label>
-
-                      <Textarea
-                        className="bg-accent resize-none"
-                        value={selectedRequest.description}
-                        readOnly
-                        rows={9}
-                      />
-                    </div>
-                    <div className="grid grid-row-4 font-bold">
-                      <div id="prevDate" className="pt-10 ">
-                        <Label>Due Date</Label>
-                        <div className="flex items-center">
-                          <CalendarIcon
-                            className="mr-2"
-                            height={20}
-                            width={20}
-                          />
-                          <div className="text-base">
-                            {selectedRequest.reqdue}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="grid">
-                        <div id="prevBlurred">
-                          <Label className="">Video Processing</Label>
-                          <div className="w-full ">Blurred</div>
-                        </div>
-
-                        <div id="prevLanguage" className="pb-1.5">
-                          <Label>Video Language</Label>
-                          <div className="w-full">English</div>
-                        </div>
-
-                        <div
-                          id="prevTerms"
-                          className="flex items-center space-x-10"
-                        >
-                          <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
-                            See the{" "}
-                            <a
-                              href=""
-                              target="_blank"
-                              className="text-blue-600 dark:text-blue-500 hover:underline"
-                            >
-                              terms and conditions
-                            </a>{" "}
-                            here
-                          </Label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
                   <div className="grid">
-                    <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
+                    <div id="prevTitle" className="pt-6 grid grid-row-3">
                       <CardTitle className="break-all text-2xl">
-                        {requests[0].reqtitle}
+                        {selectedRequest.reqtitle}
                       </CardTitle>
                     </div>
 
                     <div id="prevClient">
-                      <Label className="">From</Label>
+                      <Label className="font-bold">From</Label>
                       <div className="break-all text-primary indent-2 pt-2 pb-2 ">
-                        {requests[0].senderEmail}
+                        {selectedRequest.senderEmail}
                       </div>
                     </div>
 
@@ -356,38 +282,33 @@ const MyRequests = () => {
                       className="grid grid-cols-2 left-justify gap-5 pt-2"
                     >
                       <div id="prevDesc">
-                        <Label className="">Request Description</Label>
+                        <Label className="font-bold">Request Description</Label>
 
                         <Textarea
                           className="bg-accent resize-none"
-                          value={requests[0].description}
+                          value={selectedRequest.description}
                           readOnly
                           rows={9}
                         />
                       </div>
-                      <div className="grid">
-                        <div id="prevDate" className="pt-10 ">
-                          <Label className="">Due Date</Label>
+                      <div className="grid grid-row-4">
+                        <div id="prevDate" className=" ">
+                          <Label className="font-bold">Due Date</Label>
                           <div className="flex items-center">
-                            <CalendarIcon
-                              className="mr-2"
-                              height={20}
-                              width={20}
-                            />
+                            <CalendarIcon className="mr-2 h-4 w-4" />
                             <div className="text-base">
-                              {requests[0].reqdue}
+                              {selectedRequest.reqdue}
                             </div>
                           </div>
                         </div>
-                        <div className="grid grid-row-5">
-                          <div id="prevBlurred">
-                            <Label className="">
+                        <div className="grid grid-row-4">
+                        <div id="prevBlurred" className="pb-1.5">                            <Label className="font-bold">
                               Video Processing
                             </Label>
-                            <div className="w-full ">Blurred</div>
+                            <div className="w-full font-base">Blurred</div>
                           </div>
                           <div id="prevLanguage" className="pb-1.5">
-                            <Label className="">Video Language</Label>
+                            <Label className="font-bold">Video Language</Label>
                             <div className="w-full">English</div>
                           </div>
                           <div
@@ -405,7 +326,78 @@ const MyRequests = () => {
                               </a>{" "}
                               here
                             </Label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="grid">
+                    <div id="prevTitle" className="pt-6 grid grid-row-3">
+                      <CardTitle className="break-all text-2xl">
+                        {requests[0].reqtitle}
+                      </CardTitle>
+                    </div>
 
+                    <div id="prevClient">
+                      <Label className="font-bold">From</Label>
+                      <div className="break-all text-primary indent-2 pt-2 pb-2 ">
+                        {requests[0].senderEmail}
+                      </div>
+                    </div>
+
+                    <div
+                      id="prevDescAndData"
+                      className="grid grid-cols-2 left-justify gap-5 pt-2"
+                    >
+                      <div id="prevDesc">
+                        <Label className="font-bold">Request Description</Label>
+
+                        <Textarea
+                          className="bg-accent resize-none"
+                          value={requests[0].description}
+                          readOnly
+                          rows={9}
+                        />
+                      </div>
+                      <div className="grid grid-row-4">
+                        <div id="prevDate" className="">
+                          <Label className="font-bold">Due Date</Label>
+                          <div className="flex items-center">
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            <div className="text-base">
+                              {requests[0].reqdue}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid grid-row-4">
+                          <div id="prevBlurred" className="pb-1.5">
+                            <Label className="font-bold">
+                              Video Processing
+                            </Label>
+                            <div className="w-full font-base">Blurred</div>
+                          </div>
+                          <div id="prevLanguage" className="pb-1.5">
+                            <Label className="font-bold">Video Language</Label>
+                            <div className="w-full">English</div>
+                          </div>
+                          <div
+                            id="prevTerms"
+                            className="flex items-center space-x-10"
+                          >
+                            <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                              See the{" "}
+                              <a
+                                href=""
+                                target="_blank"
+                                className="text-blue-600 dark:text-blue-500 hover:underline"
+                              >
+                                terms and conditions
+                              </a>{" "}
+                              here
+                            </Label>
                           </div>
                         </div>
                       </div>
