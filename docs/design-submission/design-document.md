@@ -3,7 +3,7 @@
 ## Table of Contents
 
 1. [Overview](#introduction)
-    - Recap of Prototype
+    - Video: https://youtu.be/bWNTSBAlCgQ
 2. [System Architecture](#system-architecture)
     - System Architecture Diagram
     - System Architecture Description  
