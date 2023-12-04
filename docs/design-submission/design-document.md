@@ -12,7 +12,7 @@
 3. [Database Design](#database)
     - ER Diagram
     - Database Description
-        - Changes
+        - Changes and Choices
         - Amazon DynamoDB
 4. [User Interface Design](#ui-design)
     - Navigation Diagram
@@ -28,10 +28,7 @@
     - Sign In Page - Soren Stenback
         - For medical reasons, the professor granted Soren Stenback the option not to commit to further work. For these reasons, feature 8 is not present. 
         
-6. Other
-    - Development Philosophy: Emphasizing agile development for rapid feature rollouts and responsiveness to user feedback.
-    - CI/CD Strategy: Implementing a robust CI/CD pipeline using GitHub Actions and Seed for consistent, error-free deployments.
-    - Testing Approach: Detailed coverage of testing strategies including Jest for unit tests, Vitest for infrastructure, and Playwright for E2E, ensuring a bug-free user experience.
+6. [Other](#other)
 
 ## Overview
 
@@ -204,3 +201,8 @@ Research and improve the playwright tests implemented on the website which can b
 ### Feature: Sign In Page
 By: Soren Stenback \
 For the signin page, the requirements laid out by Google, Microsoft, and Facebook had to be follow to the letter. Each required specific pixel width and height to their buttons, as well as design requirements such as colouration, font, and the usage of their trademarked logo. As our web app uses Tailwind CSS, the Tailwind configuration file had to be modified in addition to applying custom CSS classes in order to make the sign in buttons match the required formats.
+
+## Other
+- Development Philosophy: Emphasizing agile development for rapid feature rollouts and responsiveness to user feedback.
+- CI/CD Strategy: Implementing a robust CI/CD pipeline using GitHub Actions and Seed for consistent, error-free deployments.
+- Testing Approach: Detailed coverage of testing strategies including Jest for unit tests, Vitest for infrastructure, and Playwright for E2E, ensuring a bug-free user experience.
