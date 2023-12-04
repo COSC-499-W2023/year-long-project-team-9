@@ -13,6 +13,33 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
+  // If you want to add a field, just append it to the table
+  // Adding user table
+  const user = new Table(stack, "Users", {
+    fields: {
+      sub: "string",
+      email: "string",
+      first_name: "string",
+      last_name: "string",
+      bday: "string",
+      requests: "string", //json object
+      time_zone: "string", 
+      language: "string"
+    },
+    primaryIndex: { partitionKey: "sub"},
+  });
+  // adding chat room folder
+  const room = new Table(stack, "Rooms", {
+    fields: {
+      room_id: "string",
+      connect_id: "string",
+      users: "string", //json
+      creation_date: "string",
+      number_of_participants: "string",
+      message: "string" //json object
+    },
+    primaryIndex: { partitionKey: "room_id"},
+  });
 //   const service = new Service(stack, "processVideo", {
 //     path: "./service",
 //     bind: [bucket],
