@@ -188,11 +188,11 @@ const MyRequests = () => {
               className="overflow-auto h-17 justify-self-start drop-shadow-md border-2 border-accent bg-accent"
             >
               <CardHeader>
-                <div className="space-x-4 flex items-center bg-background">
+                <div className="space-x-4 flex items-center bg-foreground-secondary">
                   <Input
                     id="searchInput"
                     placeholder="Search..."
-                    className="text-bold border-2 border-secondary text-primary"
+                    className="text-bold border-2 border-secondary text-primary bg-background"
                   />
                   <Button type="submit">
                     <Search />
@@ -230,7 +230,7 @@ const MyRequests = () => {
                   <TableCell>
                     <Card
                       id="collapsed"
-                      className="overflow-auto justify-self-start drop-shadow-md border-2 border-accent hover:bg-accent "
+                      className="overflow-auto justify-self-start drop-shadow-md border-2 border-accent hover:bg-accent bg-foreground-secondary"
                     >
                       <CardHeader>
                         <div className="space-x-4 flex items-center">
@@ -258,7 +258,7 @@ const MyRequests = () => {
 
           <Card
             id="previewCard"
-            className="drop-shadow-md border-2 border-accent bg-background h-[500px]"
+            className="drop-shadow-md border-2 border-accent bg-foreground-secondary"
           >
             <CardContent className="grid h-full">
               {selectedRequest ? (
@@ -281,7 +281,7 @@ const MyRequests = () => {
                     className="grid grid-cols-2 left-justify gap-5 pt-2"
                   >
                     <div id="prevDesc">
-                      <Label className="font-bold">Request Description</Label>
+                      <Label className="">Request Description</Label>
 
                       <Textarea
                         className="bg-accent resize-none"
@@ -292,7 +292,7 @@ const MyRequests = () => {
                     </div>
                     <div className="grid grid-row-4 font-bold">
                       <div id="prevDate" className="pt-10 ">
-                        <Label>Due Date</Label>
+                        <Label >Due Date</Label>
                         <div className="flex items-center">
                           <CalendarIcon
                             className="mr-2"
@@ -304,23 +304,40 @@ const MyRequests = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="grid  font-bold">
+                      <div className="grid">
                         <div id="prevBlurred">
                           <Label className="">Video Processing</Label>
                           <div className="w-full ">Blurred</div>
                         </div>
-                       
+
                         <div id="prevLanguage" className="pb-1.5">
-                          <Label>Video Language</Label>
+                          <Label >Video Language</Label>
                           <div className="w-full">English</div>
                         </div>
-                        <Button
+
+                        <div
+                          id="prevTerms"
+                          className="flex items-center space-x-10"
+                        >
+                          <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                            See the{" "}
+                            <a
+                              href=""
+                              target="_blank"
+                              className="text-blue-600 dark:text-blue-500 hover:underline"
+                            >
+                              terms and conditions
+                            </a>{" "}
+                            here
+                          </Label>
+                          <Button
                             type="submit"
-                            className=" justify-self-end font-extrabold"
+                            className=" justify-self-end font-bold p-5 w-2/3"
                             onClick={() => router.push("/submit")}
                           >
                             Upload Video
                           </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -335,8 +352,8 @@ const MyRequests = () => {
                     </div>
 
                     <div id="prevClient">
-                      <Label className="font-bold">From</Label>
-                      <div className="break-all text-primary indent-2 pt-2 pb-2 font-bold">
+                      <Label className="">From</Label>
+                      <div className="break-all text-primary indent-2 pt-2 pb-2 ">
                         {requests[0].senderEmail}
                       </div>
                     </div>
@@ -346,7 +363,7 @@ const MyRequests = () => {
                       className="grid grid-cols-2 left-justify gap-5 pt-2"
                     >
                       <div id="prevDesc">
-                        <Label className="font-bold">Request Description</Label>
+                        <Label className="">Request Description</Label>
 
                         <Textarea
                           className="bg-accent resize-none"
@@ -357,7 +374,7 @@ const MyRequests = () => {
                       </div>
                       <div className="grid font-bold">
                         <div id="prevDate" className="pt-10 ">
-                          <Label>Due Date</Label>
+                          <Label className="">Due Date</Label>
                           <div className="flex items-center">
                             <CalendarIcon
                               className="mr-2"
@@ -369,22 +386,38 @@ const MyRequests = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="grid grid-row-5 font-bold">
+                        <div className="grid grid-row-5">
                           <div id="prevBlurred">
                             <Label className="">Video Processing</Label>
                             <div className="w-full ">Blurred</div>
                           </div>
                           <div id="prevLanguage" className="pb-1.5">
-                            <Label>Video Language</Label>
+                            <Label className="font-bold">Video Language</Label>
                             <div className="w-full">English</div>
                           </div>
+                          <div
+                          id="prevTerms"
+                          className="flex items-center space-x-10"
+                        >
+                          <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                            See the{" "}
+                            <a
+                              href=""
+                              target="_blank"
+                              className="text-blue-600 dark:text-blue-500 hover:underline"
+                            >
+                              terms and conditions
+                            </a>{" "}
+                            here
+                          </Label>
                           <Button
                             type="submit"
-                            className=" justify-self-end  font-extrabold"
+                            className=" justify-self-end font-bold p-5 w-2/3"
                             onClick={() => router.push("/submit")}
                           >
                             Upload Video
                           </Button>
+                        </div>
                         </div>
                       </div>
                     </div>

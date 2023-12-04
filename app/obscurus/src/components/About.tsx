@@ -10,7 +10,7 @@ const About = () => {
         data-aos-delay="100"
       >
         {/*SST*/}
-        <Image src="sst-icon-seeklogo.com.svg" height={100} width={80} alt="sst" />
+        <Image src="sst-icon-seeklogo.com.svg" height={100} width={80} alt="sst" data-testid="sst"/>
 
         {/*NExt.js*/}
         <svg

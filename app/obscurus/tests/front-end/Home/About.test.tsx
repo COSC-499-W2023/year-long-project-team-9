@@ -17,7 +17,7 @@ describe('About Component', () => {
 
   test('includes specific SVG images', () => {
     render(<About />);
-    expect(screen.getByTestId('aws')).toBeInTheDocument(); 
+    expect(screen.getByTestId('sst')).toBeInTheDocument(); 
     expect(screen.getByTestId('nextjs')).toBeInTheDocument(); 
     expect(screen.getByTestId('tailwindcss')).toBeInTheDocument();
   });
