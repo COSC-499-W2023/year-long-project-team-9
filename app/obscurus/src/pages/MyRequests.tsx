@@ -46,7 +46,6 @@ const MyRequests = () => {
     ]
     const req1 = requests[0];
 
-    const router = useRouter()
     const [title,setTitle] = React.useState("");
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name,value} = e.target
@@ -80,28 +79,6 @@ const MyRequests = () => {
         setTerms(!terms)
     };
     const [noTitle,setNoTitle] = React.useState(false);
-    const handleCancel = () => {
-        router.push("/")
-    };
-    const handleSubmit = () => {
-        if((title.length < 1) || clientsEmpty()) {
-        if(title.length < 1) {
-            setNoTitle(true)
-        }else {
-            setNoTitle(false)
-        }
-        for(let item of clientList) {
-            if(item.client.length < 1) {
-            item.clientNo = true
-            }else {
-            item.clientNo = false
-            }
-        }
-        }else {
-        setNoTitle(false)
-        router.reload()
-        }
-    };
     const clientsEmpty = () => {
         for(let item of clientList) {
         if(item.client.length < 1) {
