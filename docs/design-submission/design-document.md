@@ -97,7 +97,7 @@ We originally intended to have a sign-in option through Apple. However, they hav
 The original plan was to have five tables in DynamoDB; however, we only have two tables now since AWS recommends having as few tables as possible.
 
 ##### **Choice 5: DynamoDB:**
-DynamoDB was selected because it natively integrates with other AWS services.
+DynamoDB was selected because it natively integrates well with other AWS services.
 
 ##### **Choice 6: Social sign-in:**
 We decided to go with only social sign-in because we felt that the vast majority of users prefer social sign-in, and exclusive social sign-in significantly boosts security
@@ -140,7 +140,11 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 
 
 
-## Database Design
+## Database
+- Amazon DynamoDB is a NoSQL database that uses key-value to store data.
+- One of the great features of DynamoDB is its ability to scale well, meaning that one only pays for what one uses.
+- Additionally, given the heavy reliance of the web app on AWS services, a database that works well with AWS is needed. Luckily, DynamoDB has great integration with AWS.
+- Moreover, given that it is a NoSQL database, it is resilient to changes in data. Thus, DynamoDB is equipped well to handle unexpected changes.
 
 
 ## UI Design
