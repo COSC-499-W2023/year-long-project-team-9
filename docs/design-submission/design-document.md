@@ -158,11 +158,11 @@ By: Jan-Yaeger Dhillon
 By: Jan-Yaeger Dhillon
 
 ### Feature: Authentication
-By: Muhammad Bakar
+By: Muhammad Bakar \
 Authentication involved two steps: (1) familiarizing oneself with the terminology used in authentication, learning about AWS Cognito, reading up on copyright – since we use branding from an external organization – and (2) learning various social-sign-in technologies and actually implementing authentication. There were some issues when implementing authentication because not all identity providers are willing to share the same kind of data. As a result, the need to reimplement authentication arose because Cognito requires all users to have the same kind information, and once Cognito is set up, user attributes cannot be changed.
 
 ### Feature: Database Design and Implementation
-By: Muhammad Bakar
+By: Muhammad Bakar \
 Database Design and Implementation, as the title suggests, was split into two parts: (1) designing the database and (2) implementing the tables. (1) took much longer than (2) since it required meditation on what kind of data the web app needed – since once a table has been created, it cannot be modified in DynamoDB. Initially, implementing the tables seemed trivially easy; however, there was a setback because DynamoDB prefers as few tables as possible. This meant that, although the ER diagram was perfectly sound, it needed to be translated into as few tables as possible. Eventually, the tables were reduced from five to two. 
 
 
