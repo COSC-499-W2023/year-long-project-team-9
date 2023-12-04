@@ -151,7 +151,7 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 
 ## Features
 
-### Feature - SST
+### Feature: SST
 By: Jan-Yaeger Dhillon
 
 ### Feature: Video Submission
