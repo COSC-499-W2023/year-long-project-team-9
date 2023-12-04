@@ -103,6 +103,12 @@ DynamoDB was selected because it natively integrates well with other AWS service
 ##### **Choice 6: Social sign-in:**
 We decided to go with only social sign-in because we felt that the vast majority of users prefer social sign-in, and exclusive social sign-in significantly boosts security
 
+#### **Choice 7: Social sign-in page:**
+We decided to use a pop-up dialogue window as that seemed more user-friendly than redirecting to an entirely new page to log in.
+
+##### **Change 8: Reducing buttons:**
+In response to the change in the social sign-in option, the original design was reduced from five log-in options to only three, representing the three most popular options of Google, Facebook, and Microsoft.
+
 #### Frameworks
 
 ----
