@@ -27,7 +27,7 @@
     - Request Page - Baz Sivakua
     - Playwright - Baz Sivakua
     - Sign In Page - Soren Stenback
-        - For personal reasons, the professor granted Soren Stenback the option not to commit to further work. For these reasons, feature 8 is not present. 
+        - For medical reasons, the professor granted Soren Stenback the option not to commit to further work. For these reasons, feature 8 is not present. 
         
 
 6. Testing (?)
