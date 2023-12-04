@@ -593,7 +593,7 @@ The tasks identified for this week were:
 * **Status:** Completed
 * **Assignee(s):** Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 1: Milestone 3 Project Planning
-* **Description:** Implement end-to-end testing through Playwrite and unit tests through Jest
+* **Description:** Import Milestone goals from project plan
 
 ### Task 2: Complete General User Interface Design
 
@@ -607,7 +607,7 @@ The tasks identified for this week were:
 * **Status:** Completed
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 2: Configure enviorment for coding
-* **Description:** Implement end-to-end testing through Playwrite and unit tests through Jest
+* **Description:** Implement end-to-end testing through Playwright and unit tests through Jest
 
 ### Task 4: Init lambda/sst
 
@@ -677,7 +677,7 @@ ___
 
 ## Work Period
 
-Week 11 & 12 ran from 00:00 on 2023/11/13 to 23:59 on 2023/11/16.
+Week 11 & 12 ran from 00:00 on 2023/11/13 to 23:59 on 2023/11/26.
 
 ## Milestone Goal Recap
 
@@ -717,49 +717,42 @@ The tasks identified for this week were:
 
 ### Task 4: Init api gateway
 
-* **Status:** Inprogress
+* **Status:** In progress
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
 * **Description:** Initialize API gateway for use in our project
 
 ### Task 5: Complete Submission Page
 
-* **Status:** Inprogress
+* **Status:** In progress
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Create `Submission Page` which will allow the user to submit a video and process it in response to a request
 
 ### Task 6: Make Homepage Responsive
 
-* **Status:** Inprogress
+* **Status:** In progress
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Edit `Home Page` to be responsive to screen size and allow for good formatting across different screen sizes
 
 ### Task 7: Migrate from Pages Router to App Router
 
-* **Status:** Inprogress
+* **Status:** In progress
 * **Assignee(s):** Jan-Yaeger Dhillon and Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Migrate from page router to app router in nextjs
 
 ### Task 8: Create Request Listings Page
 
-* **Status:** Inprogress
+* **Status:** In progress
 * **Assignee(s):** Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Create `Request Listings Page` which will display the requests a user has made or needs to submit a video for. 
 
-### Task 9: Create Request Listings Page
+### Task 9: Create System Architecture Design
 
-* **Status:** Inprogress
-* **Assignee(s):** Baz Sivakua
-* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
-* **Description:** Create `Request Listings Page` which will display the requests a user has made or needs to submit a video for.
-
-### Task 10: Create System Architecture Design
-
-* **Status:** Inprogress
+* **Status:** In progress
 * **Assignee(s):** All team members
 * **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
 * **Description:** Discuss and complete a system architecture design for the back end of our project. Ensure everyone has a clear understanding of how each tool links together.
@@ -780,3 +773,99 @@ The tasks identified for this week were:
 ### Test Report
 ![test report](img/team-weekly-log-img/week-12/test-repoert-week12.png)
 ___
+
+# TEAM 9 - WEEK 13
+
+## Work Period
+
+Week 13 ran from 00:00 on 2023/11/27 to 23:59 on 2023/12/03.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Configure enviorment for coding
+Configure APIs planned to use in this stage of development including AWS Amplify, Tailwind and Next.js. Additionally, those of us who are unfamilar with the APIs have done research to understand ways to code using them. Set up local enviroment to start coding.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for the different website pages, such as the `Request Listings Page` and `Submission Page`
+
+### Milestone Goal 3: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database. 
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Create System Architecture Design
+
+* **Status:** Completed
+* **Assignee(s):** All team members
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Discuss and complete a system architecture design for the back end of our project. Ensure everyone has a clear understanding of how each tool links together.
+
+### Task 2: Fix Playwright Workflow
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Fix issue with playwright workflow running repeatedly
+
+### Task 3: Database Design
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Design database for storage of information such as videos and requests. 
+
+### Task 4: Add Tables to Database
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Add tables to the database to use in storage of information for the web application.
+
+### Task 5: Create Request Listings Page
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create `Request Listings Page` which will display the requests a user has made or needs to submit a video for.
+
+### Task 6: Update Documentation
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Complete documentation on all working components of the web
+
+### Task 7: Complete Submission Page
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create `Submission Page` which will allow the user to submit a video and process it in response to a request
+
+### Task 8: Create Sign-in Page
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon and Soren Stenback 
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Complete a working registration page where users (both professional and client) are able to social sign in with Google, Facebook and Microsoft
+
+### Task 9: Playwright Testing
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Research and implement improvements for playwright testing and create additional tests
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-13/burnup-week13.png)
+
+### Table View of Completed Tasks
+All tasks for `Milestone 3 - Design Documentation` were completed
+![screenshot of completed board tasks](img/team-weekly-log-img/week-13/completed-week13.png)
+### Test Report
+![test report](img/team-weekly-log-img/week-13/test-repoert-week13.png)
