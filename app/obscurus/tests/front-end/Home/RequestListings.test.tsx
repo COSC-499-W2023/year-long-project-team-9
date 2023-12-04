@@ -7,6 +7,11 @@ jest.mock("aos", () => ({
   init: jest.fn(), // Mock AOS initialization
 }));
 
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn()
+}));
+
 describe("Features Component", () => {
   beforeEach(() => {
     render(<RequestListing />);

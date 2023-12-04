@@ -393,7 +393,7 @@ const MyRequests = () => {
                           <div
                             id="prevTerms"
                             className="flex items-center space-x-10"
-                          >Í
+                          >
                             <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
                               See the{" "}
                               <a
