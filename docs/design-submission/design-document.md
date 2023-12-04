@@ -90,6 +90,18 @@ Initially, we used AWS Amplify for backend management, but we faced limitations 
 ##### **Change 2: Streamlining Architecture:**
 We initially planned to implement technologies like Elasticache and Batch for optimization. However, to focus on our core product, we decided to streamline our architecture, removing these components. This reduction in complexity accelerated development and allowed us to concentrate on delivering essential features, ensuring a solid foundation before considering such optimizations. Further, we have learned it can be best to forgo optimizations until they are needed, as they can be costly to implement and maintain. SST and the CDK enable us to easily add these components in the future if needed or desired. And while the CI/CD of Amplify is nice, we use Seed to deploy our app, which is also very easy to use and allows us to deploy our app from GitHub to AWS.
 
+##### **Change 3: Authentication:**
+We originally intended to have a sign-in option through Apple. However, they have stringent requirements regarding their social sign-in program. Satisfying Apple would negatively affect other aspects of the project because it would have taken attention away from said aspects. Also, we planned on having a sign-in option through Amazon, but we eliminated Amazon because we believe that Facebook, Google, and Microsoft social sign-in would capture the vast majority of Amazon users. Thereby eliminating an extra element of worry and management. 
+
+##### **Change 4: Consolidating Tables:**
+The original plan was to have five tables in DynamoDB; however, we only have two tables now since AWS recommends having as few tables as possible.
+
+##### **Choice 5: DynamoDB:**
+DynamoDB was selected because it natively integrates with other AWS services.
+
+##### **Choice 6: Social sign-in:**
+We decided to go with only social sign-in because we felt that the vast majority of users prefer social sign-in, and exclusive social sign-in significantly boosts security
+
 #### Frameworks
 
 ----
