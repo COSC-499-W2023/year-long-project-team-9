@@ -9,7 +9,7 @@ October 9 2023 - Octomber 22 2023
 
 Screenshot from peer eval:
 
-![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-4.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-4.png)
 
 - This week I worked on the Project Plan with my team.
 - The goal for this week was to complete the project plan, which we did.
@@ -18,7 +18,7 @@ Screenshot from peer eval:
 
 Screenshot of Project Board:
 
-![Project Board](./img/jan-yaeger-dhillon/project-board-4.png)
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-4.png)
 
 ### In Progress ###
 
@@ -26,7 +26,7 @@ None
 
 ### To Do ###
 
-![TODO](./img/jan-yaeger-dhillon/todo-4.png)
+![TODO](./img/jan-yaeger-dhillon/todo/todo-4.png)
 
 
 ## Week 5 ##
@@ -38,7 +38,7 @@ October 1 - October 8, 2023
 
 Screenshot from peer eval:
 
-![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-5.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-5.png)
 
 - Specifically from our project board, I completed `Design logo` and worked with my team to complete `Come up with name for the web-app` and `Fix Github branching issue`.
 - Looking ahead, I intend to complete `Create Figma design for home page` in the very near future and start working on implementing the technologies such as `Set up Next.js for the project` and `Set up AWS Amplify for the project`.   
@@ -50,14 +50,14 @@ Screenshot from peer eval:
 
 Screenshot of Project Board:
 
-![Project Board](./img/jan-yaeger-dhillon/project-board-5.png)
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-5.png)
 
 
 ### To Do ###
 
 - This week I intend to set up a lot of the base technologies for both teh front and back end of the web app, including configuring AWS Amplify and setting up Next.js. I also intend to complete the Figma design for the home page and start working on the actual implementation of the front end.
 
-![TODO](./img/jan-yaeger-dhillon/todo-5.png)
+![TODO](./img/jan-yaeger-dhillon/todo/todo-5.png)
 
 
 ## Week 6 & 7 ##
@@ -77,29 +77,29 @@ October 9 - October 22, 2023
 
 Screenshot from peer eval for Week 6:
 
-![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-6.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-6.png)
 
 Screenshot from peer eval for Week 7:
 
-![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-7.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-7.png)
 
 ### Completed Tasks ###
 
-![Completed Tasks](./img/jan-yaeger-dhillon/completed-7.png)
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-7.png)
 
-![Completed Tasks](./img/jan-yaeger-dhillon/completed-7-2.png)
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-7-2.png)
 
 ### In Progress ###
 
-![In Progress](./img/jan-yaeger-dhillon/in-progress-7.png)
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-7.png)
 
 ### To Do ###
 
-![TODO](./img/jan-yaeger-dhillon/todo-7.png)
+![TODO](./img/jan-yaeger-dhillon/todo/todo-7.png)
 
 Screenshot of Project Board:
 
-![Project Board](./img/jan-yaeger-dhillon/project-board-7.png)
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-7.png)
 
 
 ## Week 8 ##
@@ -115,27 +115,27 @@ October 23 - October 29, 2023
 
 Screenshot from peer eval for Week 8:
 
-![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-8.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-8.png)
 
 ### Completed Tasks ###
 
-![Completed Tasks](./img/jan-yaeger-dhillon/completed-8.png)
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-8.png)
 
 ### In Progress ###
 
-![In Progress](./img/jan-yaeger-dhillon/in-progress-8.png)
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-8.png)
 
 - Note that I am waiting to be authorized to use this.
 
 ### To Do ###
 
-![TODO](./img/jan-yaeger-dhillon/todo-8.png)
+![TODO](./img/jan-yaeger-dhillon/todo/todo-8.png)
 
 -Similarly, I am waiting to be authorized to use this.
 
 Screenshot of Project Board:
 
-![Project Board](./img/jan-yaeger-dhillon/project-board-8.png)
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-8.png)
 
 ## Week 9 ##
 
@@ -151,23 +151,94 @@ October 30 - November 5, 2023
 
 Screenshot from peer eval for Week 9:
 
-![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on-9.png)
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-9.png)
 
 ### Completed Tasks ###
 
-![Completed Tasks](./img/jan-yaeger-dhillon/completed-9.png)
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-9.png)
 
 ### In Progress ###
 
-![In Progress](./img/jan-yaeger-dhillon/in-progress-9.png)
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-9.png)
 
 ### To Do ###
 
-![TODO](./img/jan-yaeger-dhillon/todo-9.png)
+![TODO](./img/jan-yaeger-dhillon/todo/todo-9.png)
 
 ### Screenshot of Project Board:
 
-![Project Board](./img/jan-yaeger-dhillon/project-board-9.png)
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-9.png)
+
+
+## Week 10 ##
+
+### Applicable Date Range ###
+November 6 - November 12, 2023
+
+### Tasks Worked On ###
+
+- My main goal for this week was to test out SST and get several different AWS services working together in our Next app.
+- Because we are now using SST + OpenNext, we can use NextJs' built in API routing among other things, so we have decided to migrate our front-end to using the NextJs app router, as opposed to the pages router we have been using.
+
+- Another thing I am working on and plan to complete next week is making the home page responsive and mobile friendly. I've been smart about the design choices meaning it will not be super difficult but some changes are needed (a lot of changing col -> row).
+
+- I also started working on the system architecture and research how to implement the video processing using AWS Lambda, API Gateway and Step Functions. I completed a diagram detailing how this will play out in terms of the AWS services. This week I hope to flesh it out more.
+
+- Another goal for next week is to start working on the video submission pages. Another reason I want to use the app router instead of the pages router is because of the ability to create nested layouts, as this marks the divergence of our two main views of the app (home and submit).
+
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-10.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-10.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-10.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-10.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-10.png)
+
+
+## Week 11 & 12 ##
+
+### Applicable Date Range ###
+November 13 - November 26, 2023
+
+### Tasks Worked On ###
+
+- My main goal this week was to finish the system architecture and research how to implement the video processing with SST most effectively.
+- Another goal for this week was to start working on the video submission pages, which I did.
+- This week I hope to finalize my work for the milestone and have a solid start on getting the container working with Fargate and ECS.
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-12.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-12.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-12.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-12.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-12.png)
+
 
 
 

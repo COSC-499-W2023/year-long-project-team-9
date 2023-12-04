@@ -770,6 +770,8 @@ The tasks identified for this week were:
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-12/inprogress-week12.png)
 
+### Test Report
+![test report](img/team-weekly-log-img/week-12/test-repoert-week12.png)
 ___
 
 # TEAM 9 - WEEK 13
