@@ -13,7 +13,17 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover,PopoverContent,PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { AlertCircle,Plus,X,Calendar as CalendarIcon } from "lucide-react";
+import { AlertCircle,Plus,X,Calendar as CalendarIcon, Search } from "lucide-react";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table";
 
 type ClientType = {
     client: string;
@@ -22,6 +32,20 @@ type ClientType = {
   };
 
 const MyRequests = () => {
+    const requests = [
+        {
+            reqtitle: "Spanish Lessons 1 From Mr. Woods",
+            reqdue: "October 9th 2023",
+            reqclients: "learn.spanish@woods.com"
+        },
+        {
+            reqtitle: "Spanish Lessons 2 From Mr. Woods",
+            reqdue: "October 9th 2023",
+            reqclients: "learn.spanish@woods.com, learn.spanish@woods.com, learn.spanish@woods.com"
+        }
+    ]
+    const req1 = requests[0];
+
     const router = useRouter()
     const [title,setTitle] = React.useState("");
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,57 +110,64 @@ const MyRequests = () => {
         }
         return false
     };
+    
+
     return (
-    <Layout>
-        <div className="items-center gap-5 px-24">
-            <h1 className="text-3xl font-extrabold">My Requests</h1><br/>
-            <Card id="collapsed" className="overflow-auto h-17 justify-self-start">
-                <CardHeader>                    
-                    <Input className="w-1/3" id="searchInput" placeholder="Search..." />
-                    <Button className="w-1/5" type="submit">Search</Button>
-                    <Tabs className="w-1/3" defaultValue="blurred">
+        <Layout>
+            <div className="items-center gap-5 px-24">
+                <h1 className="text-3xl font-extrabold">My Requests</h1><br/>
+                <div className="items-center">  
+                    <Card id="searchbar" className="overflow-auto h-17 justify-self-start">
+                        <CardHeader>                   
+                            <div className="space-x-4 flex items-center">    
+                                <Input id="searchInput" placeholder="Search..." /> 
+                                <Button type="submit"><Search /></Button>
+                                <Tabs defaultValue="blurred">
                                     <TabsList className="w-full">
                                         <TabsTrigger value="oldest" className="">Oldest</TabsTrigger>
                                         <TabsTrigger value="edited" className="">Edited</TabsTrigger>
                                         <TabsTrigger value="overdue" className="">Overdue</TabsTrigger>
-                                        <TabsTrigger value="completed" className="">Completed</TabsTrigger>
-                                    </TabsList>
-                                    </Tabs>
-                </CardHeader>
-            </Card>
+                                        <TabsTrigger value="completed" className="">Completed</TabsTrigger>                                        </TabsList>
+                                </Tabs>
+                            </div>
+                        </CardHeader>
+                    </Card>
                 </div>
-            <div className="grid grid-cols-2 items-center gap-5 px-24">
-                <Card id="collapsed" className="overflow-auto h-25 w-3/4 justify-self-start">
-                    <CardHeader>
-                        <CardTitle className="text-xl">Title</CardTitle>
-                        <div className="grid gap-0">
-                            <Label>Client(s): </Label>
-                        </div>
-                    </CardHeader>
-                </Card>
+            </div>
+            <br/>
+            <div className="grid grid-cols-2 gap-5 px-24">
+                <Table className="w-3/4 mx-auto">
+                    <TableBody>
+                        {requests.map((requests) => (
+                            <TableRow key={requests.reqtitle}>
+                                <TableCell>
+                                <Card id="collapsed" className="overflow-auto justify-self-start">
+                                    <CardHeader>
+                                    <div className="space-x-4 flex items-center">
+                                    <CardTitle className="text-xl">{requests.reqtitle}</CardTitle>
+                                    <Label>{requests.reqdue}</Label>
+                                    </div>
+                                    <div className="space-x-4 flex">
+                                        <Label>Clients:</Label>
+                                        <Label>{requests.reqclients}</Label>
+                                    </div>
+                                </CardHeader>
+                            </Card>
+                            </TableCell>
+            
+          </TableRow>
+        ))}
+                    </TableBody>
+                </Table>
                 <Card id="previewCard" className="overflow-auto h-96 w-3/4 justify-self-start">
                     <CardHeader>
-                        {title.length < 1 && (
-                            <CardTitle className="text-xl">Title</CardTitle>
-                        )}
-                        {title.length >= 1 && (
-                            <CardTitle className="text-xl">{title}</CardTitle>
-                        )}
+                        <CardTitle className="break-all text-2xl">{req1.reqtitle}</CardTitle>
+                    
                     </CardHeader>
                     <CardContent>
                         <div className="grid gap-2">
                             <Label>Client(s)</Label>
-                            {clientList.map((singleClient,index) => (
-                                <ul key={index} >
-                                    {singleClient.client.length < 1 && (
-                                        <li className="truncate text-slate-400 text-sm indent-2">Email</li>
-                                    )}
-                                    {singleClient.client.length >= 1 && (
-                                        <li className="truncate text-sm indent-2">{singleClient.client}</li>
-                                    )}
-                                    
-                                </ul>
-                            ))}
+                            {req1.reqclients}
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex-col gap-2">
