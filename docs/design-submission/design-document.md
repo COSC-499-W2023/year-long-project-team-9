@@ -157,11 +157,10 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 ## Database
 
 ### ER Diagram
-ER Diagram: \
 ![ER diagram](./img/er-diagram.png)
     
 ### Database Description
-- Quick summary: a user can make many video requests and has preferences. Moreover, the user can be in many chat rooms, each with at leadt two users and a maximum of 10 users. 
+- Quick summary: a user can make many video requests and has preferences. Moreover, the user can be in many chat rooms, each with at least two users and a maximum of 10 users. 
 - The center of the ER diagram is the User entity. Placing the user at the center of the ER diagram meant putting them at the center of the user experience and development. That is, placing the user at the center of the ER diagram meant we would develop a web app that places the user at the center. 
     - Of course, another possible way to model the web app is to place the Request entity at the center. Such a diagram would have the consequence that, for example, there would be only one chat room per request. However, the ladder approach would not have worked since we wish to develop a project that could easily be extended beyond the MVP. By having the requests at the center, the user will only be able to interact with other features mediated through request, leading to a one-dimensional web app. Early in the process, around the time of conceptualizing the MVP, there was some thought given to this ladder approach. However, such a model was abandoned for the reason mentioned above. 
 - The ER diagram is implemented in Amazon DynamoDB 
