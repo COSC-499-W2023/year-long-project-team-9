@@ -7,11 +7,11 @@ on:
   pull_request:
     branches: ["master", "develop"]
   push:
-    branches: ["master", "develop", "amplify", "improve-tests"]
+    branches: ["master", "develop"]
 
 defaults:
   run:
-    working-directory: ./app/front-end/
+    working-directory: ./app/obscurus/
 
 jobs:
   build:

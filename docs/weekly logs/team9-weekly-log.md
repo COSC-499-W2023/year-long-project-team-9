@@ -672,3 +672,111 @@ The tasks identified for this week were:
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-10/inprogress-week10.png)
 
 ___
+
+# TEAM 9 - WEEK 11 & 12
+
+## Work Period
+
+Week 11 & 12 ran from 00:00 on 2023/11/13 to 23:59 on 2023/11/16.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Configure enviorment for coding
+Configure APIs planned to use in this stage of development including AWS Amplify, Tailwind and Next.js. Additionally, those of us who are unfamilar with the APIs have done research to understand ways to code using them. Set up local enviroment to start coding.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for the different website pages, such as the `Request Listings Page` and `Submission Page`
+
+### Milestone Goal 3: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database. 
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Fix errors in Create Request Page
+
+* **Status:** Completed
+* **Assignee(s):** Soren Stenback and Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix errors in `Create Request Page` encountered during the mini-presentation with scaling the cards on different size screens.
+
+### Task 2: Set up user authentication
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Research and set up Cognito for user authentication on our web application
+
+### Task 3: Link Cognito to application
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Link cognito user authentication services to our web application
+
+### Task 4: Init api gateway
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
+* **Description:** Initialize API gateway for use in our project
+
+### Task 5: Complete Submission Page
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create `Submission Page` which will allow the user to submit a video and process it in response to a request
+
+### Task 6: Make Homepage Responsive
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Edit `Home Page` to be responsive to screen size and allow for good formatting across different screen sizes
+
+### Task 7: Migrate from Pages Router to App Router
+
+* **Status:** Inprogress
+* **Assignee(s):** Jan-Yaeger Dhillon and Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Migrate from page router to app router in nextjs
+
+### Task 8: Create Request Listings Page
+
+* **Status:** Inprogress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create `Request Listings Page` which will display the requests a user has made or needs to submit a video for. 
+
+### Task 9: Create Request Listings Page
+
+* **Status:** Inprogress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create `Request Listings Page` which will display the requests a user has made or needs to submit a video for.
+
+### Task 10: Create System Architecture Design
+
+* **Status:** Inprogress
+* **Assignee(s):** All team members
+* **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
+* **Description:** Discuss and complete a system architecture design for the back end of our project. Ensure everyone has a clear understanding of how each tool links together.
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-12/burnup-week12.png)
+
+### Table View of Completed Tasks
+![screenshot of completed board tasks](img/team-weekly-log-img/week-12/completed-week12.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-12/inprogress-week12.png)
+
+### Test Report
+![test report](img/team-weekly-log-img/week-12/test-repoert-week12.png)
+___

@@ -116,3 +116,20 @@
 ### Picture of Week 9's Survey
 
 ![Week 10 Survey](img/soren-stenback/Week10-Survey-ID4.png)
+
+---
+
+## Week 11 and 12
+
+### November 13 - November 26, 2023
+
+- This week I worked on Milestone #3, the Design Submission.
+- The goals for this week were to do bug fixes on the Create Request page and set up the login page with the different commercial options, Google, Microsoft, and Facebook.
+
+### Picture of Project Board
+
+![Week 12 Project Board](img/soren-stenback/Week12-ProjectBoard-ID4.png)
+
+### Picture of Week 12's Survey
+
+![Week 12 Survey](img/soren-stenback/Week12-Survey-ID4.png)
