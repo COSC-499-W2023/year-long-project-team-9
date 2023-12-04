@@ -141,7 +141,7 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 
 
 ## Database
-- Amazon DynamoDB is a NoSQL database that uses key-value to store data.
+[Amazon DynamoDB](https://aws.amazon.com/dynamodb/) is a NoSQL database that uses key-value to store data.
 - One of the great features of DynamoDB is the its ability to scale well, meaning that one only pays for what one uses.
 - Additionally, given the heavily reliance of the web on AWS services, a database which works well with AWS is needed. Luckily, DynamoDB has great intergation with AWS.
 - Moreover, given that is a NoSQL database, it is resilient to change in data. Given early development phases comes with many unexpected changes, DynamoDB is equipped well to handle unexpected changes. 
