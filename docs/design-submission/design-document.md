@@ -142,10 +142,9 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 
 ## Database
 - Amazon DynamoDB is a NoSQL database that uses key-value to store data.
-- One of the great features of DynamoDB is its ability to scale well, meaning that one only pays for what one uses.
-- Additionally, given the heavy reliance of the web app on AWS services, a database that works well with AWS is needed. Luckily, DynamoDB has great integration with AWS.
-- Moreover, given that it is a NoSQL database, it is resilient to changes in data. Thus, DynamoDB is equipped well to handle unexpected changes.
-
+- One of the great features of DynamoDB is the its ability to scale well, meaning that one only pays for what one uses.
+- Additionally, given the heavily reliance of the web on AWS services, a database which works well with AWS is needed. Luckily, DynamoDB has great intergation with AWS.
+- Moreover, given that is a NoSQL database, it is resilient to change in data. Given early development phases comes with many unexpected changes, DynamoDB is equipped well to handle unexpected changes. 
 
 ## UI Design
 
