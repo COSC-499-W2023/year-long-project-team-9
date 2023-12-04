@@ -113,6 +113,12 @@ Originally, we decided that the layout of the request listings page would displa
 ##### **Change 10: Upload Video:**
 We changed the access path of the Upload Video page insteaf of being accessed through the navigation bar at the top of the page, would instead be linked through a button on the Request Listings Page, this is a better flow because uploading a video corresponds with a request. 
 
+##### **Change 11: Preview Cards:**
+The layout of Preview Cards across all pages were changed slightly to all be the same to improve cohesion and readability with the layout. 
+
+##### **Choice 12: Dashboard:**
+We decided against using a dashboard page since many of its functions would be covered by other features of the site and it would be redundant.
+
 #### Frameworks
 
 ----
@@ -149,8 +155,6 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 - SST allows us to easily deploy our app to AWS, and provides a local development environment for us to test our Lambda functions locally.
 - SST, through OpenNext, allows us to deploy our Next.js app directly to AWS with full functionality, instead of having to deploy to Vercel, which is the default deployment method for Next.js apps.
 
-
-
 ## Database
 
 ### ER Diagram
@@ -172,7 +176,7 @@ Navigaton Diagram: \
 
 Forgone Alternative: \
 ![Alt Navigation Diagram](img/navdiagram2.png)
-We chose this design over the forgone alternative because we found it redundant to have a dashboard page. We found that many functions of this dashboard page were better implemented in other areas, such as the navigation bar and request listings page. Additionally, if we implemented a dashboard, once you finished a function on another page, such as creating a request, the page would redirect automatically to the dashboard, which we found restrictive and limiting to the user. 
+We chose our design over the forgone alternative because we found it redundant to have a dashboard page. We found that many functions of this dashboard page were better implemented in other areas, such as the navigation bar and request listings page. Additionally, if we implemented a dashboard, once you finished a function on another page, such as creating a request, the page would redirect automatically to the dashboard, which we found restrictive and limiting to the user. Another change between the two is that the Upload Video page is navigated to through the request listings page which is a better flow since the video corresponds to a request.
 
 ## Features
 
