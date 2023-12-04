@@ -43,6 +43,14 @@ Walkthrough of steps to submit a video:
 [Figma Link](https://www.figma.com/file/tpXy3TUeuksgePgUTgjeMN/Request-Page?type=design&node-id=0-1&mode=design&t=lfAx2CdPnpiqZWQs-0)
 
 ## Request Listings Page
-Accessed through a drop down menu on the navigation bar where the user either selects to view all reqests they have created or all requests they need to submit a video for. Displays listing of requests with all information and search bar. 
+Accessed through the navigation bar and allows the user to view a listing of all requests and edit them. Includes a search bar and options to sort/filter the requests (sort by oldest, filter edited, filter overdue, filter completed). On the left side of the page have a listing of all requests and when one is selected, it will be displayed on the right of the page. 
 
 [Figma Link](https://www.figma.com/file/53B85ff7eTiKnoamYX3Wec/Request-Listing-Page?type=design&node-id=0-1&mode=design&t=nHHYTxyuNgzMtBmc-0)
+
+## Sign In Page
+A pop-up accessed when the "sign in" button at the top of the page is clicked. 
+
+Displays the following social sign ins:
+- Google
+- Facebook
+- Microsoft
