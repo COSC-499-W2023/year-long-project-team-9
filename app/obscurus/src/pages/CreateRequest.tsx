@@ -140,7 +140,7 @@ const CreateRequest = () => {
   return (
     <Layout>
       {/*added by jan*/}
-      <div className="grid justify-center items-center ">
+      <div className="grid justify-center items-center pt-10 ">
         <h1 className="text-3xl font-extrabold">Create Request</h1>
       </div>
 
@@ -151,7 +151,7 @@ const CreateRequest = () => {
           className="container grid grid-cols-1 md:grid-cols-2 pt-10 gap-10 "
         >
           {/*Request Info Card*/}
-          <Card id="requestCard" className="flex flex-col drop-shadow-md border-2">
+          <Card id="requestCard" className="flex flex-col drop-shadow-md border-2 border-accent bg-foreground-secondary">
             <CardContent className="grid gap-1">
               {/*Code for the Request Title input*/}
               <div id="requestTitle" className="pt-4">
@@ -337,7 +337,7 @@ const CreateRequest = () => {
             </CardContent>
           </Card>
           {/*Request Preview Card*/}
-          <Card id="previewCard" className="drop-shadow-md border-2 border-secondary">
+          <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-foreground-secondary">
             <CardContent className="grid">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                 {title.length < 1 && (
@@ -371,50 +371,51 @@ const CreateRequest = () => {
                 className="grid grid-cols-2 left-justify gap-5 pt-2"
               >
                 <div id="prevDesc">
-                  <Label>Request Description</Label>
+                  <Label className="">Request Description</Label>
                   <Textarea
-                    className="resize-none"
+                    className="bg-accent resize-none"
                     placeholder={desc}
                     readOnly
                     rows={9}
                   />
                 </div>
                 <div className="grid grid-row-4">
-                  <div id="prevBlurred">
-                    <Label>Video Processing</Label>
-                    {isBlurred && (
-                      <Button className="w-full" disabled>
-                        Blurred
-                      </Button>
-                    )}
-                    {!isBlurred && (
-                      <Button className="w-full" disabled>
-                        Not Blurred
-                      </Button>
-                    )}
-                  </div>
+                  
                   <div id="prevDate" className="pb-1.5">
-                    <Label>Due Date</Label>
-                    <Button className="w-full" disabled>
+                    <Label className="font-bold">Due Date</Label>
+                    <div className="w-full flex items-center">
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {date ? format(date, "PPP") : <span></span>}
-                    </Button>
+                    </div>
+                  </div>
+                  <div id="prevBlurred" className="">
+                    <Label className="font-bold">Video Processing</Label>
+                    {isBlurred && (
+                      <div className="w-full" >
+                        Blurred
+                      </div>
+                    )}
+                    {!isBlurred && (
+                      <div className="w-full">
+                        Not Blurred
+                      </div>
+                    )}
                   </div>
                   <div id="prevLanguage" className="pb-1.5">
-                    <Label>Video Language</Label>
+                    <Label className="font-bold">Video Language</Label>
                     {language.length < 1 && (
-                      <Button className="w-full" disabled>
+                      <div className="w-full">
                         Language
-                      </Button>
+                      </div>
                     )}
                     {language.length >= 1 && (
-                      <Button className="w-full break-all" disabled>
+                      <div className="w-full break-all">
                         {language}
-                      </Button>
+                      </div>
                     )}
                   </div>
                   <div id="prevTerms" className="flex items-center space-x-2">
-                    <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                    <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
                       See the{" "}
                       <a
                         href=""
