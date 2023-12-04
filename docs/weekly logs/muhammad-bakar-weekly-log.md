@@ -1,4 +1,4 @@
-# MUhammad Bakar Weekly Log
+# Muhammad Bakar Weekly Log
 ---
 ## Week 4
 ### September 25 - Octomber 1 2023
@@ -69,6 +69,17 @@
 - My goals for this weeks was to get Cognito (Authentication) set up and linked to the app. Which I did. See `Dashboard.tsx` (and tests for Dashboard.tsx).
 - I also attended Thursday's class, and all other group meetings.
 ### Picture of Project Board Week 12
-![Week 10 Bakar's Board](img/muhammad-bakar/mbakar-week-12-board.png)
+![Week 12 Bakar's Board](img/muhammad-bakar/mbakar-week-12-board.png)
 ### Picture of Week 12's Survey
-![Week 10 Bakar's Survey](img/muhammad-bakar/mbakar-week-12-survey.png)
+![Week 12 Bakar's Survey](img/muhammad-bakar/mbakar-week-12-survey.png)
+
+## Week 13
+### November 27 2023 - December 03 2023
+- I worked on Milestone #3: Design Submission. 
+- My goals for this weeks was to make the ER diagram and add the database tables. I completed my goals. 
+![ER diagram](img/muhammad-bakar/Other/ER.png)
+- I also attended Tuesday's class, and all other group meetings.
+### Picture of Project Board Week 13
+![Week 13 Bakar's Board](img/muhammad-bakar/mbakar-week-13-board.png)
+### Picture of Week 13's Survey
+![Week 13 Bakar's Survey](img/muhammad-bakar/mbakar-week-13-survey.png)
