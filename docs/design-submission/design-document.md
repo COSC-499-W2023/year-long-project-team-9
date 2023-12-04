@@ -182,9 +182,11 @@ We chose our design over the forgone alternative because we found it redundant t
 
 ### Feature: SST
 By: Jan-Yaeger Dhillon
+Transferring from Amplify to SST took some time, especially when one includes getting the rest of the team comfortable with SST since they were used to Amplify. Thus, the process could be divided into two parts: (1) transferring the project and (2) teaching everyone else SST.
 
 ### Feature: Video Submission
 By: Jan-Yaeger Dhillon
+Getting the submission page set up took some time. It involved translating the Figma design into actual code, adding the option to live record, and linking all the steps together into a cohesive unit.    
 
 ### Feature: Authentication
 By: Muhammad Bakar \
