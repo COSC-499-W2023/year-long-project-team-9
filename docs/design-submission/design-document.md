@@ -9,12 +9,11 @@
     - System Architecture Description  
         - Why you chose this architecture and
         - Why the components are where you put them.
-3. [Database Design](#database-design)
-    - ER Diagram: \
-    ![ER diagram](./img/er-diagram.png)
-    - Quick summary: a user can make many video requests and has preferences. Moreover, the user can be in many chat rooms, each with at leadt two users and a maximum of 10 users. 
-    - The center of the ER diagram is the User entity. Placing the user at the center of the ER diagram meant putting them at the center of the user experience and development. That is, placing the user at the center of the ER diagram meant we would develop a web app that places the user at the center. 
-        - Of course, another possible way to model the web app is to place the Request entity at the center. Such a diagram would have the consequence that, for example, there would be only one chat room per request. However, the ladder approach would not have worked since we wish to develop a project that could easily be extended beyond the MVP. By having the requests at the center, the user will only be able to interact with other features mediated through request, leading to a one-dimensional web app. Early in the process, around the time of conceptualizing the MVP, there was some thought given to this ladder approach. However, such a model was abandoned for the reason mentioned above. 
+3. [Database Design](#database)
+    - ER Diagram
+    - Database Description
+        - Changes
+        - Amazon DynamoDB
 4. [User Interface Design](#ui-design)
     - Navigation Diagram
     - Diagram of forgone alternative
@@ -156,7 +155,17 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 
 
 ## Database
-[Amazon DynamoDB](https://aws.amazon.com/dynamodb/) is a NoSQL database that uses key-value to store data.
+
+### ER Diagram
+ER Diagram: \
+![ER diagram](./img/er-diagram.png)
+    
+### Database Description
+- Quick summary: a user can make many video requests and has preferences. Moreover, the user can be in many chat rooms, each with at leadt two users and a maximum of 10 users. 
+- The center of the ER diagram is the User entity. Placing the user at the center of the ER diagram meant putting them at the center of the user experience and development. That is, placing the user at the center of the ER diagram meant we would develop a web app that places the user at the center. 
+    - Of course, another possible way to model the web app is to place the Request entity at the center. Such a diagram would have the consequence that, for example, there would be only one chat room per request. However, the ladder approach would not have worked since we wish to develop a project that could easily be extended beyond the MVP. By having the requests at the center, the user will only be able to interact with other features mediated through request, leading to a one-dimensional web app. Early in the process, around the time of conceptualizing the MVP, there was some thought given to this ladder approach. However, such a model was abandoned for the reason mentioned above. 
+- The ER diagram is implemented in Amazon DynamoDB 
+- [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) is a NoSQL database that uses key-value to store data.
 - One of the great features of DynamoDB is the its ability to scale well, meaning that one only pays for what one uses.
 - Additionally, given the heavily reliance of the web on AWS services, a database which works well with AWS is needed. Luckily, DynamoDB has great intergation with AWS.
 - Moreover, given that is a NoSQL database, it is resilient to change in data. Given early development phases comes with many unexpected changes, DynamoDB is equipped well to handle unexpected changes. 
