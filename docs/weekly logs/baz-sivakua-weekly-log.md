@@ -55,7 +55,7 @@
 ### Picture of Project Board
 ![Screenshot of week 9 project board tasks](img/baz-sivakua/baz-tasks-week9.png)
 
-### Picture of week 8's survey
+### Picture of week 9's survey
 ![Screenshot of week 9 team evaluation](img/baz-sivakua/baz-survey-week9.png)
 ---
 
@@ -67,7 +67,7 @@
 ### Picture of Project Board
 ![Screenshot of week 10 project board tasks](img/baz-sivakua/baz-tasks-week10.png)
 
-### Picture of week 8's survey
+### Picture of week 10's survey
 ![Screenshot of week 10 team evaluation](img/baz-sivakua/baz-survey-week10.png)
 ---
 
@@ -79,6 +79,19 @@
 ### Picture of Project Board
 ![Screenshot of week 12 project board tasks](img/baz-sivakua/baz-tasks-week12.png)
 
-### Picture of week 8's survey
+### Picture of week 13's survey
 ![Screenshot of week 12 team evaluation](img/baz-sivakua/baz-survey-week12.png)
+---
+
+## Week 13
+### November 27 - December 3, 2023
+- This week I worked on Milestone 3: Design Submission
+- The goal for this week was to finish coding for the `Request Listings` page, research playwright end-to-end testing and complete the navigation diagram for the design document.
+![Picture of Navigation Diagram](img/baz-sivakua/navdiagram.png)
+
+### Picture of Project Board
+![Screenshot of week 13 project board tasks](img/baz-sivakua/baz-tasks-week13.png)
+
+### Picture of week 13's survey
+![Screenshot of week 13 team evaluation](img/baz-sivakua/baz-survey-week13.png)
 ---
