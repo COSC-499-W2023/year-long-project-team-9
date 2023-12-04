@@ -100,14 +100,20 @@ The original plan was to have five tables in DynamoDB; however, we only have two
 ##### **Choice 5: DynamoDB:**
 DynamoDB was selected because it natively integrates well with other AWS services.
 
-##### **Choice 6: Social sign-in:**
+##### **Choice 6: Social Sign-in:**
 We decided to go with only social sign-in because we felt that the vast majority of users prefer social sign-in, and exclusive social sign-in significantly boosts security
 
-#### **Choice 7: Social sign-in page:**
+#### **Choice 7: Social Sign-in Page:**
 We decided to use a pop-up dialogue window as that seemed more user-friendly than redirecting to an entirely new page to log in.
 
-##### **Change 8: Reducing buttons:**
+##### **Change 8: Reducing Buttons:**
 In response to the change in the social sign-in option, the original design was reduced from five log-in options to only three, representing the three most popular options of Google, Facebook, and Microsoft.
+
+#### **Change 9: Request Listings Page:**
+Originally, we decided that the layout of the request listings page would display all requests in the same format as the preview card in the Create Request page. We decided this was too cluttered and decide to streamline it by displaying a smaller card with the title and relavant information and once selected would display the hidden information such as description.
+
+##### **Change 10: Upload Video:**
+We changed the access path of the Upload Video page insteaf of being accessed through the navigation bar at the top of the page, would instead be linked through a button on the Request Listings Page, this is a better flow because uploading a video corresponds with a request. 
 
 #### Frameworks
 
