@@ -33,6 +33,10 @@ export async function getServerSideProps() {
 
   return { props: { url } };
 }
+
+
+const exampleText = "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.";
+
 const Index = ({ url }: { url: string }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -66,6 +70,7 @@ const Index = ({ url }: { url: string }) => {
   };
 
   const router = useRouter();
+
   
 
   return (
@@ -130,12 +135,12 @@ const Index = ({ url }: { url: string }) => {
 
         <div className="grid py-5 gap-3">
           <div className="text-3xl font-bold py-5">
-            Here is the video request from <span className="text-blue-600">Jimmy Conway</span>
+            Here is the video request from <span className="text-blue-600">Daniel Woods</span>
           </div>
           <Card id="previewCard" className="drop-shadow-md border-2 border-accent bg-background h-[500px[">
             <CardContent className="grid h-full">
               <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
-                  <CardTitle className="break-all text-2xl">Meeting</CardTitle>
+                  <CardTitle className="break-all text-2xl">Spanish Lesson #2</CardTitle>
                 
               </div>
 
@@ -144,9 +149,9 @@ const Index = ({ url }: { url: string }) => {
                 {/* {clientList.map((singleClient, index) => ( */}
                   <ul>
                     {/* {singleClient.client.length < 1 && ( */}
-                      <p className="break-all text-primary indent-2 pt-2 pb-2">
-                        jimmy.conway@gmail.com
-                      </p>
+                      <div className="break-all text-primary indent-2 pt-2 pb-2 font-bold">
+                        daniel.woods@gmail.com
+                      </div>
                   </ul>
               </div>
               <div
@@ -157,7 +162,7 @@ const Index = ({ url }: { url: string }) => {
                   <Label className="font-bold">Request Description</Label>
                   <Textarea
                     className="bg-accent resize-none"
-                    value={"Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body Request body v Request body Request body Request body Request body Request body v"}
+                    value={exampleText}
                     readOnly
                     rows={9}
 

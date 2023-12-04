@@ -35,8 +35,7 @@ const Features = () => {
             <CardTitle className="text-xl">Private Video Requests</CardTitle>
             <CardDescription className="text-base">
               Initiate confidential conversations by sending secure video
-              requests. Our platform ensures your communication remains private
-              and encrypted.
+              requests. Our platform ensures your communication remains private.
             </CardDescription>
             <CardContent className="flex justify-center justify-items-center justify-self-center p-5">
               <ShieldCheck
@@ -55,8 +54,7 @@ const Features = () => {
           <CardHeader>
             <CardTitle className="text-xl">Seamless Video Submission</CardTitle>
             <CardDescription className="text-base">
-              Respondents can easily record and submit their videos through a
-              secure link, ensuring a smooth and user-friendly experience.
+              Respondents can easily record and submit their videos, ensuring a smooth and user-friendly experience.
             </CardDescription>
             <CardContent className="flex justify-center justify-items-center justify-self-center pt-12">
               <Video size={50} className="stroke-primary" />
