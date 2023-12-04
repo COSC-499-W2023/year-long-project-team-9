@@ -23,6 +23,6 @@ describe("HowTo Component", () => {
 
     // Open third accordion item
     fireEvent.click(screen.getByText("Step 3: Receive & View"));
-    expect(screen.getByText(/After the video is submitted/i)).toBeInTheDocument();
+    expect(screen.getByText(/After the sender submits the video/i)).toBeInTheDocument();
   });
 });

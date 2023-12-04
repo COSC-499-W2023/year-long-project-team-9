@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NavBar from '@/components/NavBar';
+import * as Login from '@/components/Login';
 import * as nextRouter from 'next/router';
 import * as nextThemes from 'next-themes';
 
@@ -16,7 +17,6 @@ jest.mock('next/router', () => ({
     };
   },
 }));
-
 jest.mock('next-themes', () => ({
   useTheme() {
     return {
@@ -46,12 +46,26 @@ describe('NavBar Component', () => {
     // expect(nextThemes.useTheme().setTheme).toHaveBeenCalledWith('dark');
   });
 
-  test('sign in dialog opens and can sign in', () => {
-    render(<NavBar />);
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
-    expect(screen.getByText('Enter your credentials to sign in.')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+  test('Open Sign In dialogue menu and select Log in with Google', () => {
+    render(<NavBar/>);
+    {/*Create a mock SignIn function to test login buttons*/}
+    fireEvent.click(screen.getByText("Sign In"));
+    fireEvent.click(screen.getByText("Log in with Google"));
+    expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
+  });
+  test('Open Sign In dialogue menu and select Log in with Facebook', () => {
+    render(<NavBar/>);
+    {/*Create a mock SignIn function to test login buttons*/}
+    fireEvent.click(screen.getByText("Sign In"));
+    fireEvent.click(screen.getByText("Log in with Facebook"));
+    expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
+  });
+  test('Open Sign In dialogue menu and select Log in with Microsoft', () => {
+    render(<NavBar/>);
+    {/*Create a mock SignIn function to test login buttons*/}
+    fireEvent.click(screen.getByText("Sign In"));
+    fireEvent.click(screen.getByText("Log in with Microsoft"));
+    expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
   });
 
   // test('navigates on link click when signed in', () => {

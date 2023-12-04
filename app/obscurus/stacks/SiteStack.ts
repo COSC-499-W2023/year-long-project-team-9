@@ -1,3 +1,4 @@
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 import {
   StackContext,
   NextjsSite,
@@ -13,21 +14,37 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
-
-  // new Service(stack, "MyService", {
-  //   path: "./service",
-  //   cdk: {
-  //     container: {
-  //       healthCheck: {
-  //         command: ["CMD-SHELL", "curl -f <http://localhost:3000/> || exit 1"],
-  //         interval: Duration.minutes(1),
-  //         retries: 1,
-  //         startPeriod: Duration.minutes(2),
-  //         timeout: Duration.seconds(60),
-  //       },
-  //     },
-  //   },
-  // });
+  // If you want to add a field, just append it to the table
+  // Adding user table
+  const user = new Table(stack, "Users", {
+    fields: {
+      sub: "string",
+      email: "string",
+      first_name: "string",
+      last_name: "string",
+      bday: "string",
+      requests: "string", //json object
+      time_zone: "string", 
+      language: "string"
+    },
+    primaryIndex: { partitionKey: "sub"},
+  });
+  // adding chat room folder
+  const room = new Table(stack, "Rooms", {
+    fields: {
+      room_id: "string",
+      connect_id: "string",
+      users: "string", //json
+      creation_date: "string",
+      number_of_participants: "string",
+      message: "string" //json object
+    },
+    primaryIndex: { partitionKey: "room_id"},
+  });
+//   const service = new Service(stack, "processVideo", {
+//     path: "./service",
+//     bind: [bucket],
+//   });
 
   const site = new NextjsSite(stack, "site", {
     bind: [bucket, table],
@@ -35,6 +52,6 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   stack.addOutputs({
-    SiteUrl: site.url,
+    Site: site.customDomainUrl || site.url,
   });
 }
