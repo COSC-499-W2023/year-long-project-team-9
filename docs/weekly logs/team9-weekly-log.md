@@ -867,3 +867,5 @@ The tasks identified for this week were:
 ### Table View of Completed Tasks
 All tasks for `Milestone 3 - Design Documentation` were completed
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-13/completed-week13.png)
+### Test Report
+![test report](img/team-weekly-log-img/week-12/test-repoert-week13.png)
