@@ -2,9 +2,9 @@ name: Playwright E2E testing
 
 on:
   pull_request:
-    branches: ["master", "develop"]
+    branches: []
   push:
-    branches: ["master", "develop", "upload"]
+    branches: []
 
 defaults:
   run:

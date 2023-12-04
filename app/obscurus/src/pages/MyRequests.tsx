@@ -177,7 +177,7 @@ const MyRequests = () => {
 
   return (
     <Layout>
-      <div className="px-36 ">
+      <div className="md:px-24 ">
         <div className="grid items-center gap-5">
           <h1 className="text-3xl font-extrabold justify-self-center pt-10">
             My Requests
@@ -260,7 +260,7 @@ const MyRequests = () => {
             id="previewCard"
             className="drop-shadow-md border-2 border-accent bg-foreground-secondary"
           >
-            <CardContent className="grid h-full">
+            <CardContent className="grid">
               {selectedRequest ? (
                 <>
                   <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
@@ -292,7 +292,7 @@ const MyRequests = () => {
                     </div>
                     <div className="grid grid-row-4 font-bold">
                       <div id="prevDate" className="pt-10 ">
-                        <Label >Due Date</Label>
+                        <Label>Due Date</Label>
                         <div className="flex items-center">
                           <CalendarIcon
                             className="mr-2"
@@ -311,7 +311,7 @@ const MyRequests = () => {
                         </div>
 
                         <div id="prevLanguage" className="pb-1.5">
-                          <Label >Video Language</Label>
+                          <Label>Video Language</Label>
                           <div className="w-full">English</div>
                         </div>
 
@@ -330,13 +330,6 @@ const MyRequests = () => {
                             </a>{" "}
                             here
                           </Label>
-                          <Button
-                            type="submit"
-                            className=" justify-self-end font-bold p-5 w-2/3"
-                            onClick={() => router.push("/submit")}
-                          >
-                            Upload Video
-                          </Button>
                         </div>
                       </div>
                     </div>
@@ -344,7 +337,7 @@ const MyRequests = () => {
                 </>
               ) : (
                 <>
-                  <div className="grid h-full">
+                  <div className="grid">
                     <div id="prevTitle" className="pt-6 grid grid-row-3 pb-6">
                       <CardTitle className="break-all text-2xl">
                         {requests[0].reqtitle}
@@ -372,7 +365,7 @@ const MyRequests = () => {
                           rows={9}
                         />
                       </div>
-                      <div className="grid font-bold">
+                      <div className="grid">
                         <div id="prevDate" className="pt-10 ">
                           <Label className="">Due Date</Label>
                           <div className="flex items-center">
@@ -388,36 +381,32 @@ const MyRequests = () => {
                         </div>
                         <div className="grid grid-row-5">
                           <div id="prevBlurred">
-                            <Label className="">Video Processing</Label>
+                            <Label className="">
+                              Video Processing
+                            </Label>
                             <div className="w-full ">Blurred</div>
                           </div>
                           <div id="prevLanguage" className="pb-1.5">
-                            <Label className="font-bold">Video Language</Label>
+                            <Label className="">Video Language</Label>
                             <div className="w-full">English</div>
                           </div>
                           <div
-                          id="prevTerms"
-                          className="flex items-center space-x-10"
-                        >
-                          <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
-                            See the{" "}
-                            <a
-                              href=""
-                              target="_blank"
-                              className="text-blue-600 dark:text-blue-500 hover:underline"
-                            >
-                              terms and conditions
-                            </a>{" "}
-                            here
-                          </Label>
-                          <Button
-                            type="submit"
-                            className=" justify-self-end font-bold p-5 w-2/3"
-                            onClick={() => router.push("/submit")}
-                          >
-                            Upload Video
-                          </Button>
-                        </div>
+                            id="prevTerms"
+                            className="flex items-center space-x-10"
+                          >Í
+                            <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                              See the{" "}
+                              <a
+                                href=""
+                                target="_blank"
+                                className="text-blue-600 dark:text-blue-500 hover:underline"
+                              >
+                                terms and conditions
+                              </a>{" "}
+                              here
+                            </Label>
+
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -426,6 +415,15 @@ const MyRequests = () => {
               )}
             </CardContent>
           </Card>
+        </div>
+        <div className="flex justify-end py-10">
+          <Button
+            type="submit"
+            className=" justify-self-start font-bold p-5 "
+            onClick={() => router.push("/submit")}
+          >
+            Upload Video
+          </Button>
         </div>
       </div>
     </Layout>
