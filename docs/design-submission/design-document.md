@@ -30,7 +30,10 @@
         - For medical reasons, the professor granted Soren Stenback the option not to commit to further work. For these reasons, feature 8 is not present. 
         
 
-6. Testing (?)
+6. Other
+    - Development Philosophy: Emphasizing agile development for rapid feature rollouts and responsiveness to user feedback.
+    - CI/CD Strategy: Implementing a robust CI/CD pipeline using GitHub Actions and Seed for consistent, error-free deployments.
+    - Testing Approach: Detailed coverage of testing strategies including Jest for unit tests, Vitest for infrastructure, and Playwright for E2E, ensuring a bug-free user experience.
 
 ## Overview
 
