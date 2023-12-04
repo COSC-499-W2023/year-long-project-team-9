@@ -835,51 +835,23 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Complete documentation on all working components of the web
 
-### Task 7: Init api gateway
+### Task 7: Complete Submission Page
 
-* **Status:** In progress
-* **Assignee(s):** Jan-Yaeger Dhillon
-* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
-* **Description:** Initialize API gateway for use in our project
-
-### Task 8: Complete Submission Page
-
-* **Status:** In progress
+* **Status:** Completed
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
 * **Description:** Create `Submission Page` which will allow the user to submit a video and process it in response to a request
 
-### Task 9: Make Homepage Responsive
+### Task 8: Create Sign-in Page
 
-* **Status:** In progress
-* **Assignee(s):** Jan-Yaeger Dhillon
-* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
-* **Description:** Edit `Home Page` to be responsive to screen size and allow for good formatting across different screen sizes
-
-### Task 10: Migrate from Pages Router to App Router
-
-* **Status:** In progress
-* **Assignee(s):** Jan-Yaeger Dhillon and Baz Sivakua
-* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
-* **Description:** Migrate from page router to app router in nextjs
-
-### Task 11: Create Registration Page
-
-* **Status:** In progress
+* **Status:** Completed
 * **Assignee(s):** Jan-Yaeger Dhillon and Soren Stenback 
 * **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
-* **Description:** Complete a working registration page where users (both professional and client) are able to sign up for an account
+* **Description:** Complete a working registration page where users (both professional and client) are able to social sign in with Google, Facebook and Microsoft
 
-### Task 12: Set up AWS Fargate
+### Task 9: Playwright Testing
 
-* **Status:** In progress
-* **Assignee(s):** Jan-Yaeger Dhillon 
-* **Associated Milestone Goal:** Milestone Goal 1: Configure enviorment for coding
-* **Description:** Set up AWS Fargate environment to run Batch jobs on
-
-### Task 13: Improve Playwright Testing
-
-* **Status:** In progress
+* **Status:** Completed
 * **Assignee(s):** Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 3: Back-End Coding
 * **Description:** Research and implement improvements for playwright testing and create additional tests
@@ -891,8 +863,5 @@ The tasks identified for this week were:
 ![screenshot of burnupchart](img/team-weekly-log-img/week-13/burnup-week13.png)
 
 ### Table View of Completed Tasks
+All tasks for `Milestone 3 - Design Documentation` were completed
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-13/completed-week13.png)
-
-### Table View of In Progress Tasks
-
-![screenshot of in progress board tasks](img/team-weekly-log-img/week-13/inprogress-week13.png)
