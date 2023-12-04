@@ -148,7 +148,12 @@ The key frameworks we are using for our app are **Next.js** and **Tailwind CSS**
 - Moreover, given that is a NoSQL database, it is resilient to change in data. Given early development phases comes with many unexpected changes, DynamoDB is equipped well to handle unexpected changes. 
 
 ## UI Design
+Navigaton Diagram: 
+![Navigation Diagram](img/navdiagram.png)
 
+Forgone Alternative:
+![Alt Navigation Diagram](img/navdiagram2.png)
+We chose this design over the forgone alternative because we found it redundant to have a dashboard page. We found that many functions of this dashboard page were better implemented in other areas, such as the navigation bar and request listings page. Additionally, if we implemented a dashboard, once you finished a function on another page, such as creating a request, the page would redirect automatically to the dashboard, which we found restrictive and limiting to the user. 
 
 ## Features
 
@@ -166,12 +171,14 @@ Authentication involved two steps: (1) familiarizing oneself with the terminolog
 By: Muhammad Bakar \
 Database Design and Implementation, as the title suggests, was split into two parts: (1) designing the database and (2) implementing the tables. (1) took much longer than (2) since it required meditation on what kind of data the web app needed – since once a table has been created, it cannot be modified in DynamoDB. Initially, implementing the tables seemed trivially easy; however, there was a setback because DynamoDB prefers as few tables as possible. This meant that, although the ER diagram was perfectly sound, it needed to be translated into as few tables as possible. Eventually, the tables were reduced from five to two. 
 
-### Feature: Request Page
-By: Baz Sivakua
+### Feature: Request Listings Page
+By: Baz Sivakua \
+Implement the Requests Listings Page which is a page listing all requests a user has made. At the top of the page is a search bar and some filtering options for the user. On the left of the page is a table giving a preview of the request (includes the title, due date and client emails) which allows the user to select which request they want to view. Once the user selects a request from this table, the full request will be displayed on the right side of the page. 
 
-### Feature: Playwright
-By: Baz Sivakua
+### Feature: Playwright Testing
+By: Baz Sivakua \
+Research and improve the playwright tests implemented on the website which can be broken down into two parts. (1) Research on how to switch from using nodejs test runner to playwright testing through the package.json file. (2) Implement more tests for various parts of the web application. 
 
-### Feature: Playwright
+### Feature: Sign In Page
 By: Soren Stenback \
 For the signin page, the requirements laid out by Google, Microsoft, and Facebook had to be follow to the letter. Each required specific pixel width and height to their buttons, as well as design requirements such as colouration, font, and the usage of their trademarked logo. As our web app uses Tailwind CSS, the Tailwind configuration file had to be modified in addition to applying custom CSS classes in order to make the sign in buttons match the required formats.
