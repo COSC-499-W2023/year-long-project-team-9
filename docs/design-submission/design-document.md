@@ -26,8 +26,9 @@
     - Database Design and Implementation - Muhammad Bakar
     - Request Page - Baz Sivakua
     - Playwright - Baz Sivakua
-    - Feature 7
-    - Feature 8
+    - Sign In Page - Soren Stenback
+        - For personal reasons, the professor granted Soren Stenback the option not to commit to further work. For these reasons, feature 8 is not present. 
+        
 
 6. Testing (?)
 
@@ -165,9 +166,12 @@ Authentication involved two steps: (1) familiarizing oneself with the terminolog
 By: Muhammad Bakar \
 Database Design and Implementation, as the title suggests, was split into two parts: (1) designing the database and (2) implementing the tables. (1) took much longer than (2) since it required meditation on what kind of data the web app needed – since once a table has been created, it cannot be modified in DynamoDB. Initially, implementing the tables seemed trivially easy; however, there was a setback because DynamoDB prefers as few tables as possible. This meant that, although the ER diagram was perfectly sound, it needed to be translated into as few tables as possible. Eventually, the tables were reduced from five to two. 
 
-
 ### Feature: Request Page
 By: Baz Sivakua
 
 ### Feature: Playwright
 By: Baz Sivakua
+
+### Feature: Playwright
+By: Soren Stenback \
+For the signin page, the requirements laid out by Google, Microsoft, and Facebook had to be follow to the letter. Each required specific pixel width and height to their buttons, as well as design requirements such as colouration, font, and the usage of their trademarked logo. As our web app uses Tailwind CSS, the Tailwind configuration file had to be modified in addition to applying custom CSS classes in order to make the sign in buttons match the required formats.
