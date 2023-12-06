@@ -42,7 +42,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
   const service = new Service(stack, "processVideo", {
     path: "./service",
-    port: 3000,
+    port: 8080,
     bind: [bucket],
   });
 
@@ -51,16 +51,16 @@ const site = new NextjsSite(stack, "site", {
   environment: {
     TABLE_NAME: table.tableName,
   },
-  customDomain: {
-    domainName: "obscurus.me",
-    domainAlias: "www.obscurus.me",
-    cdk: {
-      hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
-        hostedZoneId: "Z09403151W7ZFKPC0YJEL",
-        zoneName: "obscurus.me",
-      }),
-    },
-  },
+  // customDomain: {
+  //   domainName: "obscurus.me",
+  //   domainAlias: "www.obscurus.me",
+  //   cdk: {
+  //     hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+  //       hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+  //       zoneName: "obscurus.me",
+  //     }),
+  //   },
+  // },
 });
 
   stack.addOutputs({
