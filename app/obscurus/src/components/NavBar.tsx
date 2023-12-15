@@ -62,6 +62,8 @@ const NavBar = () => {
       setShowSignInDialog(true);
     }
   };
+ 
+  const [activePage, setActivePage] = useState("/");
 
   const SignIn = () => {
     setSignedIn(true);

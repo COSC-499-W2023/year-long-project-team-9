@@ -220,17 +220,17 @@ const MyRequests = () => {
         </div>
         <br />
         <div className="grid grid-cols-2 gap-5">
-          <Table className="w-3/4 justify-items-start cursor-pointer">
-            <TableBody>
+          <Table className="w-3/4 justify-items-start">
+            <TableBody className="">
               {requests.map((request) => (
                 <TableRow
                   key={request.reqtitle}
                   onClick={() => handleRequestClick(request)}
+                  className="hover:bg-background"
                 >
-                  <TableCell>
                     <Card
                       id="collapsed"
-                      className="overflow-auto justify-self-start drop-shadow-md border-2 border-accent hover:bg-accent bg-foreground-secondary"
+                      className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-foreground-secondary cursor-pointer my-2"
                     >
                       <CardHeader>
                         <div className="space-x-4 flex items-center">
@@ -250,7 +250,6 @@ const MyRequests = () => {
                         </div>
                       </CardHeader>
                     </Card>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -258,7 +257,7 @@ const MyRequests = () => {
 
           <Card
             id="previewCard"
-            className="drop-shadow-md border-2 border-accent bg-foreground-secondary"
+            className="drop-shadow-md border-2 bg-foreground-secondary"
           >
             <CardContent className="grid">
               {selectedRequest ? (

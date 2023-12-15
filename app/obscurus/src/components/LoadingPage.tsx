@@ -1,11 +1,15 @@
 import { NextPage } from 'next';
 import Layout from '@/components/layout';
+import {PulseLoader} from "react-spinners";
+
+
+
 
 const LoadingPage: NextPage = () => {
     return(
       <Layout>
         <div className="flex justify-center items-center min-h-screen pb-32">
-          <div className="text-3xl font-extrabold">Loading...</div>
+        <PulseLoader color="#000"/>
         </div>
       </Layout>
     )

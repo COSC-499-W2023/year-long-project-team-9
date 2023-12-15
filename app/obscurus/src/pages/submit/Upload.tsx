@@ -1,25 +1,16 @@
-import Layout from "@/components/layout";
 import crypto from "crypto";
 import { Bucket } from "sst/node/bucket";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { Table } from "sst/node/table";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  GetCommand,
-  UpdateCommand,
-  DynamoDBDocumentClient,
-} from "@aws-sdk/lib-dynamodb";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import Webcam from "react-webcam";
 import router from "next/router";
-import { Circle, Pause, Play } from "lucide-react";
+import { ArrowBigDownIcon, Circle, Pause } from "lucide-react";
+import SubmitLayout from "./layout";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -31,7 +22,7 @@ export async function getServerSideProps() {
 
   return { props: { url } };
 }
-const Upload = ({ url }: { url: string }) => {
+export const Upload = ({ url }: { url: string }) => {
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +57,6 @@ const Upload = ({ url }: { url: string }) => {
       return;
     }
 
-    // Assuming the PUT operation returns a URL to the uploaded object
     const location = response.headers.get("Location") || url.split("?")[0];
     window.location.href = location;
     console.log("Upload successful:", location);
@@ -136,72 +126,16 @@ const Upload = ({ url }: { url: string }) => {
 
   const primary = useCurrentTheme("primary");
 
-  const background = useCurrentTheme("background");
-
   return (
-    <Layout>
-      <div className="grid  justify-items-center items-center p-10 gap-10">
-        <svg
-          width="50%"
-          height="60"
-          viewBox="0 0 856 60"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect x="259" y="24" width="568" height="13" fill="#CBD5E1" />
-          <rect x="49" y="24" width="160" height="12.8" fill={primary} />
-          <Link href="/submit">
-            <circle
-              cx="30"
-              cy="30"
-              r="27"
-              fill={primary}
-              stroke={primary}
-              stroke-width="6"
-            />
-          </Link>
-          <circle
-            cx="826"
-            cy="30"
-            r="27"
-            fill={background}
-            stroke="#CBD5E1"
-            stroke-width="6"
-          />
-          <circle
-            cx="627"
-            cy="30"
-            r="27"
-            fill={background}
-            stroke="#CBD5E1"
-            stroke-width="6"
-          />
-          <circle
-            cx="428"
-            cy="30"
-            r="27"
-            fill={background}
-            stroke="#CBD5E1"
-            stroke-width="6"
-          />
-          <circle
-            cx="229"
-            cy="30"
-            r="27"
-            fill={background}
-            stroke={primary}
-            stroke-width="6"
-          />
-        </svg>
-
-        <div className="text-3xl font-bold pt-10">
+    <SubmitLayout>
+        <div className="text-3xl font-bold py-5 ">
           Upload or Record Your Video
         </div>
         {!record ? (
           <>
-            <div className="grid justify-items-center border-dashed border-black border rounded-lg w-[500px] bg-secondary dark:border-white">
+            <div className="grid justify-items-center border-dashed border-black border-4 rounded-lg  bg-foreground-secondary dark:border-white">
               <form onSubmit={handleSubmit} className="">
-                <div className="grid w-full gap-10 h-full  max-w-sm items-center rounded-xl p-10">
+                <div className="grid w-[400px] h-[400px] items-center rounded-xl">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     shape-rendering="geometricPrecision"
@@ -274,20 +208,20 @@ const Upload = ({ url }: { url: string }) => {
               </form>
             </div>
             <div className="grid grid-cols-2 justify-evenly gap-72">
-              <Button
-                type="submit"
-                className=" px-8 font-extrabold"
-                onClick={() => router.back}
-              >
-                Back
-              </Button>
-              <Button
-                type="submit"
-                className=" px-8 font-extrabold"
-                onClick={() => router.push("/submit/Upload")}
-              >
-                Next
-              </Button>
+              <button onClick={() => router.push("/submit")}>
+                <ArrowBigDownIcon
+                  className="stroke-primary fill-primary rotate-90 mt-1"
+                  size={30}
+                />
+              </button>
+              <button onClick={() => router.push("/submit")}>
+                <ArrowBigDownIcon
+                  className="stroke-primary fill-primary -rotate-90 mt-1"
+                  size={30}
+                  type="submit"
+                  onClick={() => router.push("/submit")}
+                />
+              </button>
             </div>
           </>
         ) : (
@@ -322,8 +256,7 @@ const Upload = ({ url }: { url: string }) => {
             </div>
           </div>
         )}
-      </div>
-    </Layout>
+    </SubmitLayout>
   );
 };
 
