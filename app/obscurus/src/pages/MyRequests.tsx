@@ -51,6 +51,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async() => {
+  return {
+    props: {}
+  }
+}
 
 type ClientType = {
   client: string;
