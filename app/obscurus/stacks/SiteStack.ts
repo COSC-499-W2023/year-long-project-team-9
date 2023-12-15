@@ -49,6 +49,16 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [bucket, table],
     environment: { TABLE_NAME: table.tableName },
+    customDomain: {
+      domainName: "obscurus.me",
+      domainAlias: "www.obscurus.me",
+      cdk: {
+        hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+          hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+          zoneName: "obscurus.me",
+        }),
+      },
+    },
   });
 
   stack.addOutputs({
