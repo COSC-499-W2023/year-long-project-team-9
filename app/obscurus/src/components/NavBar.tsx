@@ -44,6 +44,13 @@ import AppleLogin from "react-apple-login";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import Login from "../components/Login";
 
+
+export async function getServerSideProps() {
+  return {
+    props: {}, // nothing yet
+  };
+} 
+
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
