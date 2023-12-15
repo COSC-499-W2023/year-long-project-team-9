@@ -1,63 +1,21 @@
-{
-  /*Imports*/
-}
 import Layout from "@/components/layout";
 import React from "react";
-import { format } from "date-fns";
 import { useRouter } from "next/router";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  AlertCircle,
-  Plus,
-  X,
-  Calendar as CalendarIcon,
-  Search,
-} from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Calendar as CalendarIcon, Search } from "lucide-react";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async() => {
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
-    props: {}
-  }
-}
+    props: {},
+  };
+};
 
 type ClientType = {
   client: string;
@@ -103,7 +61,6 @@ const MyRequests = () => {
         "Hello all,\n\nFor the final lesson, please record a video of yourselves having a full conversation in a restaurant setting in Castilian Spanish.\n\n Include greetings, ordering food, asking for recommendations, and thanking the staff.",
     },
   ];
-  const req1 = requests[0];
 
   const [selectedRequest, setSelectedRequest] =
     React.useState<RequestType | null>(null);
@@ -192,7 +149,7 @@ const MyRequests = () => {
           <div className="items-center    ">
             <Card
               id="searchbar"
-              className="overflow-auto h-17 justify-self-start drop-shadow-md border-2 border-accent bg-accent"
+              className="overflow-auto h-17 justify-self-start drop-shadow-md border-2 bg-card"
             >
               <CardHeader>
                 <div className="space-x-4 flex items-center bg-foreground-secondary">
@@ -237,7 +194,7 @@ const MyRequests = () => {
                   <TableCell>
                     <Card
                       id="collapsed"
-                      className="overflow-auto justify-self-start drop-shadow-md border-2 border-accent hover:bg-accent bg-foreground-secondary"
+                      className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
                     >
                       <CardHeader>
                         <div className="space-x-4 flex items-center">
@@ -265,7 +222,7 @@ const MyRequests = () => {
 
           <Card
             id="previewCard"
-            className="drop-shadow-md border-2 border-accent bg-foreground-secondary"
+            className="drop-shadow-md border-2  bg-card"
           >
             <CardContent className="grid">
               {selectedRequest ? (
@@ -309,7 +266,9 @@ const MyRequests = () => {
                           </div>
                         </div>
                         <div className="grid grid-row-4">
-                        <div id="prevBlurred" className="pb-1.5">                            <Label className="font-bold">
+                          <div id="prevBlurred" className="pb-1.5">
+                            {" "}
+                            <Label className="font-bold">
                               Video Processing
                             </Label>
                             <div className="w-full font-base">Blurred</div>

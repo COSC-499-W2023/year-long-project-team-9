@@ -1,23 +1,11 @@
-import { ArrowBigDownDash, Lock, Sun } from "lucide-react";
 import * as React from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import { ScanFace, ShieldCheck, Video } from "lucide-react";
 
@@ -26,7 +14,7 @@ const Features = () => {
     <>
       <div className="grid grid-cols-3 items-center justify-center justify-items-center gap-24 min-h-screen">
         <Card
-          className="w-[300px] h-[300px] justify-center justify-items-center drop-shadow-md"
+          className="w-[300px] h-[300px] justify-center justify-items-center drop-shadow-md bg-card"
           data-aos="flip-left"
           data-aos-delay="100"
           data-aos-duration="750"
@@ -46,7 +34,7 @@ const Features = () => {
           </CardHeader>
         </Card>
         <Card
-          className="w-[300px] h-[300px] drop-shadow-md"
+          className="w-[300px] h-[300px] drop-shadow-md bg-card"
           data-aos="flip-left"
           data-aos-delay="250"
           data-aos-duration="750"
@@ -62,7 +50,7 @@ const Features = () => {
           </CardHeader>
         </Card>
         <Card
-          className="w-[300px] h-[300px] drop-shadow-md"
+          className="w-[300px] h-[300px] drop-shadow-md bg-card"
           data-aos="flip-left"
           data-aos-delay="300"
           data-aos-duration="750"

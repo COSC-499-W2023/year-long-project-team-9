@@ -3,13 +3,6 @@ import crypto from "crypto";
 import { Bucket } from "sst/node/bucket";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { Table } from "sst/node/table";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  GetCommand,
-  UpdateCommand,
-  DynamoDBDocumentClient,
-} from "@aws-sdk/lib-dynamodb";
 import { FormEvent, useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -58,12 +51,10 @@ const Index = ({ url }: { url: string }) => {
     });
 
     if (!response.ok) {
-      // Handle the error situation
       console.error("Upload failed:", response.statusText);
       return;
     }
 
-    // Assuming the PUT operation returns a URL to the uploaded object
     const location = response.headers.get("Location") || url.split("?")[0];
     window.location.href = location;
     console.log("Upload successful:", location);
@@ -146,9 +137,7 @@ const Index = ({ url }: { url: string }) => {
 
               <div id="prevClient">
                 <Label className="font-bold">From</Label>
-                {/* {clientList.map((singleClient, index) => ( */}
                   <ul>
-                    {/* {singleClient.client.length < 1 && ( */}
                       <div className="break-all text-primary indent-2 pt-2 pb-2 font-bold">
                         daniel.woods@gmail.com
                       </div>
@@ -188,19 +177,6 @@ const Index = ({ url }: { url: string }) => {
                         Language
                       </div>
                   </div>
-                  {/* <div id="prevTerms" className="flex items-center space-x-2">
-                    <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
-                      See the{" "}
-                      <a
-                        href=""
-                        target="_blank"
-                        className="text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        terms and conditions
-                      </a>{" "}
-                      here
-                    </Label>
-                  </div> */}
                 </div>
               </div>
             </CardContent>

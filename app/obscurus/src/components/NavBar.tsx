@@ -3,45 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ArrowDownLeftSquare, Sun, Moon, Bold } from "lucide-react";
+import { Sun} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-} from "@/components/ui/dropdown-menu"; // Assuming you have these components
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import useScroll from "@/components/hooks/scroll";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import AppleLogin from "react-apple-login";
-import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import Login from "../components/Login";
 
 
@@ -57,11 +32,6 @@ const NavBar = () => {
   const scroll = useScroll();
   const [signedIn, setSignedIn] = useState(false);
   const [showSignInDialog, setShowSignInDialog] = useState(false);
-
-  const [customButton, onCustomButtonChange] = useState(true);
-  const [withUserData, onWithUserDataChange] = useState(true);
-  const [customClassName, onCustomClassNameChange] = useState("my-button");
-
   const handleAuth = (route: string) => {
     if (signedIn) {
       router.push(route);
@@ -104,7 +74,6 @@ const NavBar = () => {
               <NavigationMenuItem>
                 <div
                   className="font-bold text-base p-5 hover:cursor-pointer"
-                  // onClick={() => scroll("#about")}
                 >
                   Create Request
                 </div>
@@ -115,19 +84,11 @@ const NavBar = () => {
               <NavigationMenuItem>
                 <div
                   className="font-bold text-base p-5 hover:cursor-pointer"
-                  // onClick={() => scroll("#features")}
                 >
                   My Requests
                 </div>
               </NavigationMenuItem>
             </Link>
-            {/* <Link href="submit">
-            <NavigationMenuItem>
-              <div  className="font-bold text-base p-5 hover:cursor-pointer">
-                Upload Video
-              </div>
-            </NavigationMenuItem>
-            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
