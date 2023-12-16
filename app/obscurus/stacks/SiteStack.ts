@@ -1,4 +1,3 @@
-import { HostedZone } from "aws-cdk-lib/aws-route53";
 import {
   StackContext,
   NextjsSite,
@@ -6,7 +5,7 @@ import {
   Table,
   Service,
 } from "sst/constructs";
-import { Duration } from "aws-cdk-lib/core";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 
 export default function SiteStack({ stack }: StackContext) {
   const bucket = new Bucket(stack, "public");
