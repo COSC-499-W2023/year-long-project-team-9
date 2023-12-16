@@ -3,11 +3,11 @@ import About from "../components/About";
 import Features from "../components/Features";
 import HowTo from "../components/HowTo";
 import { ArrowBigDownIcon } from "lucide-react";
-import type { InferGetStaticPropsType, GetStaticProps } from 'next'
+import type { GetStaticProps } from 'next'
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
-    props: {}, // nothing yet
+    props: {}, 
   };
 };
 

@@ -3,7 +3,6 @@ import {
   NextjsSite,
   Bucket,
   Table,
-  Service,
 } from "sst/constructs";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
 
@@ -13,8 +12,6 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
-  // If you want to add a field, just append it to the table
-  // Adding user table
   const user = new Table(stack, "Users", {
     fields: {
       sub: "string",
@@ -40,10 +37,6 @@ export default function SiteStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "room_id"},
   });
-//   const service = new Service(stack, "processVideo", {
-//     path: "./service",
-//     bind: [bucket],
-//   });
 
   const site = new NextjsSite(stack, "site", {
     bind: [bucket, table],
