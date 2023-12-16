@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import Home from './Home'; // Adjust the path if Home is located in a different directory
+import Home from './Home';
 import Layout from '@/components/layout';
 
 const IndexPage: NextPage = () => {

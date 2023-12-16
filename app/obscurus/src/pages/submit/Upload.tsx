@@ -3,23 +3,15 @@ import crypto from "crypto";
 import { Bucket } from "sst/node/bucket";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { Table } from "sst/node/table";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  GetCommand,
-  UpdateCommand,
-  DynamoDBDocumentClient,
-} from "@aws-sdk/lib-dynamodb";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import Webcam from "react-webcam";
 import router from "next/router";
-import { Circle, Pause, Play } from "lucide-react";
+import { Circle, Pause } from "lucide-react";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -61,12 +53,10 @@ const Upload = ({ url }: { url: string }) => {
     });
 
     if (!response.ok) {
-      // Handle the error situation
       console.error("Upload failed:", response.statusText);
       return;
     }
 
-    // Assuming the PUT operation returns a URL to the uploaded object
     const location = response.headers.get("Location") || url.split("?")[0];
     window.location.href = location;
     console.log("Upload successful:", location);
