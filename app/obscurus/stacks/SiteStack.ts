@@ -4,6 +4,7 @@ import {
   Bucket,
   Table,
 } from "sst/constructs";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 
 export default function SiteStack({ stack }: StackContext) {
   const bucket = new Bucket(stack, "public");
