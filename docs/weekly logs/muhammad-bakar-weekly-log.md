@@ -1,4 +1,4 @@
-# MUhammad Bakar Weekly Log
+# Muhammad Bakar Weekly Log
 ---
 ## Week 4
 ### September 25 - Octomber 1 2023
@@ -41,3 +41,45 @@
 ![Week 8 Bakar's Board](img/muhammad-bakar/mbakar-week-8-board.png)
 ### Picture of Week 8's Survey
 ![Week 8 Bakar's Survey](img/muhammad-bakar/mbakar-week-8-survey.png)
+
+## Week 9
+### October 30 2023 - November 5 2023
+- I worked on Milestone #2: Mini-Presentation. 
+- My goals for this week was to make sure Milestone #2: Mini-Presentation was completed. Although our demo broke, even though everything indicated it would not, I think the goal was completed.
+- I also attended Tuesday’s class, and all other group meetings.
+### Picture of Project Board Week 9
+![Week 9 Bakar's Board](img/muhammad-bakar/mbakar-week-9-board.png)
+### Picture of Week 9's Survey
+![Week 9 Bakar's Survey](img/muhammad-bakar/mbakar-week-9-survey.png)
+
+## Week 10
+### November 6 2023 - November 12 2023
+- I worked on Milestone #3: Design Submission. 
+- My goals for this weeks was to get on the same page with the group on milestone #3 and complete the fixes for the Create Request page.
+	- I got on the same page regarding milestone #3, but failed to complete Create Request because my partner become ill. However, I made considerable progress towards fixing the page. 
+- I also attended Tuesday’s class, and all other group meetings.
+### Picture of Project Board Week 10
+![Week 10 Bakar's Board](img/muhammad-bakar/mbakar-week-10-board.png)
+### Picture of Week 10's Survey
+![Week 10 Bakar's Survey](img/muhammad-bakar/mbakar-week-10-survey.png)
+
+## Week 12
+### November 20 2023 - November 26 2023
+- I worked on Milestone #3: Design Submission. 
+- My goals for this weeks was to get Cognito (Authentication) set up and linked to the app. Which I did. See `Dashboard.tsx` (and tests for Dashboard.tsx).
+- I also attended Thursday's class, and all other group meetings.
+### Picture of Project Board Week 12
+![Week 12 Bakar's Board](img/muhammad-bakar/mbakar-week-12-board.png)
+### Picture of Week 12's Survey
+![Week 12 Bakar's Survey](img/muhammad-bakar/mbakar-week-12-survey.png)
+
+## Week 13
+### November 27 2023 - December 03 2023
+- I worked on Milestone #3: Design Submission. 
+- My goals for this weeks was to make the ER diagram and add the database tables. I completed my goals. 
+![ER diagram](img/muhammad-bakar/Other/ER.png)
+- I also attended Tuesday's class, and all other group meetings.
+### Picture of Project Board Week 13
+![Week 13 Bakar's Board](img/muhammad-bakar/mbakar-week-13-board.png)
+### Picture of Week 13's Survey
+![Week 13 Bakar's Survey](img/muhammad-bakar/mbakar-week-13-survey.png)

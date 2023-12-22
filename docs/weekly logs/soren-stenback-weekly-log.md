@@ -82,3 +82,71 @@
 ### Picture of Week 8's Survey
 
 ![Week 8 Survey](img/soren-stenback/Week8-Survey-ID4.png)
+
+---
+
+## Week 9
+
+### October 30 - November 5, 2023
+
+- This week I worked on Milestone #2, the Mini-Presentation.
+- The goals for this week were to prepare for and perform our Mini-Presentation.
+
+### Picture of Project Board
+
+![Week 9 Project Board](img/soren-stenback/Week9-ProjectBoard-ID4.png)
+
+### Picture of Week 9's Survey
+
+![Week 9 Survey](img/soren-stenback/Week9-Survey-ID4.png)
+
+---
+
+## Week 10
+
+### November 6 - November 12, 2023
+
+- This week I worked on Milestone #3, the Design Submission.
+- The goals for this week were to do bug fixes on the Create Request page and begin setting up for back-end coding.
+
+### Picture of Project Board
+
+![Week 10 Project Board](img/soren-stenback/Week10-ProjectBoard-ID4.png)
+
+### Picture of Week 9's Survey
+
+![Week 10 Survey](img/soren-stenback/Week10-Survey-ID4.png)
+
+---
+
+## Week 11 and 12
+
+### November 13 - November 26, 2023
+
+- This week I worked on Milestone #3, the Design Submission.
+- The goals for this week were to do bug fixes on the Create Request page and set up the login page with the different commercial options, Google, Microsoft, and Facebook.
+
+### Picture of Project Board
+
+![Week 12 Project Board](img/soren-stenback/Week12-ProjectBoard-ID4.png)
+
+### Picture of Week 12's Survey
+
+![Week 12 Survey](img/soren-stenback/Week12-Survey-ID4.png)
+
+---
+
+## Week 13
+
+### November 27 - December 3, 2023
+
+- This week I worked on Milestone #3, the Design Submission.
+- The goals for this week were to do help make the Design presentation and research databases using SST.
+
+### Picture of Project Board
+
+![Week 13 Project Board](img/soren-stenback/Week13-ProjectBoard-ID4.png)
+
+### Picture of Week 13's Survey
+
+![Week 13 Survey](img/soren-stenback/Week13-Survey-ID4.png)
