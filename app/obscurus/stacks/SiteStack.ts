@@ -9,16 +9,18 @@ import {
 } from "sst/constructs";
 
 export default function SiteStack({ stack }: StackContext) {
+  const bucket = new Bucket(stack, "public");
+
   const videoBucket = new Bucket(stack, "VideoBucket");
 
   const processedVideoBucket = new Bucket(stack, "ProcessedVideoBucket");
 
-  const opencvLambda = new Function(stack, "OpenCvLambda", {
-    handler: "src/opencvLambda.handler",
-    runtime: "python3.8",
-  });
+  // const opencvLambda = new Function(stack, "OpenCvLambda", {
+  //   handler: "src/opencvLambda.handler",
+  //   runtime: "python3.8",
+  // });
 
-  opencvLambda.attachPermissions([videoBucket]);
+  // opencvLambda.attachPermissions([videoBucket]);
 
 
   const service = new Service(stack, "processVideo", {
@@ -64,7 +66,7 @@ export default function SiteStack({ stack }: StackContext) {
   // });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [videoBucket, service],
+    bind: [videoBucket, service, bucket],
   });
 
 
