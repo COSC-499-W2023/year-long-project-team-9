@@ -38,6 +38,13 @@ export default function SiteStack({ stack }: StackContext) {
     primaryIndex: { partitionKey: "room_id"},
   });
 
+  // add RDS construct
+  const rds = new RDS(stack, "Database", {
+    engine: "postgresql11.13",
+    defaultDatabaseName: "obscurus",
+    migrations: "/migrations",
+  });
+
   const site = new NextjsSite(stack, "site", {
     bind: [bucket, table],
     environment: { TABLE_NAME: table.tableName },
