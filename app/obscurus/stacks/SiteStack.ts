@@ -46,7 +46,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table],
+    bind: [bucket, table, rds],
     environment: { TABLE_NAME: table.tableName },
   });
 
