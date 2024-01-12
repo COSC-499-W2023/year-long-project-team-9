@@ -3,6 +3,7 @@ import {
   NextjsSite,
   Bucket,
   Table,
+  Service
 } from "sst/constructs";
 
 export default function SiteStack({ stack }: StackContext) {
@@ -36,9 +37,22 @@ export default function SiteStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "room_id"},
   });
+  
+  const service = new Service(stack, "processVideo", {
+    path: "./service",
+    port: 8080,
+    bind: [bucket],
+    cdk: {
+      applicationLoadBalancer: false,
+      cloudfrontDistribution: false,
+      fargateService: {
+        circuitBreaker: { rollback: true },
+      },
+    },
+  });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table],
+    bind: [bucket, table, service],
     environment: { TABLE_NAME: table.tableName },
   });
 
