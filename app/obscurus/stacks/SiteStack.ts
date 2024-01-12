@@ -3,6 +3,7 @@ import {
   NextjsSite,
   Bucket,
   Table,
+  Service
 } from "sst/constructs";
 
 export default function SiteStack({ stack }: StackContext) {
