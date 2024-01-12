@@ -42,7 +42,7 @@ export default function SiteStack({ stack }: StackContext) {
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
-    migrations: "/migrations",
+    migrations: "./migrations",
   });
 
   const site = new NextjsSite(stack, "site", {
