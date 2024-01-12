@@ -42,6 +42,13 @@ export default function SiteStack({ stack }: StackContext) {
     path: "./service",
     port: 8080,
     bind: [bucket],
+    cdk: {
+      applicationLoadBalancer: false,
+      cloudfrontDistribution: false,
+      fargateService: {
+        circuitBreaker: { rollback: true },
+      },
+    },
   });
 
   const site = new NextjsSite(stack, "site", {
