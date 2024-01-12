@@ -1,10 +1,8 @@
-import { HostedZone } from "aws-cdk-lib/aws-route53";
 import {
   StackContext,
   NextjsSite,
   Bucket,
   Table,
-  Service,
 } from "sst/constructs";
 
 export default function SiteStack({ stack }: StackContext) {
@@ -13,8 +11,6 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
-  // If you want to add a field, just append it to the table
-  // Adding user table
   const user = new Table(stack, "Users", {
     fields: {
       sub: "string",
@@ -40,28 +36,17 @@ export default function SiteStack({ stack }: StackContext) {
     },
     primaryIndex: { partitionKey: "room_id"},
   });
+  
   const service = new Service(stack, "processVideo", {
     path: "./service",
     port: 8080,
     bind: [bucket],
   });
 
-const site = new NextjsSite(stack, "site", {
-  bind: [bucket, table, service],
-  environment: {
-    TABLE_NAME: table.tableName,
-  },
-  // customDomain: {
-  //   domainName: "obscurus.me",
-  //   domainAlias: "www.obscurus.me",
-  //   cdk: {
-  //     hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
-  //       hostedZoneId: "Z09403151W7ZFKPC0YJEL",
-  //       zoneName: "obscurus.me",
-  //     }),
-  //   },
-  // },
-});
+  const site = new NextjsSite(stack, "site", {
+    bind: [bucket, table, service],
+    environment: { TABLE_NAME: table.tableName },
+  });
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
