@@ -1,6 +1,9 @@
 import { Kysely } from "kysely";
 
-export async function up(db:Kysely<any>) {
+/**
+ * @param {Kysely<any>} db 
+ */
+export async function up(db) {
     await db.schema
     .createTable("users")
     .addColumn("sub","text",(col) => col.primaryKey())
@@ -8,6 +11,9 @@ export async function up(db:Kysely<any>) {
     .execute();
 }
 
-export async function down(db:Kysely<any>) {
+/**
+ * @param {Kysely<any>} db 
+ */
+export async function down(db) {
     await db.schema.dropTable("users").execute();
 }
