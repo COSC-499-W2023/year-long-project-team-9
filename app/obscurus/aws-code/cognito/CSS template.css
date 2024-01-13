@@ -5,7 +5,7 @@
 
 .banner-customizable {
   padding: 25px 0px 25px 0px;
-  background-color: rgba(211, 211, 211, 0);
+  background-color: #0f172a;
 }
 
 .label-customizable {
@@ -107,7 +107,7 @@
 }
 
 .passwordCheck-valid-customizable {
-  color: #19bf00;
+  color: #0f172a;
 }
 
 .background-customizable {
