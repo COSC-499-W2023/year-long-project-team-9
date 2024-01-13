@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "npx playwright test",
+    "gen": "hygen"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.445.0",
