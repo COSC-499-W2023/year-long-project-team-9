@@ -8,7 +8,7 @@ export async function up(db) {
     .createTable("requests")
     .addColumn("request_id","bigserial",(col) => col.primaryKey())
     .addColumn("request_title","varchar",(col) => col.notNull())
-    .addColumn("requester_sub","varchar",(col) => col.notNull())
+    .addColumn("requester_sub","varchar",(col) => col.notNull().references("users.sub"))
     .addColumn("requestees_email","varchar",(col) => col.notNull())
     .addColumn("description","varchar",(col) => col.notNull())
     .addColumn("video_processing","boolean",(col) => col.notNull())
