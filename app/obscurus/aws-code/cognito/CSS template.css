@@ -38,12 +38,12 @@
   height: 40px;
   width: 100%;
   color: #fff;
-  background-color: #337ab7;
+  background-color: #0f172a;
 }
 
 .submitButton-customizable:hover {
   color: #fff;
-  background-color: #286090;
+  background-color: #0f172a;
 }
 
 .errorMessage-customizable {
