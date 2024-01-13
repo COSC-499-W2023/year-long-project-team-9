@@ -10,6 +10,7 @@
 
 .label-customizable {
   font-weight: 400;
+  color: #0f172a;
 }
 
 .textDescription-customizable {
@@ -98,6 +99,7 @@
 
 .redirect-customizable {
   text-align: center;
+  color: #0f172a;
 }
 
 .passwordCheck-notValid-customizable {
