@@ -6,8 +6,14 @@ import { Kysely } from "kysely";
 export async function up(db) {
     await db.schema
     .createTable("users")
-    .addColumn("sub","text",(col) => col.primaryKey())
-    .addColumn("email","text",(col) => col.notNull())
+    .addColumn("sub","varchar",(col) => col.primaryKey())
+    .addColumn("email","varchar",(col) => col.notNull())
+    .addColumn("given_name","varchar",(col) => col.notNull())
+    .addColumn("family_name","varchar",(col) => col.notNull())
+    .addColumn("birthday","date",(col) => col.notNull())
+    .addColumn("timezone","varchar",(col) => col.notNull())
+    .addColumn("language","varchar",(col) => col.notNull())
+    .addColumn("is_logged_in_with_social_identity_provider","boolean",(col) => col.notNull())
     .execute();
 }
 
