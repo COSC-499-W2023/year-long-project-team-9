@@ -3,43 +3,46 @@ import {
   NextjsSite,
   Bucket,
   Table,
+  Api,
+  Function,
 } from "sst/constructs";
 
 export default function SiteStack({ stack }: StackContext) {
   const bucket = new Bucket(stack, "public");
-  const table = new Table(stack, "counter", {
-    fields: { counter: "string" },
-    primaryIndex: { partitionKey: "counter" },
-  });
-  const user = new Table(stack, "Users", {
-    fields: {
-      sub: "string",
-      email: "string",
-      first_name: "string",
-      last_name: "string",
-      bday: "string",
-      requests: "string", //json object
-      time_zone: "string", 
-      language: "string"
+
+  const api = new Api(stack, "Api", {
+    defaults: {
+      function: {
+        timeout: 20,
+        permissions: [bucket],
+      },
     },
-    primaryIndex: { partitionKey: "sub"},
-  });
-  // adding chat room folder
-  const room = new Table(stack, "Rooms", {
-    fields: {
-      room_id: "string",
-      connect_id: "string",
-      users: "string", //json
-      creation_date: "string",
-      number_of_participants: "string",
-      message: "string" //json object
+    routes: {
+      "POST    /lambda": {
+        function: {
+          handler: "lambdas/lambda.py",
+          timeout: 10,
+          environment: { bucketName: bucket.bucketName },
+          permissions: [bucket],
+        },
+      }
     },
-    primaryIndex: { partitionKey: "room_id"},
   });
 
+  api.attachPermissions(["s3"]);
+
+  const startFaceDetection = new Function(stack, "StartFaceDetection",
+    {
+        handler: "./functions/rekopoc-start-face-detect/lambda_function.lambda_handler",
+        runtime: "python3.9",
+        timeout: 10,
+        environment: { bucketName: bucket.bucketName },
+        permissions: [bucket],
+    }
+  )
+
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table],
-    environment: { TABLE_NAME: table.tableName },
+    bind: [bucket, api],
   });
 
   stack.addOutputs({
