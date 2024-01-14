@@ -7,6 +7,7 @@ export async function up(db) {
     await db.schema
     .createTable("rooms")
     .addColumn("room_id","bigserial",(col) => col.primaryKey())
+    .addColumn("request_id","bigserial",(col) => col.notNull().references("requests.request_id"))
     .addColumn("room_name","varchar",(col) => col.notNull())
     .addColumn("connection_id","varchar",(col) => col.notNull())
     .addColumn("number_of_participants","integer",(col) => col.notNull())

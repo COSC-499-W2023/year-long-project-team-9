@@ -14,6 +14,7 @@ export async function up(db) {
     .addColumn("timezone","varchar",(col) => col.notNull())
     .addColumn("language","varchar",(col) => col.notNull())
     .addColumn("is_logged_in_with_social_identity_provider","boolean",(col) => col.notNull())
+    .addColumn("is_admin","boolean",(col) => col.notNull().defaultTo("false"))
     .execute();
 }
 
