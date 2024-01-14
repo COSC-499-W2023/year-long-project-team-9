@@ -1,24 +1,11 @@
 import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { useSearchParams } from "next/navigation";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
-const AuthDemo = () => {
-  {
-    /*I know this sucks, but it will work for now*/
-  }
-
-  const searchParams = useSearchParams();
-  let codePresent = false;
-  try {
-    const code = searchParams.get("code");
-    if (code != null) {
-      codePresent = true;
-    } else {
-      codePresent = false;
-    }
-  } catch (e) {}
-
+export default function AuthDemo() {
+  const router = useRouter();
+  const { name } = router.query;
+  console.log(router.query.code);
   return (
     <Layout>
       <div className="grid justify-center items-center pt-12">
@@ -27,10 +14,10 @@ const AuthDemo = () => {
         </p>
         <a
           data-testid="link"
-          href="https://obscuruslogin.auth.us-west-2.amazoncognito.com/login?client_id=4fh382tdlodqdcoi0c710fhv7k&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2FAuthDemo"
+          href="https://obscurususerpool.auth.us-west-2.amazoncognito.com/login?response_type=code&client_id=45sq39c3d2srgg5cm5iclt82m6&redirect_uri=http://localhost:3000/AuthDemo"
         >
           <div>
-            {codePresent ? (
+            {true ? (
               <Button type="button" className="w-full">
                 Sign Out
               </Button>
@@ -44,6 +31,4 @@ const AuthDemo = () => {
       </div>
     </Layout>
   );
-};
-
-export default AuthDemo;
+}
