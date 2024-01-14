@@ -98,3 +98,15 @@
 ### Picture of week 13's survey
 ![Screenshot of week 13 team evaluation](img/baz-sivakua/baz-survey-week13.png)
 ---
+
+## Term 2 Week 1
+### January 8 - January 14, 2024
+- This week I worked on Milestone 4: Peer Testing 1
+- The goal for this week was to ensure that the team was on the same page for term 2/task assignment and to fix the issues with Playwrite testing
+
+### Picture of Project Board
+![Screenshot of week 13 project board tasks](img/baz-sivakua/baz-tasks-week14.png)
+
+### Picture of week 13's survey
+![Screenshot of week 13 team evaluation](img/baz-sivakua/baz-survey-week14.png)
+---
