@@ -869,3 +869,89 @@ All tasks for `Milestone 3 - Design Documentation` were completed
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-13/completed-week13.png)
 ### Test Report
 ![test report](img/team-weekly-log-img/week-13/test-repoert-week13.png)
+
+# TEAM 9 - WEEK 14 (TERM 2 WEEK 1)
+
+## Work Period
+
+Week 1 ran from 00:00 on 2023/01/08 to 23:59 on 2023/12/03.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database. 
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Term 2 Project Plan
+
+* **Status:** Completed
+* **Assignee(s):** All team members
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Ensure that everyone was on the same page regarding the work for term 2 and assign tasks. Add any relevant tasks to the Github project board
+
+### Task 2: Set up login with Cognito
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Set up email and password login for the appliction through Cognito
+
+### Task 3: Initialize Seed Service
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Set up Seed serverless framework on AWS
+
+### Task 4: Set up Cognito hosted UI
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add Logo and CSS to Cognito-hosted UI
+
+### Task 4: Fix Playwrite
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Fix issues with Playwrite automatic testing
+
+### Task 4: Set up Authentication
+
+* **Status:** In-Progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add authentication via Cognito to app
+
+### Task 4: Initialize SST for PostgreSQL
+
+* **Status:** In-Progress
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Initialize STT for PostgreSQL for use in backend database storage
+
+### Task 4: Convert ER Diagram to PostgreSQL Table
+
+* **Status:** In-Progress
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Convert ER Diagram from previous milestone to PostgreSQL Table
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-14/burnup-week14.png)
+
+### Table View of Completed Tasks
+![screenshot of completed board tasks](img/team-weekly-log-img/week-14/completed-week14.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-14/inprogress-week14.png)
+
+___
