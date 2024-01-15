@@ -15,13 +15,14 @@ reko = boto3.client('rekognition')
 s3 = boto3.client('s3')
 
 output_bucket = os.environ['OUTPUT_BUCKET']
+input_bucket = os.environ['INPUT_BUCKET']
+key = os.environ['OBJECT_KEY']
 
 def lambda_function(event, context):
     # download file locally to /tmp retrieve metadata
     try:
         response = event['response']
         # get metadata of file uploaded to Amazon S3
-        bucket = event['s3_object_bucket']
         key = event['s3_object_key']
         filename = key.split('/')[-1]
         local_filename = '/tmp/{}'.format(filename)
@@ -32,7 +33,7 @@ def lambda_function(event, context):
         # add_failed(bucket, error_message, failed_records, key)
 
     try:
-        s3.download_file(bucket, key, local_filename)
+        s3.download_file(input_bucket, key, local_filename)
     except botocore.exceptions.ClientError:
         error_message = 'Lambda role does not have permission to call GetObject for the input S3 bucket, or object does not exist.'
         logger.log(logging.ERROR, error_message)
