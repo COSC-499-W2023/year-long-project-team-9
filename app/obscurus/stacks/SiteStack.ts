@@ -4,7 +4,8 @@ import {
   Bucket,
   Table,
   RDS,
-  Api
+  Api,
+  Service,
 } from "sst/constructs";
 
 import {handler} from "./lambdas/list"
@@ -35,9 +36,22 @@ export default function SiteStack({ stack }: StackContext) {
     }
     },
   });
+  
+  const service = new Service(stack, "processVideo", {
+    path: "./service",
+    port: 8080,
+    bind: [bucket],
+    cdk: {
+      applicationLoadBalancer: false,
+      cloudfrontDistribution: false,
+      fargateService: {
+        circuitBreaker: { rollback: true },
+      },
+    },
+  });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table, rds, api],
+    bind: [bucket, table, rds, api, service],
     environment: { TABLE_NAME: table.tableName },
   });
 
