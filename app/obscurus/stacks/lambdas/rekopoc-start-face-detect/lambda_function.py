@@ -17,6 +17,8 @@ sfn = boto3.client('stepfunctions')
 
 # state_machine_arn = os.environ['STATE_MACHINE_ARN']
 
+print("Starting face detection...\n")
+
 bucketName = os.environ['INPUT_BUCKET']
 keyName = os.environ['OBJECT_KEY']
 
