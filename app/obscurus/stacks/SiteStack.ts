@@ -3,8 +3,12 @@ import {
   NextjsSite,
   Bucket,
   Table,
-  Service
+  RDS,
+  Api,
+  Service,
 } from "sst/constructs";
+
+import {handler} from "./lambdas/list"
 
 export default function SiteStack({ stack }: StackContext) {
   const bucket = new Bucket(stack, "public");
@@ -12,30 +16,25 @@ export default function SiteStack({ stack }: StackContext) {
     fields: { counter: "string" },
     primaryIndex: { partitionKey: "counter" },
   });
-  const user = new Table(stack, "Users", {
-    fields: {
-      sub: "string",
-      email: "string",
-      first_name: "string",
-      last_name: "string",
-      bday: "string",
-      requests: "string", //json object
-      time_zone: "string", 
-      language: "string"
-    },
-    primaryIndex: { partitionKey: "sub"},
+
+  // add RDS construct
+  const rds = new RDS(stack, "Database", {
+    engine: "postgresql11.13",
+    defaultDatabaseName: "obscurus",
+    migrations: "./stacks/core/migrations/",
   });
-  // adding chat room folder
-  const room = new Table(stack, "Rooms", {
-    fields: {
-      room_id: "string",
-      connect_id: "string",
-      users: "string", //json
-      creation_date: "string",
-      number_of_participants: "string",
-      message: "string" //json object
+
+  const api = new Api(stack, "Api", {
+    routes: {
+      "GET /users": {  function: {
+        handler: ".stacks/lambdas/list.handler",
+        timeout: 20,
+        permissions: [rds],
+        bind: [rds],
+        environment: {DB_NAME: rds.clusterArn}
+      },
+    }
     },
-    primaryIndex: { partitionKey: "room_id"},
   });
   
   const service = new Service(stack, "processVideo", {
@@ -52,7 +51,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table, service],
+    bind: [bucket, table, rds, api, service],
     environment: { TABLE_NAME: table.tableName },
   });
 
