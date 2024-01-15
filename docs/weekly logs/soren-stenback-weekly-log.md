@@ -150,3 +150,20 @@
 ### Picture of Week 13's Survey
 
 ![Week 13 Survey](img/soren-stenback/Week13-Survey-ID4.png)
+
+---
+
+## T2 Week 1
+
+### January 8 - January 14, 2023
+
+- This week I worked on Milestone #4, Peer Testing #1.
+- The goals for this week were to set up the RDS database in SST, create lambda functions to select all rows from a table, and write a dummy webpage to show the data.
+
+### Picture of Project Board
+
+![T2 Week 1 Project Board](img/soren-stenback/T2Week1-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 1's Survey
+
+![T2 Week 1 Survey](img/soren-stenback/T2Week1-Survey-ID4.png)
