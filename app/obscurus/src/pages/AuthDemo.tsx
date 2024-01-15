@@ -14,7 +14,7 @@ export default function AuthDemo() {
         </p>
         <a
           data-testid="link"
-          href="https://obscurususerpool.auth.us-west-2.amazoncognito.com/login?response_type=code&client_id=45sq39c3d2srgg5cm5iclt82m6&redirect_uri=http://localhost:3000/AuthDemo"
+          href="https://obscuruslogin.auth.us-west-2.amazoncognito.com/login?client_id=1tuqvd1clipk95uncep6fcf3el&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2FAuthDemo"
         >
           <div>
             {true ? (
