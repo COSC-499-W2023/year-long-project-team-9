@@ -239,6 +239,49 @@ Screenshot from peer eval for Week 10:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-12.png)
 
+-------------
+
+# Term 2
+
+## Week 1 (Week 13) ##
+
+### Applicable Date Range ###
+January 8 - January 14, 2024
+
+### Tasks Worked On ###
+
+- My main goal this week was to get a really good handle on the video processing, as I will be spearheading this
+
+- I set up the containerized service on ECS that can be used to handle the video processing
+
+- I used the example from AWS to blur faces in videos to learn about Lambda functions and initialize integrating them into our own app
+
+- Because we are using SST, I have been researching the Function constructs to use with Lambda 
+
+- I initialized the API (with the Api construct) that will be used to create routes for the backend (database, communicating with Next.js, etc.)
+
+- This week I hope to get more Lambda functions working with the containerized service.
+
+Screenshot from peer eval for Week 1:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-13.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-13.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-13.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-13.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-13.png)
+
 
 
 

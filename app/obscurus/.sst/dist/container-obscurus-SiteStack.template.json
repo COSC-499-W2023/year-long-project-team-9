@@ -1,0 +1,1345 @@
+{
+ "Resources": {
+  "CustomResourceHandlerServiceRole41AEC181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   }
+  },
+  "CustomResourceHandlerE8FB56BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-548311273921-ca-central-1",
+     "S3Key": "02448b353a67da913406c1664e0b4551348314a9c5f3f872478a2b1894b0317a.zip"
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerServiceRole41AEC181",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomResourceHandlerServiceRole41AEC181"
+   ]
+  },
+  "publicBucket5C3DBAB0": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "HEAD",
+        "POST",
+        "DELETE"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "OwnershipControls": {
+     "Rules": [
+      {
+       "ObjectOwnership": "BucketOwnerPreferred"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": false,
+     "IgnorePublicAcls": false
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "publicBucketPolicy24028FED": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "publicBucket5C3DBAB0"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "publicBucket5C3DBAB0",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "publicBucket5C3DBAB0",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "publicParameterbucketName69D24DDB": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/sst/obscurus/container/Bucket/public/bucketName",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    },
+    "Type": "String",
+    "Value": {
+     "Ref": "publicBucket5C3DBAB0"
+    }
+   }
+  },
+  "InputBucket60B9831B": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "HEAD",
+        "POST",
+        "DELETE"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "OwnershipControls": {
+     "Rules": [
+      {
+       "ObjectOwnership": "BucketOwnerPreferred"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": false,
+     "IgnorePublicAcls": false
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "InputBucketPolicyD4444244": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "InputBucket60B9831B"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "InputBucket60B9831B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "InputBucket60B9831B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "InputBucketParameterbucketName2BC69785": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/sst/obscurus/container/Bucket/InputBucket/bucketName",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    },
+    "Type": "String",
+    "Value": {
+     "Ref": "InputBucket60B9831B"
+    }
+   }
+  },
+  "OutputBucketFED2735E": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "HEAD",
+        "POST",
+        "DELETE"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "OwnershipControls": {
+     "Rules": [
+      {
+       "ObjectOwnership": "BucketOwnerPreferred"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": false,
+     "IgnorePublicAcls": false
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "OutputBucketPolicy2CC876FE": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "OutputBucketFED2735E"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OutputBucketFED2735E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "OutputBucketFED2735E",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "OutputBucketParameterbucketName877527E2": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/sst/obscurus/container/Bucket/OutputBucket/bucketName",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    },
+    "Type": "String",
+    "Value": {
+     "Ref": "OutputBucketFED2735E"
+    }
+   }
+  },
+  "VideoProcessingServiceServerFunctionRole5F69AD24": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::548311273921:root"
+          ]
+         ]
+        }
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "MaxSessionDuration": 43200,
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   }
+  },
+  "VideoProcessingServiceServerFunctionRoleDefaultPolicyDC9CE75A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "InputBucket60B9831B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "InputBucket60B9831B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OutputBucketFED2735E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "OutputBucketFED2735E",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "VideoProcessingServiceServerFunctionRoleDefaultPolicyDC9CE75A",
+    "Roles": [
+     {
+      "Ref": "VideoProcessingServiceServerFunctionRole5F69AD24"
+     }
+    ]
+   }
+  },
+  "VideoProcessingServiceServerFunctionBB89FC99": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "ZipFile": "export function placeholder() {}"
+    },
+    "Description": "Service dev function",
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "obscurus",
+      "SST_STAGE": "container",
+      "SST_SSM_PREFIX": "/sst/obscurus/container/",
+      "SST_Bucket_bucketName_InputBucket": {
+       "Ref": "InputBucket60B9831B"
+      },
+      "SST_Bucket_bucketName_OutputBucket": {
+       "Ref": "OutputBucketFED2735E"
+      }
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.placeholder",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "VideoProcessingServiceServerFunctionRole5F69AD24",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "VideoProcessingServiceServerFunctionRoleDefaultPolicyDC9CE75A",
+    "VideoProcessingServiceServerFunctionRole5F69AD24"
+   ]
+  },
+  "apiApiC3C473D0": {
+   "Type": "AWS::ApiGatewayV2::Api",
+   "Properties": {
+    "CorsConfiguration": {
+     "AllowCredentials": false,
+     "AllowHeaders": [
+      "*"
+     ],
+     "AllowMethods": [
+      "*"
+     ],
+     "AllowOrigins": [
+      "*"
+     ]
+    },
+    "Name": "container-obscurus-api",
+    "ProtocolType": "HTTP",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    }
+   }
+  },
+  "apiApiDefaultStageA626ED4D": {
+   "Type": "AWS::ApiGatewayV2::Stage",
+   "Properties": {
+    "AccessLogSettings": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "apiLogGroup924E5B7A",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestTime\":\"$context.requestTime\",\"requestId\":\"$context.requestId\",\"httpMethod\":\"$context.httpMethod\",\"path\":\"$context.path\",\"routeKey\":\"$context.routeKey\",\"status\":$context.status,\"responseLatency\":$context.responseLatency,\"integrationRequestId\":\"$context.integration.requestId\",\"integrationStatus\":\"$context.integration.status\",\"integrationLatency\":\"$context.integration.latency\",\"integrationServiceStatus\":\"$context.integration.integrationStatus\",\"ip\":\"$context.identity.sourceIp\",\"userAgent\":\"$context.identity.userAgent\"}"
+    },
+    "ApiId": {
+     "Ref": "apiApiC3C473D0"
+    },
+    "AutoDeploy": true,
+    "StageName": "$default",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    }
+   }
+  },
+  "apiLogGroup924E5B7A": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/vendedlogs/apis/container-obscurus-api-",
+       {
+        "Ref": "apiApiC3C473D0"
+       },
+       "/default"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "apiLambdaGETnotifyServiceRole81CB1E0B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   }
+  },
+  "apiLambdaGETnotifyServiceRoleDefaultPolicyDE5E31F4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "apiLambdaGETnotifyServiceRoleDefaultPolicyDE5E31F4",
+    "Roles": [
+     {
+      "Ref": "apiLambdaGETnotifyServiceRole81CB1E0B"
+     }
+    ]
+   }
+  },
+  "apiLambdaGETnotifyEDB58ABE": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "ZipFile": "export function placeholder() {}"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "obscurus",
+      "SST_STAGE": "container",
+      "SST_SSM_PREFIX": "/sst/obscurus/container/"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.placeholder",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "apiLambdaGETnotifyServiceRole81CB1E0B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "apiLambdaGETnotifyServiceRoleDefaultPolicyDE5E31F4",
+    "apiLambdaGETnotifyServiceRole81CB1E0B"
+   ]
+  },
+  "apiRouteGETnotifyIntegrationGETnotifyD14BF7A9": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "apiApiC3C473D0"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "apiLambdaGETnotifyEDB58ABE",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   }
+  },
+  "apiRouteGETnotifyIntegrationGETnotifyPermission4CA9DEE2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "apiLambdaGETnotifyEDB58ABE",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ca-central-1:548311273921:",
+       {
+        "Ref": "apiApiC3C473D0"
+       },
+       "/*/*/notify"
+      ]
+     ]
+    }
+   }
+  },
+  "apiRouteGETnotifyC648FD9B": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "apiApiC3C473D0"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "GET /notify",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "apiRouteGETnotifyIntegrationGETnotifyD14BF7A9"
+       }
+      ]
+     ]
+    }
+   }
+  },
+  "apiParameterurl1D4D90E2": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/sst/obscurus/container/Api/api/url",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    },
+    "Type": "String",
+    "Value": {
+     "Fn::GetAtt": [
+      "apiApiC3C473D0",
+      "ApiEndpoint"
+     ]
+    }
+   }
+  },
+  "siteServerFunctionRole1F8F4FAC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::548311273921:root"
+          ]
+         ]
+        }
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "MaxSessionDuration": 43200,
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   }
+  },
+  "siteServerFunctionRoleDefaultPolicy213DB8A5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "InputBucket60B9831B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "InputBucket60B9831B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OutputBucketFED2735E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "OutputBucketFED2735E",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "publicBucket5C3DBAB0",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "publicBucket5C3DBAB0",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "siteServerFunctionRoleDefaultPolicy213DB8A5",
+    "Roles": [
+     {
+      "Ref": "siteServerFunctionRole1F8F4FAC"
+     }
+    ]
+   }
+  },
+  "siteServerFunctionAssetReplacerPolicy304BF125": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":s3:::cdk-hnb659fds-assets-548311273921-ca-central-1/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "siteServerFunctionAssetReplacerPolicy304BF125",
+    "Roles": [
+     {
+      "Ref": "CustomResourceHandlerServiceRole41AEC181"
+     }
+    ]
+   }
+  },
+  "siteServerFunctionAssetReplacer9A11D516": {
+   "Type": "Custom::AssetReplacer",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerE8FB56BA",
+      "Arn"
+     ]
+    },
+    "bucket": "cdk-hnb659fds-assets-548311273921-ca-central-1",
+    "key": "6b760b9fdea98fc21cd5cdac9143389b0d466ef47d818c17f7f3500cf2f366da.zip",
+    "replacements": []
+   },
+   "DependsOn": [
+    "siteServerFunctionAssetReplacerPolicy304BF125"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "siteServerFunction6DFA6F1B": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-548311273921-ca-central-1",
+     "S3Key": "6b760b9fdea98fc21cd5cdac9143389b0d466ef47d818c17f7f3500cf2f366da.zip"
+    },
+    "Description": "Server handler placeholder",
+    "Environment": {
+     "Variables": {
+      "SST_APP": "obscurus",
+      "SST_STAGE": "container",
+      "SST_SSM_PREFIX": "/sst/obscurus/container/",
+      "SST_Bucket_bucketName_InputBucket": {
+       "Ref": "InputBucket60B9831B"
+      },
+      "SST_Bucket_bucketName_OutputBucket": {
+       "Ref": "OutputBucketFED2735E"
+      },
+      "SST_Bucket_bucketName_public": {
+       "Ref": "publicBucket5C3DBAB0"
+      },
+      "SST_Api_url_api": {
+       "Fn::GetAtt": [
+        "apiApiC3C473D0",
+        "ApiEndpoint"
+       ]
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "siteServerFunctionRole1F8F4FAC",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ],
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "siteServerFunctionAssetReplacer9A11D516",
+    "siteServerFunctionRoleDefaultPolicy213DB8A5",
+    "siteServerFunctionRole1F8F4FAC"
+   ]
+  },
+  "siteServerFunctionLogRetention7123678D": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "siteServerFunction6DFA6F1B"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 3
+   },
+   "DependsOn": [
+    "siteServerFunctionAssetReplacer9A11D516"
+   ]
+  },
+  "siteParameterurl3D1716BC": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/sst/obscurus/container/NextjsSite/site/url",
+    "Tags": {
+     "sst:app": "obscurus",
+     "sst:stage": "container"
+    },
+    "Type": "String",
+    "Value": "localhost"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:PutRetentionPolicy",
+        "logs:DeleteRetentionPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "Roles": [
+     {
+      "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+     }
+    ]
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Handler": "index.handler",
+    "Runtime": "nodejs18.x",
+    "Timeout": 900,
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-548311273921-ca-central-1",
+     "S3Key": "5bc602ecde93c947efe5899ae355f999986a1acbe610b1c0b9c468d738857555.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      "Arn"
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "obscurus"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "container"
+     }
+    ]
+   },
+   "DependsOn": [
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+   ]
+  }
+ },
+ "Outputs": {
+  "SSTMetadata": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "{\"app\":\"obscurus\",\"stage\":\"container\",\"version\":\"2.38.2\",\"metadata\":[{\"id\":\"public\",\"addr\":\"c84964a9f220f8713c57dcc70637786358b3ab5a22\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Bucket\",\"data\":{\"name\":\"",
+      {
+       "Ref": "publicBucket5C3DBAB0"
+      },
+      "\",\"notifications\":[],\"notificationNames\":[]}},{\"id\":\"InputBucket\",\"addr\":\"c8ee8504d79c28490a742381b837545dd4b0d8c765\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Bucket\",\"data\":{\"name\":\"",
+      {
+       "Ref": "InputBucket60B9831B"
+      },
+      "\",\"notifications\":[],\"notificationNames\":[]}},{\"id\":\"OutputBucket\",\"addr\":\"c8349b249806c22b853ed77ee1af1a38448c22089c\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Bucket\",\"data\":{\"name\":\"",
+      {
+       "Ref": "OutputBucketFED2735E"
+      },
+      "\",\"notifications\":[],\"notificationNames\":[]}},{\"id\":\"VideoProcessingService\",\"addr\":\"c8fccecae1ddc8d4071b8becf62ee374363cfeca0d\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Service\",\"data\":{\"mode\":\"placeholder\",\"path\":\"./service\",\"devFunction\":\"",
+      {
+       "Fn::GetAtt": [
+        "VideoProcessingServiceServerFunctionBB89FC99",
+        "Arn"
+       ]
+      },
+      "\",\"secrets\":[]}},{\"id\":\"ServerFunction\",\"addr\":\"c81b5bc8417fbd2833d69bdc31b563410e0ab8bcfd\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Function\",\"data\":{\"arn\":\"",
+      {
+       "Fn::GetAtt": [
+        "VideoProcessingServiceServerFunctionBB89FC99",
+        "Arn"
+       ]
+      },
+      "\",\"runtime\":\"nodejs18.x\",\"handler\":\"/Users/imigh/Coding/COSC499/year-long-project-team-9/app/obscurus/node_modules/sst/support/service-dev-function/index.handler\",\"localId\":\"c81b5bc8417fbd2833d69bdc31b563410e0ab8bcfd\",\"secrets\":[]}},{\"id\":\"api\",\"addr\":\"c8e306d41e5bebf34af011f28808252cc4710e8f0c\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Api\",\"data\":{\"graphql\":false,\"url\":\"https://",
+      {
+       "Ref": "apiApiC3C473D0"
+      },
+      ".execute-api.ca-central-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/\",\"httpApiId\":\"",
+      {
+       "Ref": "apiApiC3C473D0"
+      },
+      "\",\"routes\":[{\"type\":\"function\",\"route\":\"GET /notify\",\"fn\":{\"node\":\"c89d413af92d9100a3280179ee9727f9a7b39eea37\",\"stack\":\"container-obscurus-SiteStack\"}}]}},{\"id\":\"Lambda_GET_--notify\",\"addr\":\"c89d413af92d9100a3280179ee9727f9a7b39eea37\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Function\",\"data\":{\"arn\":\"",
+      {
+       "Fn::GetAtt": [
+        "apiLambdaGETnotifyEDB58ABE",
+        "Arn"
+       ]
+      },
+      "\",\"runtime\":\"nodejs18.x\",\"handler\":\"functions/notify.main\",\"localId\":\"c89d413af92d9100a3280179ee9727f9a7b39eea37\",\"secrets\":[]}},{\"id\":\"site\",\"addr\":\"c856589fb960e593341dc7ffc36ad05b5c038c1475\",\"stack\":\"container-obscurus-SiteStack\",\"data\":{\"mode\":\"placeholder\",\"path\":\".\",\"runtime\":\"nodejs18.x\",\"server\":\"",
+      {
+       "Fn::GetAtt": [
+        "siteServerFunction6DFA6F1B",
+        "Arn"
+       ]
+      },
+      "\",\"secrets\":[]},\"type\":\"NextjsSite\"},{\"id\":\"ServerFunction\",\"addr\":\"c813f04450ec6ef494c3c4de518954a78b04360b47\",\"stack\":\"container-obscurus-SiteStack\",\"type\":\"Function\",\"data\":{\"arn\":\"",
+      {
+       "Fn::GetAtt": [
+        "siteServerFunction6DFA6F1B",
+        "Arn"
+       ]
+      },
+      "\",\"runtime\":\"nodejs18.x\",\"handler\":\"index.handler\",\"localId\":\"c813f04450ec6ef494c3c4de518954a78b04360b47\",\"secrets\":[]}}]}"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

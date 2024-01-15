@@ -1,0 +1,246 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "imigh-obscurus-SiteStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "imigh-obscurus-SiteStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "imigh-obscurus-SiteStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://548311273921/ca-central-1",
+      "properties": {
+        "templateFile": "imigh-obscurus-SiteStack.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "sst:app": "obscurus",
+          "sst:stage": "imigh"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::548311273921:role/cdk-hnb659fds-deploy-role-548311273921-ca-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::548311273921:role/cdk-hnb659fds-cfn-exec-role-548311273921-ca-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-548311273921-ca-central-1/e23f43c200822c756a51bb972edd8fb9a4180d9393cc2e8aaaf771e615be458b.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "imigh-obscurus-SiteStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::548311273921:role/cdk-hnb659fds-lookup-role-548311273921-ca-central-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "imigh-obscurus-SiteStack.assets"
+      ],
+      "metadata": {
+        "/imigh-obscurus-SiteStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "obscurus"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "imigh"
+              }
+            ]
+          }
+        ],
+        "/imigh-obscurus-SiteStack/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/inputBucket/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "inputBucket1FA6A642"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/inputBucket/Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "inputBucketPolicy6790AA37"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/inputBucket/Parameter_bucketName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "inputBucketParameterbucketNameBB38B729"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/outputBucket/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "outputBucketADB26529"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/outputBucket/Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "outputBucketPolicy842C0E88"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/outputBucket/Parameter_bucketName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "outputBucketParameterbucketName314BD795"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/StartFaceDetection/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFaceDetectionServiceRole74BE3C35"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/StartFaceDetection/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFaceDetectionServiceRoleDefaultPolicyF3CED8F4"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/StartFaceDetection/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFaceDetection48494BDB"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/StartFaceDetection/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFaceDetectionEventInvokeConfigF1853FF9"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/StartFaceDetection/Parameter_functionName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFaceDetectionParameterfunctionName76D97DA5"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/processVideo/ServerFunctionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "processVideoServerFunctionRole0EBCEA16"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/processVideo/ServerFunctionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "processVideoServerFunctionRoleDefaultPolicyE9B6D426"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/processVideo/ServerFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "processVideoServerFunction50EC3BC7"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/processVideo/ServerFunction/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "processVideoServerFunctionEventInvokeConfig0FFB964C"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/ServerFunctionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionRole1F8F4FAC"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/ServerFunctionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionRoleDefaultPolicy213DB8A5"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/ServerFunction/AssetReplacerPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionAssetReplacerPolicy304BF125"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/ServerFunction/AssetReplacer/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionAssetReplacer9A11D516"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/ServerFunction/ServerFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunction6DFA6F1B"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/ServerFunction/ServerFunction/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteServerFunctionLogRetention7123678D"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/site/Parameter_url/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "siteParameterurl3D1716BC"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/SSTStackOutputSSTMetadata": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SSTMetadata"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/imigh-obscurus-SiteStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "imigh-obscurus-SiteStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
