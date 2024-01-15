@@ -5,7 +5,7 @@
 
 .banner-customizable {
   padding: 25px 0px 25px 0px;
-  background-color: #020817;
+  background-color: lightgray;
 }
 
 .label-customizable {
@@ -38,12 +38,12 @@
   height: 40px;
   width: 100%;
   color: #fff;
-  background-color: #020817;
+  background-color: #337ab7;
 }
 
 .submitButton-customizable:hover {
   color: #fff;
-  background-color: #020817;
+  background-color: #286090;
 }
 
 .errorMessage-customizable {
@@ -106,5 +106,5 @@
 }
 
 .background-customizable {
-  background-color: #fff;
+  background-color: #ffffff;
 }
