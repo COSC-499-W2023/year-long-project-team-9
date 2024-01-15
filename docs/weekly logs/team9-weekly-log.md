@@ -899,7 +899,7 @@ All tasks for `Milestone 3 - Design Documentation` were completed
 
 ![test report](img/team-weekly-log-img/week-13/test-repoert-week13.png)
 
-# TEAM 9 - WEEK 14 (TERM 2 WEEK 1)
+# TEAM 9 - WEEK 1 TERM 2 (WEEK 14)
 
 ## Work Period
 
@@ -970,6 +970,27 @@ The tasks identified for this week were:
 - **Assignee(s):** Soren Stenback
 - **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 - **Description:** Convert ER Diagram from previous milestone to PostgreSQL Table
+
+### Task 9: Initialize api and link to service
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Initialize api and link to service
+
+### Task 10: Add ability to send video to service
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add ability to send video to service
+
+### Task 11: Initialize lambda functions for video processing
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Initialize lambda functions for video processing
 
 ## Details
 
