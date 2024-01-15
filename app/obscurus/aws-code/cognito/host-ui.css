@@ -27,7 +27,7 @@
 }
 
 .legalText-customizable {
-  color: #747474;
+  color: #020817;
   font-size: 11px;
 }
 
@@ -38,12 +38,12 @@
   height: 40px;
   width: 100%;
   color: #fff;
-  background-color: #337ab7;
+  background-color: #020817;
 }
 
 .submitButton-customizable:hover {
   color: #fff;
-  background-color: #286090;
+  background-color: #020817;
 }
 
 .errorMessage-customizable {
@@ -60,7 +60,7 @@
   height: 34px;
   color: #555;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #020817;
 }
 
 .inputField-customizable:focus {
