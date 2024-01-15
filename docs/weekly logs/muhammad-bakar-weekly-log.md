@@ -146,7 +146,7 @@
 
 - I worked on Milestone #4: Peer Testing 1.
 - The goals for this week was to take into account teh client feedback regarding authentication, i.e. having a non-social sign in option. Moreover, adding custome CSS to the host ui. I did planned on a complete integration of Coginto and the app, however it was far too much work for one week.
-- Also, much of the week was looking over Soren's work since it was of critical nature
+- Also, much of the week was looking over Soren's work since it was critical
 
 #### Custome CSS before and After
 
