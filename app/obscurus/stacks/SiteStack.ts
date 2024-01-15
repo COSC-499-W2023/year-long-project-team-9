@@ -8,14 +8,9 @@ import {
   Service,
 } from "sst/constructs";
 
-import {handler} from "./lambdas/list"
 
 export default function SiteStack({ stack }: StackContext) {
   const bucket = new Bucket(stack, "public");
-  const table = new Table(stack, "counter", {
-    fields: { counter: "string" },
-    primaryIndex: { partitionKey: "counter" },
-  });
 
   // add RDS construct
   const rds = new RDS(stack, "Database", {
@@ -27,7 +22,7 @@ export default function SiteStack({ stack }: StackContext) {
   const api = new Api(stack, "Api", {
     routes: {
       "GET /users": {  function: {
-        handler: ".stacks/lambdas/list.handler",
+        handler: "./stacks/lambdas/list.handler",
         timeout: 20,
         permissions: [rds],
         bind: [rds],
@@ -51,8 +46,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table, rds, api, service],
-    environment: { TABLE_NAME: table.tableName },
+    bind: [bucket, rds, api, service],
   });
 
   stack.addOutputs({

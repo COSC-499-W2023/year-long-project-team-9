@@ -37,7 +37,7 @@ const TestDatabase = ({ usersJSON }: { usersJSON: any }) => {
             </div>
             <div className="grid grid-cols-3 gap-3 px-2">
                 {usersJSON.map((user: any) => (
-                    <Card id="collapsed" className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card">
+                    <Card key={user.sub} id="collapsed" className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card">
                         <CardHeader>
                             <div className="space-x-2 flex items-center">
                                 <CardTitle className="text-xl">
