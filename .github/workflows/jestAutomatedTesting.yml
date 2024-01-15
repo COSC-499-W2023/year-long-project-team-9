@@ -3,7 +3,11 @@
 
 name: Automated testing
 
-on: [push]
+on:
+  pull_request:
+    branches: ["master", "develop"]
+  push:
+    branches: ["master", "develop"]
 
 defaults:
   run:
@@ -25,9 +29,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: '**/package-lock.json'
+        #cache: 'npm'
+        #cache-dependency-path: '**/package-lock.json's
     - name: setting up
       run: npm ci
-    - name: running test
+    - name: Running tests
       run: npm test
