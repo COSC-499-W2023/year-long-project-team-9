@@ -151,4 +151,4 @@
 
 ### Picture of Week 1 Term 2's Survey
 
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-1-T-2-sur
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-1-T-2-survey.png)
