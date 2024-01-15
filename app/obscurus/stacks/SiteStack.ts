@@ -4,7 +4,10 @@ import {
   Bucket,
   Table,
   RDS,
+  Api
 } from "sst/constructs";
+
+import {handler} from "./lambdas/list"
 
 export default function SiteStack({ stack }: StackContext) {
   const bucket = new Bucket(stack, "public");
@@ -20,8 +23,21 @@ export default function SiteStack({ stack }: StackContext) {
     migrations: "./stacks/core/migrations/",
   });
 
+  const api = new Api(stack, "Api", {
+    routes: {
+      "GET /users": {  function: {
+        handler: ".stacks/lambdas/list.handler",
+        timeout: 20,
+        permissions: [rds],
+        bind: [rds],
+        environment: {DB_NAME: rds.clusterArn}
+      },
+    }
+    },
+  });
+
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table, rds],
+    bind: [bucket, table, rds, api],
     environment: { TABLE_NAME: table.tableName },
   });
 
