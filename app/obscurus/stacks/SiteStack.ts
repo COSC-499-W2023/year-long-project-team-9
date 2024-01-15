@@ -2,46 +2,30 @@ import {
   StackContext,
   NextjsSite,
   Bucket,
-  Table,
+  Function,
   Service
 } from "sst/constructs";
 
 export default function SiteStack({ stack }: StackContext) {
-  const bucket = new Bucket(stack, "public");
-  const table = new Table(stack, "counter", {
-    fields: { counter: "string" },
-    primaryIndex: { partitionKey: "counter" },
-  });
-  const user = new Table(stack, "Users", {
-    fields: {
-      sub: "string",
-      email: "string",
-      first_name: "string",
-      last_name: "string",
-      bday: "string",
-      requests: "string", //json object
-      time_zone: "string", 
-      language: "string"
-    },
-    primaryIndex: { partitionKey: "sub"},
-  });
-  // adding chat room folder
-  const room = new Table(stack, "Rooms", {
-    fields: {
-      room_id: "string",
-      connect_id: "string",
-      users: "string", //json
-      creation_date: "string",
-      number_of_participants: "string",
-      message: "string" //json object
-    },
-    primaryIndex: { partitionKey: "room_id"},
-  });
+  const inputBucket = new Bucket(stack, "inputBucket");
+  const outputBucket = new Bucket(stack, "outputBucket");
+
+  const startFaceDetection = new Function(stack, "StartFaceDetection", 
+    {
+      timeout: 600,
+      memorySize: 512, 
+      runtime: "python3.7",
+      handler: "./stacks/lambdas/rekopoc-start-face-detect/lambda_function.lambda_handler",
+      environment: {
+        INPUT_BUCKET: inputBucket.bucketName
+      }
+    }
+  )
   
   const service = new Service(stack, "processVideo", {
     path: "./service",
     port: 8080,
-    bind: [bucket],
+    bind: [inputBucket, outputBucket],
     cdk: {
       applicationLoadBalancer: false,
       cloudfrontDistribution: false,
@@ -52,8 +36,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [bucket, table, service],
-    environment: { TABLE_NAME: table.tableName },
+    bind: [inputBucket, outputBucket, service, startFaceDetection],
   });
 
   stack.addOutputs({
