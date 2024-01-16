@@ -218,6 +218,11 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /process": {
+        function: {
+          handler: "./stacks/lambdas/send-to-service/lambda_function.lambda_handler",
+        }
+      }
     },
   });
 

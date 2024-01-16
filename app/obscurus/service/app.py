@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-
+from flask import Flask, request, jsonify
 import boto3
 import botocore
 import cv2
@@ -15,15 +15,21 @@ reko = boto3.client('rekognition')
 s3 = boto3.client('s3')
 
 output_bucket = os.environ['OUTPUT_BUCKET']
+input_bucket = os.environ['INPUT_BUCKET']
+input_name = os.environ['INPUT_NAME']
+output_name = os.environ['OUTPUT_NAME']
 
-def lambda_function(event, context):
-    # download file locally to /tmp retrieve metadata
+app = Flask(__name__)
+
+@app.route('/process', methods=['POST'])
+def process():
+    data = request.json
     try:
+        event = json.loads(data)
+        # Now you can safely access event['response']
         response = event['response']
         # get metadata of file uploaded to Amazon S3
-        bucket = event['s3_object_bucket']
-        key = event['s3_object_key']
-        filename = key.split('/')[-1]
+        filename = input_name.split('/')[-1]
         local_filename = '/tmp/{}'.format(filename)
         local_filename_output = '/tmp/anonymized-{}'.format(filename)
     except KeyError:
@@ -32,7 +38,7 @@ def lambda_function(event, context):
         # add_failed(bucket, error_message, failed_records, key)
 
     try:
-        s3.download_file(bucket, key, local_filename)
+        s3.download_file(input_bucket, input_name, local_filename)
     except botocore.exceptions.ClientError:
         error_message = 'Lambda role does not have permission to call GetObject for the input S3 bucket, or object does not exist.'
         logger.log(logging.ERROR, error_message)
@@ -54,14 +60,19 @@ def lambda_function(event, context):
 
     # uploaded modified video to Amazon S3 bucket
     try:
-        s3.upload_file(local_filename_output, output_bucket, key)
+        s3.upload_file(local_filename_output, output_bucket, output_name)
     except boto3.exceptions.S3UploadFailedError:
         error_message = 'Lambda role does not have permission to call PutObject for the output S3 bucket.'
         # add_failed(bucket, error_message, failed_records, key)
         # continue
+    print("Faces in video blurred successfully")
+    return jsonify({"status": "success", "processed_bucket_name": output_name}), 200
 
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Faces in video blurred')
-    }
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+
+
+
 
