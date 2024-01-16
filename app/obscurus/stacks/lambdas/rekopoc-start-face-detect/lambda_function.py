@@ -6,7 +6,7 @@ import urllib
 import boto3
 import botocore
 
-#from rekognition import check_format_and_size, start_face_detection
+from rekognition import check_format_and_size, start_face_detection
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -15,7 +15,7 @@ reko = boto3.client('rekognition')
 s3 = boto3.client('s3')
 sfn = boto3.client('stepfunctions')
 
-# state_machine_arn = os.environ['STATE_MACHINE_ARN']
+#state_machine_arn = os.environ['STATE_MACHINE_ARN']
 
 print("Starting face detection...\n")
 
@@ -59,23 +59,15 @@ def lambda_handler(event, context):
     response = reko_client.start_face_detection(Video={'S3Object': {'Bucket': bucketName, 'Name': keyName}})
     job_id = response['JobId']
     print(job_id)
-    # response = wait_for_completion(job_id, reko_client=reko)
+    #response = wait_for_completion(job_id, reko_client=reko)
 
-    #input_data = json.dumps({"body":{"job_id": job_id, "s3_object_bucket": bucket, "s3_object_key": key}})
 
     # response = sfn.start_execution(
     #     stateMachineArn=state_machine_arn,
     #     input=input_data)
 
     return {
-        "statusCode": 200,
-        "body": json.dumps(
-            {
                 "job_id": job_id,
-                "failed_records": failed_records,
-                "successful_records": successful_records
-            }
-        )
     }
 
 

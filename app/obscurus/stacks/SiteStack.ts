@@ -31,7 +31,7 @@ export default function SiteStack({ stack }: StackContext) {
       "./stacks/lambdas/rekopoc-start-face-detect/lambda_function.lambda_handler",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
-      OBJECT_KEY: "test.mov",
+      OBJECT_KEY: "test3.mov",
     },
     permissions: [rekognitionPolicyStatement],
     bind: [inputBucket]
@@ -57,7 +57,7 @@ export default function SiteStack({ stack }: StackContext) {
       "./stacks/lambdas/rekopoc-get-timestamps-faces/lambda_function.lambda_handler",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
-      OBJECT_KEY: "test2.mov",
+      OBJECT_KEY: "test3.mov",
     },
     permissions: [rekognitionPolicyStatement],
     bind: [inputBucket]
@@ -82,7 +82,7 @@ export default function SiteStack({ stack }: StackContext) {
       "./stacks/lambdas/rekopoc-check-status/lambda_function.lambda_handler",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
-      OBJECT_KEY: "test2.mov",
+      OBJECT_KEY: "test3.mov",
     },
     permissions: [rekognitionPolicyStatement],
     bind: [inputBucket]
@@ -104,14 +104,15 @@ export default function SiteStack({ stack }: StackContext) {
     memorySize: 2048,
     runtime: "container",
     handler:
-      "./stacks/lambdas/rekopoc-apply-face-to-video-docker",
+      "./stacks/lambdas/rekopoc-apply-faces-to-video-docker",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
-      OBJECT_KEY: "test2.mov",
+      INPUT_NAME: "test3.mov",
+      OUTPUT_NAME: "processed.mp4",
     },
     permissions: ["s3"],
-    bind: [outputBucket]
+    bind: [inputBucket, outputBucket]
     
   });
 
@@ -128,7 +129,7 @@ export default function SiteStack({ stack }: StackContext) {
   
 
   const wait1 = new Wait(stack, "Wait 1 Second", {
-    time: WaitTime.duration(Duration.seconds(1))
+    time: WaitTime.duration(Duration.seconds(1)),
   } )
 
   const jobFailed = new Fail(stack, "Job Failed...", {
@@ -140,48 +141,68 @@ export default function SiteStack({ stack }: StackContext) {
 
   const updateJobStatus = new LambdaInvoke(stack, "Check Job Status", {
     lambdaFunction: checkStatus,
-    inputPath: "$.body",
-    outputPath: "$.Payload"
+    inputPath: "$.Payload"
   })
 
   const getTimestampsAndFacesTask = new LambdaInvoke(stack, "Get Timestamps and Faces", {
     lambdaFunction: getTimestampsAndFaces,
-    inputPath: "$.body",
-    outputPath: "$.Payload"
+    inputPath: "$.Payload",
+    outputPath: "$.Payload.body"
   })
 
   const detectFacesTask = new LambdaInvoke(stack, "Start Face Detection", {
     lambdaFunction: startFaceDetection,
-    inputPath: "$.body",
-    outputPath: "$.Payload"
   })
 
   const blurFacesTask = new LambdaInvoke(stack, "Blur Faces in the Video", {
     lambdaFunction: blurFaces,
-    inputPath: "$.body",
-    outputPath: "$.Payload"
   })
 
   const choice = new Choice(stack, "Job finished?")
 
-  choice.when(Condition.stringEquals("$.body.job_status", "IN_PROGRESS"), wait1.next(updateJobStatus) )
+  choice.when(Condition.stringEquals("$.Payload.job_status", "IN_PROGRESS"), wait1.next(updateJobStatus) )
 
-  choice.when(Condition.stringEquals("$.body.job_status", "SUCCEEDED"), getTimestampsAndFacesTask.next(blurFacesTask).next(jobSucceeded))
+  choice.when(Condition.stringEquals("$.Payload.job_status", "SUCCEEDED"), getTimestampsAndFacesTask.next(blurFacesTask).next(jobSucceeded))
 
   choice.otherwise(jobFailed)
 
 
-  const stateDefinition = Chain.start(detectFacesTask).next
+  const stateDefinition = Chain.start(detectFacesTask)
+  .next(updateJobStatus)
+  .next(choice);
 
 
-  const definitionBody = DefinitionBody.fromChainable(updateJobStatus.next(choice))
 
 
 
 
   const stateMachine = new StateMachine(stack, "StateMachine", {
-    definitionBody: definitionBody
+    definition: stateDefinition,
+    timeout: Duration.minutes(15)
   })
+
+  // startFaceDetection.addEnvironment("STATE_MACHINE_ARN", stateMachine.stateMachineArn)
+
+
+  checkStatus.addToRolePolicy(
+    new PolicyStatement({
+      actions: ["rekognition:*"],
+      effect: Effect.ALLOW,
+      resources: ["*"],
+    })
+  );
+
+  // startFaceDetection.addToRolePolicy(new PolicyStatement({
+  //   actions: ["states:StartExecution"],
+  //   effect: Effect.ALLOW,
+  //   resources: [stateMachine.stateMachineArn, stateMachine.stateMachineArn,
+  //     `${stateMachine.stateMachineArn}/*`]
+  // }
+    
+
+
+
+  // ))
 
   const api = new Api(stack, "Api",
     {

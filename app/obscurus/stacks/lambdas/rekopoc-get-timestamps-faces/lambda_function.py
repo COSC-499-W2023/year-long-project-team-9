@@ -34,7 +34,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 
 def lambda_handler(event, context):
-    job_id = "81fcfcab828ea500878e3ab0da2d74b2b54236f4d0c0e55527d7b51c83564b1b"
+    job_id = event['job_id']
     timestamps, response = get_timestamps_and_faces(job_id, reko)
     return {
         'statusCode': 200,

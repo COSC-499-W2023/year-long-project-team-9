@@ -16,15 +16,20 @@ s3 = boto3.client('s3')
 
 output_bucket = os.environ['OUTPUT_BUCKET']
 input_bucket = os.environ['INPUT_BUCKET']
-key = os.environ['OBJECT_KEY']
+input_name = os.environ['INPUT_NAME']
+output_name = os.environ['OUTPUT_NAME']
 
 def lambda_function(event, context):
     # download file locally to /tmp retrieve metadata
     try:
+        print(event)
+           
+        event = json.loads(event)
+
+        # Now you can safely access event['response']
         response = event['response']
         # get metadata of file uploaded to Amazon S3
-        key = event['s3_object_key']
-        filename = key.split('/')[-1]
+        filename = input_name.split('/')[-1]
         local_filename = '/tmp/{}'.format(filename)
         local_filename_output = '/tmp/anonymized-{}'.format(filename)
     except KeyError:
@@ -33,7 +38,7 @@ def lambda_function(event, context):
         # add_failed(bucket, error_message, failed_records, key)
 
     try:
-        s3.download_file(input_bucket, key, local_filename)
+        s3.download_file(input_bucket, input_name, local_filename)
     except botocore.exceptions.ClientError:
         error_message = 'Lambda role does not have permission to call GetObject for the input S3 bucket, or object does not exist.'
         logger.log(logging.ERROR, error_message)
@@ -55,7 +60,7 @@ def lambda_function(event, context):
 
     # uploaded modified video to Amazon S3 bucket
     try:
-        s3.upload_file(local_filename_output, output_bucket, key)
+        s3.upload_file(local_filename_output, output_bucket, output_name)
     except boto3.exceptions.S3UploadFailedError:
         error_message = 'Lambda role does not have permission to call PutObject for the output S3 bucket.'
         # add_failed(bucket, error_message, failed_records, key)
