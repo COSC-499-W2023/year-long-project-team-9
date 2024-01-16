@@ -4,13 +4,14 @@ import {
   NextjsSite,
   Bucket,
   Function,
-  Service,
+  RDS,
   Api,
+  Service,
 } from "sst/constructs";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import { Chain, Choice, Condition, DefinitionBody, Fail, StateMachine, Succeed, Wait, WaitTime } from "aws-cdk-lib/aws-stepfunctions";
 import { Duration } from "aws-cdk-lib/core";
-import { wait } from "node_modules/@testing-library/user-event/dist/types/utils";
+
 
 
 export default function SiteStack({ stack }: StackContext) {
@@ -61,8 +62,14 @@ export default function SiteStack({ stack }: StackContext) {
     },
     permissions: [rekognitionPolicyStatement],
     bind: [inputBucket]
-    
+
+  // add RDS construct
+  const rds = new RDS(stack, "Database", {
+    engine: "postgresql11.13",
+    defaultDatabaseName: "obscurus",
+    migrations: "./stacks/core/migrations/",
   });
+
 
   getTimestampsAndFaces.attachPermissions([rekognitionPolicyStatement]);
 
@@ -173,15 +180,10 @@ export default function SiteStack({ stack }: StackContext) {
 
 
 
-
-
-
   const stateMachine = new StateMachine(stack, "StateMachine", {
     definition: stateDefinition,
     timeout: Duration.minutes(15)
   })
-
-  // startFaceDetection.addEnvironment("STATE_MACHINE_ARN", stateMachine.stateMachineArn)
 
 
   checkStatus.addToRolePolicy(
@@ -192,17 +194,7 @@ export default function SiteStack({ stack }: StackContext) {
     })
   );
 
-  // startFaceDetection.addToRolePolicy(new PolicyStatement({
-  //   actions: ["states:StartExecution"],
-  //   effect: Effect.ALLOW,
-  //   resources: [stateMachine.stateMachineArn, stateMachine.stateMachineArn,
-  //     `${stateMachine.stateMachineArn}/*`]
-  // }
     
-
-
-
-  // ))
 
   const api = new Api(stack, "Api",
     {
@@ -214,15 +206,21 @@ export default function SiteStack({ stack }: StackContext) {
               STATE_MACHINE: stateMachine.stateMachineArn
             }
           }
-        }
+        },
+        "GET /users": {  
+          function: {
+            handler: "./stacks/lambdas/list.handler",
+            timeout: 20,
+            permissions: [rds],
+            bind: [rds],
+            environment: 
+              {DB_NAME: rds.clusterArn}
+        },
       }
     }
   )
 
   api.attachPermissionsToRoute("GET /start-machine", [[stateMachine, "grantStartExecution"],])
-
-  
-
 
   
 
@@ -240,7 +238,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, service, startFaceDetection],
+    bind: [inputBucket, outputBucket, rds, api, service],
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
