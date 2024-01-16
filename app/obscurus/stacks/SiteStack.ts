@@ -9,10 +9,18 @@ import {
   Service,
 } from "sst/constructs";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
-import { Chain, Choice, Condition, DefinitionBody, Fail, StateMachine, Succeed, Wait, WaitTime } from "aws-cdk-lib/aws-stepfunctions";
+import {
+  Chain,
+  Choice,
+  Condition,
+  DefinitionBody,
+  Fail,
+  StateMachine,
+  Succeed,
+  Wait,
+  WaitTime,
+} from "aws-cdk-lib/aws-stepfunctions";
 import { Duration } from "aws-cdk-lib/core";
-
-
 
 export default function SiteStack({ stack }: StackContext) {
   const inputBucket = new Bucket(stack, "inputBucket");
@@ -35,8 +43,7 @@ export default function SiteStack({ stack }: StackContext) {
       OBJECT_KEY: "test3.mov",
     },
     permissions: [rekognitionPolicyStatement],
-    bind: [inputBucket]
-    
+    bind: [inputBucket],
   });
 
   startFaceDetection.attachPermissions([rekognitionPolicyStatement]);
@@ -49,7 +56,6 @@ export default function SiteStack({ stack }: StackContext) {
     })
   );
 
-
   const getTimestampsAndFaces = new Function(stack, "GetTimeStamps", {
     timeout: 600,
     memorySize: 512,
@@ -61,7 +67,8 @@ export default function SiteStack({ stack }: StackContext) {
       OBJECT_KEY: "test3.mov",
     },
     permissions: [rekognitionPolicyStatement],
-    bind: [inputBucket]
+    bind: [inputBucket],
+  });
 
   // add RDS construct
   const rds = new RDS(stack, "Database", {
@@ -69,7 +76,6 @@ export default function SiteStack({ stack }: StackContext) {
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
   });
-
 
   getTimestampsAndFaces.attachPermissions([rekognitionPolicyStatement]);
 
@@ -92,8 +98,7 @@ export default function SiteStack({ stack }: StackContext) {
       OBJECT_KEY: "test3.mov",
     },
     permissions: [rekognitionPolicyStatement],
-    bind: [inputBucket]
-    
+    bind: [inputBucket],
   });
 
   checkStatus.attachPermissions([rekognitionPolicyStatement]);
@@ -110,8 +115,7 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: 600,
     memorySize: 2048,
     runtime: "container",
-    handler:
-      "./stacks/lambdas/rekopoc-apply-faces-to-video-docker",
+    handler: "./stacks/lambdas/rekopoc-apply-faces-to-video-docker",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
@@ -119,11 +123,8 @@ export default function SiteStack({ stack }: StackContext) {
       OUTPUT_NAME: "processed.mp4",
     },
     permissions: ["s3"],
-    bind: [inputBucket, outputBucket]
-    
+    bind: [inputBucket, outputBucket],
   });
-
-
 
   blurFaces.addToRolePolicy(
     new PolicyStatement({
@@ -133,58 +134,62 @@ export default function SiteStack({ stack }: StackContext) {
     })
   );
 
-  
-
   const wait1 = new Wait(stack, "Wait 1 Second", {
     time: WaitTime.duration(Duration.seconds(1)),
-  } )
+  });
 
   const jobFailed = new Fail(stack, "Job Failed...", {
     cause: "Face Detection Failed",
-    error: "Could not get jobStatus === 'SUCCEEDED'"
-  })
+    error: "Could not get jobStatus === 'SUCCEEDED'",
+  });
 
-  const jobSucceeded = new Succeed(stack, "Execution Succeeded!")
+  const jobSucceeded = new Succeed(stack, "Execution Succeeded!");
 
   const updateJobStatus = new LambdaInvoke(stack, "Check Job Status", {
     lambdaFunction: checkStatus,
-    inputPath: "$.Payload"
-  })
-
-  const getTimestampsAndFacesTask = new LambdaInvoke(stack, "Get Timestamps and Faces", {
-    lambdaFunction: getTimestampsAndFaces,
     inputPath: "$.Payload",
-    outputPath: "$.Payload.body"
-  })
+  });
+
+  const getTimestampsAndFacesTask = new LambdaInvoke(
+    stack,
+    "Get Timestamps and Faces",
+    {
+      lambdaFunction: getTimestampsAndFaces,
+      inputPath: "$.Payload",
+      outputPath: "$.Payload.body",
+    }
+  );
 
   const detectFacesTask = new LambdaInvoke(stack, "Start Face Detection", {
     lambdaFunction: startFaceDetection,
-  })
+  });
 
   const blurFacesTask = new LambdaInvoke(stack, "Blur Faces in the Video", {
     lambdaFunction: blurFaces,
-  })
+  });
 
-  const choice = new Choice(stack, "Job finished?")
+  const choice = new Choice(stack, "Job finished?");
 
-  choice.when(Condition.stringEquals("$.Payload.job_status", "IN_PROGRESS"), wait1.next(updateJobStatus) )
+  choice.when(
+    Condition.stringEquals("$.Payload.job_status", "IN_PROGRESS"),
+    wait1.next(updateJobStatus)
+  );
 
-  choice.when(Condition.stringEquals("$.Payload.job_status", "SUCCEEDED"), getTimestampsAndFacesTask.next(blurFacesTask).next(jobSucceeded))
+  choice.when(
+    Condition.stringEquals("$.Payload.job_status", "SUCCEEDED"),
+    getTimestampsAndFacesTask.next(blurFacesTask).next(jobSucceeded)
+  );
 
-  choice.otherwise(jobFailed)
-
+  choice.otherwise(jobFailed);
 
   const stateDefinition = Chain.start(detectFacesTask)
-  .next(updateJobStatus)
-  .next(choice);
-
-
+    .next(updateJobStatus)
+    .next(choice);
 
   const stateMachine = new StateMachine(stack, "StateMachine", {
     definition: stateDefinition,
-    timeout: Duration.minutes(15)
-  })
-
+    timeout: Duration.minutes(15),
+  });
 
   checkStatus.addToRolePolicy(
     new PolicyStatement({
@@ -194,35 +199,31 @@ export default function SiteStack({ stack }: StackContext) {
     })
   );
 
-    
-
-  const api = new Api(stack, "Api",
-    {
-      routes: {
-        "GET /start-machine": {
-          function: {
-            handler: "./stacks/lambdas/startMachine.handler",
-            environment: {
-              STATE_MACHINE: stateMachine.stateMachineArn
-            }
-          }
+  const api = new Api(stack, "Api", {
+    routes: {
+      "GET /start-machine": {
+        function: {
+          handler: "./stacks/lambdas/startMachine.handler",
+          environment: {
+            STATE_MACHINE: stateMachine.stateMachineArn,
+          },
         },
-        "GET /users": {  
-          function: {
-            handler: "./stacks/lambdas/list.handler",
-            timeout: 20,
-            permissions: [rds],
-            bind: [rds],
-            environment: 
-              {DB_NAME: rds.clusterArn}
+      },
+      "GET /users": {
+        function: {
+          handler: "./stacks/lambdas/list.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
         },
-      }
-    }
-  )
+      },
+    },
+  });
 
-  api.attachPermissionsToRoute("GET /start-machine", [[stateMachine, "grantStartExecution"],])
-
-  
+  api.attachPermissionsToRoute("GET /start-machine", [
+    [stateMachine, "grantStartExecution"],
+  ]);
 
   const service = new Service(stack, "processVideo", {
     path: "./service",
@@ -245,6 +246,6 @@ export default function SiteStack({ stack }: StackContext) {
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
-    ApiEndpoint: api.url
+    ApiEndpoint: api.url,
   });
 }
