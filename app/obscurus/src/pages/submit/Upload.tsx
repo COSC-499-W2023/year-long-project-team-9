@@ -130,7 +130,7 @@ const Upload = ({ url }: { url: string }) => {
 
   return (
     <Layout>
-      <div className="grid  justify-items-center items-center p-10 gap-10">
+      <div className="grid  justify-items-center items-center gap-5">
         <svg
           width="50%"
           height="60"
