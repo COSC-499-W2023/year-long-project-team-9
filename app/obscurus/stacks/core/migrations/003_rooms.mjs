@@ -14,6 +14,7 @@ export async function up(db) {
     .addColumn("participant2_sub","varchar")
     .addColumn("participant1_room_name","varchar",(col) => col.notNull())
     .addColumn("participant2_room_name","varchar",(col) => col.notNull())
+    .addColumn("is_active","boolean",(col) => col.notNull().defaultTo("false"))
     .addColumn("creation_date","timestamp",(col) => col.notNull().defaultTo("now()"))
     .execute();
 }
