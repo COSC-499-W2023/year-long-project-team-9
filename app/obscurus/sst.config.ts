@@ -5,7 +5,7 @@ export default {
   config(_input) {
     return {
       name: "obscurus",
-      region: "ca-central-1",
+      region: "us-west-2",
     };
   },
   stacks(app) {
