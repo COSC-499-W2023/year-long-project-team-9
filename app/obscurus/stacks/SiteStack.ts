@@ -240,9 +240,18 @@ export default function SiteStack({ stack }: StackContext) {
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, service],
+    permissions: [rekognitionPolicyStatement]
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
+
+  startFaceDetection.addToRolePolicy(
+    new PolicyStatement({
+      actions: ["rekognition:StartFaceDetection", "rekognition:DetectFaces"],
+      effect: Effect.ALLOW,
+      resources: ["*"],
+    })
+  );
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
