@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Auth, Amplify } from "aws-amplify";
+import { authMethods } from "../auth/authMethods";
 
 Amplify.configure({
   Auth: {
@@ -21,7 +22,9 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      await Auth.signIn(email, password);
+      const user = await Auth.signIn(email, password);
+      authMethods.setUserSessionToken(user);
+      console.log(authMethods.isAuthenticated());
       alert("Logged in");
     } catch (error) {
       // Prints the full error
