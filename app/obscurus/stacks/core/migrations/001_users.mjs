@@ -15,6 +15,7 @@ export async function up(db) {
     .addColumn("language","varchar")
     .addColumn("is_logged_in_with_social_identity_provider","boolean",(col) => col.notNull())
     .addColumn("is_admin","boolean",(col) => col.notNull().defaultTo("false"))
+    .addColumn("profile_image","varchar")
     .execute();
 }
 
