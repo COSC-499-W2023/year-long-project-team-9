@@ -7,6 +7,7 @@ import {
   RDS,
   Api,
   Service,
+  Cognito,
 } from "sst/constructs";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import {
@@ -200,7 +201,15 @@ export default function SiteStack({ stack }: StackContext) {
   );
 
   const api = new Api(stack, "Api", {
+    defaults: {
+      authorizer: "iam",
+    },
     routes: {
+      "GET /private": "./stacks/lambdas/private.main",
+      "GET /public": {
+        function: "./stacks/lambdas/public.main",
+        authorizer: "none",
+      },
       "GET /start-machine": {
         function: {
           handler: "./stacks/lambdas/startMachine.handler",
@@ -221,6 +230,14 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
+  // Create auth provider
+  const auth = new Cognito(stack, "Auth", {
+    login: ["email"],
+  });
+
+  // Allow authenticated users invoke API
+  auth.attachPermissionsForAuthUsers(stack, [api]);
+
   api.attachPermissionsToRoute("GET /start-machine", [
     [stateMachine, "grantStartExecution"],
   ]);
@@ -240,7 +257,7 @@ export default function SiteStack({ stack }: StackContext) {
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, service],
-    permissions: [rekognitionPolicyStatement]
+    permissions: [rekognitionPolicyStatement],
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
@@ -256,5 +273,8 @@ export default function SiteStack({ stack }: StackContext) {
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
+    UserPoolId: auth.userPoolId,
+    IdentityPoolId: auth.cognitoIdentityPoolId,
+    UserPoolClientId: auth.userPoolClientId,
   });
 }
