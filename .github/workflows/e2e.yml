@@ -20,8 +20,6 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm ci
-      - run: npm run build
-      - run: npm run start &
       - run: npx playwright install --with-deps
       - name: Running Playwright E2E tests
         run: npm run test:e2e
