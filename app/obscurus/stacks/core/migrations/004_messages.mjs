@@ -7,7 +7,7 @@ export async function up(db) {
     await db.schema
     .createTable("messages")
     .addColumn("message_id","bigserial",(col) => col.primaryKey())
-    .addColumn("chatroom_id","bigserial",(col) => col.notNull())
+    .addColumn("room_id","bigserial",(col) => col.notNull().references("rooms.room_id"))
     .addColumn("sender_sub","varchar",(col) => col.notNull().references("users.sub"))
     .addColumn("date_time","timestamp",(col) => col.notNull())
     .addColumn("message_content","varchar",(col) => col.notNull())

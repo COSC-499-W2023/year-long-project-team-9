@@ -11,10 +11,11 @@ export async function up(db) {
     .addColumn("given_name","varchar",(col) => col.notNull())
     .addColumn("family_name","varchar",(col) => col.notNull())
     .addColumn("birthday","date",(col) => col.notNull())
-    .addColumn("timezone","varchar",(col) => col.notNull())
-    .addColumn("language","varchar",(col) => col.notNull())
+    .addColumn("timezone","varchar")
+    .addColumn("language","varchar")
     .addColumn("is_logged_in_with_social_identity_provider","boolean",(col) => col.notNull())
     .addColumn("is_admin","boolean",(col) => col.notNull().defaultTo("false"))
+    .addColumn("profile_image","varchar")
     .execute();
 }
 
