@@ -274,7 +274,7 @@ const Upload = ({ url }: { url: string }) => {
               <Button
                 type="submit"
                 className=" px-8 font-extrabold"
-                onClick={() => router.push("/submit/Upload")}
+                onClick={() => router.push("/submit/ConfirmVideo")}
               >
                 Next
               </Button>
