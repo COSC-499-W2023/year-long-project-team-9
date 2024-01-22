@@ -1092,6 +1092,13 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Complete function to retrieve submissions
 
+### Task 8: Add Signup Page
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add Signup Page
+
 ### Task 8: Set up Authentication
 
 * **Status:** In-Progress
@@ -1115,7 +1122,7 @@ The tasks identified for this week were:
 
 ### Task 9: Create API Route 
 
-* **Status:** In-Progress
+* **Status:** Complete
 * **Assignee(s):** Jan-Yaeger Dhillon
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Create API route to communicated with Next.js 
