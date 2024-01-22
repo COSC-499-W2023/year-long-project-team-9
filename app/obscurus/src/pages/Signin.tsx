@@ -1,3 +1,4 @@
+//this code is mainly from AI
 import React, { useState } from "react";
 import { Auth, Amplify } from "aws-amplify";
 import { authMethods } from "../auth/authMethods";
