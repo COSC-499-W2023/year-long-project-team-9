@@ -25,6 +25,8 @@ export default function Login() {
       const user = await Auth.signIn(email, password);
       authMethods.setUserSessionToken(user);
       console.log(authMethods.isAuthenticated());
+      console.log(authMethods.getSub());
+      console.log(authMethods.getEmail());
       alert("Logged in");
     } catch (error) {
       // Prints the full error
