@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import Webcam from "react-webcam";
 import router from "next/router";
-import { Circle, Pause } from "lucide-react";
+import { Circle, Pause, ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -130,7 +130,7 @@ const Upload = ({ url }: { url: string }) => {
 
   return (
     <Layout>
-      <div className="grid  justify-items-center items-center p-10 gap-10">
+      <div className="grid  justify-items-center items-center gap-5">
         <svg
           width="50%"
           height="60"
@@ -189,7 +189,7 @@ const Upload = ({ url }: { url: string }) => {
         </div>
         {!record ? (
           <>
-            <div className="grid justify-items-center border-dashed border-black border rounded-lg w-[500px] bg-secondary dark:border-white">
+            <div className="grid justify-items-center border-dashed border-black border-4 rounded-lg w-[500px] bg-secondary dark:border-white">
               <form onSubmit={handleSubmit} className="">
                 <div className="grid w-full gap-10 h-full  max-w-sm items-center rounded-xl p-10">
                   <svg
@@ -274,7 +274,7 @@ const Upload = ({ url }: { url: string }) => {
               <Button
                 type="submit"
                 className=" px-8 font-extrabold"
-                onClick={() => router.push("/submit/Upload")}
+                onClick={() => router.push("/submit/ConfirmVideo")}
               >
                 Next
               </Button>
