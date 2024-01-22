@@ -7,11 +7,14 @@ export async function up(db) {
     await db.schema
     .createTable("rooms")
     .addColumn("room_id","bigserial",(col) => col.primaryKey())
-    .addColumn("request_id","bigserial",(col) => col.notNull().references("requests.request_id"))
-    .addColumn("room_name","varchar",(col) => col.notNull())
     .addColumn("connection_id","varchar",(col) => col.notNull())
-    .addColumn("number_of_participants","integer",(col) => col.notNull())
-    .addColumn("participants_subs","varchar",(col) => col.notNull())
+    .addColumn("participant1_email","varchar",(col) => col.notNull())
+    .addColumn("participant1_sub","varchar")
+    .addColumn("participant2_email","varchar",(col) => col.notNull())
+    .addColumn("participant2_sub","varchar")
+    .addColumn("participant1_room_name","varchar",(col) => col.notNull())
+    .addColumn("participant2_room_name","varchar",(col) => col.notNull())
+    .addColumn("is_active","boolean",(col) => col.notNull().defaultTo("false"))
     .addColumn("creation_date","timestamp",(col) => col.notNull().defaultTo("now()"))
     .execute();
 }
