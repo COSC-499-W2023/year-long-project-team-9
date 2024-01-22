@@ -6,7 +6,6 @@ import urllib
 import boto3
 import botocore
 
-from rekognition import check_format_and_size, start_face_detection
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)

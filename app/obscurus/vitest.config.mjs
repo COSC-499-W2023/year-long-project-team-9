@@ -6,5 +6,6 @@ export default defineConfig({
     test: {
       environment: 'jsdom',
     },
-    root: "./tests/sst-test"
+    root: "./tests/sst-tests",
+    logLevel: 'silent'
 })

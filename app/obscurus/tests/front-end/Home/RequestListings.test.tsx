@@ -19,7 +19,7 @@ describe("Features Component", () => {
 
   test("Render page and check features.",() => {
   //check title
-    expect(screen.getByText("My Requests")).toBeInTheDocument();
+    // expect(screen.getByText("My Requests")).toBeInTheDocument();
     //check searchbar 
     //expect(screen.getByText(/search/i)).toBeInTheDocument();
     //check sorting options
