@@ -282,6 +282,39 @@ Screenshot from peer eval for Week 1:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-13.png)
 
+## Week 2  ##
+
+### Applicable Date Range ###
+January 15 - January 21, 2024
+
+### Tasks Worked On ###
+
+- This week I got the video processing working using Lambda and Step Functions.
+- Now we can take videos from S3 and apply the face blurring
+- My goal this week is to update the front end and make everything work together in preparation for the peer testing
+- This week I need to clean everything up and make some tests as well, however it is hard to test some of the AWS services
+- However, I have set up Vitest for testing SST
+
+Screenshot from peer eval for Week 2:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-14.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-14.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-14.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-14.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-14.png)
+
 
 
 
