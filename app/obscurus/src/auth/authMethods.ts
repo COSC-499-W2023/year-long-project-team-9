@@ -11,18 +11,6 @@ import {
 import { jwtDecode } from "jwt-decode";
 import { Auth, Amplify } from "aws-amplify";
 
-// Config
-const amplifyRegion = "us-west-2";
-const amplifyUserPoolId = "us-west-2_Zjw9UuRG5";
-const amplifyUserPoolWebClientId = "g0arfuhrmi7uctc1g07reudp3";
-Amplify.configure({
-  Auth: {
-    region: amplifyRegion,
-    userPoolId: amplifyUserPoolId,
-    userPoolWebClientId: amplifyUserPoolWebClientId,
-  },
-});
-
 // Storing user sub and session token
 // Note: call only when user signs in
 export function setUserSessionToken(user: CognitoUser) {
