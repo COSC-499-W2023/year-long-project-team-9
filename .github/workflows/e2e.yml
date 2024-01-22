@@ -21,7 +21,9 @@ jobs:
         node-version: '18.x'
     - run: npm ci
     - run: npx playwright install --with-deps
-    - name: Start server
-      run: npm run dev --stage runner &
+    - name: Start sst
+      run: npx sst dev --stage runner
+    - name: Start next
+      run: npm run dev
     - name: Running Playwright E2E tests
       run: npx playwright test
