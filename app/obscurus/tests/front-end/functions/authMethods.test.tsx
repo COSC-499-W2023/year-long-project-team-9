@@ -12,6 +12,6 @@ test("testing getSub()", () => {
   expect(getSub()).toBe(false);
 });
 
-test("testing getEmail()", () => {
-  expect(getEmail()).toBe(false);
-});
+// test("testing getEmail()", () => {
+//   expect(getEmail()).toBe(false);
+// });

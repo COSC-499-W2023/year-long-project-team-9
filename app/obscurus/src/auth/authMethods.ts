@@ -9,7 +9,7 @@ import {
   CognitoRefreshToken,
 } from "amazon-cognito-identity-js";
 import { jwtDecode } from "jwt-decode";
-import { Auth, Amplify } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 
 // Storing user sub and session token
 // Note: call only when user signs in
@@ -69,17 +69,17 @@ export function getSub() {
 }
 
 // Get the user email from the local storage
-export function getEmail() {
-  var idToken;
-  localStorage?.getItem("idToken")
-    ? (idToken = localStorage.getItem("idToken"))
-    : null;
-  if (idToken == null) {
-    return false;
-  }
-  idToken = jwtDecode(idToken);
-  return idToken.email;
-}
+// export function getEmail() {
+//   var idToken;
+//   localStorage?.getItem("idToken")
+//     ? (idToken = localStorage.getItem("idToken"))
+//     : null;
+//   if (idToken == null) {
+//     return false;
+//   }
+//   idToken = jwtDecode(idToken);
+//   return idToken.email;
+// }
 
 export function signOutBackEnd() {
   localStorage.removeItem("accessTokens");

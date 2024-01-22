@@ -27,7 +27,7 @@ export default function Login() {
       authMethods.setUserSessionToken(user);
       console.log(authMethods.isAuthenticated());
       console.log(authMethods.getSub());
-      console.log(authMethods.getEmail());
+      // console.log(authMethods.getEmail());
       alert("Logged in");
     } catch (error) {
       // Prints the full error
