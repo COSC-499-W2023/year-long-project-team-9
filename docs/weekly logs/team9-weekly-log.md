@@ -870,11 +870,11 @@ All tasks for `Milestone 3 - Design Documentation` were completed
 ### Test Report
 ![test report](img/team-weekly-log-img/week-13/test-repoert-week13.png)
 
-# TEAM 9 - WEEK 14 (TERM 2 WEEK 1)
+# TEAM 9 - TERM 2 WEEK 1
 
 ## Work Period
 
-Week 1 ran from 00:00 on 2023/01/08 to 23:59 on 2023/12/03.
+Week 1 ran from 00:00 on 2024/01/08 to 23:59 on 2024/01/14.
 
 ## Milestone Goal Recap
 
@@ -913,30 +913,30 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Add Logo and CSS to Cognito-hosted UI
 
-### Task 4: Fix Playwrite
+### Task 5: Fix Playwrite
 
 * **Status:** In-Progress
 * **Assignee(s):** Baz Sivakua
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Fix issues with Playwrite automatic testing
 
-### Task 4: Set up Authentication
+### Task 6: Set up Authentication
 
 * **Status:** In-Progress
 * **Assignee(s):** Muhammad Bakar
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Add authentication via Cognito to app
 
-### Task 4: Initialize SST for PostgreSQL
+### Task 7: Initialize SST for PostgreSQL
 
-* **Status:** In-Progress
+* **Status:** Completed
 * **Assignee(s):** Soren Stenback
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Initialize STT for PostgreSQL for use in backend database storage
 
-### Task 4: Convert ER Diagram to PostgreSQL Table
+### Task 8: Convert ER Diagram to PostgreSQL Table
 
-* **Status:** In-Progress
+* **Status:** Completed
 * **Assignee(s):** Soren Stenback
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Convert ER Diagram from previous milestone to PostgreSQL Table
@@ -953,5 +953,155 @@ The tasks identified for this week were:
 ### Table View of In Progress Tasks
 
 ![screenshot of in progress board tasks](img/team-weekly-log-img/week-14/inprogress-week14.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-14/test-report-week1-t-2.png)
+
+___
+
+# TEAM 9 - TERM 2 WEEK 2
+
+## Work Period
+
+Week 2 ran from 00:00 on 2024/01/15 to 23:59 on 2024/01/21.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Initialize Example Rekognition
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Translate example rekognition to work with sst framework
+
+### Task 2: Delete Old Branches
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** N/a
+* **Description:** Delete old GitHub branches from repository 
+
+### Task 3: Migration
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Migrate RSD scripts for database
+
+### Task 4: Fix Playwrite
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Fix issues with Playwrite automatic testing allowing the server to be started and tests to be run with one command.
+
+### Task 6: signOutBackEnd()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to allow signing out of backend
+
+### Task 7: getEmail()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to retrieve email adresses from the database
+
+### Task 8: getSub()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to retrieve submissions from the database
+
+### Task 7: isAuthenticated()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to check if authenticated
+
+### Task 7: getSub()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to retrieve submissions
+
+### Task 8: Set up Authentication
+
+* **Status:** In-Progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add authentication with Cognito to app via SST
+
+### Task 9: Link function to Service
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create containerized service that can access buckets/functions 
+
+### Task 9: Link function to Service
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create containerized service that can access buckets/functions 
+
+### Task 9: Create API Route 
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create API route to communicated with Next.js 
+
+### Task 10: Create Messages Page 
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create pages for user to access messages
+
+### Task 10: Fix Layout Issues 
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix layout issues with pages from previous milestones
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-15/burnup-week15.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-15/completed-week15.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-15/inprogress-week15.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-15/testreport-week15.png)
+
+End to end testing
+![test report](img/team-weekly-log-img/week-15/e2etests.png)
 
 ___
