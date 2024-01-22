@@ -12,6 +12,8 @@ import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import Webcam from "react-webcam";
 import router from "next/router";
 import { Circle, Pause, ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import NestedLayout from "@/components/nested-layout";
+import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationEllipsis, PaginationNext } from "@/components/ui/pagination";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -129,9 +131,9 @@ const Upload = ({ url }: { url: string }) => {
   const background = useCurrentTheme("background");
 
   return (
-    <Layout>
-      <div className="grid  justify-items-center items-center gap-5">
-        <svg
+    <NestedLayout>
+        
+        {/* <svg
           width="50%"
           height="60"
           viewBox="0 0 856 60"
@@ -182,9 +184,8 @@ const Upload = ({ url }: { url: string }) => {
             stroke={primary}
             stroke-width="6"
           />
-        </svg>
-
-        <div className="text-3xl font-bold pt-10">
+        </svg> */}
+        <div className="text-3xl font-bold">
           Upload or Record Your Video
         </div>
         {!record ? (
@@ -263,22 +264,6 @@ const Upload = ({ url }: { url: string }) => {
                 </div>
               </form>
             </div>
-            <div className="grid grid-cols-2 justify-evenly gap-72">
-              <Button
-                type="submit"
-                className=" px-8 font-extrabold"
-                onClick={() => router.back}
-              >
-                Back
-              </Button>
-              <Button
-                type="submit"
-                className=" px-8 font-extrabold"
-                onClick={() => router.push("/submit/ConfirmVideo")}
-              >
-                Next
-              </Button>
-            </div>
           </>
         ) : (
           <div className="">
@@ -312,8 +297,8 @@ const Upload = ({ url }: { url: string }) => {
             </div>
           </div>
         )}
-      </div>
-    </Layout>
+
+    </NestedLayout>
   );
 };
 

@@ -15,6 +15,7 @@ import { useTheme } from "next-themes";
 import { CalendarIcon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import NestedLayout from "@/components/nested-layout";
 
 export async function getServerSideProps() {
   const command = new PutObjectCommand({
@@ -65,66 +66,9 @@ const ConfirmVideo = ({ url }: { url: string }) => {
   
 
   return (
-    <Layout>
-      <div className="grid  justify-items-center items-center p-10 gap-10">
-        <svg
-          width="50%"
-          height="60"
-          viewBox="0 0 856 60"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect x="259" y="24" width="568" height="13" fill="#CBD5E1" />
-          <rect x="49" y="24" width="160" height="12.8" fill="#CBD5E1" />
-          <Link href="/submit">
-            <circle
-            id="first"
-              cx="30"
-              cy="30"
-              r="27"
-              fill={useCurrentTheme("background")}
-              stroke={useCurrentTheme("primary")}
-              strokeWidth="6"
-            />
-          </Link>
+    <NestedLayout>
 
-          <circle
-            cx="826"
-            cy="30"
-            r="27"
-            fill={useCurrentTheme("background")}
-            stroke="#CBD5E1"
-            strokeWidth="6"
-          />
-          <circle
-            cx="627"
-            cy="30"
-            r="27"
-            fill={useCurrentTheme("background")}
-            stroke="#CBD5E1"
-            strokeWidth="6"
-          />
-          <circle
-            cx="428"
-            cy="30"
-            r="27"
-            fill={useCurrentTheme("background")}
-            stroke="#CBD5E1"
-            strokeWidth="6"
-          />
-          <Link href="/submit/Upload">
-            <circle
-              cx="229"
-              cy="30"
-              r="27"
-              fill={useCurrentTheme("background")}
-              stroke="#CBD5E1"
-              strokeWidth="6"
-            />
-          </Link>
-        </svg>
-
-        <div className="grid py-5 gap-3">
+        <div className="grid gap-3">
           <div className="text-3xl font-bold py-5">
             Here is the video request from <span className="text-blue-600">Daniel Woods</span>
           </div>
@@ -214,8 +158,7 @@ const ConfirmVideo = ({ url }: { url: string }) => {
             </div>
           </div>
         </div>
-      </div>
-    </Layout>
+    </NestedLayout>
   );
 };
 
