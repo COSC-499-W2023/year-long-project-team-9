@@ -3,7 +3,6 @@ export interface Database {
     users: Users;
     requests: Requests;
     rooms: Rooms;
-    images: Images;
     messages: Messages;
 }
 {/*Users table interace*/}
@@ -39,11 +38,6 @@ export interface Rooms {
     number_of_participants: number;
     participants_subs: string;
     creation_date: Date;
-}
-{/*Images table interace*/}
-export interface Images {
-    sub: string;
-    image: string;
 }
 {/*Messages table interace*/}
 export interface Messages {
