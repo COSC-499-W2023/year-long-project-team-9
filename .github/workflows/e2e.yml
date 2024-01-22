@@ -21,9 +21,7 @@ jobs:
         node-version: '18.x'
     - run: npm ci
     - run: npx playwright install --with-deps
-    - name: Start lint and build
-      run: npm run build
     - name: Start server
-      run: npm run start &
+      run: npm run dev &
     - name: Running Playwright E2E tests
       run: npx playwright test
