@@ -17,6 +17,7 @@ type CarouselProps = {
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
   setApi?: (api: CarouselApi) => void
+  isSwipeEnabled?: boolean
 }
 
 type CarouselContextProps = {
@@ -26,6 +27,7 @@ type CarouselContextProps = {
   scrollNext: () => void
   canScrollPrev: boolean
   canScrollNext: boolean
+  isSwipeEnabled?: boolean
 } & CarouselProps
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
@@ -51,6 +53,7 @@ const Carousel = React.forwardRef<
       setApi,
       plugins,
       className,
+      isSwipeEnabled =false,
       children,
       ...props
     },
@@ -60,8 +63,9 @@ const Carousel = React.forwardRef<
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
+        watchDrag: isSwipeEnabled
       },
-      plugins
+      plugins,
     )
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
@@ -83,6 +87,13 @@ const Carousel = React.forwardRef<
       api?.scrollNext()
     }, [api])
 
+    React.useEffect(() => {
+      if (api) {
+        // Update the dragFree option whenever isSwipeEnabled changes
+        api.reInit({ ...opts, watchDrag: isSwipeEnabled });
+      }
+    }, [isSwipeEnabled, api]);
+
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === "ArrowLeft") {
@@ -100,7 +111,7 @@ const Carousel = React.forwardRef<
       if (!api || !setApi) {
         return
       }
-
+      api.reInit({ ...opts });
       setApi(api)
     }, [api, setApi])
 
@@ -174,7 +185,7 @@ const CarouselItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { orientation } = useCarousel()
+  const { orientation, } = useCarousel()
 
   return (
     <div

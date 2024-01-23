@@ -1,11 +1,16 @@
 import NestedLayout from "@/components/nested-layout";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { CalendarIcon } from "lucide-react";
 import { NextPage } from "next";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image"
 
 export const Accept = () => {
+  const [showTerms, setShowTerms] = useState(false);
   const exampleReq = {
     "Sender" : {
       "Name":"Walter White",
@@ -20,7 +25,22 @@ export const Accept = () => {
     }
   }
   return (
+    
     <div className="p-3">
+      <Dialog open={showTerms} onOpenChange={setShowTerms}>
+                    {/* <DialogTrigger asChild>
+                        <Button><span className="font-bold text-base">Sign In</span></Button>
+                    </DialogTrigger> */}
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                        <DialogTitle>Terms and Conditions</DialogTitle>
+                        <DialogDescription>
+                            By proceeding you are agreeing to the following terms and conditions:
+                        </DialogDescription>
+                        </DialogHeader>
+                        Yuh aye, aye yuh ayuh
+                    </DialogContent>
+                    </Dialog>
       <div className="text-2xl font-bold text-center py-5">
         Here is the video request from{" "}
         <div className=" text-blue-400">{exampleReq.Sender.Name}</div>
@@ -74,15 +94,14 @@ export const Accept = () => {
                 <div className="w-full">{exampleReq.Preferences.Language}</div>
               </div>
               <div id="prevTerms" className="flex items-center space-x-10">
-                <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
+                <Label className="text-sm font-semibold leading-none">
                   See the{" "}
-                  <a
-                    href=""
-                    target="_blank"
-                    className="text-blue-400 hover:underline"
+                  <span
+                    className="text-blue-400 hover:underline hover:cursor-pointer"
+                    onClick={()=>setShowTerms(true)}
                   >
                     terms and conditions
-                  </a>{" "}
+                  </span>{" "}
                   here
                 </Label>
               </div>
