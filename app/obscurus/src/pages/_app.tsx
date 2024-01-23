@@ -62,7 +62,6 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         onExitComplete={() => window.scrollTo(0, 0)}
       >
         <Head>
-          <meta name="viewport" content="viewport-fit=cover" />
           <title>obscurus</title>
         </Head>
         <NavBar />

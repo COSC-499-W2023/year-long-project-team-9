@@ -18,46 +18,13 @@ interface NestedLayoutProps {
   pos?: number;
 }
 
-export default function NestedLayout({
-  children,
-  pos,
-}: NestedLayoutProps) {
+export default function NestedLayout({ children, pos }: NestedLayoutProps) {
   const router = useRouter();
   return (
     <Layout>
-      
-      <main className=" container grid justify-items-center items-center p-10 gap-10">
-        {children}
+      <main className=" container grid justify-items-center items-center p-5 justify-center">
+        <div className=" w-full  relative h-[500px]">{children}</div>
       </main>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="../"/>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="/submit" className=" font-extrabold text-lg">
-                {pos}
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="/submit/Upload">
-                2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="/submit/ConfirmVideo">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="/submit/ConfirmVideo">4</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="/submit/ConfirmVideo">5</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </Layout>
   );
 }
