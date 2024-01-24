@@ -73,11 +73,11 @@ export default function SiteStack({ stack }: StackContext) {
   // });
 
   // add RDS construct
-  const rds = new RDS(stack, "Database", {
-    engine: "postgresql11.13",
-    defaultDatabaseName: "obscurus",
-    migrations: "./stacks/core/migrations/",
-  });
+  // const rds = new RDS(stack, "Database", {
+  //   engine: "postgresql11.13",
+  //   defaultDatabaseName: "obscurus",
+  //   migrations: "./stacks/core/migrations/",
+  // });
 
   // getTimestampsAndFaces.attachPermissions([rekognitionPolicyStatement]);
 
@@ -219,15 +219,15 @@ export default function SiteStack({ stack }: StackContext) {
       //     },
       //   },
       // },
-      "GET /users": {
-        function: {
-          handler: "./stacks/lambdas/list.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
-        },
-      },
+      // "GET /users": {
+      //   function: {
+      //     handler: "./stacks/lambdas/list.handler",
+      //     timeout: 20,
+      //     permissions: [rds],
+      //     bind: [rds],
+      //     environment: { DB_NAME: rds.clusterArn },
+      //   },
+      // },
     },
   });
 
@@ -310,7 +310,7 @@ export default function SiteStack({ stack }: StackContext) {
 
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, requestHandler, processVideo, q],
+    bind: [inputBucket, outputBucket, api, requestHandler, processVideo, q],
     permissions: [rekognitionPolicyStatement],
   });
 
