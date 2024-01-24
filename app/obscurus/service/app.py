@@ -171,7 +171,7 @@ def main():
     print("Running...")
     job_id = start_face_detection()
     job_response = check_job_status(job_id)
-    timestamps, _ = get_timestamps_and_faces(job_response, rekognition)
+    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
     process_video(timestamps, job_response)
 
     print('Video processing completed')
