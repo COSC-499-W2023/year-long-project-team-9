@@ -22,4 +22,4 @@ ENV NAME World
 
 #ENTRYPOINT ["python", "worker.py"]
 
-CMD ["celery", "-A", "worker", "worker", "--loglevel=info"]
+ENTRYPOINT ["celery", "-A", "worker", "worker", "--loglevel=info"]

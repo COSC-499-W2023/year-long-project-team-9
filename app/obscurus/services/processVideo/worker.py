@@ -1,3 +1,4 @@
+from urllib import request
 import boto3
 import os
 import time
@@ -5,9 +6,9 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-from flask import Flask, request, jsonify
 import json
 from celery import Celery
+from Flask import jsonify
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -166,7 +167,7 @@ def process_video(timestamps, response, input_name, input_bucket, output_bucket,
 
 sqsUrl = os.environ['QUEUE_URL']
 
-app = Celery('worker', broker=sqsUrl)
+celery_app = Celery('worker', broker=sqsUrl)
 
 # @app.route('/')
 # def hello():
