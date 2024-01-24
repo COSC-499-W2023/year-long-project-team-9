@@ -259,7 +259,9 @@ export default function SiteStack({ stack }: StackContext) {
       INPUT_NAME: "test3.mov",
       OUTPUT_NAME: "processed.mp4",
     },
-    permissions: ["s3", rekognitionPolicyStatement]
+    permissions: ["s3", rekognitionPolicyStatement],
+    cpu: "1 vCPU",
+    memory: "4 GB",
   });
 
   const site = new NextjsSite(stack, "site", {
