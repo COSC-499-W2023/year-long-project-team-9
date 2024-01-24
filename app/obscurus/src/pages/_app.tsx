@@ -40,13 +40,13 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       AOS.refresh();
     };
 
-    Amplify.configure({
-      Auth: {
-        region: "us-west-2",
-        userPoolId: Config.USER_POOL_ID_KEY,
-        userPoolWebClientId: Config.USER_POOL_WEB_CLIENT_ID_KEY,
-      },
-    });
+    // Amplify.configure({
+    //   Auth: {
+    //     region: "us-west-2",
+    //     userPoolId: Config.USER_POOL_ID_KEY,
+    //     userPoolWebClientId: Config.USER_POOL_WEB_CLIENT_ID_KEY,
+    //   },
+    // });
 
     Router.events.on("routeChangeStart", start);
     Router.events.on("routeChangeComplete", end);
