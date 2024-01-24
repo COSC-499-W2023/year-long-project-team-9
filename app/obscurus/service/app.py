@@ -113,7 +113,7 @@ s3 = boto3.client('s3')
 print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
-input_name = os.environ['OBJECT_KEY']
+input_name = os.environ['INPUT_NAME']
 output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
 
