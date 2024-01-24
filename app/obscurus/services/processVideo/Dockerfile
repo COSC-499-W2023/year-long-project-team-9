@@ -1,8 +1,8 @@
 FROM public.ecr.aws/lambda/python:3.8
 
-WORKDIR /app
+WORKDIR /worker
 
-COPY . /app
+COPY . /worker
 
 # Install the function's dependencies
 RUN pip install --no-cache-dir -r requirements.txt
