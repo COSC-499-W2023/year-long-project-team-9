@@ -1,13 +1,5 @@
 // import { Auth, Amplify } from "aws-amplify";
 
-// Amplify.configure({
-//   Auth: {
-//     region: "us-west-2",
-//     userPoolId: "us-west-2_Zjw9UuRG5",
-//     userPoolWebClientId: "g0arfuhrmi7uctc1g07reudp3",
-//   },
-// });
-
 // export async function isSignedIn() {
 //   try {
 //     await Auth.currentAuthenticatedUser();

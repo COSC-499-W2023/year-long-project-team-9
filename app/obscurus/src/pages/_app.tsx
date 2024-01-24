@@ -11,6 +11,8 @@ import NavBar from "@/components/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Head from "next/head";
+import { Amplify } from "aws-amplify";
+import { Config } from "sst/node/config";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -37,6 +39,14 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       setLoading(false);
       AOS.refresh();
     };
+
+    Amplify.configure({
+      Auth: {
+        region: "us-west-2",
+        userPoolId: Config.USER_POOL_ID_KEY,
+        userPoolWebClientId: Config.USER_POOL_WEB_CLIENT_ID_KEY,
+      },
+    });
 
     Router.events.on("routeChangeStart", start);
     Router.events.on("routeChangeComplete", end);
