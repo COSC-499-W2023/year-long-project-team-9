@@ -247,8 +247,6 @@ export default function SiteStack({ stack }: StackContext) {
     port: 8080,
     bind: [inputBucket, outputBucket, api],
     cdk: {
-      applicationLoadBalancer: false,
-      cloudfrontDistribution: false,
       fargateService: {
         circuitBreaker: { rollback: true },
       },
@@ -291,5 +289,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
+    ServiceUrl: service.url
   });
 }
