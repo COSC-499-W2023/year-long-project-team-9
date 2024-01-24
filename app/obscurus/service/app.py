@@ -86,7 +86,7 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
 
     out.release()
     v.release()
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
     print(f"Complete. {frame_counter} frames were written.")
 
 
