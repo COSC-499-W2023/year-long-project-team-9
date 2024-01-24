@@ -16,6 +16,8 @@ RUN yum install -y tar xz && \
     rm -rf ffmpeg-*-amd64-static ffmpeg-release-amd64-static.tar.xz
 
 # Copy application code
-ENV NAME World
+#ENV NAME World
 
-CMD ["python", "app.py"]
+ENTRYPOINT ["python", "app.py"]
+
+# CMD ["python", "app.py"]
