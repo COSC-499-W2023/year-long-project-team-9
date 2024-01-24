@@ -259,6 +259,7 @@ export default function SiteStack({ stack }: StackContext) {
       INPUT_NAME: "test3.mov",
       OUTPUT_NAME: "processed.mp4",
     },
+    permissions: ["s3", rekognitionPolicyStatement]
   });
 
   const site = new NextjsSite(stack, "site", {
@@ -268,6 +269,8 @@ export default function SiteStack({ stack }: StackContext) {
 
   site.attachPermissions([rekognitionPolicyStatement]);
 
+  service.attachPermissions([rekognitionPolicyStatement]);
+
   startFaceDetection.addToRolePolicy(
     new PolicyStatement({
       actions: ["rekognition:StartFaceDetection", "rekognition:DetectFaces"],
@@ -275,6 +278,9 @@ export default function SiteStack({ stack }: StackContext) {
       resources: ["*"],
     })
   );
+  
+
+  
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
