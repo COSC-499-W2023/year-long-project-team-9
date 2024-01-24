@@ -6,6 +6,7 @@ import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 from flask import Flask, request, jsonify
+import json
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -165,8 +166,12 @@ def process_video(timestamps, response, input_name, input_bucket, output_bucket,
 
 app = Flask(__name__)
 
+sqs = boto3.client('sqs')
+queue_url = os.environ['QUEUE_URL']
+
 @app.route('/')
 def hello():
+    print(queue_url)
     return "Hello World!"
 
 @app.route('/process-video', methods=['POST'])
@@ -188,11 +193,12 @@ def process_video_route():
     # output_bucket = data['output_bucket']
     # output_name = data['output_name']
 
-    job_id = start_face_detection(rekognition, input_bucket, input_name)
-    job_response = check_job_status(job_id, rekognition) 
-    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    process_video(timestamps, job_response, input_name, input_bucket, output_bucket, output_name, s3)
-    return jsonify({'message': 'Video processing started'}), 202
+    response = sqs.send_message(
+        QueueUrl=queue_url,
+        MessageBody=json.dumps(data)
+    )
+
+    return jsonify({'message': 'Request accepted', 'response': response}), 202
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
