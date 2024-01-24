@@ -12,7 +12,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Head from "next/head";
 import { Amplify } from "aws-amplify";
-import { Config } from "sst/node/config";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -43,8 +42,8 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     // Amplify.configure({
     //   Auth: {
     //     region: "us-west-2",
-    //     userPoolId: Config.USER_POOL_ID_KEY,
-    //     userPoolWebClientId: Config.USER_POOL_WEB_CLIENT_ID_KEY,
+    //     userPoolId: process.env.USER_POOL_ID_KEY,
+    //     userPoolWebClientId: process.env.USER_POOL_WEB_CLIENT_ID_KEY,
     //   },
     // });
 

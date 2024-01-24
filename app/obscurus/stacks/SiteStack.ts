@@ -10,6 +10,7 @@ import {
   Cognito,
   Config,
 } from "sst/constructs";
+import { Config as nodeConfig } from "sst/node/config";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import {
   Chain,
@@ -275,6 +276,11 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, service],
     permissions: [rekognitionPolicyStatement],
+    environment: {
+      NEXT_PUBLIC_USER_POOL_ID_KEY: nodeConfig.USER_POOL_ID_KEY,
+      NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID_KEY:
+        nodeConfig.USER_POOL_WEB_CLIENT_ID_KEY,
+    },
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
