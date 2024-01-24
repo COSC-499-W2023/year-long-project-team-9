@@ -1,8 +1,11 @@
 FROM public.ecr.aws/lambda/python:3.8
 
+WORKDIR /app
+
+COPY . /app
+
 # Install the function's dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Install FFmpeg
 RUN yum install -y tar xz && \
@@ -13,8 +16,6 @@ RUN yum install -y tar xz && \
     rm -rf ffmpeg-*-amd64-static ffmpeg-release-amd64-static.tar.xz
 
 # Copy application code
-COPY video_processor.py .
-COPY app.py .
+ENV NAME World
 
-# Set the CMD to your handler
-CMD ["app.main"]
+CMD ["python", "app.py"]
