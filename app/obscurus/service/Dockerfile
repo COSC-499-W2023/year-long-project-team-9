@@ -20,4 +20,4 @@ EXPOSE 8080
 
 ENV NAME World
 
-CMD ["python", "app.py"]
+ENTRYPOINT ["python", "app.py"]

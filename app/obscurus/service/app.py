@@ -108,25 +108,16 @@ def integrate_audio(original_video, output_video, audio_path='/tmp/audio.mp3'):
 
     print('Complete')
 
-# Configure AWS clients
-rekognition = boto3.client('rekognition')
-s3 = boto3.client('s3')
-print("init")
-# Environment Variables
-input_bucket = os.environ['INPUT_BUCKET']
-input_name = os.environ['INPUT_NAME']
-output_bucket = os.environ['OUTPUT_BUCKET']
-output_name = os.environ['OUTPUT_NAME']
-api_url = os.environ['API_URL']
 
-def start_face_detection():
+
+def start_face_detection(rekognition, input_bucket, input_name):
     print("Running face detection...")
     response = rekognition.start_face_detection(
         Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}}
     )
     return response['JobId']
 
-def check_job_status(job_id):
+def check_job_status(job_id, rekognition):
     print("Checking job status...")
     while True:
         response = rekognition.get_face_detection(JobId=job_id)
@@ -158,7 +149,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response):
+def process_video(timestamps, response, input_name, input_bucket, output_bucket, output_name, s3):
     print("Processing video...")
     filename = input_name.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
@@ -182,15 +173,25 @@ def hello():
 def process_video_route():
     print("Starting processing...")
     data = request.json
+    # Configure AWS clients
+    rekognition = boto3.client('rekognition')
+    s3 = boto3.client('s3')
+    print("init")
+    # Environment Variables
+    input_bucket = os.environ['INPUT_BUCKET']
+    input_name = os.environ['INPUT_NAME']
+    output_bucket = os.environ['OUTPUT_BUCKET']
+    output_name = os.environ['OUTPUT_NAME']
+    api_url = os.environ['API_URL']
     # input_bucket = data['input_bucket']
     # input_name = data['input_name']
     # output_bucket = data['output_bucket']
     # output_name = data['output_name']
 
-    job_id = start_face_detection()
-    job_response = check_job_status(job_id) 
+    job_id = start_face_detection(rekognition, input_bucket, input_name)
+    job_response = check_job_status(job_id, rekognition) 
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    process_video(timestamps, job_response)
+    process_video(timestamps, job_response, input_name, input_bucket, output_bucket, output_name, s3)
     return jsonify({'message': 'Video processing started'}), 202
 
 if __name__ == '__main__':

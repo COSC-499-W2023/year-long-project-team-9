@@ -261,7 +261,7 @@ export default function SiteStack({ stack }: StackContext) {
       API_URL: api.url
     },
     permissions: ["s3", rekognitionPolicyStatement],
-    cpu: "4 vCPU",
+    cpu: "8 vCPU",
     memory: "8 GB",
   });
 
