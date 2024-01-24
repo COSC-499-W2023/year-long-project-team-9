@@ -20,4 +20,4 @@ EXPOSE 8080
 
 ENV NAME World
 
-ENTRYPOINT ["python", "worker.py"]
+ENTRYPOINT ["python", "app.py"]

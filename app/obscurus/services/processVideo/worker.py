@@ -168,13 +168,13 @@ sqsUrl = os.environ['QUEUE_URL']
 
 app = Celery('worker', broker=sqsUrl)
 
-@app.route('/')
-def hello():
-    print(sqsUrl)
-    return "Hello World!"
+# @app.route('/')
+# def hello():
+#     print(sqsUrl)
+#     return "Hello World!"
 
-@app.route('/process-video', methods=['POST'])
-def process_video_route():
+@app.task
+def process_video(data):
     print("Starting processing...")
     data = request.json
     # Configure AWS clients
@@ -198,7 +198,7 @@ def process_video_route():
     process_video(timestamps, job_response, input_name, input_bucket, output_bucket, output_name, s3)
     return jsonify({'message': 'Video processing started'}), 202
 
-if __name__ == '__main__':
-    app.start()
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=8080)
 
 
