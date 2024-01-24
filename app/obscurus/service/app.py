@@ -158,8 +158,9 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def process_video(timestamps, response):
     print("Processing video...")
-    local_filename = '/tmp/{}'.format(input_name.split('/')[-1])
-    local_filename_output = '/tmp/anonymized-{}'.format(local_filename)
+    filename = input_name.split('/')[-1]
+    local_filename = '/tmp/{}'.format(filename)
+    local_filename_output = '/tmp/anonymized-{}'.format(filename)
     s3.download_file(input_bucket, input_name, local_filename)
 
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
@@ -170,7 +171,7 @@ def process_video(timestamps, response):
 def main():
     print("Running...")
     job_id = start_face_detection()
-    job_response = check_job_status(job_id)
+    job_response = check_job_status(job_id) 
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
     process_video(timestamps, job_response)
 
