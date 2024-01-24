@@ -6,7 +6,7 @@ from video_processor import anonymize_face_pixelate, apply_faces_to_video, integ
 # Configure AWS clients
 rekognition = boto3.client('rekognition')
 s3 = boto3.client('s3')
-
+print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
 input_name = os.environ['OBJECT_KEY']
@@ -14,12 +14,14 @@ output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
 
 def start_face_detection():
+    print("Running face detection...")
     response = rekognition.start_face_detection(
         Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}}
     )
     return response['JobId']
 
 def check_job_status(job_id):
+    print("Checking job status...")
     while True:
         response = rekognition.get_face_detection(JobId=job_id)
         status = response['JobStatus']
@@ -28,6 +30,7 @@ def check_job_status(job_id):
         time.sleep(5)
 
 def get_timestamps_and_faces(job_id, reko_client=None):
+    print("Getting timestamps and faces...")
     final_timestamps = {}
     next_token = None
     first_round = True
@@ -50,6 +53,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 
 def process_video(timestamps, response):
+    print("Processing video...")
     local_filename = '/tmp/{}'.format(input_name.split('/')[-1])
     local_filename_output = '/tmp/anonymized-{}'.format(local_filename)
     s3.download_file(input_bucket, input_name, local_filename)
