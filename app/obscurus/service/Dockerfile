@@ -15,8 +15,9 @@ RUN yum install -y tar xz && \
     cp ffmpeg-*-amd64-static/ffprobe /usr/bin/ && \
     rm -rf ffmpeg-*-amd64-static ffmpeg-release-amd64-static.tar.xz
 
-# Copy application code
+
+EXPOSE 8080
+
 ENV NAME World
 
-
-ENTRYPOINT ["python", "app.py"]
+CMD ["python", "app.py"]

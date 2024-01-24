@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
+from flask import Flask, request, jsonify
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -116,6 +117,7 @@ input_bucket = os.environ['INPUT_BUCKET']
 input_name = os.environ['INPUT_NAME']
 output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
+api_url = os.environ['API_URL']
 
 def start_face_detection():
     print("Running face detection...")
@@ -168,14 +170,30 @@ def process_video(timestamps, response):
 
     s3.upload_file(local_filename_output, output_bucket, output_name)
 
-def main():
-    print("Running...")
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "Hello World!"
+
+@app.route('/process-video', methods=['POST'])
+def process_video_route():
+    print("Starting processing...")
+    data = request.json
+    # input_bucket = data['input_bucket']
+    # input_name = data['input_name']
+    # output_bucket = data['output_bucket']
+    # output_name = data['output_name']
+
     job_id = start_face_detection()
     job_response = check_job_status(job_id) 
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
     process_video(timestamps, job_response)
+    return jsonify({'message': 'Video processing started'}), 202
 
-    print('Video processing completed')
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
 
-if __name__ == "__main__":
-    main()
+

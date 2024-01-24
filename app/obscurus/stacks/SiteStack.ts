@@ -245,7 +245,7 @@ export default function SiteStack({ stack }: StackContext) {
   const service = new Service(stack, "processVideo", {
     path: "./service",
     port: 8080,
-    bind: [inputBucket, outputBucket],
+    bind: [inputBucket, outputBucket, api],
     cdk: {
       applicationLoadBalancer: false,
       cloudfrontDistribution: false,
@@ -256,12 +256,13 @@ export default function SiteStack({ stack }: StackContext) {
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mov",
+      INPUT_NAME: "test3.mp4",
       OUTPUT_NAME: "processed.mp4",
+      API_URL: api.url
     },
     permissions: ["s3", rekognitionPolicyStatement],
-    cpu: "1 vCPU",
-    memory: "4 GB",
+    cpu: "4 vCPU",
+    memory: "8 GB",
   });
 
   const site = new NextjsSite(stack, "site", {
