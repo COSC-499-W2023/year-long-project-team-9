@@ -262,7 +262,7 @@ export default function SiteStack({ stack }: StackContext) {
     },
     permissions: ["s3", rekognitionPolicyStatement],
     cpu: "8 vCPU",
-    memory: "8 GB",
+    memory: "16 GB",
   });
 
   const site = new NextjsSite(stack, "site", {
