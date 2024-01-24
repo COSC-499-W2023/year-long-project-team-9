@@ -8,7 +8,7 @@ from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 import json
 from celery import Celery
-from Flask import jsonify
+from flask import jsonify
 
 
 def anonymize_face_pixelate(image, blocks=10):
