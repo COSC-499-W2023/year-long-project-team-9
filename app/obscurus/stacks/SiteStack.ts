@@ -261,8 +261,8 @@ export default function SiteStack({ stack }: StackContext) {
       API_URL: api.url
     },
     permissions: ["s3", rekognitionPolicyStatement],
-    cpu: "8 vCPU",
-    memory: "16 GB",
+    cpu: "4 vCPU",
+    memory: "8 GB",
   });
 
   const site = new NextjsSite(stack, "site", {
