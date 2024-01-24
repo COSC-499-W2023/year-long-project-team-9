@@ -19,5 +19,4 @@ RUN yum install -y tar xz && \
 ENV NAME World
 
 
-
-CMD ["python", "app.main"]
+ENTRYPOINT ["python", "app.py"]
