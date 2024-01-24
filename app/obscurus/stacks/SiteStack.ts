@@ -253,6 +253,12 @@ export default function SiteStack({ stack }: StackContext) {
         circuitBreaker: { rollback: true },
       },
     },
+    environment: {
+      INPUT_BUCKET: inputBucket.bucketName,
+      OUTPUT_BUCKET: outputBucket.bucketName,
+      INPUT_NAME: "test3.mov",
+      OUTPUT_NAME: "processed.mp4",
+    },
   });
 
   const site = new NextjsSite(stack, "site", {
