@@ -9,6 +9,7 @@ import {
   Service,
   Cognito,
   Queue,
+  Job,
 } from "sst/constructs";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import {
@@ -247,76 +248,76 @@ export default function SiteStack({ stack }: StackContext) {
 
 
 
-  const q = new Queue(stack, "Queue", {
-    consumer: {
-      function: {
-        handler: "./stacks/lambdas/queueConsumer.main",
-        timeout: 10,
-        environment: {
-          INPUT_BUCKET: inputBucket.bucketName,
-          OUTPUT_BUCKET: outputBucket.bucketName,
-          INPUT_NAME: "test3.mp4",
-          OUTPUT_NAME: "processed.mp4",
-          API_URL: api.url,
-        },
-        permissions: [inputBucket, outputBucket],
-      },
-    },
-  });
+  // const q = new Queue(stack, "Queue", {
+  //   consumer: {
+  //     function: {
+  //       handler: "./stacks/lambdas/queueConsumer.main",
+  //       timeout: 10,
+  //       environment: {
+  //         INPUT_BUCKET: inputBucket.bucketName,
+  //         OUTPUT_BUCKET: outputBucket.bucketName,
+  //         INPUT_NAME: "test3.mp4",
+  //         OUTPUT_NAME: "processed.mp4",
+  //         API_URL: api.url,
+  //       },
+  //       permissions: [inputBucket, outputBucket],
+  //     },
+  //   },
+  // });
 
-  const requestHandler = new Service(stack, "requestHandler", {
-    path: "./services/requestHandler",
-    port: 8080,
-    bind: [inputBucket, outputBucket, api],
-    cdk: {
-      fargateService: {
-        circuitBreaker: { rollback: true },
-      },
-    },
-    environment: {
-      INPUT_BUCKET: inputBucket.bucketName,
-      OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mp4",
-      OUTPUT_NAME: "processed.mp4",
-      API_URL: api.url,
-      QUEUE_URL: q.queueUrl
-    },
-    permissions: ["s3"],
-  });
+  // const requestHandler = new Service(stack, "requestHandler", {
+  //   path: "./services/requestHandler",
+  //   port: 8080,
+  //   bind: [inputBucket, outputBucket, api],
+  //   cdk: {
+  //     fargateService: {
+  //       circuitBreaker: { rollback: true },
+  //     },
+  //   },
+  //   environment: {
+  //     INPUT_BUCKET: inputBucket.bucketName,
+  //     OUTPUT_BUCKET: outputBucket.bucketName,
+  //     INPUT_NAME: "test3.mp4",
+  //     OUTPUT_NAME: "processed.mp4",
+  //     API_URL: api.url,
+  //     QUEUE_URL: q.queueUrl
+  //   },
+  //   permissions: ["s3"],
+  // });
 
-  const processVideo = new Service(stack, "processVideo", {
-    path: "./services/processVideo",
-    port: 8080,
-    bind: [inputBucket, outputBucket, api, requestHandler],
-    cdk: {
-      fargateService: {
-        circuitBreaker: { rollback: true },
-      },
-    },
-    environment: {
-      INPUT_BUCKET: inputBucket.bucketName,
-      OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mp4",
-      OUTPUT_NAME: "processed.mp4",
-      API_URL: api.url,
-      QUEUE_URL: q.queueUrl
-    },
-    permissions: ["s3", rekognitionPolicyStatement],
-    cpu: "4 vCPU",
-    memory: "8 GB",
-  });
+  // const processVideo = new Service(stack, "processVideo", {
+  //   path: "./services/processVideo",
+  //   port: 8080,
+  //   bind: [inputBucket, outputBucket, api, requestHandler],
+  //   cdk: {
+  //     fargateService: {
+  //       circuitBreaker: { rollback: true },
+  //     },
+  //   },
+  //   environment: {
+  //     INPUT_BUCKET: inputBucket.bucketName,
+  //     OUTPUT_BUCKET: outputBucket.bucketName,
+  //     INPUT_NAME: "test3.mp4",
+  //     OUTPUT_NAME: "processed.mp4",
+  //     API_URL: api.url,
+  //     QUEUE_URL: q.queueUrl
+  //   },
+  //   permissions: ["s3", rekognitionPolicyStatement],
+  //   cpu: "4 vCPU",
+  //   memory: "8 GB",
+  // });
 
-  requestHandler.bind([processVideo]);
+  // requestHandler.bind([processVideo]);
 
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, requestHandler, processVideo, q],
+    bind: [inputBucket, outputBucket, rds, api],
     permissions: [rekognitionPolicyStatement],
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
 
-  processVideo.attachPermissions([rekognitionPolicyStatement]);
+  //processVideo.attachPermissions([rekognitionPolicyStatement]);
 
   // startFaceDetection.addToRolePolicy(
   //   new PolicyStatement({
@@ -326,6 +327,14 @@ export default function SiteStack({ stack }: StackContext) {
   //   })
   // );
 
+  const steveJobs = new Job(stack, "SteveJobs", {
+    runtime: "container",
+    handler: "./job",
+    container: {
+      cmd: ["python3", "app.py"]
+    }
+  });
+
   
 
   stack.addOutputs({
@@ -334,8 +343,8 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
-    RequestHandlerUrl: requestHandler.url,
-    ProcessVideo: processVideo.url,
-    QueueUrl: q.queueUrl
+    // RequestHandlerUrl: requestHandler.url,
+    // ProcessVideo: processVideo.url,
+    // QueueUrl: q.queueUrl
   });
 }
