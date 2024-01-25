@@ -246,10 +246,10 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    triggers: {
-      preAuthentication: "./stacks/core/src/preAuthentication.main",
-      postAuthentication: "./stacks/core/src/postAuthentication.main",
-    },
+    // triggers: {
+    //   preAuthentication: "./stacks/core/src/preAuthentication.main",
+    //   postAuthentication: "./stacks/core/src/postAuthentication.main",
+    // },
   });
 
   // Allow authenticated users invoke API
@@ -270,6 +270,12 @@ export default function SiteStack({ stack }: StackContext) {
         circuitBreaker: { rollback: true },
       },
     },
+  });
+
+  const amplifySecrets = new Function(stack, "AmplifySecrets", {
+    handler: "./stacks/lambdas/secrets.handler",
+    url: true,
+    bind: [USER_POOL_ID_KEY, USER_POOL_WEB_CLIENT_ID_KEY],
   });
 
   const site = new NextjsSite(stack, "site", {

@@ -39,13 +39,30 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       AOS.refresh();
     };
 
-    // Amplify.configure({
-    //   Auth: {
-    //     region: "us-west-2",
-    //     userPoolId: process.env.USER_POOL_ID_KEY,
-    //     userPoolWebClientId: process.env.USER_POOL_WEB_CLIENT_ID_KEY,
-    //   },
-    // });
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://55jw5twjshm746zf4xkvbxugfe0cyqcx.lambda-url.us-west-2.on.aws/"
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    };
+    var userPoolKey;
+    var userPoolWebClientKey;
+    fetchData().then((data) => {
+      userPoolKey = data.userPoolId;
+      userPoolWebClientKey = data.userPoolWebClientId;
+    });
+
+    Amplify.configure({
+      Auth: {
+        region: "us-west-2",
+        userPoolId: userPoolKey,
+        userPoolWebClientId: userPoolWebClientKey,
+      },
+    });
 
     Router.events.on("routeChangeStart", start);
     Router.events.on("routeChangeComplete", end);
