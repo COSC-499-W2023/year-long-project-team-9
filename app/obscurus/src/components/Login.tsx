@@ -70,7 +70,64 @@ const Login = () => {
             {dialogState === 1 && (
               <DialogContent className="sm:max-w-[300px]">
                 <DialogHeader>
-                  <DialogTitle className="text-center">Sign In</DialogTitle>
+                  <DialogTitle className="text-center">Log In</DialogTitle>
+                </DialogHeader>
+                <div className="flex flex-col w-full items-center">
+                  <div id="googleLogin" className="pb-2">
+                    <Button
+                      className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent"
+                      onClick={SignIn}
+                    >
+                      <Image
+                        src="/Google_Logo.svg"
+                        alt="google"
+                        width={20}
+                        height={20}
+                      />
+                      <span className="pl-2.5">Log in with Google</span>
+                    </Button>
+                  </div>
+                  <div id="loginSeparator" className="relative pb-2">
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-background px-2 text-muted-foreground">
+                        Or continue with
+                      </span>
+                    </div>
+                  </div>
+                  <div id="emailLogin" className="grid gap-1.5">
+                    <Input
+                      placeholder="Email Address *"
+                      className="pb-2"
+                    ></Input>
+                    <Input placeholder="Password *"></Input>
+                    <Button className="w-full">
+                      <span>Log in with Email</span>
+                    </Button>
+                    <Button
+                      className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                      onClick={() => setDialogState(2)}
+                    >
+                      Forgot your password?
+                    </Button>
+                  </div>
+                  <hr className="w-3/4 bg-gray-500" />
+                  <div id="signUpConnector" className="w-3/4 text-center">
+                    <Button
+                      className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                      onClick={() => setDialogState(3)}
+                    >
+                      Create New Account
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            )}
+            {dialogState === 2 && (
+              <DialogContent className="sm:max-w-[300px]">
+                <DialogHeader>
+                  <DialogTitle className="text-center">
+                    Forgot Password
+                  </DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col w-full items-center">
                   <div id="googleLogin" className="pb-2">
@@ -103,13 +160,67 @@ const Login = () => {
                     <Button className="w-full">
                       <span>Log in with Email</span>
                     </Button>
-                    <Button className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4">
+                    <Button
+                      className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                      onClick={() => setDialogState(2)}
+                    >
                       Forgot your password?
                     </Button>
                   </div>
                   <hr className="w-3/4 bg-gray-500" />
                   <div id="signUpConnector" className="w-3/4 text-center">
-                    <Button className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4">
+                    <Button
+                      className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                      onClick={() => setDialogState(3)}
+                    >
+                      Create New Account
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            )}
+            {dialogState === 3 && (
+              <DialogContent className="sm:max-w-[300px]">
+                <DialogHeader>
+                  <DialogTitle className="text-center">Sign Up</DialogTitle>
+                </DialogHeader>
+                <div className="flex flex-col w-full items-center">
+                  <div id="googleSignUp" className="pb-2">
+                    <Button
+                      className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent"
+                      onClick={SignIn}
+                    >
+                      <Image
+                        src="/Google_Logo.svg"
+                        alt="google"
+                        width={20}
+                        height={20}
+                      />
+                      <span className="pl-2.5">Sign up with Google</span>
+                    </Button>
+                  </div>
+                  <div id="signUpSeparator" className="relative pb-2">
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-background px-2 text-muted-foreground">
+                        Or continue with
+                      </span>
+                    </div>
+                  </div>
+                  <div id="emailSignUp" className="grid gap-1.5 pb-2">
+                    <Input placeholder="Email Address *"></Input>
+                    <Input placeholder="Confirm Email Address *"></Input>
+                    <Input placeholder="Password *"></Input>
+                    <Input placeholder="Confirm Password *"></Input>
+                    <Button className="w-full">
+                      <span>Sign up with Email</span>
+                    </Button>
+                  </div>
+                  <hr className="w-3/4 bg-gray-500" />
+                  <div id="signUpConnector" className="w-3/4 text-center">
+                    <Button
+                      className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                      onClick={() => setDialogState(3)}
+                    >
                       Create New Account
                     </Button>
                   </div>
