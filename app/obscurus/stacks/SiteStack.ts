@@ -244,10 +244,6 @@ export default function SiteStack({ stack }: StackContext) {
   //   [stateMachine, "grantStartExecution"],
   // ]);
 
-  
-
-
-
   // const q = new Queue(stack, "Queue", {
   //   consumer: {
   //     function: {
@@ -309,9 +305,25 @@ export default function SiteStack({ stack }: StackContext) {
 
   // requestHandler.bind([processVideo]);
 
+  const steveJobs = new Job(stack, "SteveJobs", {
+    runtime: "container",
+    handler: "./job",
+    container: {
+      cmd: ["python3", "app.py"],
+    },
+    bind: [inputBucket, outputBucket, api],
+    permissions: ["s3", rekognitionPolicyStatement],
+    environment: {
+      INPUT_BUCKET: inputBucket.bucketName,
+      OUTPUT_BUCKET: outputBucket.bucketName,
+      INPUT_NAME: "test3.mp4",
+      OUTPUT_NAME: "processed.mp4",
+      API_URL: api.url,
+    },
+  });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api],
+    bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
   });
 
@@ -326,14 +338,6 @@ export default function SiteStack({ stack }: StackContext) {
   //     resources: ["*"],
   //   })
   // );
-
-  const steveJobs = new Job(stack, "SteveJobs", {
-    runtime: "container",
-    handler: "./job",
-    container: {
-      cmd: ["python3", "app.py"]
-    }
-  });
 
   
 
