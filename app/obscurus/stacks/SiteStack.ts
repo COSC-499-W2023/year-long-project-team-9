@@ -309,7 +309,7 @@ export default function SiteStack({ stack }: StackContext) {
     runtime: "container",
     handler: "./job",
     container: {
-      cmd: ["python3", "app.py"],
+      cmd: ["python3", "/var/task/app.py"],
     },
     bind: [inputBucket, outputBucket, api],
     permissions: ["s3", rekognitionPolicyStatement],
