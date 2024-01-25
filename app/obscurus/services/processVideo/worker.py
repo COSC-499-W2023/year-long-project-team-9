@@ -164,8 +164,18 @@ def process_video(timestamps, response, input_name, input_bucket, output_bucket,
 
     s3.upload_file(local_filename_output, output_bucket, output_name)
 
-
 sqsUrl = os.environ['QUEUE_URL']
+
+broker_transport_options = {
+    'predefined_queues': {
+        'my-q': {
+            'url': sqsUrl,
+            'region': 'us-west-2'
+        }
+    }
+}
+
+
 
 celery_app = Celery('worker', broker=sqsUrl)
 
