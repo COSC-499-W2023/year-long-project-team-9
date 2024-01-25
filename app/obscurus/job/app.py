@@ -116,7 +116,7 @@ input_bucket = os.environ['INPUT_BUCKET']
 input_name = os.environ['INPUT_NAME']
 output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
-payload = os.environ['SST_PAYLOAD']
+# payload = os.environ['SST_PAYLOAD']
 
 def start_face_detection():
     print("Running face detection...")
