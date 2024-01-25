@@ -174,10 +174,11 @@ celery_app = Celery('worker', broker=sqsUrl)
 #     print(sqsUrl)
 #     return "Hello World!"
 
-@app.task
+@celery_app.task
 def process_video(data):
     print("Starting processing...")
     data = request.json
+    print(data)
     # Configure AWS clients
     rekognition = boto3.client('rekognition')
     s3 = boto3.client('s3')
