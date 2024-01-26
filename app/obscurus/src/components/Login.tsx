@@ -221,7 +221,7 @@ const Login = () => {
                       className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
                       onClick={() => setDialogState(3)}
                     >
-                      Create New Account
+                      Sign in to your account
                     </Button>
                   </div>
                 </div>
