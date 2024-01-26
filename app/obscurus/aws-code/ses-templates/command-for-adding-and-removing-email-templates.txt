@@ -1,3 +1,4 @@
+To make email template: https://mjml.io/
 To convert HTML to a JSON value: https://www.freeformatter.com/json-escape.html
 
 recover-password-via-code-email:
