@@ -12,19 +12,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/router";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import NestedLayout from "@/components/nested-layout";
-import { CalendarIcon, Circle, LucideCheckCheck, Pause } from "lucide-react";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { DotLoader, PulseLoader, FadeLoader } from "react-spinners";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationLink,
-  PaginationEllipsis,
-  PaginationNext,
-} from "@/components/ui/pagination";
+  CalendarIcon,
+  Circle,
+  CheckIcon,
+  Pause,
+  Check,
+  Square,
+} from "lucide-react";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { DotLoader, PulseLoader, FadeLoader } from "react-spinners";
 import {
   Carousel,
   CarouselContent,
@@ -35,7 +32,6 @@ import {
 } from "@/components/ui/carousel";
 import Webcam from "react-webcam";
 import { Accept } from "./accept";
-import { Upload } from "./upload";
 import { Progress } from "@/components/ui/progress";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -51,10 +47,19 @@ export async function getServerSideProps() {
 }
 
 const Index = ({ url }: { url: string }) => {
+  const [file, setFile] = useState<File | undefined>(undefined);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const file = (e.target as HTMLFormElement).file.files?.[0];
+    const file = fileInputRef.current?.files?.[0];
+    setFile(file);
     if (!file) {
       console.error("No file selected");
       return;
@@ -75,17 +80,9 @@ const Index = ({ url }: { url: string }) => {
       return;
     }
 
-    const location = response.headers.get("Location") || url.split("?")[0];
-    window.location.href = location;
+    // const location = response.headers.get("Location") || url.split("?")[0];
+    // window.location.href = location;
     console.log("Upload successful:", location);
-  };
-
-  const [file, setFile] = useState<File | undefined>(undefined);
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
   };
 
   const [record, setRecord] = useState(false);
@@ -114,8 +111,8 @@ const Index = ({ url }: { url: string }) => {
   };
 
   const handleStopCaptureClick = () => {
-    mediaRecorderRef.current!.stop();
     setCapturing(false);
+    mediaRecorderRef.current?.stop();
   };
 
   const handleSaveAndUpload = async () => {
@@ -128,18 +125,20 @@ const Index = ({ url }: { url: string }) => {
       });
 
       try {
+        const encodedFilename = encodeURIComponent(file.name);
         const response = await fetch(url, {
           method: "PUT",
           headers: {
             "Content-Type": "video/webm",
+            "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
           },
           body: file,
         });
 
         if (response.ok) {
-          const location =
-            response.headers.get("Location") || url.split("?")[0];
-          window.location.href = location;
+          // const location =
+          //   response.headers.get("Location") || url.split("?")[0];
+          // window.location.href = location;
           console.log("Upload successful:", location);
         } else {
           console.error("Upload failed:", response.statusText);
@@ -151,10 +150,6 @@ const Index = ({ url }: { url: string }) => {
   };
 
   const primary = useCurrentTheme("primary");
-
-  const background = useCurrentTheme("background");
-
-  const router = useRouter();
 
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -173,18 +168,22 @@ const Index = ({ url }: { url: string }) => {
       return;
     }
 
-
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {
       console.log("current");
-      if (!determineNextButtonDisabled()){
+      if (!determineNextButtonDisabled()) {
         setCurrent(api.selectedScrollSnap() + 1);
       }
-      
     });
   }, [api, current]);
+
+  const [processing, setProcessing] = useState(true);
+
+  const endProcessing = () => {
+    setProcessing(false);
+  };
 
   return (
     <NestedLayout pos={1}>
@@ -206,26 +205,146 @@ const Index = ({ url }: { url: string }) => {
             <Accept />
           </CarouselItem>
           <CarouselItem>
-            <Upload url={url} />
-          </CarouselItem>
-          {/* <CarouselItem>
-              
-            </CarouselItem> */}
-          <CarouselItem>
-            <div className="flex flex-col justify-evenly items-center w-full h-full justify-items-center ">
-              <div className="text-2xl font-bold">Processing...</div>
-              <FadeLoader color={primary} />
+            <div className="p-3">
+              <div className="text-2xl font-bold text-center py-5">
+                Upload or Record Your Video
+                <div> </div>
+              </div>
+
+              <Card className="drop-shadow-md border-2  border-dashed border-primary bg-accent w-full mt-5">
+                <form onSubmit={handleSubmit} className="">
+                  {!record ? (
+                    <div className="flex flex-col justify-center items-center  gap-5 h-full rounded-xl p-10  ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        shape-rendering="geometricPrecision"
+                        text-rendering="geometricPrecision"
+                        image-rendering="optimizeQuality"
+                        viewBox="0 0 512 364.92"
+                        width={136}
+                        fill={primary}
+                        className=""
+                      >
+                        <path
+                          fill-rule="nonzero"
+                          d="M359.34 124.66c-13.56 6.7-25.71 15.36-37.41 24.9l-20.13-23.03c14.81-13.74 32.08-24.49 50.64-32.39-37.56-66.54-128.4-83.94-188.3-37.42-21.75 16.84-38.26 42.04-44.61 75.42l-2 10.43-10.4 1.84c-10.19 1.78-19.29 4.24-27.27 7.36-49.8 19.27-63.78 74.7-33.31 116.79 13.04 17.91 29.66 36.17 51.47 39.21h30.49c-.21 3-.32 6.02-.32 9.07 0 7.34.62 14.53 1.82 21.53H97.53l-1.92-.17c-30.53-3.88-55.62-26.61-73.75-51.72C-20.41 228.28.4 149.83 68.93 123.25c7.15-2.79 14.8-5.12 22.86-6.99 9.15-36.34 28.65-64.32 53.72-83.74C222.7-27.29 338.58-1.8 382.79 86.08c6.65-1.05 13.31-1.58 19.92-1.5 98.9.73 138.01 127.2 86.69 195.33-20.57 27.29-52.12 50.51-84.61 58.05l-3.41.41h-19.81a128.362 128.362 0 0 0 1.5-30.6h16.61c24.15-5.81 49.91-25.68 65.23-46.16 36.46-48.56 10.58-146.05-62.41-146.51-14.26-.12-29.11 3.33-43.16 9.56zM234.73 364.92h42.56c9.95 0 18.11-8.16 18.11-18.11v-58.64h31.04c6.54-.28 11.18-2.44 13.87-6.52 7.27-10.91-2.66-21.68-9.55-29.27-19.55-21.46-53.22-53.23-62.87-64.59-7.32-8.08-17.72-8.08-25.04 0-9.97 11.64-44.84 45.77-63.43 66.64-6.45 7.27-14.42 17.17-7.72 27.22 2.76 4.08 7.35 6.24 13.89 6.52h31.04v58.64c0 9.84 8.15 18.11 18.1 18.11z"
+                        />
+                      </svg>
+                      <div className="flex justify-center w-full">
+                        <Label
+                          htmlFor="video"
+                          className="text-xl font-bold text-center"
+                        >
+                          {file
+                            ? `Selected file: ${file.name}`
+                            : "No file selected."}
+                        </Label>
+                      </div>
+                      <input
+                        id="file-input"
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        onChange={handleSubmit}
+                      />
+
+                      <div className="grid grid-cols-2 gap-10">
+                        <input
+                          id="file-input"
+                          type="file"
+                          ref={fileInputRef}
+                          style={{ display: "none" }}
+                          onChange={handleSubmit}
+                        />
+
+                        <div className="justify-self-start">
+                          <Button
+                            className=" font-extrabold"
+                            onClick={handleUploadClick} // Trigger hidden file input
+                          >
+                            Upload
+                          </Button>
+                        </div>
+                        <div className="justify-self-end">
+                          <Button
+                            className=" font-extrabold"
+                            onClick={() => setRecord(true)}
+                          >
+                            Record
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="grid items-center text-sm justify-items-center w-full">
+                        <div className="font-semibold text-base">
+                          Accepted filetypes:
+                        </div>
+                        <div className="text-sm text-center"> MP4, MOV</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className=" p-4">
+                      <Webcam
+                        audio={false}
+                        ref={webcamRef}
+                        className=" rounded-md "
+                      />
+                      <FadeLoader loading={false} />
+
+                      <div className="flex flex-row justify-evenly p-3">
+                        {capturing ? (
+                          <>
+                            <button onClick={handleStopCaptureClick}>
+                              <Pause />
+                            </button>
+                            <Button
+                              onClick={handleSaveAndUpload}
+                              disabled={!recordedChunks.length}
+                            >
+                              Upload
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <button onClick={handleStartCaptureClick}>
+                              <Circle className="fill-red-500 stroke-none" />
+                            </button>
+                            <button onClick={() => setRecord(false)}>
+                              <Square fill={primary} />
+                            </button>
+                            <button
+                              onClick={handleSaveAndUpload}
+                              disabled={!recordedChunks.length}
+                            >
+                              Upload
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </form>
+              </Card>
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col justify-evenly items-center w-full h-full justify-items-center ">
+            <div className="flex flex-col justify-center items-center w-full h-full gap-10 ">
+              <div className="text-2xl font-bold">Uploading your video...</div>
+              <FadeLoader color={primary} onClick={endProcessing} />
+            </div>
+          </CarouselItem>
+          <CarouselItem>
+            <div className="flex flex-col justify-evenly items-center w-full h-full justify-items-center p-10">
+              <Check color={primary} size={100} />
               <div className="text-2xl font-bold">Done!</div>
-              <LucideCheckCheck color={primary} size={100} />
+              <div className="text-lg text-center">
+                You can check out your processed video in the My Videos section
+              </div>
+              <Button>Go there now</Button>
             </div>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious  />
-        <CarouselNext  disabled={determineNextButtonDisabled()} />
+        <CarouselPrevious />
+        <CarouselNext disabled={determineNextButtonDisabled()} />
       </Carousel>
     </NestedLayout>
   );
