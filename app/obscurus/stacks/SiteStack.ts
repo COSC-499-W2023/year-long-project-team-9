@@ -273,6 +273,8 @@ export default function SiteStack({ stack }: StackContext) {
     permissions: [rekognitionPolicyStatement],
   });
 
+  convertToMp4.bind([site])
+
   site.attachPermissions([rekognitionPolicyStatement]);
 
 
