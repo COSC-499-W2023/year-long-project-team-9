@@ -181,10 +181,6 @@ async def root():
     return {"message": "Root path"}
 
 
-@app.get("/{full_path:path}")
-async def catch_all(request: Request, full_path: str):
-    return {"message": f"Catch-all route received request for: {full_path}"}
-
 @app.post("/upload-video/")
 async def upload_video(file: UploadFile = File(...), email: str = Form(...)):
     # Ensure the file is a video
@@ -211,8 +207,6 @@ async def upload_video(file: UploadFile = File(...), email: str = Form(...)):
 
 @app.get("/status/{video_key}")
 def check_status(video_key: str):
-    # Mocked status check
-    # In a real application, you would query your database or storage to get the processing status
     status = "processing"  # Replace with real status check
     return {"video_key": video_key, "status": status}
 
