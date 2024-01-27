@@ -8,7 +8,7 @@ import { Bucket } from 'sst/node/bucket';
 
 const s3 = new AWS.S3();
 
-export const handler = async (event: { Records: { s3: { object: { key: any; }; }; }[]; }) => {
+export const handler = async (event: any ) => {
     const inputBucket = Bucket.inputBucket.bucketName// Replace with your input bucket name
     const outputBucket = Bucket.outputBucket.bucketName // Replace with your output bucket name
     const inputFileKey = event.Records[0].s3.object.key;

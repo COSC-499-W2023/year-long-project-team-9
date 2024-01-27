@@ -41,7 +41,7 @@ export default function SiteStack({ stack }: StackContext) {
       "./stacks/lambdas/rekopoc-start-face-detect/lambda_function.lambda_handler",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
-      OBJECT_KEY: "test3.mov",
+      OBJECT_KEY: "test.webm",
     },
     permissions: [rekognitionPolicyStatement],
     bind: [inputBucket],
@@ -65,7 +65,7 @@ export default function SiteStack({ stack }: StackContext) {
       "./stacks/lambdas/rekopoc-get-timestamps-faces/lambda_function.lambda_handler",
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
-      OBJECT_KEY: "test3.mov",
+      OBJECT_KEY: "test.webm",
     },
     permissions: [rekognitionPolicyStatement],
     bind: [inputBucket],
@@ -120,7 +120,7 @@ export default function SiteStack({ stack }: StackContext) {
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mov",
+      INPUT_NAME: "test.webm",
       OUTPUT_NAME: "processed.mp4",
     },
     permissions: ["s3"],
