@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 import uuid
 
 
@@ -174,6 +174,16 @@ def process_video(timestamps, response):
 
 
 app = FastAPI()
+
+
+@app.get("/")
+async def root():
+    return {"message": "Root path"}
+
+
+@app.get("/{full_path:path}")
+async def catch_all(request: Request, full_path: str):
+    return {"message": f"Catch-all route received request for: {full_path}"}
 
 @app.post("/upload-video/")
 async def upload_video(file: UploadFile = File(...), email: str = Form(...)):
