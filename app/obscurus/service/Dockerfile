@@ -20,4 +20,4 @@ EXPOSE 8080
 
 ENV NAME World
 
-ENTRYPOINT ["python", "app.py"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
