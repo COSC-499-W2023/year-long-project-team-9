@@ -34,19 +34,24 @@ import Webcam from "react-webcam";
 import { Accept } from "./accept";
 import { Progress } from "@/components/ui/progress";
 import Autoplay from "embla-carousel-autoplay";
+import useSWR from "swr";
 
-export async function getServerSideProps() {
-  const command = new PutObjectCommand({
-    ACL: "public-read",
-    Key: crypto.randomUUID(),
-    Bucket: Bucket.inputBucket.bucketName,
-  });
-  const url = await getSignedUrl(new S3Client({}), command);
+// export async function getServerSideProps() {
+//   const command = new PutObjectCommand({
+//     ACL: "public-read",
+//     Key: crypto.randomUUID(),
+//     Bucket: Bucket.inputBucket.bucketName,
+//   });
+//   const url = await getSignedUrl(new S3Client({}), command);
 
-  return { props: { url } };
-}
+//   return { props: { url } };
+// }
 
-const Index = ({ url }: { url: string }) => {
+const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
+
+const Index = () => {
+
+  const {data, error} = useSWR('/api/upload', fetcher)
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +71,7 @@ const Index = ({ url }: { url: string }) => {
     }
 
     const encodedFilename = encodeURIComponent(file.name);
-    const response = await fetch(url, {
+    const response = await fetch(data.url, {
       method: "PUT",
       headers: {
         "Content-Type": file.type,
@@ -126,7 +131,7 @@ const Index = ({ url }: { url: string }) => {
 
       try {
         const encodedFilename = encodeURIComponent(file.name);
-        const response = await fetch(url, {
+        const response = await fetch(data.url, {
           method: "PUT",
           headers: {
             "Content-Type": "video/webm",
