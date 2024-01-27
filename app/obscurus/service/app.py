@@ -1,4 +1,3 @@
-from urllib import request
 import boto3
 import os
 import time
@@ -6,9 +5,8 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-import json
-from celery import Celery
-from flask import jsonify
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+import uuid
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -111,16 +109,25 @@ def integrate_audio(original_video, output_video, audio_path='/tmp/audio.mp3'):
 
     print('Complete')
 
+# Configure AWS clients
+rekognition = boto3.client('rekognition')
+s3 = boto3.client('s3')
+print("init")
+# Environment Variables
+input_bucket = os.environ['INPUT_BUCKET']
+input_name = os.environ['INPUT_NAME']
+output_bucket = os.environ['OUTPUT_BUCKET']
+output_name = os.environ['OUTPUT_NAME']
+# payload = os.environ['SST_PAYLOAD']
 
-
-def start_face_detection(rekognition, input_bucket, input_name):
+def start_face_detection():
     print("Running face detection...")
     response = rekognition.start_face_detection(
         Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}}
     )
     return response['JobId']
 
-def check_job_status(job_id, rekognition):
+def check_job_status(job_id):
     print("Checking job status...")
     while True:
         response = rekognition.get_face_detection(JobId=job_id)
@@ -152,7 +159,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, input_name, input_bucket, output_bucket, output_name, s3):
+def process_video(timestamps, response):
     print("Processing video...")
     filename = input_name.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
@@ -164,53 +171,42 @@ def process_video(timestamps, response, input_name, input_bucket, output_bucket,
 
     s3.upload_file(local_filename_output, output_bucket, output_name)
 
-sqsUrl = os.environ['QUEUE_URL']
-
-broker_transport_options = {
-    'predefined_queues': {
-        'my-q': {
-            'url': sqsUrl,
-            'region': 'us-west-2'
-        }
-    }
-}
 
 
+app = FastAPI()
 
-celery_app = Celery('worker', broker=sqsUrl)
+@app.post("/upload-video/")
+async def upload_video(file: UploadFile = File(...), email: str = Form(...)):
+    # Ensure the file is a video
+    if not file.filename.endswith((".mp4", ".mov")):
+        raise HTTPException(status_code=400, detail="Invalid file type")
 
-# @app.route('/')
-# def hello():
-#     print(sqsUrl)
-#     return "Hello World!"
+    # Generate a unique key for the video
+    video_key = f"{uuid.uuid4()}-{file.filename}"
 
-@celery_app.task
-def process_video(data):
-    print("Starting processing...")
-    data = request.json
-    print(data)
-    # Configure AWS clients
-    rekognition = boto3.client('rekognition')
-    s3 = boto3.client('s3')
-    print("init")
-    # Environment Variables
-    input_bucket = os.environ['INPUT_BUCKET']
-    input_name = os.environ['INPUT_NAME']
-    output_bucket = os.environ['OUTPUT_BUCKET']
-    output_name = os.environ['OUTPUT_NAME']
-    api_url = os.environ['API_URL']
-    # input_bucket = data['input_bucket']
-    # input_name = data['input_name']
-    # output_bucket = data['output_bucket']
-    # output_name = data['output_name']
+    # Upload the file to S3
+    s3_client = boto3.client('s3')
+    try:
+        s3_client.upload_fileobj(file.file, os.environ['INPUT_BUCKET'], video_key)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-    job_id = start_face_detection(rekognition, input_bucket, input_name)
-    job_response = check_job_status(job_id, rekognition) 
-    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    process_video(timestamps, job_response, input_name, input_bucket, output_bucket, output_name, s3)
-    return jsonify({'message': 'Video processing started'}), 202
+    # Start processing the video (asynchronously, e.g., using a background task or message queue)
+    process_video(video_key)
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=8080)
+    # Send an email notification (mocked)
+    # send_email(email, "Your video is being processed", f"Video {video_key} is under processing.")
+
+    return {"message": "Video uploaded and processing started", "video_key": video_key}
+
+@app.get("/status/{video_key}")
+def check_status(video_key: str):
+    # Mocked status check
+    # In a real application, you would query your database or storage to get the processing status
+    status = "processing"  # Replace with real status check
+    return {"video_key": video_key, "status": status}
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
 
 

@@ -1,8 +1,8 @@
 FROM public.ecr.aws/lambda/python:3.8
 
-WORKDIR /worker
+WORKDIR /app
 
-COPY . /worker
+COPY . /app
 
 # Install the function's dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -20,6 +20,4 @@ EXPOSE 8080
 
 ENV NAME World
 
-#ENTRYPOINT ["python", "worker.py"]
-
-ENTRYPOINT ["celery", "-A", "worker", "worker", "--loglevel=info"]
+ENTRYPOINT ["python", "app.py"]

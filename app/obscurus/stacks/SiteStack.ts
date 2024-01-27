@@ -247,25 +247,25 @@ export default function SiteStack({ stack }: StackContext) {
 
 
 
-  const q = new Queue(stack, "Queue", {
-    consumer: {
-      function: {
-        handler: "./stacks/lambdas/queueConsumer.main",
-        timeout: 10,
-        environment: {
-          INPUT_BUCKET: inputBucket.bucketName,
-          OUTPUT_BUCKET: outputBucket.bucketName,
-          INPUT_NAME: "test3.mp4",
-          OUTPUT_NAME: "processed.mp4",
-          API_URL: api.url,
-        },
-        permissions: [inputBucket, outputBucket],
-      },
-    },
-  });
+  // const q = new Queue(stack, "Queue", {
+  //   consumer: {
+  //     function: {
+  //       handler: "./stacks/lambdas/queueConsumer.main",
+  //       timeout: 10,
+  //       environment: {
+  //         INPUT_BUCKET: inputBucket.bucketName,
+  //         OUTPUT_BUCKET: outputBucket.bucketName,
+  //         INPUT_NAME: "test3.mp4",
+  //         OUTPUT_NAME: "processed.mp4",
+  //         API_URL: api.url,
+  //       },
+  //       permissions: [inputBucket, outputBucket],
+  //     },
+  //   },
+  // });
 
-  const requestHandler = new Service(stack, "requestHandler", {
-    path: "./services/requestHandler",
+  const processVideo = new Service(stack, "processVideo", {
+    path: "./service",
     port: 8080,
     bind: [inputBucket, outputBucket, api],
     cdk: {
@@ -279,38 +279,16 @@ export default function SiteStack({ stack }: StackContext) {
       INPUT_NAME: "test3.mp4",
       OUTPUT_NAME: "processed.mp4",
       API_URL: api.url,
-      QUEUE_URL: q.queueUrl
-    },
-    permissions: ["s3"],
-  });
-
-  const processVideo = new Service(stack, "processVideo", {
-    path: "./services/processVideo",
-    port: 8080,
-    bind: [inputBucket, outputBucket, api, requestHandler],
-    cdk: {
-      fargateService: {
-        circuitBreaker: { rollback: true },
-      },
-    },
-    environment: {
-      INPUT_BUCKET: inputBucket.bucketName,
-      OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mp4",
-      OUTPUT_NAME: "processed.mp4",
-      API_URL: api.url,
-      QUEUE_URL: q.queueUrl
     },
     permissions: ["s3", rekognitionPolicyStatement],
     cpu: "4 vCPU",
     memory: "8 GB",
   });
 
-  requestHandler.bind([processVideo]);
 
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, requestHandler, processVideo, q],
+    bind: [inputBucket, outputBucket, rds, api, processVideo],
     permissions: [rekognitionPolicyStatement],
   });
 
@@ -334,8 +312,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
-    RequestHandlerUrl: requestHandler.url,
     ProcessVideo: processVideo.url,
-    QueueUrl: q.queueUrl
   });
 }
