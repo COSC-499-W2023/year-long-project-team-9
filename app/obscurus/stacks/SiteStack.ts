@@ -25,13 +25,7 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
-    cdk: {
-      cluster: {
-        vpc: ec2.Vpc.fromLookup(stack, "VPC", {
-          vpcId: "vpc-0dc613d0620101e74",
-        }),
-      },
-  }});
+  });
 
   const api = new Api(stack, "Api", {
     defaults: {
@@ -71,9 +65,6 @@ export default function SiteStack({ stack }: StackContext) {
       fargateService: {
         circuitBreaker: { rollback: true },
       },
-      vpc: ec2.Vpc.fromLookup(stack, "VPC2", {
-        vpcId: "vpc-0dc613d0620101e74",
-      }),
       
     },
     environment: {
