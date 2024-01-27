@@ -120,10 +120,10 @@ output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
 # payload = os.environ['SST_PAYLOAD']
 
-def start_face_detection():
+def start_face_detection(object_key):
     print("Running face detection...")
     response = rekognition.start_face_detection(
-        Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}}
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': object_key}}
     )
     return response['JobId']
 
@@ -182,28 +182,19 @@ async def root():
 
 
 @app.post("/upload-video/")
-async def upload_video(file: UploadFile = File(...), email: str = Form(...)):
-    # Ensure the file is a video
-    if not file.filename.endswith((".mp4", ".mov")):
-        raise HTTPException(status_code=400, detail="Invalid file type")
-
-    # Generate a unique key for the video
-    video_key = f"{uuid.uuid4()}-{file.filename}"
-
-    # Upload the file to S3
-    s3_client = boto3.client('s3')
-    try:
-        s3_client.upload_fileobj(file.file, os.environ['INPUT_BUCKET'], video_key)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+async def process_video(request: Request):
+    data = await request.json()
+    s3_key = data.get('key')
+    if not s3_key:
+        raise HTTPException(status_code=400, detail="S3 key missing")
 
     # Start processing the video (asynchronously, e.g., using a background task or message queue)
-    process_video(video_key)
+    start_face_detection(s3_key)
 
     # Send an email notification (mocked)
     # send_email(email, "Your video is being processed", f"Video {video_key} is under processing.")
 
-    return {"message": "Video uploaded and processing started", "video_key": video_key}
+    return {"message": "Video uploaded and processing started", "video_key": s3_key}
 
 @app.get("/status/{video_key}")
 def check_status(video_key: str):
