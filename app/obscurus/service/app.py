@@ -206,7 +206,5 @@ def check_status(video_key: str):
     status = "processing"  # Replace with real status check
     return {"video_key": video_key, "status": status}
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
 
 
