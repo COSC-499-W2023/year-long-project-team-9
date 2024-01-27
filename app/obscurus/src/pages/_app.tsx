@@ -11,6 +11,7 @@ import NavBar from "@/components/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Head from "next/head";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -24,29 +25,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    AOS.init({
-      once: true,
-    });
+    
 
-    const start = () => {
-      setLoading(true);
-      AOS.refresh();
-    };
-
-    const end = () => {
-      setLoading(false);
-      AOS.refresh();
-    };
-
-    Router.events.on("routeChangeStart", start);
-    Router.events.on("routeChangeComplete", end);
-    Router.events.on("routeChangeError", end);
-
-    return () => {
-      Router.events.off("routeChangeStart", start);
-      Router.events.off("routeChangeComplete", end);
-      Router.events.off("routeChangeError", end);
-    };
+    
   }, []);
 
   return getLayout(

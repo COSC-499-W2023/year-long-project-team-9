@@ -112,3 +112,5 @@ export const Accept = () => {
       </div>
   );
 };
+
+export default Accept;
