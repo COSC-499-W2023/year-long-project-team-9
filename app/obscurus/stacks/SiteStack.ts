@@ -9,7 +9,6 @@ import {
   Cognito,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { Vpc } from "aws-cdk-lib/aws-ec2";
 
 export default function SiteStack({ stack }: StackContext) {
   const inputBucket = new Bucket(stack, "inputBucket");
@@ -72,7 +71,7 @@ export default function SiteStack({ stack }: StackContext) {
       fargateService: {
         circuitBreaker: { rollback: true },
       },
-      vpc: Vpc.fromLookup(stack, "VPC", {
+      vpc: ec2.Vpc.fromLookup(stack, "VPC", {
         vpcId: "vpc-0dc613d0620101e74",
       }),
       
