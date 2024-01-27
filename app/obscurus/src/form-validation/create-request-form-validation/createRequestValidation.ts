@@ -34,7 +34,7 @@ export function createRequestValidation(data: formSchema): boolean {
   ) {
     return false;
   }
-  console.log("title");
+
   // checking descripion
   if (
     stringDescripion.length <= 0 ||
@@ -44,7 +44,7 @@ export function createRequestValidation(data: formSchema): boolean {
   ) {
     return false;
   }
-  console.log("des");
+
   // check due date
   if (
     Object.prototype.toString.call(dueDate) !== "[object Date]" ||
@@ -53,12 +53,12 @@ export function createRequestValidation(data: formSchema): boolean {
   ) {
     return false;
   }
-  console.log("due");
+
   // check if terms were accepted
   if (terms == false || terms == null) {
     return false;
   }
-  console.log("terms");
+
   // check language
   if (
     stringLanguage.length <= 0 ||
@@ -68,12 +68,12 @@ export function createRequestValidation(data: formSchema): boolean {
   ) {
     return false;
   }
-  console.log("language");
+
   // check if terms were accepted
   if (processing === null || processing === undefined) {
     return false;
   }
-  console.log("processing");
+
   // checking emials
   if (numberOfEmails <= 0 || numberOfEmails > 10) {
     return false;
@@ -88,6 +88,6 @@ export function createRequestValidation(data: formSchema): boolean {
       return false;
     }
   }
-  console.log("email");
+
   return true;
 }
