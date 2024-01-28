@@ -1,3 +1,4 @@
+import json
 import boto3
 import os
 import time
@@ -113,7 +114,8 @@ s3 = boto3.client('s3')
 print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
-key = os.environ['SST_PAYLOAD']
+payload = json.loads(os.getenv("SST_PAYLOAD"))
+key = payload["requestId"]
 output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
 # payload = os.environ['SST_PAYLOAD']

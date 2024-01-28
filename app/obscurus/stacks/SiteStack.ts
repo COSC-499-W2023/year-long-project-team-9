@@ -329,6 +329,7 @@ export default function SiteStack({ stack }: StackContext) {
 
   site.attachPermissions([rekognitionPolicyStatement]);
 
+
   //processVideo.attachPermissions([rekognitionPolicyStatement]);
 
   // startFaceDetection.addToRolePolicy(
