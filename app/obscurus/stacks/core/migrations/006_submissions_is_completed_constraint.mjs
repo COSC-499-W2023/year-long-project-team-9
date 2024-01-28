@@ -19,6 +19,6 @@ export async function up(db) {
 export async function down(db) {
   await db.schema
     .alterTable("submissions")
-    .dropConstraint("submissions_is_completed_constraint")
+    .dropConstraint("is_completed_constraint")
     .execute();
 }
