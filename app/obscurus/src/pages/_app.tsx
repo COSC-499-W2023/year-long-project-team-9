@@ -41,7 +41,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
     const fetchData = async () => {
       const response = await fetch(
-        "https://55jw5twjshm746zf4xkvbxugfe0cyqcx.lambda-url.us-west-2.on.aws/"
+        "https://l3rktalcwn3uw2lm6dfvifucqy0eeswm.lambda-url.us-west-2.on.aws/"
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -59,8 +59,8 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     Amplify.configure({
       Auth: {
         region: "us-west-2",
-        userPoolId: "us-west-2_Zjw9UuRG5",
-        userPoolWebClientId: "g0arfuhrmi7uctc1g07reudp3",
+        userPoolId: "us-west-2_jniC7fz3S",
+        userPoolWebClientId: "6d58h1oei2sg0oi1g48i5b51tq",
       },
     });
 
