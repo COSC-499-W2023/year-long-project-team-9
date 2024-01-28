@@ -157,7 +157,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, s3_key, status):
+def process_video(timestamps, response, s3_key):
     print("Processing video...")
     filename = s3_key.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
@@ -168,8 +168,6 @@ def process_video(timestamps, response, s3_key, status):
     integrate_audio(local_filename, local_filename_output)
 
     s3.upload_file(local_filename_output, output_bucket, str(s3_key) + "-processed")
-    status = "Done"
-    return status
 
 
 app = FastAPI()
@@ -179,7 +177,6 @@ app = FastAPI()
 async def root():
     return {"message": "Root path"}
 
-status_dict = {}
 
 @app.post("/upload-video/")
 async def upload_video(request: Request, background_tasks: BackgroundTasks):
@@ -188,22 +185,20 @@ async def upload_video(request: Request, background_tasks: BackgroundTasks):
     if not s3_key:
         raise HTTPException(status_code=400, detail="S3 key missing")
 
-    background_tasks.add_task(process_video_background, s3_key)
+    await process_video_background(s3_key)
 
-    status_dict[s3_key] = "processing"
 
     return {"message": "Video processing started"}
 
 async def process_video_background(s3_key):
-    status = "Processing..."
+    print("Starting face detection...")
     job_id = start_face_detection(s3_key)
-    job_response = check_job_status(job_id) 
+    print("Checking job status")
+    job_response = check_job_status(job_id)
+    print("Getting timestamps and faces")
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    status = await process_video(timestamps, job_response, s3_key, status)
+    await process_video(timestamps, job_response, s3_key)
 
-    status_dict[s3_key] = status
-
-@app.get("/status/{s3_key}")
-async def check_status(s3_key: str):
-    # Get the status from the dictionary
-    return await status_dict[s3_key]
+@app.get("/status/{job_id}")
+async def check_status(job_id: str):
+    return check_job_status(job_id)
