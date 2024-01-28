@@ -35,17 +35,23 @@ import { Accept } from "./accept";
 import { Progress } from "@/components/ui/progress";
 import Autoplay from "embla-carousel-autoplay";
 import useSWR from "swr";
+import { Service } from "sst/node/service";
 
-// export async function getServerSideProps() {
-//   const command = new PutObjectCommand({
-//     ACL: "public-read",
-//     Key: crypto.randomUUID(),
-//     Bucket: Bucket.inputBucket.bucketName,
-//   });
-//   const url = await getSignedUrl(new S3Client({}), command);
 
-//   return { props: { url } };
-// }
+export async function getServerSideProps() {
+  const command = new PutObjectCommand({
+    ACL: "public-read",
+    Key: crypto.randomUUID(),
+    Bucket: Bucket.inputBucket.bucketName,
+  });
+  const url = await getSignedUrl(new S3Client({}), command);
+
+  const serviceUrl = Service.processVideo
+
+  console.log(serviceUrl)
+
+  return { props: { url } };
+}
 
 
 

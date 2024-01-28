@@ -121,6 +121,8 @@ export default function SiteStack({ stack }: StackContext) {
 
   inputBucket.bind([site])
 
+  processVideo.bind([site])
+
   site.attachPermissions([rekognitionPolicyStatement]);
 
   processVideo.attachPermissions([rekognitionPolicyStatement]);

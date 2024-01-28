@@ -36,11 +36,9 @@ export default async function handler(
       ACL: "bucket-owner-full-control",
     });
 
-    const processVideoUrl = Service.processVideo
-
-    console.log(processVideoUrl)
-
     const url = await getSignedUrl(s3Client, command);
+
+    console.log(Service.processVideo)
 
     
 
