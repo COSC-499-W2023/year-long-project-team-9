@@ -16,6 +16,10 @@ export async function up(db) {
     .addColumn("request_id", "bigserial", (col) =>
       col.notNull().references("requests.request_id")
     )
+    .addCheckConstraint(
+      "is_completed_constraint",
+      "(is_completed = 'NULL' OR is_completed = 'IN-PROGRESS' OR is_completed = 'FAILED' OR is_completed = 'COMPLETED')"
+    )
     .execute();
 }
 
