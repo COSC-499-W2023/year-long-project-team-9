@@ -28,7 +28,7 @@ import {
 {
   /*FUNCTIONS*/
 }
-const Login = () => {
+const SignIn = () => {
   const [signedIn, setSignedIn] = useState(false);
   const SignIn = () => {
     setSignedIn(true);
@@ -215,4 +215,4 @@ const Login = () => {
 {
   /*EXPORT*/
 }
-export default Login;
+export default SignIn;

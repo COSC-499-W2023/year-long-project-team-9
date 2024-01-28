@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import useScroll from "@/components/hooks/scroll";
-import Login from "../components/Login";
+import SignIn from "./SignIn";
 
 export async function getServerSideProps() {
   return {
@@ -77,9 +77,11 @@ const NavBar = () => {
             </Link>
             <Link href="../CreateRequest">
               <NavigationMenuItem>
-              <span
+                <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/CreateRequest" ? " underline font-extrabold" : ""
+                    router.pathname === "/CreateRequest"
+                      ? " underline font-extrabold"
+                      : ""
                   }`}
                 >
                   Create Request
@@ -89,9 +91,11 @@ const NavBar = () => {
 
             <Link href="../MyRequests">
               <NavigationMenuItem>
-              <span
+                <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/MyRequests" ? " underline font-extrabold" : ""
+                    router.pathname === "/MyRequests"
+                      ? " underline font-extrabold"
+                      : ""
                   }`}
                 >
                   My Requests
@@ -100,9 +104,11 @@ const NavBar = () => {
             </Link>
             <Link href="/submit">
               <NavigationMenuItem>
-              <span
+                <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/submit" ? " underline font-extrabold" : ""
+                    router.pathname === "/submit"
+                      ? " underline font-extrabold"
+                      : ""
                   }`}
                 >
                   Submit
@@ -142,7 +148,7 @@ const NavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Login />
+        <SignIn />
       </div>
     </div>
   );

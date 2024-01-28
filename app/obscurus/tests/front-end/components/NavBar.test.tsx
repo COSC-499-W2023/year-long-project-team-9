@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NavBar from "@/components/NavBar";
-import * as Login from "@/components/Login";
+import * as Login from "@/components/SignIn";
 import * as nextRouter from "next/router";
 import * as nextThemes from "next-themes";
 
