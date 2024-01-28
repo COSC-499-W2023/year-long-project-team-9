@@ -24,6 +24,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { isEmailValid } from "@/regular-expression/emailRegularExpression";
 
 {
   /*FUNCTIONS*/
@@ -38,6 +40,13 @@ const SignIn = () => {
   };
   const [showSignInDialog, setShowSignInDialog] = useState(false);
   const [dialogState, setDialogState] = useState(0);
+  const [signInState, setSignInState] = useState(0);
+  const [email, setEmail] = useState("");
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    setEmailValid(isEmailValid(event.target.value));
+  };
+  const [emailValid, setEmailValid] = useState(true);
   return (
     <div>
       {signedIn ? (
@@ -69,62 +78,106 @@ const SignIn = () => {
             </DialogTrigger>
             <DialogContent
               id="signInDialog"
-              className="sm:max-w-[300px]"
-              onCloseAutoFocus={() => setDialogState(0)}
+              className="sm:max-w-[300px] overflow-hidden"
+              onCloseAutoFocus={() => [
+                setDialogState(0),
+                setSignInState(0),
+                setEmail(""),
+                setEmailValid(true),
+              ]}
             >
               {dialogState === 0 && (
                 <div>
                   <DialogHeader className="pb-2">
                     <DialogTitle className="text-center">Sign In</DialogTitle>
                   </DialogHeader>
-                  <div className="flex flex-col w-full items-center">
-                    <div id="googleSignIn" className="pb-2">
-                      <Button
-                        className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent"
-                        onClick={SignIn}
-                      >
-                        <Image
-                          src="/Google_Logo.svg"
-                          alt="google"
-                          width={20}
-                          height={20}
-                        />
-                        <span className="pl-2.5">Sign in with Google</span>
-                      </Button>
-                    </div>
-                    <div id="signInSeparator" className="relative pb-2">
-                      <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                          Or
-                        </span>
+                  {signInState === 0 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="googleSignIn" className="pb-2">
+                        <Button
+                          className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent"
+                          onClick={SignIn}
+                        >
+                          <Image
+                            src="/Google_Logo.svg"
+                            alt="google"
+                            width={20}
+                            height={20}
+                          />
+                          <span className="pl-2.5">Sign in with Google</span>
+                        </Button>
+                      </div>
+                      <div id="signInSeparator" className="relative pb-2">
+                        <div className="relative flex justify-center text-xs uppercase">
+                          <span className="bg-background px-2 text-muted-foreground">
+                            Or
+                          </span>
+                        </div>
+                      </div>
+                      <div id="emailSignIn" className="grid gap-1.5">
+                        <Input
+                          value={email}
+                          onChange={handleEmailChange}
+                          placeholder="Email Address *"
+                        ></Input>
+                        {!emailValid && (
+                          <p role="alert" className="text-red-500 text-xs">
+                            Please enter a valid email!
+                          </p>
+                        )}
+                        <Button
+                          onClick={() => setSignInState(1)}
+                          disabled={!emailValid}
+                          className="w-full"
+                        >
+                          <span>Sign in with Email</span>
+                        </Button>
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(1)}
+                        >
+                          Forgot your password?
+                        </Button>
+                      </div>
+                      <hr className="w-3/4 bg-gray-500" />
+                      <div id="signUpConnector" className="w-3/4 text-center">
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(2)}
+                        >
+                          Create New Account
+                        </Button>
                       </div>
                     </div>
-                    <div id="emailSignIn" className="grid gap-1.5">
-                      <Input
-                        placeholder="Email Address *"
-                        className="pb-2"
-                      ></Input>
-                      <Input placeholder="Password *"></Input>
-                      <Button className="w-full">
-                        <span>Sign in with Email</span>
-                      </Button>
-                      <Button
-                        className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                        onClick={() => setDialogState(1)}
-                      >
-                        Forgot your password?
-                      </Button>
+                  )}
+                  {signInState === 1 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="emailSignIn" className="grid gap-1.5">
+                        <Label className="font-bold w-3/4 justify-self-center text-ellipsis overflow-hidden">
+                          {email}
+                        </Label>
+                        <Input placeholder="Password *"></Input>
+                        <Button className="w-full">
+                          <span>Sign in</span>
+                        </Button>
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(1)}
+                        >
+                          Forgot your password?
+                        </Button>
+                      </div>
+                      <hr className="w-3/4 bg-gray-500" />
+                      <div id="signUpConnector" className="w-3/4 text-center">
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(2)}
+                        >
+                          Create New Account
+                        </Button>
+                      </div>
                     </div>
-                    <hr className="w-3/4 bg-gray-500" />
-                    <div id="signUpConnector" className="w-3/4 text-center">
-                      <Button
-                        className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                        onClick={() => setDialogState(2)}
-                      >
-                        Create New Account
-                      </Button>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
               {dialogState === 1 && (
