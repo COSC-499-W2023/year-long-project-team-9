@@ -114,10 +114,12 @@ export default function SiteStack({ stack }: StackContext) {
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, processVideo, convertToMp4],
-    permissions: [rekognitionPolicyStatement],
+    permissions: [rekognitionPolicyStatement, "s3"],
   });
 
   convertToMp4.bind([site])
+
+  inputBucket.bind([site])
 
   site.attachPermissions([rekognitionPolicyStatement]);
 

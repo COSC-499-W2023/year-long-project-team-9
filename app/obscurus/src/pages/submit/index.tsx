@@ -51,6 +51,9 @@ const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res =
 
 const Index = () => {
 
+
+  const requestId: string = "test3.mp4"
+
   const {data, error} = useSWR('/api/upload', fetcher)
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -77,7 +80,10 @@ const Index = () => {
         "Content-Type": file.type,
         "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
       },
-      body: file,
+      body: JSON.stringify({
+        request_id: requestId,
+        fileType: 'mp4' 
+      })
     });
 
     if (!response.ok) {
@@ -87,8 +93,31 @@ const Index = () => {
 
     // const location = response.headers.get("Location") || url.split("?")[0];
     // window.location.href = location;
+    await startProcessing("test3.mp4");
     console.log("Upload successful:", location);
   };
+
+  const startProcessing =  async (requestId: string) => {
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+    const encodedFilename = encodeURIComponent(file.name);
+    const response = await fetch(data.url, {
+      method: "POST",
+      headers: {
+        "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
+      },
+      body: JSON.stringify({
+        request_id: requestId,
+      })
+    });
+
+    if (!response.ok) {
+      console.error("Upload failed:", response.statusText);
+      return;
+    }
+  }
 
   const [record, setRecord] = useState(false);
 

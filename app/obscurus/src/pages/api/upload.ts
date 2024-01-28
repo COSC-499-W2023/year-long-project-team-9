@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 import { Function as f } from "sst/node/function";
 import { Bucket } from "sst/node/bucket";
+import { Api } from "sst/node/api"
 
 export default async function handler(
   req: NextApiRequest,
@@ -35,6 +36,8 @@ export default async function handler(
     });
 
     const url = await getSignedUrl(s3Client, command);
+
+    
 
     res.status(200).json({ url });
   } catch (err) {
