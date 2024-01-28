@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Service } from 'sst/node/service'
  
 type ResponseData = {
   message: string

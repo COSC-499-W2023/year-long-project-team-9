@@ -1,18 +1,12 @@
 
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
-import useSWR from 'swr'
 
 interface LayoutProps {
   children: ReactNode;
-  className?: string;
 }
 
-export default function Layout({ children, className }: LayoutProps) {
-  //const { data, error } = useSWR('/api/navigation', fetcher)
- 
-  // if (error) return <div>Failed to load</div>
-  // if (!data) return <div>Loading...</div>
+export default function Layout({ children }: LayoutProps) {
   return (
     <>
 
@@ -25,7 +19,7 @@ export default function Layout({ children, className }: LayoutProps) {
       stiffness: 460,
       damping: 150,
     }}
-    className={"bg-background min-w-full font-inter"+ className}
+    className="bg-background min-w-full font-inter"
   >
         <main>{children}</main>
     </motion.div>
