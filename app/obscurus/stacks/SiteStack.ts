@@ -46,6 +46,25 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "GET /getRequests": {
+        function: {
+          handler: "./stacks/lambdas/getRequests.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "POST /getStatus": {
+        function: {
+          handler: "./stacks/lambdas/getStatus.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      
     },
   });
 

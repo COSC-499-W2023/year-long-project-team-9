@@ -204,7 +204,6 @@ async def process_video_background(s3_key):
     status_dict[s3_key] = status
 
 @app.get("/status/{video_key}")
-def check_status(video_key: str):
+async def check_status(video_key: str):
     # Get the status from the dictionary
-    status = status_dict.get(video_key, "unknown")
     return {"video_key": video_key, "status": status}

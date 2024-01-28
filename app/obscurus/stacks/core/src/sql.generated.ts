@@ -24,7 +24,7 @@ export interface Requests {
     requester_sub: string;
     requestees_email: string;
     description: string;
-    video_processing: boolean;
+    video_processing: string;
     due_date: Date;
     video_language: string;
     creation_date: Date;
