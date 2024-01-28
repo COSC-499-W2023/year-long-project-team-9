@@ -135,7 +135,7 @@ const SignIn = () => {
                     </DialogTitle>
                   </DialogHeader>
                   <div className="flex flex-col w-full items-center">
-                    <div id="emailLogin" className="grid gap-1.5">
+                    <div id="emailSignIn" className="grid gap-1.5">
                       <Input
                         placeholder="Email Address *"
                         className="pb-2"

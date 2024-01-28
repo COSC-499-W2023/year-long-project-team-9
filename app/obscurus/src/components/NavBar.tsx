@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import useScroll from "@/components/hooks/scroll";
-import SignIn from "./SignIn";
+import SignIn from "@/components/SignIn";
 
 export async function getServerSideProps() {
   return {
@@ -37,14 +37,6 @@ const NavBar = () => {
     } else {
       setShowSignInDialog(true);
     }
-  };
-
-  const SignIn = () => {
-    setSignedIn(true);
-  };
-
-  const SignOut = () => {
-    setSignedIn(false);
   };
 
   const [currentTab, selectCurrentTab] = useState("/");
