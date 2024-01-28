@@ -115,13 +115,18 @@ print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
 payload = json.loads(os.getenv("SST_PAYLOAD"))
-key = payload["requestId"]
+key = payload['requestId']
+print("Key: ", key)
 output_bucket = os.environ['OUTPUT_BUCKET']
-output_name = os.environ['OUTPUT_NAME']
+output_name_raw = key.split('/')[-1]
+print(output_name_raw)
+output_name,output_ext = os.path.splitext(output_name_raw)
+print(output_name)
 # payload = os.environ['SST_PAYLOAD']
 
 def start_face_detection():
     print("Running face detection...")
+    print("Bucket: " + input_bucket+ ", Key: " + key)
     response = rekognition.start_face_detection(
         Video={'S3Object': {'Bucket': input_bucket, 'Name': key}}
     )
@@ -169,7 +174,7 @@ def process_video(timestamps, response):
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
     integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, output_name)
+    s3.upload_file(local_filename_output, output_bucket, output_name+"-processed"+output_ext)
 
 def main():
     print("Running...")

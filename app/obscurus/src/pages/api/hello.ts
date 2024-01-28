@@ -3,16 +3,19 @@ import { Job } from "sst/node/job";
 
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const data = req.body
-  console.log(data);
-  const { jobId } = await Job.request.run({
-    payload: {
-      requestId: data.requestId,
-    },
-  });
+    req: NextApiRequest,
+    res: NextApiResponse
+  ) {
+    const data = req.body.requestId
 
-  res.status(200).send(jobId);
-}
+  
+    console.log(data);
+  
+    const { jobId } = await Job.SteveJobs.run ({
+      payload: {
+        requestId: data,
+      },
+    });
+  
+    res.status(200).send("Video processing started!");
+  }

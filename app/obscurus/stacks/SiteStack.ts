@@ -40,6 +40,23 @@ export default function SiteStack({ stack }: StackContext) {
     // },
   });
 
+  const steveJobs = new Job(stack, "SteveJobs", {
+    runtime: "container",
+    handler: "./job",
+    container: {
+      cmd: ["python3", "/var/task/app.py"],
+    },
+    bind: [inputBucket, outputBucket],
+    permissions: ["s3", rekognitionPolicyStatement],
+    environment: {
+      INPUT_BUCKET: inputBucket.bucketName,
+      OUTPUT_BUCKET: outputBucket.bucketName,
+      INPUT_NAME: "test3.mp4",
+      OUTPUT_NAME: "processed.mp4",
+    },
+    memorySize: "15 GB",
+    timeout: "8 hours"
+  });
 
 
   const api = new Api(stack, "Api", {
@@ -61,8 +78,18 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /processVideo": {
+        function: {
+          handler: "./stacks/lambdas/process.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket],
+          bind: [steveJobs, inputBucket], 
+        },
+      }
     },
   });
+
+  steveJobs.bind([api])
 
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
@@ -72,24 +99,7 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  const steveJobs = new Job(stack, "SteveJobs", {
-    runtime: "container",
-    handler: "./job",
-    container: {
-      cmd: ["python3", "/var/task/app.py"],
-    },
-    bind: [inputBucket, outputBucket, api],
-    permissions: ["s3", rekognitionPolicyStatement],
-    environment: {
-      INPUT_BUCKET: inputBucket.bucketName,
-      OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mp4",
-      OUTPUT_NAME: "processed.mp4",
-      API_URL: api.url,
-    },
-    memorySize: "15 GB",
-    timeout: "8 hours"
-  });
+
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],

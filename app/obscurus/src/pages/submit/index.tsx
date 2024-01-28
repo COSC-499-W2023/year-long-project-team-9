@@ -44,7 +44,7 @@ export async function getServerSideProps() {
     Bucket: Bucket.inputBucket.bucketName,
   });
   const url = await getSignedUrl(new S3Client({}), command);
-
+  console.log(s3Key)
   return { props: {url, s3Key}};
 }
 
@@ -63,10 +63,16 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
     
     const response = await fetch("/api/hello", {
       method: "POST",
-      body: filename,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        requestId: filename
+      }),
     });
 
     if (response.ok) {
+      console.log(s3key)
       console.log("Video jobbed successfully");
     } else {
       console.error("Error jobbing video:", response.statusText);
@@ -94,7 +100,7 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
         "Content-Type": file.type,
         "Content-Disposition": `attachment; filename*=UTF-8''${s3key}`,
       },
-      body: file,
+      body: file.name,
     });
 
     if (!response.ok) {
@@ -106,7 +112,7 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
     // window.location.href = location;
     console.log("Upload successful:", location);
 
-    const completionStatus = await triggerJob(s3key);
+    const completionStatus = await triggerJob(encodedFilename);
     console.log(completionStatus)
   };
 
