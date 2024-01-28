@@ -7,6 +7,7 @@ import {
   Api,
   Service,
   Cognito,
+  Function
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
@@ -99,11 +100,24 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
 
+  const convertToMp4 = new Function(stack, "ConvertToMp4", {
+    bind: [inputBucket, outputBucket],
+    environment: {
+      INPUT_BUCKET: inputBucket.bucketName,
+      OUTPUT_BUCKET: outputBucket.bucketName,
+    },
+    handler: "./stacks/lambdas/upload.handler",
+    runtime: "nodejs18.x",
+    timeout: 600,
+    memorySize: 512,
+  });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, processVideo],
+    bind: [inputBucket, outputBucket, rds, api, processVideo, convertToMp4],
     permissions: [rekognitionPolicyStatement],
   });
+
+  convertToMp4.bind([site])
 
   site.attachPermissions([rekognitionPolicyStatement]);
 
