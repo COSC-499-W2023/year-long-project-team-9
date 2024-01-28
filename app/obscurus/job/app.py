@@ -113,7 +113,7 @@ s3 = boto3.client('s3')
 print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
-input_name = os.environ['INPUT_NAME']
+key = os.environ['SST_PAYLOAD']
 output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = os.environ['OUTPUT_NAME']
 # payload = os.environ['SST_PAYLOAD']
@@ -121,7 +121,7 @@ output_name = os.environ['OUTPUT_NAME']
 def start_face_detection():
     print("Running face detection...")
     response = rekognition.start_face_detection(
-        Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}}
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': key}}
     )
     return response['JobId']
 
@@ -159,10 +159,10 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def process_video(timestamps, response):
     print("Processing video...")
-    filename = input_name.split('/')[-1]
+    filename = key.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
     local_filename_output = '/tmp/anonymized-{}'.format(filename)
-    s3.download_file(input_bucket, input_name, local_filename)
+    s3.download_file(input_bucket, key, local_filename)
 
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
     integrate_audio(local_filename, local_filename_output)
