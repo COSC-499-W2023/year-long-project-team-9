@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request, BackgroundTasks
 import uuid
 
 
@@ -115,9 +115,7 @@ s3 = boto3.client('s3')
 print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
-input_name = os.environ['INPUT_NAME']
 output_bucket = os.environ['OUTPUT_BUCKET']
-output_name = os.environ['OUTPUT_NAME']
 # payload = os.environ['SST_PAYLOAD']
 
 def start_face_detection(object_key):
@@ -159,18 +157,19 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response):
+def process_video(timestamps, response, s3_key, status):
     print("Processing video...")
-    filename = input_name.split('/')[-1]
+    filename = s3_key.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
     local_filename_output = '/tmp/anonymized-{}'.format(filename)
-    s3.download_file(input_bucket, input_name, local_filename)
+    s3.download_file(input_bucket, s3_key, local_filename)
 
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
     integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, output_name)
-
+    s3.upload_file(local_filename_output, output_bucket, str(s3_key) + "-processed")
+    status = "Done"
+    return status
 
 
 app = FastAPI()
@@ -180,26 +179,32 @@ app = FastAPI()
 async def root():
     return {"message": "Root path"}
 
+status_dict = {}
 
 @app.post("/upload-video/")
-async def process_video(request: Request):
+async def upload_video(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
     s3_key = data.get('key')
     if not s3_key:
         raise HTTPException(status_code=400, detail="S3 key missing")
 
-    # Start processing the video (asynchronously, e.g., using a background task or message queue)
-    start_face_detection(s3_key)
+    background_tasks.add_task(process_video_background, s3_key)
 
-    # Send an email notification (mocked)
-    # send_email(email, "Your video is being processed", f"Video {video_key} is under processing.")
+    status_dict[s3_key] = "processing"
 
-    return {"message": "Video uploaded and processing started", "video_key": s3_key}
+    return {"message": "Video processing started"}
+
+async def process_video_background(s3_key):
+    status = "Processing..."
+    job_id = start_face_detection(s3_key)
+    job_response = check_job_status(job_id) 
+    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
+    status = await process_video(timestamps, job_response, s3_key, status)
+
+    status_dict[s3_key] = status
 
 @app.get("/status/{video_key}")
 def check_status(video_key: str):
-    status = "processing"  # Replace with real status check
+    # Get the status from the dictionary
+    status = status_dict.get(video_key, "unknown")
     return {"video_key": video_key, "status": status}
-
-
-
