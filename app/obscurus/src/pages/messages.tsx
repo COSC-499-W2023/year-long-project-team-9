@@ -145,26 +145,27 @@ const messages = () => {
     <Layout>
       <div className="md:px-20">
         <div className="container grid grid-cols-2 gap-7">
-          <Table className="justify-items-start cursor-pointer">
+          <Table id="messageTbl" className="justify-items-start cursor-pointer">
             <TableBody>
               {requests.map((request) => (
-                <TableRow
+                <TableRow 
+                  id="messageTblRow"
                   key={request.reqtitle}
                   onClick={() => handleRequestClick(request)}
                 >
-                  <TableCell>
+                  <TableCell id="messageTblCell ">
                     <Card
-                      id="collapsed"
+                      id="messagePreview"
                       className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
                     >
                       <CardHeader>
                         <div className="space-x-4 flex items-center">
-                          <CardTitle className="text-xl">
+                          <CardTitle id="messageTitle" className="text-xl">
                             {request.sender}
                           </CardTitle>
-                          <Label>{request.reqdue}</Label>
+                          <Label id="message">{request.reqdue}</Label>
                         </div>
-                        <div className="space-x-5 flex">
+                        <div className="space-x-5 flex" id="messageInfo">
                           <Label>From:</Label>
                           <Label>
                             <span className="text-blue-600">
@@ -181,17 +182,17 @@ const messages = () => {
             </TableBody>
           </Table>
           <Card
-            id="previewCard"
+            id="messageCard"
             className="drop-shadow-md border-2 bg-card grid h-full items-start"
           >
             {selectedRequest ? (
               <>
-                <div id="messageUser" className="flex flex-col h-full">
+                <div className="flex flex-col h-full">
                   <CardHeader className="flex">
-                    <CardTitle className="text-2xl">
+                    <CardTitle id="messageSender" className="text-2xl">
                       {selectedRequest.sender}
                     </CardTitle>
-                    <CardDescription>{selectedRequest.senderEmail}</CardDescription>
+                    <CardDescription id="messageEmail">{selectedRequest.senderEmail}</CardDescription>
                   </CardHeader>
                   <CardContent className="mt-auto text-sm">
                     <ScrollArea>
@@ -202,12 +203,13 @@ const messages = () => {
                       </div>
                       <div className="flex justify-end">
                         <div className="w-1/2"></div>
-                        <div id="message1" className="rounded-md m-1 bg-primary text-secondary p-2">
+                        <div id="message2" className="rounded-md m-1 bg-primary text-secondary p-2">
                           {selectedRequest.message2}
                         </div>
                       </div>
                     </ScrollArea>
                     <Textarea
+                      id="textbox"
                       className="items-end resize-none mt-2"
                       placeholder={`Message ${selectedRequest.sender}`}
                     >
@@ -219,10 +221,10 @@ const messages = () => {
               <>
                 <div id="messageUser" className="flex flex-col h-full">
                 <CardHeader className="flex">
-                    <CardTitle className="text-2xl">
+                    <CardTitle id="messageSender" className="text-2xl">
                       {requests[0].sender}
                     </CardTitle>
-                    <CardDescription>{requests[0].senderEmail}</CardDescription>
+                    <CardDescription id="messageEmail">{requests[0].senderEmail}</CardDescription>
                   </CardHeader>
                   <CardContent className="mt-auto text-sm">
                     <ScrollArea>
@@ -233,12 +235,13 @@ const messages = () => {
                       </div>
                       <div className="flex justify-end">
                         <div className="w-1/2"></div>
-                        <div id="message1" className="rounded-md m-1 bg-primary text-secondary p-2">
+                        <div id="message2" className="rounded-md m-1 bg-primary text-secondary p-2">
                           {requests[0].message2}
                         </div>
                       </div>
                     </ScrollArea>
                     <Textarea
+                      id="textbox"
                       className="items-end mt-2 resize-none "
                       placeholder={`Message ${requests[0].sender}`}
                     >
