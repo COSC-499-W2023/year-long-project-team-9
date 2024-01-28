@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,6 +18,7 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import useScroll from "@/components/hooks/scroll";
 import SignIn from "@/components/SignIn";
+import { isSignedIn } from "@/auth/authenticationMethods";
 
 export async function getServerSideProps() {
   return {
@@ -40,6 +41,17 @@ const NavBar = () => {
   };
 
   const [currentTab, selectCurrentTab] = useState("/");
+  const [userSignedIn, setUserSignedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAsyncUserSignIn = async () => {
+      const userBoolean = await isSignedIn();
+      return userBoolean;
+    };
+    checkAsyncUserSignIn().then((result) => {
+      setUserSignedIn(result);
+    });
+  });
 
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
@@ -67,7 +79,7 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href="../CreateRequest">
+            <Link href={userSignedIn ? "../CreateRequest" : "/"}>
               <NavigationMenuItem>
                 <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
@@ -81,7 +93,7 @@ const NavBar = () => {
               </NavigationMenuItem>
             </Link>
 
-            <Link href="../MyRequests">
+            <Link href={userSignedIn ? "../MyRequests" : "/"}>
               <NavigationMenuItem>
                 <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
@@ -94,7 +106,7 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href="/submit">
+            <Link href={userSignedIn ? "/submit" : "/"}>
               <NavigationMenuItem>
                 <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
