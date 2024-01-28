@@ -6,6 +6,7 @@ import crypto from "crypto";
 import { Function as f } from "sst/node/function";
 import { Bucket } from "sst/node/bucket";
 import { Api } from "sst/node/api"
+import { Service } from "sst/node/service";
 
 export default async function handler(
   req: NextApiRequest,
@@ -34,6 +35,10 @@ export default async function handler(
       Key: `${key}.${fileType}`,
       ACL: "bucket-owner-full-control",
     });
+
+    const processVideoUrl = Service.processVideo
+
+    console.log(processVideoUrl)
 
     const url = await getSignedUrl(s3Client, command);
 

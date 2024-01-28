@@ -206,4 +206,4 @@ async def process_video_background(s3_key):
 @app.get("/status/{s3_key}")
 async def check_status(s3_key: str):
     # Get the status from the dictionary
-    return {"s3_key": s3_key, "status": status_dict[s3_key]}
+    return await status_dict[s3_key]

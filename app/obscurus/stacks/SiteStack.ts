@@ -128,9 +128,9 @@ export default function SiteStack({ stack }: StackContext) {
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
-    UserPoolId: auth.userPoolId,
-    IdentityPoolId: auth.cognitoIdentityPoolId,
-    UserPoolClientId: auth.userPoolClientId,
+    // UserPoolId: auth.userPoolId,
+    // IdentityPoolId: auth.cognitoIdentityPoolId,
+    // UserPoolClientId: auth.userPoolClientId,
     ProcessVideo: processVideo.url,
   });
 }
