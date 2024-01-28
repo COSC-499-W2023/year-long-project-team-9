@@ -1,5 +1,5 @@
 // ref: https://gist.github.com/cjaoude/fd9910626629b53c4d25
-import { isEmailValid } from "../../../src/regular-expression/email-regular-expression";
+import { isEmailValid } from "../../../src/regular-expression/emailRegularExpression";
 
 test("testing isEmailValid 1", () => {
   expect(isEmailValid("Jan@student.ubc.ca")).toBe(true);

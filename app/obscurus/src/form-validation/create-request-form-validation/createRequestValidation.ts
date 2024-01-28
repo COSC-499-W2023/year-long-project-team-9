@@ -1,4 +1,4 @@
-import { isEmailValid } from "../../regular-expression/email-regular-expression";
+import { isEmailValid } from "../../regular-expression/emailRegularExpression";
 import { formSchema } from "../../pages/CreateRequest";
 
 export function createRequestValidation(data: formSchema): boolean {
