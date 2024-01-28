@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import React from "react";
 import { useRouter } from "next/router";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
@@ -28,37 +29,38 @@ type RequestType = {
   reqdue: string;
   sender: string;
   senderEmail: string;
-  description: string;
+  message1: string;
+  message2: string;
 };
 
 const exampleText =
   "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.";
 
-const MyRequests = () => {
+const messages = () => {
   const requests: RequestType[] = [
     {
       reqtitle: "Spanish Lessons 1",
       reqdue: "October 1st 2023",
       sender: "Daniel Woods",
       senderEmail: "daniel.woods@gmail.com",
-      description:
-        "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.",
+      message1: "Hello, I just wanted to remind you about the spanish lesson assignment this week",
+      message2: "yes i'll get right on it"
     },
     {
       reqtitle: "Spanish Lessons 2",
       reqdue: "November 9th 2023",
-      sender: "Daniel Woods",
-      senderEmail: "daniel.woods@gmail.com",
-      description:
-        "Hello,\n\nContinuing from last week's lesson, this week, please record a video of yourselves ordering three separate items from a traditional Spanish restaurant menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra sauce or no onions.",
+      sender: "Michael Jefferson",
+      senderEmail: "mikejeff@gmail.com",
+      message1: "Hi, I will be uploading my submission tomorrow my internet is currently down",
+      message2: "thanks for letting me know"
     },
     {
       reqtitle: "Spanish Lessons 3",
       reqdue: "December 15th 2023",
-      sender: "Daniel Woods",
-      senderEmail: "daniel.woods@gmail.com",
-      description:
-        "Hello all,\n\nFor the final lesson, please record a video of yourselves having a full conversation in a restaurant setting in Castilian Spanish.\n\n Include greetings, ordering food, asking for recommendations, and thanking the staff.",
+      sender: "Stephanie Brooks",
+      senderEmail: "stephiebr@gmail.com",
+      message1: "Thank you for your submission. We will keep you posted on if you'll get the position.",
+      message2: "Your welcome"
     },
   ];
 
@@ -141,50 +143,9 @@ const MyRequests = () => {
 
   return (
     <Layout>
-      <div className="md:px-24 ">
-        <div className="grid items-center gap-5">
-          <h1 className="text-3xl font-extrabold justify-self-center pt-10">
-            My Requests
-          </h1>
-          <div className="items-center    ">
-            <Card
-              id="searchbar"
-              className="overflow-auto h-17 justify-self-start drop-shadow-md border-2 bg-card"
-            >
-              <CardHeader>
-                <div className="space-x-4 flex items-center bg-foreground-secondary">
-                  <Input
-                    id="searchInput"
-                    placeholder="Search..."
-                    className="text-bold border-2 border-secondary text-primary bg-background"
-                  />
-                  <Button type="submit">
-                    <Search />
-                  </Button>
-                  <Tabs defaultValue="blurred">
-                    <TabsList className="w-full">
-                      <TabsTrigger value="oldest" className="">
-                        Oldest
-                      </TabsTrigger>
-                      <TabsTrigger value="edited" className="">
-                        Edited
-                      </TabsTrigger>
-                      <TabsTrigger value="overdue" className="">
-                        Overdue
-                      </TabsTrigger>
-                      <TabsTrigger value="completed" className="">
-                        Completed
-                      </TabsTrigger>{" "}
-                    </TabsList>
-                  </Tabs>
-                </div>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-        <br />
-        <div className="grid grid-cols-2 gap-5">
-          <Table className="w-3/4 justify-items-start cursor-pointer">
+      <div className="md:px-20">
+        <div className="container grid grid-cols-2 gap-7">
+          <Table className="justify-items-start cursor-pointer">
             <TableBody>
               {requests.map((request) => (
                 <TableRow
@@ -199,7 +160,7 @@ const MyRequests = () => {
                       <CardHeader>
                         <div className="space-x-4 flex items-center">
                           <CardTitle className="text-xl">
-                            {request.reqtitle}
+                            {request.sender}
                           </CardTitle>
                           <Label>{request.reqdue}</Label>
                         </div>
@@ -219,173 +180,78 @@ const MyRequests = () => {
               ))}
             </TableBody>
           </Table>
-
           <Card
             id="previewCard"
-            className="drop-shadow-md border-2  bg-card"
+            className="drop-shadow-md border-2 bg-card grid h-full items-start"
           >
-            <CardContent className="grid">
-              {selectedRequest ? (
-                <>
-                  <div className="grid">
-                    <div id="prevTitle" className="pt-6 grid grid-row-3">
-                      <CardTitle className="break-all text-2xl">
-                        {selectedRequest.reqtitle}
-                      </CardTitle>
-                    </div>
-
-                    <div id="prevClient">
-                      <Label className="font-bold">From</Label>
-                      <div className="break-all text-primary indent-2 pt-2 pb-2 ">
-                        {selectedRequest.senderEmail}
+            {selectedRequest ? (
+              <>
+                <div id="messageUser" className="flex flex-col h-full">
+                  <CardHeader className="flex">
+                    <CardTitle className="text-2xl">
+                      {selectedRequest.sender}
+                    </CardTitle>
+                    <CardDescription>{selectedRequest.senderEmail}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="mt-auto text-sm">
+                    <ScrollArea>
+                      <div className="flex w-3/4 m-1">
+                        <div id="message1" className="rounded-md bg-accent p-2">
+                          {selectedRequest.message1}
+                        </div>
                       </div>
-                    </div>
-
-                    <div
-                      id="prevDescAndData"
-                      className="grid grid-cols-2 left-justify gap-5 pt-2"
+                      <div className="flex justify-end">
+                        <div className="w-1/2"></div>
+                        <div id="message1" className="rounded-md m-1 bg-primary text-secondary p-2">
+                          {selectedRequest.message2}
+                        </div>
+                      </div>
+                    </ScrollArea>
+                    <Textarea
+                      className="items-end resize-none mt-2"
+                      placeholder={`Message ${selectedRequest.sender}`}
                     >
-                      <div id="prevDesc">
-                        <Label className="font-bold">Request Description</Label>
-
-                        <Textarea
-                          className="bg-accent resize-none"
-                          value={selectedRequest.description}
-                          readOnly
-                          rows={9}
-                        />
-                      </div>
-                      <div className="grid grid-row-4">
-                        <div id="prevDate" className=" ">
-                          <Label className="font-bold">Due Date</Label>
-                          <div className="flex items-center">
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            <div className="text-base">
-                              {selectedRequest.reqdue}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="grid grid-row-4">
-                          <div id="prevBlurred" className="pb-1.5">
-                            {" "}
-                            <Label className="font-bold">
-                              Video Processing
-                            </Label>
-                            <div className="w-full font-base">Blurred</div>
-                          </div>
-                          <div id="prevLanguage" className="pb-1.5">
-                            <Label className="font-bold">Video Language</Label>
-                            <div className="w-full">English</div>
-                          </div>
-                          <div
-                            id="prevTerms"
-                            className="flex items-center space-x-10"
-                          >
-                            <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
-                              See the{" "}
-                              <a
-                                href=""
-                                target="_blank"
-                                className="text-blue-600 dark:text-blue-500 hover:underline"
-                              >
-                                terms and conditions
-                              </a>{" "}
-                              here
-                            </Label>
-                          </div>
+                    </Textarea>
+                  </CardContent>
+                </div>
+              </>
+            ) : (
+              <>
+                <div id="messageUser" className="flex flex-col h-full">
+                <CardHeader className="flex">
+                    <CardTitle className="text-2xl">
+                      {requests[0].sender}
+                    </CardTitle>
+                    <CardDescription>{requests[0].senderEmail}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="mt-auto text-sm">
+                    <ScrollArea>
+                      <div className="flex w-3/4 m-1">
+                        <div id="message1" className="rounded-md bg-accent p-2">
+                          {requests[0].message1}
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="grid">
-                    <div id="prevTitle" className="pt-6 grid grid-row-3">
-                      <CardTitle className="break-all text-2xl">
-                        {requests[0].reqtitle}
-                      </CardTitle>
-                    </div>
-
-                    <div id="prevClient">
-                      <Label className="font-bold">From</Label>
-                      <div className="break-all text-primary indent-2 pt-2 pb-2 ">
-                        {requests[0].senderEmail}
+                      <div className="flex justify-end">
+                        <div className="w-1/2"></div>
+                        <div id="message1" className="rounded-md m-1 bg-primary text-secondary p-2">
+                          {requests[0].message2}
+                        </div>
                       </div>
-                    </div>
-
-                    <div
-                      id="prevDescAndData"
-                      className="grid grid-cols-2 left-justify gap-5 pt-2"
+                    </ScrollArea>
+                    <Textarea
+                      className="items-end mt-2 resize-none "
+                      placeholder={`Message ${requests[0].sender}`}
                     >
-                      <div id="prevDesc">
-                        <Label className="font-bold">Request Description</Label>
-
-                        <Textarea
-                          className="bg-accent resize-none"
-                          value={requests[0].description}
-                          readOnly
-                          rows={9}
-                        />
-                      </div>
-                      <div className="grid grid-row-4">
-                        <div id="prevDate" className="">
-                          <Label className="font-bold">Due Date</Label>
-                          <div className="flex items-center">
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            <div className="text-base">
-                              {requests[0].reqdue}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="grid grid-row-4">
-                          <div id="prevBlurred" className="pb-1.5">
-                            <Label className="font-bold">
-                              Video Processing
-                            </Label>
-                            <div className="w-full font-base">Blurred</div>
-                          </div>
-                          <div id="prevLanguage" className="pb-1.5">
-                            <Label className="font-bold">Video Language</Label>
-                            <div className="w-full">English</div>
-                          </div>
-                          <div
-                            id="prevTerms"
-                            className="flex items-center space-x-10"
-                          >
-                            <Label className="text-sm font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-none">
-                              See the{" "}
-                              <a
-                                href=""
-                                target="_blank"
-                                className="text-blue-600 dark:text-blue-500 hover:underline"
-                              >
-                                terms and conditions
-                              </a>{" "}
-                              here
-                            </Label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </CardContent>
+                    </Textarea>
+                  </CardContent>
+                </div>
+              </>
+            )}
           </Card>
         </div>
-        <div className="flex justify-end py-10">
-          <Button
-            type="submit"
-            className=" justify-self-start font-bold p-5 "
-            onClick={() => router.push("/submit")}
-          >
-            Upload Video
-          </Button>
-        </div>
-      </div>
-    </Layout>
+      </div >
+    </Layout >
   );
 };
 
-export default MyRequests;
+export default messages;
