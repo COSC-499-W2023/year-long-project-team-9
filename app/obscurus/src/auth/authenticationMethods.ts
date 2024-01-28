@@ -9,14 +9,14 @@ export async function isSignedIn() {
   }
 }
 
-// export async function signOutUser() {
-//   try {
-//     await Auth.signOut();
-//     return true;
-//   } catch {
-//     return false;
-//   }
-// }
+export async function signOutUser() {
+  try {
+    await Auth.signOut();
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 // export async function getSub() {
 //   try {

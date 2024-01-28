@@ -55,12 +55,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       userPoolKey = data.userPoolId;
       userPoolWebClientKey = data.userPoolWebClientId;
     });
-
+    console.log(userPoolKey);
     Amplify.configure({
       Auth: {
         region: "us-west-2",
-        userPoolId: userPoolKey,
-        userPoolWebClientId: userPoolWebClientKey,
+        userPoolId: "us-west-2_Zjw9UuRG5",
+        userPoolWebClientId: "g0arfuhrmi7uctc1g07reudp3",
       },
     });
 

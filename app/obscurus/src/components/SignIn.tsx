@@ -2,8 +2,10 @@
   /*IMPORTS*/
 }
 import React, { useState } from "react";
+import { Auth } from "aws-amplify";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -26,18 +28,14 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { isEmailValid } from "@/regular-expression/emailRegularExpression";
+import { isSignedIn, signOutUser } from "@/auth/authenticationMethods";
 
 {
   /*FUNCTIONS*/
 }
 const SignIn = () => {
+  const router = useRouter();
   const [signedIn, setSignedIn] = useState(false);
-  const SignIn = () => {
-    setSignedIn(true);
-  };
-  const SignOut = () => {
-    setSignedIn(false);
-  };
   const [showSignInDialog, setShowSignInDialog] = useState(false);
   const [dialogState, setDialogState] = useState(0);
   const [signInState, setSignInState] = useState(0);
@@ -46,7 +44,41 @@ const SignIn = () => {
     setEmail(event.target.value);
     setEmailValid(isEmailValid(event.target.value));
   };
+  const [password, setPassword] = useState("");
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
   const [emailValid, setEmailValid] = useState(true);
+  async function handleSignInSubmit() {
+    try {
+      await Auth.signIn(email, password);
+      setSignedIn(true);
+      router.push("/");
+    } catch (error) {
+      // Prints the full error
+      console.error(error);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert(String(error));
+      }
+    }
+  }
+  async function handleSignOutSubmit() {
+    try {
+      await signOutUser();
+      setSignedIn(false);
+      router.push("/");
+    } catch (error) {
+      // Prints the full error
+      console.error(error);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert(String(error));
+      }
+    }
+  }
   return (
     <div>
       {signedIn ? (
@@ -65,7 +97,9 @@ const SignIn = () => {
               <DropdownMenuItem>Settings</DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={SignOut}>Log out</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOutSubmit}>
+              Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
@@ -83,6 +117,7 @@ const SignIn = () => {
                 setDialogState(0),
                 setSignInState(0),
                 setEmail(""),
+                setPassword(""),
                 setEmailValid(true),
               ]}
             >
@@ -94,10 +129,7 @@ const SignIn = () => {
                   {signInState === 0 && (
                     <div className="flex flex-col w-full items-center">
                       <div id="googleSignIn" className="pb-2">
-                        <Button
-                          className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent"
-                          onClick={SignIn}
-                        >
+                        <Button className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent">
                           <Image
                             src="/Google_Logo.svg"
                             alt="google"
@@ -156,8 +188,12 @@ const SignIn = () => {
                         <Label className="font-bold w-3/4 justify-self-center text-ellipsis overflow-hidden">
                           {email}
                         </Label>
-                        <Input placeholder="Password *"></Input>
-                        <Button className="w-full">
+                        <Input
+                          value={password}
+                          onChange={handlePasswordChange}
+                          placeholder="Password *"
+                        ></Input>
+                        <Button className="w-full" onClick={handleSignInSubmit}>
                           <span>Sign in</span>
                         </Button>
                         <Button
@@ -216,10 +252,7 @@ const SignIn = () => {
                   </DialogHeader>
                   <div className="flex flex-col w-full items-center">
                     <div id="googleSignUp" className="pb-2">
-                      <Button
-                        className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent"
-                        onClick={SignIn}
-                      >
+                      <Button className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent">
                         <Image
                           src="/Google_Logo.svg"
                           alt="google"
