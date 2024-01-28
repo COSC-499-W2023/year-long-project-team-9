@@ -40,15 +40,20 @@ const SignIn = () => {
   const [dialogState, setDialogState] = useState(0);
   const [signInState, setSignInState] = useState(0);
   const [email, setEmail] = useState("");
+  const [emailValid, setEmailValid] = useState(true);
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
-    setEmailValid(isEmailValid(event.target.value));
+  };
+  const handleSignInEmailSubmit = () => {
+    setEmailValid(isEmailValid(email));
+    if (emailValid && email.length > 0) {
+      setSignInState(1);
+    }
   };
   const [password, setPassword] = useState("");
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-  const [emailValid, setEmailValid] = useState(true);
   async function handleSignInSubmit() {
     try {
       await Auth.signIn(email, password);
@@ -56,7 +61,6 @@ const SignIn = () => {
       router.push("/");
     } catch (error) {
       // Prints the full error
-      console.error(error);
       if (error instanceof Error) {
         alert(error.message);
       } else {
@@ -79,6 +83,7 @@ const SignIn = () => {
       }
     }
   }
+  const [signUpState, setSignUpState] = useState(0);
   return (
     <div>
       {signedIn ? (
@@ -119,6 +124,7 @@ const SignIn = () => {
                 setEmail(""),
                 setPassword(""),
                 setEmailValid(true),
+                setSignUpState(0),
               ]}
             >
               {dialogState === 0 && (
@@ -158,8 +164,7 @@ const SignIn = () => {
                           </p>
                         )}
                         <Button
-                          onClick={() => setSignInState(1)}
-                          disabled={!emailValid}
+                          onClick={handleSignInEmailSubmit}
                           className="w-full"
                         >
                           <span>Sign in with Email</span>
@@ -191,6 +196,7 @@ const SignIn = () => {
                         <Input
                           value={password}
                           onChange={handlePasswordChange}
+                          type="password"
                           placeholder="Password *"
                         ></Input>
                         <Button className="w-full" onClick={handleSignInSubmit}>
@@ -250,44 +256,43 @@ const SignIn = () => {
                   <DialogHeader className="pb-2">
                     <DialogTitle className="text-center">Sign Up</DialogTitle>
                   </DialogHeader>
-                  <div className="flex flex-col w-full items-center">
-                    <div id="googleSignUp" className="pb-2">
-                      <Button className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent">
-                        <Image
-                          src="/Google_Logo.svg"
-                          alt="google"
-                          width={20}
-                          height={20}
-                        />
-                        <span className="pl-2.5">Sign up with Google</span>
-                      </Button>
-                    </div>
-                    <div id="signUpSeparator" className="relative pb-2">
-                      <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                          Or
-                        </span>
+                  {signUpState === 0 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="googleSignUp" className="pb-2">
+                        <Button className="h-40px bg-white dark:bg-[#131314] border-[#747775] dark:border-[#8E918F] border-[1px] text-[#1F1F1F] dark:text-[#E3E3E3] text-sm font-roboto font-medium px-3 py-2.5 hover:bg-transparent">
+                          <Image
+                            src="/Google_Logo.svg"
+                            alt="google"
+                            width={20}
+                            height={20}
+                          />
+                          <span className="pl-2.5">Sign up with Google</span>
+                        </Button>
+                      </div>
+                      <div id="signUpSeparator" className="relative pb-2">
+                        <div className="relative flex justify-center text-xs uppercase">
+                          <span className="bg-background px-2 text-muted-foreground">
+                            Or
+                          </span>
+                        </div>
+                      </div>
+                      <div id="emailSignUp" className="grid gap-1.5 pb-2">
+                        <Input placeholder="Email Address *"></Input>
+                        <Button className="w-full">
+                          <span>Sign up with Email</span>
+                        </Button>
+                      </div>
+                      <hr className="w-3/4 bg-gray-500" />
+                      <div id="signInConnector" className="w-3/4 text-center">
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(0)}
+                        >
+                          Sign in to your account
+                        </Button>
                       </div>
                     </div>
-                    <div id="emailSignUp" className="grid gap-1.5 pb-2">
-                      <Input placeholder="Email Address *"></Input>
-                      <Input placeholder="Confirm Email Address *"></Input>
-                      <Input placeholder="Password *"></Input>
-                      <Input placeholder="Confirm Password *"></Input>
-                      <Button className="w-full">
-                        <span>Sign up with Email</span>
-                      </Button>
-                    </div>
-                    <hr className="w-3/4 bg-gray-500" />
-                    <div id="signInConnector" className="w-3/4 text-center">
-                      <Button
-                        className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                        onClick={() => setDialogState(0)}
-                      >
-                        Sign in to your account
-                      </Button>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
             </DialogContent>
