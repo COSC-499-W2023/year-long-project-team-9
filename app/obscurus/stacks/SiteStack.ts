@@ -8,6 +8,7 @@ import {
   Api,
   Service,
   Cognito,
+  Config,
 } from "sst/constructs";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import {
@@ -200,8 +201,20 @@ export default function SiteStack({ stack }: StackContext) {
     })
   );
 
+  // Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+    stack,
+    "USER_POOL_WEB_CLIENT_ID_KEY"
+  );
+
+  // Create secret keys
+  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
+
   const api = new Api(stack, "Api", {
     defaults: {
+      function: {
+        bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
+      },
       authorizer: "iam",
     },
     routes: {
@@ -233,6 +246,10 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
+    // triggers: {
+    //   preAuthentication: "./stacks/core/src/preAuthentication.main",
+    //   postAuthentication: "./stacks/core/src/postAuthentication.main",
+    // },
   });
 
   // Allow authenticated users invoke API
@@ -253,6 +270,12 @@ export default function SiteStack({ stack }: StackContext) {
         circuitBreaker: { rollback: true },
       },
     },
+  });
+
+  const amplifySecrets = new Function(stack, "AmplifySecrets", {
+    handler: "./stacks/lambdas/secrets.handler",
+    url: true,
+    bind: [USER_POOL_ID_KEY, USER_POOL_WEB_CLIENT_ID_KEY],
   });
 
   const site = new NextjsSite(stack, "site", {
