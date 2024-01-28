@@ -28,16 +28,16 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
-    cdk: {
-      cluster: {
-        vpc: ec2.Vpc.fromLookup(stack, "VPC", {
-          vpcId: "vpc-0c4351dc153642aae",
-        }),
-        vpcSubnets: {
-          subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-        },
-      },
-    },
+    // cdk: {
+    //   cluster: {
+    //     vpc: ec2.Vpc.fromLookup(stack, "VPC", {
+    //       vpcId: "vpc-0c4351dc153642aae",
+    //     }),
+    //     vpcSubnets: {
+    //       subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+    //     },
+    //   },
+    // },
   });
 
 
@@ -97,6 +97,8 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
+
+  steveJobs.bind([site])
   
 
   stack.addOutputs({

@@ -6,11 +6,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const data = req.body;
+  const data = req.body.json()
   console.log(data);
   const { jobId } = await Job.request.run({
     payload: {
-      requestId: "test3.mp4",
+      requestId: data.requestId,
     },
   });
 

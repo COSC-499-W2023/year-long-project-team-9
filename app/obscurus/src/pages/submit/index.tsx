@@ -33,24 +33,26 @@ import {
 import Webcam from "react-webcam";
 import { Accept } from "./accept";
 import { Progress } from "@/components/ui/progress";
+import { Job } from "sst/node/job";
 import useSWR from "swr";
 
 export async function getServerSideProps() {
-  // const command = new PutObjectCommand({
-  //   ACL: "public-read",
-  //   Key: crypto.randomUUID(),
-  //   Bucket: Bucket.inputBucket.bucketName,
-  // });
-  // const url = await getSignedUrl(new S3Client({}), command);
+  const s3Key = crypto.randomUUID()
+  const command = new PutObjectCommand({
+    ACL: "public-read",
+    Key: s3Key,
+    Bucket: Bucket.inputBucket.bucketName,
+  });
+  const url = await getSignedUrl(new S3Client({}), command);
 
-  return { };
+  return { props: {url, s3Key}};
 }
 
-const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
+// const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
 
-const Index = () => {
+const Index = ({url, s3key}: {url:string, s3key:string}) => {
 
-  const {data, error} = useSWR('/api/upload', fetcher)
+  // const {data, error} = useSWR('/api/upload', fetcher)
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -86,11 +88,11 @@ const Index = () => {
     }
 
     const encodedFilename = encodeURIComponent(file.name);
-    const response = await fetch(data.url, {
+    const response = await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": file.type,
-        "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
+        "Content-Disposition": `attachment; filename*=UTF-8''${s3key}`,
       },
       body: file,
     });
@@ -104,7 +106,8 @@ const Index = () => {
     // window.location.href = location;
     console.log("Upload successful:", location);
 
-    triggerJob("test3.mp4");
+    const completionStatus = await triggerJob(s3key);
+    console.log(completionStatus)
   };
 
   const [record, setRecord] = useState(false);
@@ -151,7 +154,7 @@ const Index = () => {
 
       try {
    
-        const response = await fetch(data.url, {
+        const response = await fetch(url, {
           method: "PUT",
           headers: {
             "Content-Type": "video/mp4",
@@ -171,7 +174,8 @@ const Index = () => {
       } catch (error) {
         console.error("Upload error:", error);
       } finally {
-        triggerJob("test3.mp4");
+        const completionStatus = await triggerJob("test3.mp4");
+        console.log(completionStatus)
       }
     }
   };
