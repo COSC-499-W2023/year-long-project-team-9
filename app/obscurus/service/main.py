@@ -177,7 +177,6 @@ app = FastAPI()
 async def root():
     return {"message": "Root path"}
 
-
 @app.post("/upload-video/")
 async def upload_video(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
@@ -185,19 +184,19 @@ async def upload_video(request: Request, background_tasks: BackgroundTasks):
     if not s3_key:
         raise HTTPException(status_code=400, detail="S3 key missing")
 
-    await process_video_background(s3_key)
+    background_tasks.add_task(process_video_background, s3_key)
 
 
     return {"message": "Video processing started"}
 
 async def process_video_background(s3_key):
-    print("Starting face detection...")
+    "Starting face detection..."
     job_id = start_face_detection(s3_key)
-    print("Checking job status")
-    job_response = check_job_status(job_id)
-    print("Getting timestamps and faces")
+    job_response = check_job_status(job_id) 
+
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
     await process_video(timestamps, job_response, s3_key)
+
 
 @app.get("/status/{job_id}")
 async def check_status(job_id: str):
