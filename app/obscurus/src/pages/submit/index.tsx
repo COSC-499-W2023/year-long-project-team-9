@@ -47,11 +47,11 @@ import useSWR from "swr";
 //   return { props: { url } };
 // }
 
-const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
+
 
 const Index = () => {
 
-
+  const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
   const requestId: string = "test3.mp4"
 
   const {data, error} = useSWR('/api/upload', fetcher)
