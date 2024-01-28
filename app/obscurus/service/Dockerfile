@@ -20,4 +20,4 @@ EXPOSE 8080
 
 ENV NAME World
 
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+ENTRYPOINT ["uvicorn", "main:app", "--workers", 9, "--host", "0.0.0.0", "--port", "8080"]
