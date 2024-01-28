@@ -1,0 +1,15 @@
+To make email template: https://mjml.io/
+To convert HTML to a JSON value: https://www.freeformatter.com/json-escape.html
+
+recover-password-via-code-email:
+    Add: aws ses create-template --cli-input-json file://recover-password-via-code-email.json
+    Remove: aws ses delete-template --template-name recover-password-via-code-email
+new-submission-request:
+    Add: aws ses create-template --cli-input-json file://new-submission-request.json
+    Remove: aws ses delete-template --template-name new-submission-request
+text-block-email:
+    Add: aws ses create-template --cli-input-json file://text-block-email.json
+    Remove: aws ses delete-template --template-name text-block-email
+verify-email:
+    Add: aws ses create-template --cli-input-json file://verify-email.json
+    Remove: aws ses delete-template --template-name verify-email
