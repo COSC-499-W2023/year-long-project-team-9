@@ -11,7 +11,7 @@ import NavBar from "@/components/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Head from "next/head";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Amplify } from "aws-amplify";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -25,9 +25,54 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    
+    AOS.init({
+      once: true,
+    });
 
-    
+    const start = () => {
+      setLoading(true);
+      AOS.refresh();
+    };
+
+    const end = () => {
+      setLoading(false);
+      AOS.refresh();
+    };
+
+    // const fetchData = async () => {
+    //   const response = await fetch(
+    //     "https://l3rktalcwn3uw2lm6dfvifucqy0eeswm.lambda-url.us-west-2.on.aws/"
+    //   );
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! Status: ${response.status}`);
+    //   }
+    //   const data = await response.json();
+    //   return data;
+    // };
+    // var userPoolKey;
+    // var userPoolWebClientKey;
+    // fetchData().then((data) => {
+    //   userPoolKey = data.userPoolId;
+    //   userPoolWebClientKey = data.userPoolWebClientId;
+    // });
+    // console.log(userPoolKey);
+    Amplify.configure({
+      Auth: {
+        region: "us-west-2",
+        userPoolId: "us-west-2_jniC7fz3S",
+        userPoolWebClientId: "6d58h1oei2sg0oi1g48i5b51tq",
+      },
+    });
+
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
+
+    return () => {
+      Router.events.off("routeChangeStart", start);
+      Router.events.off("routeChangeComplete", end);
+      Router.events.off("routeChangeError", end);
+    };
   }, []);
 
   return getLayout(
@@ -43,6 +88,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         onExitComplete={() => window.scrollTo(0, 0)}
       >
         <Head>
+          <meta name="viewport" content="viewport-fit=cover" />
           <title>obscurus</title>
         </Head>
         <NavBar />

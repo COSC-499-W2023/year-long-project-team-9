@@ -33,28 +33,53 @@ import {
 import Webcam from "react-webcam";
 import { Accept } from "./accept";
 import { Progress } from "@/components/ui/progress";
-import Autoplay from "embla-carousel-autoplay";
+import { Job } from "sst/node/job";
 import useSWR from "swr";
 
-// export async function getServerSideProps() {
-//   const command = new PutObjectCommand({
-//     ACL: "public-read",
-//     Key: crypto.randomUUID(),
-//     Bucket: Bucket.inputBucket.bucketName,
-//   });
-//   const url = await getSignedUrl(new S3Client({}), command);
+export async function getServerSideProps() {
+  const s3Key = crypto.randomUUID() + ".mp4";
+  const command = new PutObjectCommand({
+    ACL: "public-read",
+    Key: s3Key,
+    Bucket: Bucket.inputBucket.bucketName,
+  });
+  const url = await getSignedUrl(new S3Client({}), command);
+  console.log("s3Key: ", s3Key);
+  return { props: { url, s3Key } };
+}
 
-//   return { props: { url } };
-// }
+const fetcher = (url: string, init?: RequestInit) =>
+  fetch(url, init).then((res) => res.json());
 
-const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
+const Index = ({ url, s3Key }: { url: string; s3Key: string }) => {
+  console.log("Raw s3key:" + s3Key);
 
-const Index = () => {
-
-  const {data, error} = useSWR('/api/upload', fetcher)
+  const { data, error } = useSWR("/api/upload", fetcher);
+  console.log(data);
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const triggerJob = async (filename: any) => {
+    "Triggering job...";
+    console.log(filename);
+
+    const response = await fetch("/api/hello", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        requestId: filename,
+      }),
+    });
+
+    if (response.ok) {
+      console.log("Video jobbed successfully");
+    } else {
+      console.error("Error jobbing video:", response.statusText);
+    }
+  };
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -70,24 +95,55 @@ const Index = () => {
       return;
     }
 
-    const encodedFilename = encodeURIComponent(file.name);
-    const response = await fetch(data.url, {
+    const fileExt = file.name.split(".").pop();
+    const apiUrl = "/api/upload"; // Replace with your actual API endpoint
+
+    try {
+      // Send a POST request to the API
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: s3Key,
+          extension: fileExt,
+        }),
+      });
+
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Process the response data (if needed)
+      const data = await response.json();
+      console.log("Response from server:", data);
+
+      // Handle the successful upload (update UI, etc.)
+      // ...
+    } catch (error) {
+      // Handle any errors that occurred during the fetch
+      console.error("Error during fetch:", error);
+    }
+    const response = await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": file.type,
-        "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
+        "Content-Disposition": `attachment; filename*=UTF-8''${s3Key}`,
       },
       body: file,
     });
 
-    if (!response.ok) {
+    if (response.ok) {
+      console.log("Upload successful");
+      await triggerJob(s3Key);
+    } else {
       console.error("Upload failed:", response.statusText);
-      return;
     }
 
-    // const location = response.headers.get("Location") || url.split("?")[0];
-    // window.location.href = location;
-    console.log("Upload successful:", location);
+    // const completionStatus = await triggerJob(s3Key);
+    // console.log(completionStatus)
   };
 
   const [record, setRecord] = useState(false);
@@ -129,12 +185,14 @@ const Index = () => {
         type: "video/webm",
       });
 
+      const encodedFilename = encodeURIComponent(file.name);
+
       try {
-        const encodedFilename = encodeURIComponent(file.name);
-        const response = await fetch(data.url, {
+        console.log("File:", file);
+        const response = await fetch(url, {
           method: "PUT",
           headers: {
-            "Content-Type": "video/webm",
+            "Content-Type": "video/mp4",
             "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
           },
           body: file,
@@ -145,11 +203,15 @@ const Index = () => {
           //   response.headers.get("Location") || url.split("?")[0];
           // window.location.href = location;
           console.log("Upload successful:", location);
+          setIsUploaded(true);
         } else {
           console.error("Upload failed:", response.statusText);
         }
       } catch (error) {
         console.error("Upload error:", error);
+      } finally {
+        await triggerJob("test3.mp4");
+        console.log("Finished job");
       }
     }
   };
@@ -176,7 +238,6 @@ const Index = () => {
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
-
     api.on("select", () => {
       console.log("current");
       if (!determineNextButtonDisabled()) {
@@ -188,16 +249,17 @@ const Index = () => {
   const [processing, setProcessing] = useState(true);
 
   const endProcessing = () => {
-    setProcessing(false);
+    console.log("Processing finished!");
   };
 
+  const [isUploaded, setIsUploaded] = useState(false);
+
   return (
-    <NestedLayout pos={1}>
-      <Progress className="my-5" value={(current / count) * 100} />
+    <NestedLayout>
+      <Progress className="my-5 max-w-md" value={(current / count) * 100} />
       <Carousel
         setApi={setApi}
         className="w-full max-w-lg"
-        isSwipeEnabled={true}
         plugins={
           [
             // Autoplay({
@@ -311,9 +373,9 @@ const Index = () => {
                             <button onClick={handleStartCaptureClick}>
                               <Circle className="fill-red-500 stroke-none" />
                             </button>
-                            <button onClick={() => setRecord(false)}>
-                              <Square fill={primary} />
-                            </button>
+                            {/* <button onClick={endProcessing}> */}
+                            <Square fill={primary} />
+                            {/* </button> */}
                             <button
                               onClick={handleSaveAndUpload}
                               disabled={!recordedChunks.length}
@@ -330,10 +392,16 @@ const Index = () => {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col justify-center items-center w-full h-full gap-10 ">
-              <div className="text-2xl font-bold">Uploading your video...</div>
-              <FadeLoader color={primary} onClick={endProcessing} />
-            </div>
+            {isUploaded ? (
+              <div className="flex flex-col justify-center items-center w-full h-full gap-10 ">
+                <div className="text-2xl font-bold">Upload successful!</div>
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center items-center w-full h-full gap-10 ">
+                <div className="text-2xl font-bold">Uploading..</div>
+                <FadeLoader color={primary} />{" "}
+              </div>
+            )}
           </CarouselItem>
           <CarouselItem>
             <div className="flex flex-col justify-evenly items-center w-full h-full justify-items-center p-10">

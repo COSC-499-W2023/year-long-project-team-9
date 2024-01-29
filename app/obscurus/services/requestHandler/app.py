@@ -1,8 +1,12 @@
+import boto3
+import os
+import time
 import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-import os
+from flask import Flask, request, jsonify
+import json
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -84,7 +88,7 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
 
     out.release()
     v.release()
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
     print(f"Complete. {frame_counter} frames were written.")
 
 
@@ -104,3 +108,99 @@ def integrate_audio(original_video, output_video, audio_path='/tmp/audio.mp3'):
     os.remove(audio_path)
 
     print('Complete')
+
+
+
+def start_face_detection(rekognition, input_bucket, input_name):
+    print("Running face detection...")
+    response = rekognition.start_face_detection(
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}}
+    )
+    return response['JobId']
+
+def check_job_status(job_id, rekognition):
+    print("Checking job status...")
+    while True:
+        response = rekognition.get_face_detection(JobId=job_id)
+        status = response['JobStatus']
+        if status in ['SUCCEEDED', 'FAILED']:
+            return response
+        time.sleep(5)
+
+def get_timestamps_and_faces(job_id, reko_client=None):
+    print("Getting timestamps and faces...")
+    final_timestamps = {}
+    next_token = None
+    first_round = True
+    while next_token or first_round:
+        print('.', end='')
+        first_round = False
+        # Query Rekognition for face detection results
+        response = reko_client.get_face_detection(JobId=job_id, MaxResults=100, NextToken=next_token if next_token else "")
+        # Iterate over each face detected and organize by timestamp
+        for face in response['Faces']:
+            f = face["Face"]["BoundingBox"]
+            t = str(face["Timestamp"])
+            if t not in final_timestamps:
+                final_timestamps[t] = []
+            final_timestamps[t].append(f)
+        # Get next token for pagination
+        next_token = response.get('NextToken', None)
+    print('Complete')
+    return final_timestamps, response
+
+
+def process_video(timestamps, response, input_name, input_bucket, output_bucket, output_name, s3):
+    print("Processing video...")
+    filename = input_name.split('/')[-1]
+    local_filename = '/tmp/{}'.format(filename)
+    local_filename_output = '/tmp/anonymized-{}'.format(filename)
+    s3.download_file(input_bucket, input_name, local_filename)
+
+    apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
+    integrate_audio(local_filename, local_filename_output)
+
+    s3.upload_file(local_filename_output, output_bucket, output_name)
+
+
+
+app = Flask(__name__)
+
+sqs = boto3.client('sqs')
+queue_url = os.environ['QUEUE_URL']
+
+@app.route('/')
+def hello():
+    print(queue_url)
+    return "Hello World!"
+
+@app.route('/process-video', methods=['POST'])
+def process_video_route():
+    print("Starting processing...")
+    data = request.json
+    # Configure AWS clients
+    rekognition = boto3.client('rekognition')
+    s3 = boto3.client('s3')
+    print("init")
+    # Environment Variables
+    input_bucket = os.environ['INPUT_BUCKET']
+    input_name = os.environ['INPUT_NAME']
+    output_bucket = os.environ['OUTPUT_BUCKET']
+    output_name = os.environ['OUTPUT_NAME']
+    api_url = os.environ['API_URL']
+    # input_bucket = data['input_bucket']
+    # input_name = data['input_name']
+    # output_bucket = data['output_bucket']
+    # output_name = data['output_name']
+
+    response = sqs.send_message(
+        QueueUrl=queue_url,
+        MessageBody=json.dumps(data)
+    )
+
+    return jsonify({'message': 'Request accepted', 'response': response}), 202
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
+
+

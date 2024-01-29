@@ -1,3 +1,4 @@
+import json
 import boto3
 import os
 import time
@@ -5,8 +6,6 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request, BackgroundTasks
-import uuid
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -115,13 +114,24 @@ s3 = boto3.client('s3')
 print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
+payload = json.loads(os.getenv("SST_PAYLOAD"))
+key = payload['requestId']
+print("Key: ", key)
 output_bucket = os.environ['OUTPUT_BUCKET']
+output_name = key
+
+rawname, file_extension = os.path.splitext(output_name)
+print("File extension: ", file_extension)
+print(file_extension)
+print(rawname)
+key=rawname+file_extension
 # payload = os.environ['SST_PAYLOAD']
 
-def start_face_detection(object_key):
+def start_face_detection():
     print("Running face detection...")
+    print("Bucket: " + input_bucket+ ", Key: " + key)
     response = rekognition.start_face_detection(
-        Video={'S3Object': {'Bucket': input_bucket, 'Name': object_key}}
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': key}}
     )
     return response['JobId']
 
@@ -157,47 +167,26 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, s3_key):
+def process_video(timestamps, response):
     print("Processing video...")
-    filename = s3_key.split('/')[-1]
+    filename = key.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
     local_filename_output = '/tmp/anonymized-{}'.format(filename)
-    s3.download_file(input_bucket, s3_key, local_filename)
-
+    s3.download_file(input_bucket, key, local_filename)
+    print(response)
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
     integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, str(s3_key) + "-processed")
+    s3.upload_file(local_filename_output, output_bucket, rawname+"-processed"+file_extension)
 
-
-app = FastAPI()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Root path"}
-
-@app.post("/upload-video/")
-async def upload_video(request: Request, background_tasks: BackgroundTasks):
-    data = await request.json()
-    s3_key = data.get('key')
-    if not s3_key:
-        raise HTTPException(status_code=400, detail="S3 key missing")
-
-    background_tasks.add_task(process_video_background, s3_key)
-
-
-    return {"message": "Video processing started"}
-
-async def process_video_background(s3_key):
-    "Starting face detection..."
-    job_id = start_face_detection(s3_key)
+def main():
+    print("Running...")
+    job_id = start_face_detection()
     job_response = check_job_status(job_id) 
-
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    await process_video(timestamps, job_response, s3_key)
+    process_video(timestamps, job_response)
 
+    print('Video processing completed')
 
-@app.get("/status/{job_id}")
-async def check_status(job_id: str):
-    return check_job_status(job_id)
+if __name__ == "__main__":
+    main()

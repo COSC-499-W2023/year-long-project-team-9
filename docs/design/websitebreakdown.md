@@ -48,9 +48,12 @@ Accessed through the navigation bar and allows the user to view a listing of all
 [Figma Link](https://www.figma.com/file/53B85ff7eTiKnoamYX3Wec/Request-Listing-Page?type=design&node-id=0-1&mode=design&t=nHHYTxyuNgzMtBmc-0)
 
 ## Sign In Page
-A pop-up accessed when the "sign in" button at the top of the page is clicked. 
+A pop-up accessed when the "sign in" button at the top of the page is clicked. Has been changed to allow creation of Obscurus account instead of exclusively social sign-ins as per client feedback. 
 
-Displays the following social sign ins:
-- Google
-- Facebook
-- Microsoft
+Allows login with Google or Obscurus account. With options for if the user forgets their password or needs to create a new account. If they click to create a new account, the pop-up will change to display a "sign up" interface.
+
+## Messages Page
+A page that will allow the user to message other users. The users can only message either the user requesting a video from them or a reciever of a request they've created. There is no messaging between users who have recieved the same request since this isn't a social feature. This page will be accessed either through the nav bar or from the requests listings page.
+
+There is a listing of users they have messages they can click through on the left side of the page, then on the right is a message box displaying the conversation history and a text field allowing the user to message them. 
+
