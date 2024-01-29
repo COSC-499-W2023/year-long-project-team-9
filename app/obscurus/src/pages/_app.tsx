@@ -34,20 +34,17 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   
   useEffect(() => {
-  const fetchData = async () => {
-      return data;
-    };
-    let userPoolKey: any;
-    let userPoolWebClientKey;
-    fetchData().then(() => console.log(data));
-  Amplify.configure({
-    Auth: {
-      region: "us-west-2",
-      userPoolId: userPoolKey,
-      userPoolWebClientId: userPoolWebClientKey,
-    },
-  });
-})
+    if (data) {
+      console.log(data)
+      Amplify.configure({
+        Auth: {
+          region: "us-west-2",
+          userPoolId: data.userPoolId,
+          userPoolWebClientId: data.userPoolWebClientId,
+        },
+      });
+    }
+  }, [data]);
 
   return getLayout(
     <ThemeProvider
