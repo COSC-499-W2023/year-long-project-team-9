@@ -49,8 +49,8 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: "8 hours",
   });
 
-  // Create secret keys
-  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+   //Create secret keys
+   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
@@ -80,6 +80,15 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "GET /secrets": {
+        function: {
+          handler: "./stacks/lambdas/secrets.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
       "POST /processVideo": {
         function: {
           handler: "./stacks/lambdas/process.handler",
@@ -96,6 +105,16 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
+    // cdk: {
+    //   userPool: {
+    //     standardAttributes: {
+    //       email: { required: true, mutable: false },
+    //       givenName: { required: true, mutable: true },
+    //       familyName: { required: true, mutable: true },
+    //       birthdate: { required: true, mutable: false },
+    //     },
+    //   },
+    // },
     // triggers: {
     //   preAuthentication: "./stacks/core/src/preAuthentication.main",
     //   postAuthentication: "./stacks/core/src/postAuthentication.main",
