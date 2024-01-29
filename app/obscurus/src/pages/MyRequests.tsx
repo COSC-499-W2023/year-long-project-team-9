@@ -143,9 +143,9 @@ const MyRequests = () => {
     <Layout>
       <div className="md:px-24 ">
         <div className="grid items-center gap-5">
-          <h1 className="text-3xl font-extrabold justify-self-center pt-10">
+          {/* <h1 className="text-3xl font-extrabold justify-self-center pt-10">
             My Requests
-          </h1>
+          </h1> */}
           <div className="items-center    ">
             <Card
               id="searchbar"

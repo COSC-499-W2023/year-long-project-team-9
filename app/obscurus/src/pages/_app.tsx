@@ -11,6 +11,7 @@ import NavBar from "@/components/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Head from "next/head";
+import { Amplify } from "aws-amplify";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -37,6 +38,31 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       setLoading(false);
       AOS.refresh();
     };
+
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://55jw5twjshm746zf4xkvbxugfe0cyqcx.lambda-url.us-west-2.on.aws/"
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    };
+    var userPoolKey;
+    var userPoolWebClientKey;
+    fetchData().then((data) => {
+      userPoolKey = data.userPoolId;
+      userPoolWebClientKey = data.userPoolWebClientId;
+    });
+
+    Amplify.configure({
+      Auth: {
+        region: "us-west-2",
+        userPoolId: userPoolKey,
+        userPoolWebClientId: userPoolWebClientKey,
+      },
+    });
 
     Router.events.on("routeChangeStart", start);
     Router.events.on("routeChangeComplete", end);

@@ -6,7 +6,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Sun} from "lucide-react";
+import { Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -19,12 +19,11 @@ import { useRouter } from "next/router";
 import useScroll from "@/components/hooks/scroll";
 import Login from "../components/Login";
 
-
 export async function getServerSideProps() {
   return {
     props: {}, // nothing yet
   };
-} 
+}
 
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
@@ -48,6 +47,8 @@ const NavBar = () => {
     setSignedIn(false);
   };
 
+  const [currentTab, selectCurrentTab] = useState("/");
+
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
       <div className="p-1">
@@ -65,28 +66,47 @@ const NavBar = () => {
           <NavigationMenuList>
             <Link href="/">
               <NavigationMenuItem>
-                <span className="font-extrabold text-xl p-5 hover:cursor-pointer">
+                <span
+                  className={`font-bold text-xl p-5 hover:cursor-pointer ${
+                    router.pathname === "/" ? " underline font-extrabold" : ""
+                  }`}
+                >
                   obscurus
                 </span>
               </NavigationMenuItem>
             </Link>
             <Link href="../CreateRequest">
               <NavigationMenuItem>
-                <div
-                  className="font-bold text-base p-5 hover:cursor-pointer"
+              <span
+                  className={`font-bold text-base p-5 hover:cursor-pointer ${
+                    router.pathname === "/CreateRequest" ? " underline font-extrabold" : ""
+                  }`}
                 >
                   Create Request
-                </div>
+                </span>
               </NavigationMenuItem>
             </Link>
 
             <Link href="../MyRequests">
               <NavigationMenuItem>
-                <div
-                  className="font-bold text-base p-5 hover:cursor-pointer"
+              <span
+                  className={`font-bold text-base p-5 hover:cursor-pointer ${
+                    router.pathname === "/MyRequests" ? " underline font-extrabold" : ""
+                  }`}
                 >
                   My Requests
-                </div>
+                </span>
+              </NavigationMenuItem>
+            </Link>
+            <Link href="/submit">
+              <NavigationMenuItem>
+              <span
+                  className={`font-bold text-base p-5 hover:cursor-pointer ${
+                    router.pathname === "/submit" ? " underline font-extrabold" : ""
+                  }`}
+                >
+                  Submit
+                </span>
               </NavigationMenuItem>
             </Link>
           </NavigationMenuList>

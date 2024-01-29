@@ -209,7 +209,6 @@ const messages = () => {
                       </div>
                     </ScrollArea>
                     <Textarea
-                      id="textbox"
                       className="items-end resize-none mt-2"
                       placeholder={`Message ${selectedRequest.sender}`}
                     >

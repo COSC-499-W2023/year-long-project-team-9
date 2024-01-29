@@ -7,6 +7,8 @@ import {
   RDS,
   Api,
   Service,
+  Cognito,
+  Config,
 } from "sst/constructs";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import {
@@ -199,8 +201,28 @@ export default function SiteStack({ stack }: StackContext) {
     })
   );
 
+  // Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+    stack,
+    "USER_POOL_WEB_CLIENT_ID_KEY"
+  );
+
+  // Create secret keys
+  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
+
   const api = new Api(stack, "Api", {
+    defaults: {
+      function: {
+        bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
+      },
+      authorizer: "iam",
+    },
     routes: {
+      "GET /private": "./stacks/lambdas/private.main",
+      "GET /public": {
+        function: "./stacks/lambdas/public.main",
+        authorizer: "none",
+      },
       "GET /start-machine": {
         function: {
           handler: "./stacks/lambdas/startMachine.handler",
@@ -221,6 +243,18 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
+  // Create auth provider
+  const auth = new Cognito(stack, "Auth", {
+    login: ["email"],
+    // triggers: {
+    //   preAuthentication: "./stacks/core/src/preAuthentication.main",
+    //   postAuthentication: "./stacks/core/src/postAuthentication.main",
+    // },
+  });
+
+  // Allow authenticated users invoke API
+  auth.attachPermissionsForAuthUsers(stack, [api]);
+
   api.attachPermissionsToRoute("GET /start-machine", [
     [stateMachine, "grantStartExecution"],
   ]);
@@ -238,9 +272,15 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
+  const amplifySecrets = new Function(stack, "AmplifySecrets", {
+    handler: "./stacks/lambdas/secrets.handler",
+    url: true,
+    bind: [USER_POOL_ID_KEY, USER_POOL_WEB_CLIENT_ID_KEY],
+  });
+
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, service],
-    permissions: [rekognitionPolicyStatement]
+    permissions: [rekognitionPolicyStatement],
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
@@ -256,5 +296,8 @@ export default function SiteStack({ stack }: StackContext) {
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
+    UserPoolId: auth.userPoolId,
+    IdentityPoolId: auth.cognitoIdentityPoolId,
+    UserPoolClientId: auth.userPoolClientId,
   });
 }
