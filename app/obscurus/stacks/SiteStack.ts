@@ -46,18 +46,17 @@ export default function SiteStack({ stack }: StackContext) {
       OUTPUT_NAME: "processed.mp4",
     },
     memorySize: "15 GB",
-    timeout: "8 hours"
+    timeout: "8 hours",
   });
 
-   // Create secret keys
-   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+  // Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
 
   // Create secret keys
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
-
 
   const api = new Api(stack, "Api", {
     defaults: {
@@ -86,27 +85,17 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/process.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket],
-          bind: [steveJobs, inputBucket], 
+          bind: [steveJobs, inputBucket],
         },
-      }
+      },
     },
   });
 
-  steveJobs.bind([api])
+  steveJobs.bind([api]);
 
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    cdk: {
-      userPool: {
-        standardAttributes: {
-          email: { required: true, mutable: false },
-          givenName: { required: true, mutable: true },
-          familyName: { required: true, mutable: true },
-          birthdate: { required: true, mutable: false },
-        },
-      },
-    },
     // triggers: {
     //   preAuthentication: "./stacks/core/src/preAuthentication.main",
     //   postAuthentication: "./stacks/core/src/postAuthentication.main",
@@ -116,8 +105,6 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-
-
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
@@ -125,8 +112,7 @@ export default function SiteStack({ stack }: StackContext) {
 
   site.attachPermissions([rekognitionPolicyStatement]);
 
-  steveJobs.bind([site])
-  
+  steveJobs.bind([site]);
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
