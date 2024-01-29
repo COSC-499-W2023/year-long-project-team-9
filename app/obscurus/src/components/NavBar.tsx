@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import useScroll from "@/components/hooks/scroll";
-import Login from "../components/Login";
+import SignIn from "@/components/SignIn";
+import { isSignedIn } from "@/auth/authenticationMethods";
 
 export async function getServerSideProps() {
   return {
@@ -39,15 +40,18 @@ const NavBar = () => {
     }
   };
 
-  const SignIn = () => {
-    setSignedIn(true);
-  };
-
-  const SignOut = () => {
-    setSignedIn(false);
-  };
-
   const [currentTab, selectCurrentTab] = useState("/");
+  const [userSignedIn, setUserSignedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAsyncUserSignIn = async () => {
+      const userBoolean = await isSignedIn();
+      return userBoolean;
+    };
+    checkAsyncUserSignIn().then((result) => {
+      setUserSignedIn(result);
+    });
+  });
 
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
@@ -75,11 +79,13 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href="../CreateRequest">
+            <Link href={userSignedIn ? "../CreateRequest" : "/"}>
               <NavigationMenuItem>
-              <span
+                <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/CreateRequest" ? " underline font-extrabold" : ""
+                    router.pathname === "/CreateRequest"
+                      ? " underline font-extrabold"
+                      : ""
                   }`}
                 >
                   Create Request
@@ -87,22 +93,26 @@ const NavBar = () => {
               </NavigationMenuItem>
             </Link>
 
-            <Link href="../MyRequests">
+            <Link href={userSignedIn ? "../MyRequests" : "/"}>
               <NavigationMenuItem>
-              <span
+                <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/MyRequests" ? " underline font-extrabold" : ""
+                    router.pathname === "/MyRequests"
+                      ? " underline font-extrabold"
+                      : ""
                   }`}
                 >
                   My Requests
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href="/submit">
+            <Link href={userSignedIn ? "/submit" : "/"}>
               <NavigationMenuItem>
-              <span
+                <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/submit" ? " underline font-extrabold" : ""
+                    router.pathname === "/submit"
+                      ? " underline font-extrabold"
+                      : ""
                   }`}
                 >
                   Submit
@@ -142,7 +152,7 @@ const NavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Login />
+        <SignIn />
       </div>
     </div>
   );

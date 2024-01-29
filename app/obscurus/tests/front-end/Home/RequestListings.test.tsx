@@ -17,19 +17,32 @@ describe("Features Component", () => {
     render(<RequestListing />);
   });
 
-  test("Render page and check features.",() => {
-  //check title
+  test("Render page and check features.", () => {
+    //check title
     // expect(screen.getByText("My Requests")).toBeInTheDocument();
-    //check searchbar 
-    //expect(screen.getByText(/search/i)).toBeInTheDocument();
-    //check sorting options
+    
+    //check searchbar exists
+    expect(document.querySelector('#searchbar')).not.toBeNull();
+    expect(document.querySelector('#searchInput')).not.toBeNull();
+    expect(document.querySelector('#searchButton')).not.toBeNull();
+
+    //check sorting options exists
     expect(screen.getByText("Oldest")).toBeInTheDocument();
     expect(screen.getByText("Edited")).toBeInTheDocument();
     expect(screen.getByText("Overdue")).toBeInTheDocument();
     expect(screen.getByText("Completed")).toBeInTheDocument();
-    //checks for request listings
-   // expect(screen.getByText(/Spanish Lessons/i)).toBeInTheDocument();
-    
-});
+
+    //checks for request listings table 
+    expect(document.querySelector('#requestsTbl')).not.toBeNull();
+    expect(document.querySelector('#requestsTblRow')).not.toBeNull();
+    expect(document.querySelector('#requestsTblCell')).not.toBeNull();
+    expect(document.querySelector('#requestTitle')?.textContent?.trim()).toBeTruthy();
+    expect(document.querySelector('#prevClient')?.textContent?.trim()).toBeTruthy();    
+    expect(document.querySelector('#prevDescAndData')).not.toBeNull();
+    expect(document.querySelector('#prevDesc')?.textContent?.trim()).toBeTruthy();
+
+    //check submit button
+    expect(document.querySelector('#submitButton')).not.toBeNull();
+  });
 
 });
