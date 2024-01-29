@@ -75,7 +75,7 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href="../CreateRequest">
+            {/* <Link href="../CreateRequest">
               <NavigationMenuItem>
               <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
@@ -108,7 +108,7 @@ const NavBar = () => {
                   Submit
                 </span>
               </NavigationMenuItem>
-            </Link>
+            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
