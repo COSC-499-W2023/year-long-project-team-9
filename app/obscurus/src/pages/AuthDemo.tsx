@@ -8,6 +8,7 @@ const Dashboard = () => {
     {/*I know this sucks, but it will work for now*/}
     const searchParams = useSearchParams()
     let codePresent = false;
+if (searchParams) {
     try {
         const code = searchParams.get('code')
         if(code != null) {
@@ -17,8 +18,8 @@ const Dashboard = () => {
         }
     }
     catch(e){
-
     }    
+}
 
     return (
         <Layout>    

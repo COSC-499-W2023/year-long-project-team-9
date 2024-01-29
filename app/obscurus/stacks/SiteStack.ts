@@ -49,6 +49,15 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: "8 hours"
   });
 
+   // Create secret keys
+   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+    stack,
+    "USER_POOL_WEB_CLIENT_ID_KEY"
+  );
+
+  // Create secret keys
+  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
+
 
   const api = new Api(stack, "Api", {
     defaults: {

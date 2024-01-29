@@ -79,11 +79,12 @@ export function createRequestValidation(data: formSchema): boolean {
     return false;
   }
   for (let i = 0; i < numberOfEmails; i++) {
-    if (data.clients.at(i)?.value === undefined) {
+    const clientValue = data.clients.at(i)?.value;
+    if (clientValue === undefined) {
       return false;
     }
-    // the above codition makes sure that data.clients.at(i) is not undefined
-    const emailValid = isEmailValid(data.clients.at(i).value);
+    // the above condition makes sure that clientValue is not undefined
+    const emailValid = isEmailValid(clientValue);
     if (emailValid === false) {
       return false;
     }
