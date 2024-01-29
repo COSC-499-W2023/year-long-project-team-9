@@ -145,7 +145,7 @@
 ![Before](img/muhammad-bakar/Other/custome-css-before.png)
 ![After](img/muhammad-bakar/Other/custome-css-after.png)
 
-### Picture of Project Board Week 1 Term 2
+## Picture of Project Board Week 1 Term 2
 
 ![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-1-T-2-board.png)
 
@@ -153,7 +153,7 @@
 
 ![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-1-T-2-survey.png)
 
-### January 15 2024 - January 21 2024
+## January 15 2024 - January 21 2024
 
 - I worked on Milestone #4: Peer Testing 1.
 - I worked on AWS Cognito
@@ -166,3 +166,17 @@
 ### Picture of Week 2 Term 2's Survey
 
 ![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-2-T-2-survey.png)
+
+## January 15 2024 - January 21 2024
+
+- I worked on Milestone #4: Peer Testing 1.
+- I worked on AWS Cognito, RDS, Amazon Simple email, and WorkMail
+- I attend group meetings, I worked with Soren
+
+### Picture of Project Board Week 2 Term 2
+
+![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
+
+### Picture of Week 2 Term 2's Survey
+
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
