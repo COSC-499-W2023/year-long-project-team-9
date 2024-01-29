@@ -1,6 +1,7 @@
+'use client'
 import Layout from "@/components/layout";
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,11 +13,11 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {},
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   return {
+//     props: {},
+//   };
+// };
 
 type ClientType = {
   client: string;
@@ -36,7 +37,9 @@ type RequestType = {
 const exampleText =
   "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.";
 
-const messages = () => {
+const Messages = () => {
+  const router = useRouter()
+  
   const requests: RequestType[] = [
     {
       reqtitle: "Spanish Lessons 1",
@@ -71,7 +74,7 @@ const messages = () => {
     setSelectedRequest(request);
   };
 
-  const router = useRouter();
+  //const router = useRouter();
   const [title, setTitle] = React.useState("");
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -129,7 +132,7 @@ const messages = () => {
       }
     } else {
       setNoTitle(false);
-      router.reload();
+      router.refresh();
     }
   };
   const clientsEmpty = () => {
@@ -256,4 +259,4 @@ const messages = () => {
   );
 };
 
-export default messages;
+export default Messages;

@@ -1,13 +1,13 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Messages from "@/pages/messages";
+import Messages from "@/app/messages";
 
 jest.mock("aos", () => ({
   init: jest.fn(), // Mock AOS initialization
 }));
 
-jest.mock("next/router", () => ({
+jest.mock("next/navigation", () => ({
   __esModule: true,
   useRouter: jest.fn()
 }));
