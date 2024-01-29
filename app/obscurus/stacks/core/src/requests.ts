@@ -2,18 +2,17 @@ export * as Requests from "./requests";
 
 import { SQL } from "../../core/src/sql";
 
-export async function addRequest(data: string, sub: string) {
-  const stringData = JSON.parse(data);
+export async function addRequest(data: string) {
+  const newData = JSON.parse(data);
+  console.log(newData);
   const result = await SQL.DB.insertInto("requests")
     .values({
-      request_id: 1,
-      description: "Some description",
-      request_title: "Some title",
-      requester_sub: "Some sub",
-      video_processing: false,
-      due_date: new Date(), // replace with the actual due date
-      video_language: "English", // replace with the actual video language
-      creation_date: new Date(), // replace with the actual creation date
+      description: newData.data.description,
+      request_title: newData.data.title,
+      requester_sub: newData.sub,
+      video_processing: newData.data.blurred,
+      due_date: new Date(newData.data.dueDate), // replace with the actual due date
+      video_language: newData.data.language, // replace with the actual video language
     })
     .execute();
 }
