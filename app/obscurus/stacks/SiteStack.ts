@@ -6,11 +6,11 @@ import {
   Function,
   RDS,
   Api,
+  Job,
   Service,
   Cognito,
   Config,
   Queue,
-  Job,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
@@ -29,16 +29,6 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
-    // cdk: {
-    //   cluster: {
-    //     vpc: ec2.Vpc.fromLookup(stack, "VPC", {
-    //       vpcId: "vpc-0c4351dc153642aae",
-    //     }),
-    //     vpcSubnets: {
-    //       subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-    //     },
-    //   },
-    // },
   });
 
   const steveJobs = new Job(stack, "SteveJobs", {
@@ -59,12 +49,21 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: "8 hours"
   });
 
+   //Create secret keys
+   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+    stack,
+    "USER_POOL_WEB_CLIENT_ID_KEY"
+  );
+
+  // Create secret keys
+  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
+
 
   const api = new Api(stack, "Api", {
     defaults: {
-      // function: {
-      //   bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
-      // },
+      function: {
+        bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
+      },
       authorizer: "iam",
     },
     routes: {
@@ -76,6 +75,15 @@ export default function SiteStack({ stack }: StackContext) {
       "GET /users": {
         function: {
           handler: "./stacks/lambdas/list.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "GET /secrets": {
+        function: {
+          handler: "./stacks/lambdas/secrets.handler",
           timeout: 20,
           permissions: [rds],
           bind: [rds],
@@ -98,6 +106,16 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
+    // cdk: {
+    //   userPool: {
+    //     standardAttributes: {
+    //       email: { required: true, mutable: false },
+    //       givenName: { required: true, mutable: true },
+    //       familyName: { required: true, mutable: true },
+    //       birthdate: { required: true, mutable: false },
+    //     },
+    //   },
+    // },
     // triggers: {
     //   preAuthentication: "./stacks/core/src/preAuthentication.main",
     //   postAuthentication: "./stacks/core/src/postAuthentication.main",
@@ -107,16 +125,7 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  // api.attachPermissionsToRoute("GET /start-machine", [
-  //   [stateMachine, "grantStartExecution"],
-  // ]);
 
-
-  // const amplifySecrets = new Function(stack, "AmplifySecrets", {
-  //   handler: "./stacks/lambdas/secrets.handler",
-  //   url: true,
-  //   bind: [USER_POOL_ID_KEY, USER_POOL_WEB_CLIENT_ID_KEY],
-  // });
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
