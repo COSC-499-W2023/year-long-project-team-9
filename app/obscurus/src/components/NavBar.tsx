@@ -43,15 +43,15 @@ const NavBar = () => {
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
 
-  useEffect(() => {
-    const checkAsyncUserSignIn = async () => {
-      const userBoolean = await isSignedIn();
-      return userBoolean;
-    };
-    checkAsyncUserSignIn().then((result) => {
-      setUserSignedIn(result);
-    });
-  });
+  // useEffect(() => {
+  //   const checkAsyncUserSignIn = async () => {
+  //     const userBoolean = await isSignedIn();
+  //     return userBoolean;
+  //   };
+  //   checkAsyncUserSignIn().then((result) => {
+  //     setUserSignedIn(result);
+  //   });
+  // });
 
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
@@ -79,7 +79,7 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href={userSignedIn ? "../CreateRequest" : "/"}>
+            {/* <Link href="../CreateRequest">
               <NavigationMenuItem>
                 <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
@@ -118,7 +118,7 @@ const NavBar = () => {
                   Submit
                 </span>
               </NavigationMenuItem>
-            </Link>
+            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>

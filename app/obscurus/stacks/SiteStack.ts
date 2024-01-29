@@ -24,12 +24,15 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
+
+
   // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
   });
+
 
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
@@ -71,16 +74,33 @@ export default function SiteStack({ stack }: StackContext) {
         function: "./stacks/lambdas/public.main",
         authorizer: "none",
       },
+      // "GET /start-machine": {
+      //   function: {
+      //     handler: "./stacks/lambdas/startMachine.handler",
+      //     environment: {
+      //       STATE_MACHINE: stateMachine.stateMachineArn,
+      //     },
+      //   },
+      // },
       "GET /users": {
         function: {
-          handler: "./stacks/lambdas/list.handler",
+          handler: "./stacks/lambdas/listUsers.handler",
           timeout: 20,
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
         },
       },
-      "GET /secrets": {
+      "GET /getRequests": {
+        function: {
+          handler: "./stacks/lambdas/listRequests.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        }
+      },
+      "POST /secrets": {
         function: {
           handler: "./stacks/lambdas/secrets.handler",
           timeout: 20,
@@ -97,6 +117,14 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket],
         },
       },
+      "POST /createRequest": {
+        function: {
+          handler: "./stacks/lambdas/createRequest.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds], 
+        },
+      }
     },
   });
 
@@ -111,7 +139,6 @@ export default function SiteStack({ stack }: StackContext) {
     //       email: { required: true, mutable: false },
     //       givenName: { required: true, mutable: true },
     //       familyName: { required: true, mutable: true },
-    //       birthdate: { required: true, mutable: false },
     //     },
     //   },
     // },
