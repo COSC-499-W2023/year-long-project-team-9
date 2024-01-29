@@ -240,6 +240,15 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /request": {
+        function: {
+          handler: "./stacks/lambdas/addRequest.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
 

@@ -97,6 +97,7 @@ const CreateRequest = () => {
   }
   const onSubmit: SubmitHandler<formSchema> = (data: formSchema) => {
     const added = createRequestValidation(data);
+    dataFunction(JSON.stringify(data));
   };
   const [title, setTitle] = React.useState("");
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
