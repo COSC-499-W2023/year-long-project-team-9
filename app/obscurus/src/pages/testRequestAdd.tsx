@@ -1,21 +1,19 @@
 import Layout from "@/components/layout";
 import { formSchema } from "./CreateRequest";
+import { Api } from "sst/node/api";
+import { ta } from "date-fns/locale";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
-async function getServerSideProps(data: string, sub: string) {
-  const apiURL = Api.Api.url;
-  const response = await fetch(apiURL + "/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      data: data,
-      sub: sub,
-    }),
-  });
-}
+// export async function getServerSideProps() {
+//   const apiURL = Api.Api.url;
 
-export async function testRequestAdd() {
+//   return {
+//     props: { apiURL },
+//   };
+// }
+
+export default function testRequestAdd() {
   const localFormSchema: formSchema = {
     title: "a",
     clients: [{ value: "bob@ubc.gmail.com" }],
@@ -25,13 +23,27 @@ export async function testRequestAdd() {
     language: "string",
     terms: true,
   };
-  const sub = "1";
-  const data = JSON.stringify(localFormSchema);
-  await getServerSideProps(data, sub);
-  return <h1>Hello World</h1>;
-}
+  const fetchData = async () => {
+    const response = await fetch(
+      "https://27kuh3ioqd.execute-api.us-west-2.amazonaws.com" + "/requests",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: localFormSchema,
+          sub: 1,
+        }),
+      }
+    );
+    return response;
+  };
+  fetchData();
 
-{
-  /*EXPORT*/
+  return (
+    <div>
+      <Button>hhh</Button>
+    </div>
+  );
 }
-export default testRequestAdd;
