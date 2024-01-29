@@ -1113,13 +1113,6 @@ The tasks identified for this week were:
 * **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
 * **Description:** Create containerized service that can access buckets/functions 
 
-### Task 9: Link function to Service
-
-* **Status:** In-Progress
-* **Assignee(s):** Jan-Yaeger Dhillon
-* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
-* **Description:** Create containerized service that can access buckets/functions 
-
 ### Task 9: Create API Route 
 
 * **Status:** Complete
@@ -1161,4 +1154,168 @@ The tasks identified for this week were:
 
 End to end testing
 ![test report](img/team-weekly-log-img/week-15/e2etests.png)
+___
+
+# TEAM 9 - TERM 2 WEEK 2
+
+## Work Period
+
+Week 2 ran from 00:00 on 2024/01/22 to 23:59 on 2024/01/28.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Link function to Service
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create containerized service that can access buckets/functions 
+
+### Task 2: Migrate from Pages Router to App Router
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+- **Description:** Migrate from page router to app router in nextjs
+
+### Task 3: Create API Route
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create API route to communicate with Nextjs
+
+### Task 4: Link Front-end to Video Processing
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+- **Description:** Connect front-end page to back-end functionality for video processing
+
+### Task 5: Submission Table
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create table for submission into database
+
+### Task 6: Create Messages Page 
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create pages for user to access messages
+
+### Task 7: Fix Layout Issues 
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix layout issues with pages from previous milestones, specifically on the my request page
+
+### Task 8: Adding Email Reg Exp Method
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add email regular expression method
+
+### Task 9: Add Create Request Validation Method
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add validation process for creating a request
+
+### Task 10: Setup AWS WorkMail
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Set up AWS workmail for use in project
+
+### Task 11: Write Wrapper for Cognito Auth
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create wrapper for cognito authentication 
+
+### Task 12: Add authentication with Cognito to App via SST
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add cognito authentication to web application
+
+### Task 13: Set up AWS SES
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Set up AWS Simple Email Service for use in project
+
+### Task 14: Make Template for Emails
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar 
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create template for automatically generated emails
+
+### Task 15: Add Regular Expression for Password
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add regualr expression for the password for accounts
+
+### Task 16: Create Tests for Messages Page 
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create automatic tests for messages page
+
+### Task 17: Add templates and documentation
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add templates and guide on how to make and delete templates to Github
+
+### Task 18: Create Job to Process Video
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+- **Description:** create job using sst to process video
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-16/burnup-week16.png)
+
+### Table View of Completed Tasks
+All tasks for this milestone completed, any incomplete tasks are for next milestone.
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-16/completed-week16.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-16/testreport1-week16.png)
+![test report](img/team-weekly-log-img/week-16/testreport2-week16.png)
+
+End to end testing
+![test report](img/team-weekly-log-img/week-16/e2etests-week16.png)
 ___

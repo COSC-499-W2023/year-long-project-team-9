@@ -120,3 +120,14 @@
 ![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week15.png)
 ---
 
+## Term 2 Week 3
+### January 15 - January 28, 2024
+- This week I worked on Milestone 4: Peer Testing 1
+- The goal for this week was to finish messages page and fixing layout issues found on previous pages. Additionally I went back to bug fix the myrequests page from the previous milestone, as well as updating documentation and preparting for the peer testing session in class. 
+
+### Picture of Project Board
+![Screenshot of week 15 project board tasks](img/baz-sivakua/baz-tasks-week16.png)
+
+### Picture of week 15's survey
+![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week16.png)
+---
