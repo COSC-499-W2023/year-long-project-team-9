@@ -315,6 +315,41 @@ Screenshot from peer eval for Week 2:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-14.png)
 
+## Week 3 ##
+
+### Applicable Date Range ###
+January 22 - January 28, 2024
+
+### Tasks Worked On ###
+
+- This week I focused on getting everything functional for the Peer Testing.
+- I was able to get the video processing working with ECS but I wasn't able to reliably send jobs from Next.js, so for now I have used the Job construct to run the container, which works well.
+- I linked the upload process to the Job and now videos uploaded will start processing!
+- I also put a lot of effort into designing the video submission page, but I realized that given the slowness of the video processing, it makes more sense to simply notify the user that the video has been updated, and then have a separate "dashboard" view to view the status.
+- To accomodate this dashboard view, I found a really good example to base on but it requires the App router for Next.js, so I also migrated our project to that.
+- This week I hope to smoothen out the video processing process and complete the video submission UI. 
+- I also need to find a way to convert videos recorded in the browser (.webm) to .mp4 so they can be fed to Rekognition.
+- I put in a lot of work this week and think I deserve bonus marks.
+
+Screenshot from peer eval for Week 3:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-15.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-15.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-15.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-15.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-15.png)
 
 
 
