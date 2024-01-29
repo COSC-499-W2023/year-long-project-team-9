@@ -9,7 +9,7 @@ export default async function handler(
     const data = req.body.requestId
 
   
-    console.log(data);
+    console.log("Received requestId " + data);
   
     const { jobId } = await Job.SteveJobs.run ({
       payload: {

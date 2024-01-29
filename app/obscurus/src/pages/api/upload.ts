@@ -9,16 +9,18 @@ type ResponseData = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const api = Api.Api.url;
     const bucket = Bucket.inputBucket.bucketName
+    const { key, fileExt } = req.body
+    console.log("data " + fileExt)
     try {
+      const key = `${crypto.randomUUID()}.${fileExt}`;
         const command = new PutObjectCommand({
             ACL: "public-read",
-            Key: crypto.randomUUID(),
+            Key: key,
             Bucket: bucket,
           });
           const url = await getSignedUrl(new S3Client({}), command);
-          res.status(200).send({url})
+          res.status(200).send({key})
       } catch (err) {
         res.status(500).json({ error: 'Upload failed...' })
       }

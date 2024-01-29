@@ -118,10 +118,13 @@ payload = json.loads(os.getenv("SST_PAYLOAD"))
 key = payload['requestId']
 print("Key: ", key)
 output_bucket = os.environ['OUTPUT_BUCKET']
-output_name_raw = key.split('/')[-1]
-print(output_name_raw)
-output_name,output_ext = os.path.splitext(output_name_raw)
-print(output_name)
+output_name = key
+
+rawname, file_extension = os.path.splitext(output_name)
+print("File extension: ", file_extension)
+print(file_extension)
+print(rawname)
+key=rawname+file_extension
 # payload = os.environ['SST_PAYLOAD']
 
 def start_face_detection():
@@ -170,11 +173,11 @@ def process_video(timestamps, response):
     local_filename = '/tmp/{}'.format(filename)
     local_filename_output = '/tmp/anonymized-{}'.format(filename)
     s3.download_file(input_bucket, key, local_filename)
-
+    print(response)
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
     integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, output_name+"-processed"+output_ext)
+    s3.upload_file(local_filename_output, output_bucket, rawname+"-processed"+file_extension)
 
 def main():
     print("Running...")

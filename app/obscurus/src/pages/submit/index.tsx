@@ -37,29 +37,34 @@ import { Job } from "sst/node/job";
 import useSWR from "swr";
 
 export async function getServerSideProps() {
-  const s3Key = crypto.randomUUID()
+  const s3Key = crypto.randomUUID() + ".mp4"
   const command = new PutObjectCommand({
     ACL: "public-read",
     Key: s3Key,
     Bucket: Bucket.inputBucket.bucketName,
   });
   const url = await getSignedUrl(new S3Client({}), command);
-  console.log(s3Key)
+  console.log("s3Key: ", s3Key)
   return { props: {url, s3Key}};
 }
 
-// const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
+const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())
 
-const Index = ({url, s3key}: {url:string, s3key:string}) => {
 
-  // const {data, error} = useSWR('/api/upload', fetcher)
+const Index = ({url, s3Key}: {url:string, s3Key:string}) => {
+
+  console.log("Raw s3key:" + s3Key)
+
+  const {data, error} = useSWR('/api/upload', fetcher)
+  console.log(data)
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
   const triggerJob = async(filename: any) => {
-
+    "Triggering job..."
+    console.log(filename)
     
     const response = await fetch("/api/hello", {
       method: "POST",
@@ -72,7 +77,7 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
     });
 
     if (response.ok) {
-      console.log(s3key)
+
       console.log("Video jobbed successfully");
     } else {
       console.error("Error jobbing video:", response.statusText);
@@ -93,27 +98,55 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
       return;
     }
 
-    const encodedFilename = encodeURIComponent(file.name);
+    const fileExt = file.name.split('.').pop();
+    const apiUrl = "/api/upload"; // Replace with your actual API endpoint
+
+  try {
+    // Send a POST request to the API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        key: s3Key,
+        extension: fileExt,
+      }),
+    });
+
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Process the response data (if needed)
+    const data = await response.json();
+    console.log("Response from server:", data);
+
+    // Handle the successful upload (update UI, etc.)
+    // ...
+  } catch (error) {
+    // Handle any errors that occurred during the fetch
+    console.error("Error during fetch:", error);
+  }
     const response = await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": file.type,
-        "Content-Disposition": `attachment; filename*=UTF-8''${s3key}`,
+        "Content-Disposition": `attachment; filename*=UTF-8''${s3Key}`,
       },
-      body: file.name,
+      body: file,
     });
 
-    if (!response.ok) {
+    if (response.ok) {
+      console.log("Upload successful");
+      const completionStatus = await triggerJob(s3Key);
+    } else {
       console.error("Upload failed:", response.statusText);
-      return;
     }
 
-    // const location = response.headers.get("Location") || url.split("?")[0];
-    // window.location.href = location;
-    console.log("Upload successful:", location);
-
-    const completionStatus = await triggerJob(encodedFilename);
-    console.log(completionStatus)
+    // const completionStatus = await triggerJob(s3Key);
+    // console.log(completionStatus)
   };
 
   const [record, setRecord] = useState(false);
@@ -159,7 +192,7 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
       const encodedFilename = encodeURIComponent(file.name);
 
       try {
-   
+        console.log("File:" , file)
         const response = await fetch(url, {
           method: "PUT",
           headers: {
@@ -225,7 +258,7 @@ const Index = ({url, s3key}: {url:string, s3key:string}) => {
 
   return (
     <NestedLayout>
-      <Progress className="my-5" value={(current / count) * 100} />
+      <Progress className="my-5 max-w-md" value={(current / count) * 100} />
       <Carousel
         setApi={setApi}
         className="w-full max-w-lg"
