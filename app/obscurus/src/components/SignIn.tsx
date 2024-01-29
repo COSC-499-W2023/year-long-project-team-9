@@ -47,6 +47,8 @@ const SignIn = () => {
   const [signedIn, setSignedIn] = useState(false);
   const [showSignInDialog, setShowSignInDialog] = useState(false);
   const [dialogState, setDialogState] = useState(0);
+
+  // SIGN IN FUNCTIONS
   const [signInState, setSignInState] = useState(0);
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
@@ -93,6 +95,122 @@ const SignIn = () => {
       }
     }
   }
+
+  // FORGOT PASSWORD FUNCTIONS
+  const [forgotPasswordState, setForgotPasswordState] = useState(0);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [forgotPasswordEmailExists, setForgotPasswordEmailExists] =
+    useState(true);
+  const [forgotPasswordEmailValid, setForgotPasswordEmailValid] =
+    useState(true);
+  const handleForgotPasswordEmailChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setForgotPasswordEmail(event.target.value);
+  };
+  const handleForgotPasswordUserExist = (testEmail: string) => {
+    return Auth.signIn(testEmail.toLowerCase(), "123")
+      .then((res) => {
+        return false;
+      })
+      .catch((error) => {
+        const code = error.code;
+        console.log(error);
+        switch (code) {
+          case "UserNotFoundException":
+            return false;
+          case "NotAuthorizedException":
+            return true;
+          case "PasswordResetRequiredException":
+            return false;
+          case "UserNotConfirmedException":
+            return false;
+          default:
+            return false;
+        }
+      });
+  };
+  async function handleForgotPasswordEmailSubmit() {
+    var doesUserExist;
+    await handleForgotPasswordUserExist(forgotPasswordEmail).then(
+      (result) => (doesUserExist = result)
+    );
+    console.log(doesUserExist);
+    if (doesUserExist) {
+      try {
+        Auth.forgotPassword(forgotPasswordEmail);
+        setForgotPasswordState(1);
+      } catch (error) {
+        console.log(error);
+        setForgotPasswordEmailValid(false);
+      }
+    } else {
+      setForgotPasswordEmailExists(false);
+    }
+  }
+  const [forgotPasswordCode, setForgotPasswordCode] = useState("");
+  const handleForgotPasswordCodeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setForgotPasswordCode(event.target.value);
+  };
+  const [forgotPasswordCodeValid, setForgotPasswordCodeValid] = useState(true);
+  const handleForgotPasswordCodeSubmit = () => {
+    if (forgotPasswordCode.length > 0) {
+      setForgotPasswordCodeValid(true);
+      setForgotPasswordState(2);
+    } else {
+      setForgotPasswordCodeValid(false);
+    }
+  };
+  const [forgotPasswordNewPassword, setForgotPasswordNewPassword] =
+    useState("");
+  const handleForgotPasswordNewPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setForgotPasswordNewPassword(event.target.value);
+  };
+  const [
+    forgotPasswordConfirmNewPassword,
+    setForgotPasswordConfirmNewPassword,
+  ] = useState("");
+  const handleForgotPasswordConfirmNewPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setForgotPasswordConfirmNewPassword(event.target.value);
+  };
+  const [forgotPasswordNewPasswordValid, setForgotPasswordNewPasswordValid] =
+    useState(true);
+  const [forgotPasswordNewPasswordMatch, setForgotPasswordNewPasswordMatch] =
+    useState(true);
+
+  async function handleForgotPasswordNewPasswordSubmit() {
+    if (passwordCognitoDefaultRegularExpression(forgotPasswordNewPassword)) {
+      if (forgotPasswordNewPassword === forgotPasswordConfirmNewPassword) {
+        try {
+          await Auth.forgotPasswordSubmit(
+            forgotPasswordEmail,
+            forgotPasswordCode,
+            forgotPasswordNewPassword
+          );
+          setForgotPasswordState(3);
+        } catch (error) {
+          console.log(error);
+          setForgotPasswordNewPasswordValid(false);
+        }
+      } else {
+        setForgotPasswordNewPasswordMatch(false);
+      }
+    } else {
+      setForgotPasswordNewPasswordValid(false);
+    }
+  }
+  const handleForgotPasswordFinalSubmit = () => {
+    setDialogState(0);
+    setForgotPasswordState(0);
+  };
+
+  // SIGN UP FUNCTIONS
   const [signUpState, setSignUpState] = useState(0);
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpEmailValid, setSignUpEmailValid] = useState(true);
@@ -257,6 +375,16 @@ const SignIn = () => {
                 setEmail(""),
                 setPassword(""),
                 setEmailValid(true),
+                setForgotPasswordState(0),
+                setForgotPasswordEmail(""),
+                setForgotPasswordEmailExists(true),
+                setForgotPasswordEmailValid(true),
+                setForgotPasswordCode(""),
+                setForgotPasswordCodeValid(true),
+                setForgotPasswordNewPassword(""),
+                setForgotPasswordConfirmNewPassword(""),
+                setForgotPasswordNewPasswordValid(true),
+                setForgotPasswordNewPasswordMatch(true),
                 setSignUpState(0),
                 setSignUpEmail(""),
                 setSignUpEmailValid(true),
@@ -375,26 +503,138 @@ const SignIn = () => {
                       Forgot Password
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="flex flex-col w-full items-center">
-                    <div id="emailSignIn" className="grid gap-1.5">
-                      <Input
-                        placeholder="Email Address *"
-                        className="pb-2"
-                      ></Input>
-                      <Button className="w-full">
-                        <span>Send Reset Email</span>
-                      </Button>
+                  {forgotPasswordState === 0 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="emailForgotPassword" className="grid gap-1.5">
+                        <Input
+                          value={forgotPasswordEmail}
+                          onChange={handleForgotPasswordEmailChange}
+                          placeholder="Email Address *"
+                          className="pb-2"
+                        ></Input>
+                        {!forgotPasswordEmailExists && (
+                          <p role="alert" className="text-red-500 text-xs">
+                            This email does not have an account!
+                          </p>
+                        )}
+                        {!forgotPasswordEmailValid && (
+                          <p role="alert" className="text-red-500 text-xs">
+                            An error occurred, please try again later!
+                          </p>
+                        )}
+                        <Button
+                          className="w-full"
+                          onClick={handleForgotPasswordEmailSubmit}
+                        >
+                          <span>Send Reset Email</span>
+                        </Button>
+                      </div>
+                      <hr className="w-3/4 bg-gray-500" />
+                      <div id="signInConnector" className="w-3/4 text-center">
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(0)}
+                        >
+                          Sign in to your account
+                        </Button>
+                      </div>
                     </div>
-                    <hr className="w-3/4 bg-gray-500" />
-                    <div id="signInConnector" className="w-3/4 text-center">
-                      <Button
-                        className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                        onClick={() => setDialogState(0)}
-                      >
-                        Sign in to your account
-                      </Button>
+                  )}
+                  {forgotPasswordState === 1 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="emailForgotPassword" className="grid gap-1.5">
+                        <Input
+                          value={forgotPasswordCode}
+                          onChange={handleForgotPasswordCodeChange}
+                          placeholder="Verification Code *"
+                          className="pb-2"
+                        ></Input>
+                        {!forgotPasswordCodeValid && (
+                          <p role="alert" className="text-red-500 text-xs">
+                            Please enter a valid verification code!
+                          </p>
+                        )}
+                        <Button
+                          className="w-full"
+                          onClick={handleForgotPasswordCodeSubmit}
+                        >
+                          <span>Next</span>
+                        </Button>
+                      </div>
+                      <hr className="w-3/4 bg-gray-500" />
+                      <div id="signInConnector" className="w-3/4 text-center">
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(0)}
+                        >
+                          Sign in to your account
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {forgotPasswordState === 2 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="emailForgotPassword" className="grid gap-1.5">
+                        <Input
+                          type="password"
+                          value={forgotPasswordNewPassword}
+                          onChange={handleForgotPasswordNewPasswordChange}
+                          placeholder="New Password *"
+                          className="pb-2"
+                        ></Input>
+                        <Input
+                          type="password"
+                          value={forgotPasswordConfirmNewPassword}
+                          onChange={
+                            handleForgotPasswordConfirmNewPasswordChange
+                          }
+                          placeholder="Confirm New Password *"
+                          className="pb-2"
+                        ></Input>
+                        {!forgotPasswordNewPasswordValid && (
+                          <p role="alert" className="text-red-500 text-xs">
+                            Password is not valid! Passwords must have a capital
+                            letter, a number, and a special character!
+                          </p>
+                        )}
+                        {!forgotPasswordNewPasswordMatch && (
+                          <p role="alert" className="text-red-500 text-xs">
+                            Passwords do not match!
+                          </p>
+                        )}
+                        <Button
+                          className="w-full"
+                          onClick={handleForgotPasswordNewPasswordSubmit}
+                        >
+                          <span>Reset Password</span>
+                        </Button>
+                      </div>
+                      <hr className="w-3/4 bg-gray-500" />
+                      <div id="signInConnector" className="w-3/4 text-center">
+                        <Button
+                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
+                          onClick={() => setDialogState(0)}
+                        >
+                          Sign in to your account
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {forgotPasswordState === 3 && (
+                    <div className="flex flex-col w-full items-center">
+                      <div id="finalSignUp" className="grid gap-1.5 pb-2">
+                        <Label className="font-bold justify-self-center text-ellipsis overflow-hidden pb-1">
+                          Your password has been reset!
+                        </Label>
+                        <Button
+                          className="w-full"
+                          onClick={handleForgotPasswordFinalSubmit}
+                        >
+                          <span>Sign in to your account</span>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
               {dialogState === 2 && (
@@ -625,8 +865,8 @@ const SignIn = () => {
                         ></Input>
                         {!signUpPasswordValid && (
                           <p role="alert" className="text-red-500 text-xs">
-                            Passwords is not valid! Passwords must have a
-                            capital letter, a number, and a special character!
+                            Password is not valid! Passwords must have a capital
+                            letter, a number, and a special character!
                           </p>
                         )}
                         {!signUpPasswordMatch && (

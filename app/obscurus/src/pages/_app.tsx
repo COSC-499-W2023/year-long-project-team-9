@@ -39,23 +39,23 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       AOS.refresh();
     };
 
-    const fetchData = async () => {
-      const response = await fetch(
-        "https://l3rktalcwn3uw2lm6dfvifucqy0eeswm.lambda-url.us-west-2.on.aws/"
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
-    };
-    var userPoolKey;
-    var userPoolWebClientKey;
-    fetchData().then((data) => {
-      userPoolKey = data.userPoolId;
-      userPoolWebClientKey = data.userPoolWebClientId;
-    });
-    console.log(userPoolKey);
+    // const fetchData = async () => {
+    //   const response = await fetch(
+    //     "https://l3rktalcwn3uw2lm6dfvifucqy0eeswm.lambda-url.us-west-2.on.aws/"
+    //   );
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! Status: ${response.status}`);
+    //   }
+    //   const data = await response.json();
+    //   return data;
+    // };
+    // var userPoolKey;
+    // var userPoolWebClientKey;
+    // fetchData().then((data) => {
+    //   userPoolKey = data.userPoolId;
+    //   userPoolWebClientKey = data.userPoolWebClientId;
+    // });
+    // console.log(userPoolKey);
     Amplify.configure({
       Auth: {
         region: "us-west-2",
