@@ -185,4 +185,4 @@
 
 ### Picture of Week 3 Term 2's Survey
 
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-board.png)
