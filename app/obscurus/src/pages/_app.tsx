@@ -39,30 +39,30 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       AOS.refresh();
     };
 
-    // const fetchData = async () => {
-    //   const response = await fetch(
-    //     "https://gv6nqh4pelw2qdglv4foif54mi0yhfhi.lambda-url.us-west-2.on.aws/"
-    //   );
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
-    //   const data = await response.json();
-    //   return data;
-    // };
-    // var userPoolKey;
-    // var userPoolWebClientKey;
-    // fetchData().then((data) => {
-    //   userPoolKey = data.userPoolId;
-    //   userPoolWebClientKey = data.userPoolWebClientId;
-    // });
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://55jw5twjshm746zf4xkvbxugfe0cyqcx.lambda-url.us-west-2.on.aws/"
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    };
+    var userPoolKey;
+    var userPoolWebClientKey;
+    fetchData().then((data) => {
+      userPoolKey = data.userPoolId;
+      userPoolWebClientKey = data.userPoolWebClientId;
+    });
 
-    // Amplify.configure({
-    //   Auth: {
-    //     region: "us-west-2",
-    //     userPoolId: userPoolKey,
-    //     userPoolWebClientId: userPoolWebClientKey,
-    //   },
-    // });
+    Amplify.configure({
+      Auth: {
+        region: "us-west-2",
+        userPoolId: userPoolKey,
+        userPoolWebClientId: userPoolWebClientKey,
+      },
+    });
 
     Router.events.on("routeChangeStart", start);
     Router.events.on("routeChangeComplete", end);

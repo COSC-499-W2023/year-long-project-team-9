@@ -2,16 +2,16 @@
   /*Database interace*/
 }
 export interface Database {
-  users: users;
-  requests: requests;
-  submissions: submissions;
-  rooms: rooms;
-  messages: messages;
+  users: Users;
+  requests: Requests;
+  submissions: Submissions;
+  rooms: Rooms;
+  messages: Messages;
 }
 {
   /*Users table interace*/
 }
-export interface users {
+export interface Users {
   sub: string;
   email: string;
   given_name: string;
@@ -26,7 +26,7 @@ export interface users {
 {
   /*Requests table interace*/
 }
-export interface requests {
+export interface Requests {
   request_id: number;
   request_title: string;
   requester_sub: string;
@@ -39,7 +39,7 @@ export interface requests {
 {
   /*Submissions table interace*/
 }
-export interface submissions {
+export interface Submissions {
   submission_id: number;
   requestee_email: string;
   is_completed: string;
@@ -50,7 +50,7 @@ export interface submissions {
 {
   /*Rooms table interace*/
 }
-export interface rooms {
+export interface Rooms {
   room_id: number;
   connection_id: number;
   participant1_email: string;
@@ -65,4 +65,4 @@ export interface rooms {
 {
   /*Messages table interace*/
 }
-export interface messages {}
+export interface Messages {}
