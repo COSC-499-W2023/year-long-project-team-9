@@ -107,6 +107,53 @@ export async function up(db) {
       },
     ])
     .execute();
+  const newDataForSubmission = await db
+    .insertInto("submissions")
+    .values([
+      {
+        requestee_email: "walter@hotmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 1,
+      },
+      {
+        requestee_email: "mike@gmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 1,
+      },
+      {
+        requestee_email: "walter@hotmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 2,
+      },
+      {
+        requestee_email: "mike@gmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 2,
+      },
+      {
+        requestee_email: "walter@hotmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 3,
+      },
+      {
+        requestee_email: "richie@hotmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 3,
+      },
+      {
+        requestee_email: "doe@gmail.com",
+        is_completed: "NULL",
+        submitted_date: null,
+        request_id: 4,
+      },
+    ])
+    .execute();
 }
 
 /**
@@ -114,4 +161,6 @@ export async function up(db) {
  */
 export async function down(db) {
   const deleteFromUsers = await db.deleteFrom("users").execute();
+  const deleteFromRequests = await db.deleteFrom("requests").execute();
+  const deleteFromSubmissions = await db.deleteFrom("submissions").execute();
 }
