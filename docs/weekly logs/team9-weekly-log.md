@@ -1313,7 +1313,8 @@ All tasks for this milestone completed, any incomplete tasks are for next milest
 
 ### Test Report
 
-![test report](img/team-weekly-log-img/week-16/testreport-week16.png)
+![test report](img/team-weekly-log-img/week-16/testreport1-week16.png)
+![test report](img/team-weekly-log-img/week-16/testreport2-week16.png)
 
 End to end testing
 ![test report](img/team-weekly-log-img/week-16/e2etests-week16.png)
