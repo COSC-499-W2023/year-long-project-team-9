@@ -43,7 +43,6 @@ export interface Submissions {
   submission_id: number;
   requestee_email: string;
   is_completed: string;
-  due_date: Date;
   submitted_date: Date;
   request_id: number;
 }

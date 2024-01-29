@@ -11,7 +11,6 @@ export async function up(db) {
     .addColumn("is_completed", "varchar", (col) =>
       col.notNull().defaultTo("NULL")
     )
-    .addColumn("due_date", "date", (col) => col.notNull())
     .addColumn("submitted_date", "timestamp")
     .addColumn("request_id", "bigserial", (col) =>
       col.notNull().references("requests.request_id")
