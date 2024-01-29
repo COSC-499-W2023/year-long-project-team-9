@@ -1,12 +1,21 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
- 
-type ResponseData = {
-  message: string
-}
- 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
-  res.status(200).json({ message: 'Hello from the API routing built into NextJS!' })
-}
+import { NextApiRequest, NextApiResponse } from "next";
+import { Job } from "sst/node/job";
+
+
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+  ) {
+    const data = req.body.requestId
+
+  
+    console.log("Received requestId " + data);
+  
+    const { jobId } = await Job.SteveJobs.run ({
+      payload: {
+        requestId: data,
+      },
+    });
+  
+    res.status(200).send("Video processing started!");
+  }
