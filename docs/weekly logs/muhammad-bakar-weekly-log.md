@@ -167,7 +167,7 @@
 
 ![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-2-T-2-survey.png)
 
-## January 15 2024 - January 21 2024
+## January 21 2024 - January 28 2024
 
 - I worked on Milestone #4: Peer Testing 1.
 - I worked on AWS Cognito, RDS, Amazon Simple email, and WorkMail
