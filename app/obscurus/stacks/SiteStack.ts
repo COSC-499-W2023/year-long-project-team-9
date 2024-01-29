@@ -111,18 +111,6 @@ export default function SiteStack({ stack }: StackContext) {
   //   [stateMachine, "grantStartExecution"],
   // ]);
 
-  const service = new Service(stack, "processVideo", {
-    path: "./service",
-    port: 8080,
-    bind: [inputBucket, outputBucket],
-    cdk: {
-      applicationLoadBalancer: false,
-      cloudfrontDistribution: false,
-      fargateService: {
-        circuitBreaker: { rollback: true },
-      },
-    },
-  });
 
   // const amplifySecrets = new Function(stack, "AmplifySecrets", {
   //   handler: "./stacks/lambdas/secrets.handler",
