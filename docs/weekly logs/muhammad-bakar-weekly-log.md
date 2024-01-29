@@ -134,6 +134,8 @@
 
 ![Week 13 Bakar's Survey](img/muhammad-bakar/mbakar-week-13-survey.png)
 
+## Week 1 T 2
+
 ### January 8 2024 - January 14 2024
 
 - I worked on Milestone #4: Peer Testing 1.
@@ -153,7 +155,9 @@
 
 ![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-1-T-2-survey.png)
 
-## January 15 2024 - January 21 2024
+## Week 2 T 2
+
+### January 15 2024 - January 21 2024
 
 - I worked on Milestone #4: Peer Testing 1.
 - I worked on AWS Cognito
@@ -167,16 +171,18 @@
 
 ![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-2-T-2-survey.png)
 
-## January 21 2024 - January 28 2024
+## Week 3 T 2
+
+### January 21 2024 - January 28 2024
 
 - I worked on Milestone #4: Peer Testing 1.
 - I worked on AWS Cognito, RDS, Amazon Simple email, and WorkMail
 - I attend group meetings, I worked with Soren
 
-### Picture of Project Board Week 2 Term 2
+### Picture of Project Board Week 3 Term 2
 
 ![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
 
-### Picture of Week 2 Term 2's Survey
+### Picture of Week 3 Term 2's Survey
 
 ![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
