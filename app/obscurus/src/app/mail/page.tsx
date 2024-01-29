@@ -22,7 +22,7 @@ export default function MailPage() {
           className="hidden dark:block"
         />
         <Image
-          src="/examples/mail-light.png"
+          src="/logo.svg"
           width={1280}
           height={727}
           alt="Mail"

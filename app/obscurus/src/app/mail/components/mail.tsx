@@ -1,5 +1,5 @@
-"use client"
-import * as React from "react"
+"use client";
+import * as React from "react";
 import {
   AlertCircle,
   Archive,
@@ -17,37 +17,38 @@ import {
   User,
   MessageCircle,
   Youtube,
-  FileUp
-} from "lucide-react"
+  FileUp,
+} from "lucide-react";
 
-import { AccountSwitcher } from "./account-switcher"
-import { MailDisplay } from "../components/mail-display"
-import { MailList } from "../components/mail-list"
-import { Nav } from "../components/nav"
-import { Mail } from "../data"
-import { useMail } from "../use-mail"
-import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
-import { Input } from "@/components/ui/input"
+import { AccountSwitcher } from "./account-switcher";
+import { MailDisplay } from "../components/mail-display";
+import { MailList } from "../components/mail-list";
+import { Nav } from "../components/nav";
+import { Mail } from "../data";
+import { useMail } from "../use-mail";
+import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-import { TooltipProvider } from "@/components/ui/tooltip"
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface MailProps {
   accounts: {
-    label: string
-    email: string
-    icon: React.ReactNode
-  }[]
-  mails: Mail[]
-  defaultLayout: number[] | undefined
-  defaultCollapsed?: boolean
-  navCollapsedSize: number
+    label: string;
+    email: string;
+    icon: React.ReactNode;
+  }[];
+  mails: Mail[];
+  defaultLayout: number[] | undefined;
+  defaultCollapsed?: boolean;
+  navCollapsedSize: number;
 }
 
 export function Mail({
@@ -57,8 +58,9 @@ export function Mail({
   defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
-  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed)
-  const [mail] = useMail()
+  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
+  const [mail] = useMail();
+  const router = useRouter();
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -67,7 +69,7 @@ export function Mail({
         onLayout={(sizes: number[]) => {
           document.cookie = `react-resizable-panels:layout=${JSON.stringify(
             sizes
-          )}`
+          )}`;
         }}
         className="h-full max-h-[800px] items-stretch"
       >
@@ -77,44 +79,51 @@ export function Mail({
           collapsible={true}
           minSize={15}
           maxSize={20}
-        //   onCollapse={(collapsed: boolean) => {
-        //     setIsCollapsed(collapsed)
-        //     document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-        //       collapsed
-        //     )}`
-        //   }}
-          className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
+          //   onCollapse={(collapsed: boolean) => {
+          //     setIsCollapsed(collapsed)
+          //     document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+          //       collapsed
+          //     )}`
+          //   }}
+          className={cn(
+            isCollapsed &&
+              "min-w-[50px] transition-all duration-300 ease-in-out"
+          )}
         >
-          <div className={cn("flex h-[52px] items-center justify-center", isCollapsed ? 'h-[52px]': 'px-2')}>
+          {/* <div className={cn("flex h-[52px] items-center justify-center", isCollapsed ? 'h-[52px]': 'px-2')}>
             <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
           </div>
-          <Separator />
+          <Separator /> */}
           <Nav
             isCollapsed={isCollapsed}
             links={[
               {
-                title: "Requets",
+                title: "Requests",
                 icon: Inbox,
                 variant: "default",
+                href:"/"
               },
               {
                 title: "Submissions",
                 icon: FileUp,
                 variant: "ghost",
+                href:"/MyRequests"
               },
               {
-                title: "My Videos", 
+                title: "My Videos",
                 icon: Youtube,
                 variant: "ghost",
+                href: "/"
               },
               {
                 title: "Chat",
                 icon: MessageCircle,
                 variant: "ghost",
-              }
+                href: "/"
+              },
             ]}
           />
-          <>
+          {/* <>
             <Separator />
             <Nav isCollapsed={isCollapsed}
               links={[
@@ -131,21 +140,27 @@ export function Mail({
                   variant: "ghost",
                   }
               ]}/>
-          </>
-            
+          </> */}
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
           <Tabs defaultValue="all">
             <div className="flex items-center px-4">
               <h1 className="text-xl font-bold">Requests</h1>
-              <div className="ml-auto">
-                <Nav isCollapsed={isCollapsed}
-                links={[{
-                  title: "Create Request",
-                  icon: Send,
-                  variant: "ghost",
-                }]}/>
+              <div className="ml-auto" onClick={() => router.push("/CreateRequest")}>
+
+                  <Nav
+                    isCollapsed={isCollapsed}
+                    links={[
+                      {
+                        title: "Create Request",
+                        icon: Send,
+                        variant: "ghost",
+                        href: "/CreateRequest"
+                      },
+                    ]}
+                  />
+
               </div>
             </div>
             <Separator />
@@ -173,5 +188,5 @@ export function Mail({
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
-  )
+  );
 }

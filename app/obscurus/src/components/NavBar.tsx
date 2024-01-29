@@ -54,35 +54,35 @@ const NavBar = () => {
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
       <div className="p-1">
         <NavigationMenu>
-          <Link href="/" className="p-5">
-            <Image
-              className="min-h-full"
-              src="/logo.svg"
-              alt="obscurus"
-              width={60}
-              height={60}
-            />
-          </Link>
+        <Link href="/" className="p-5" onClick={() => handleAuth}>
+          <Image
+            className="min-h-full"
+            src="/logo.svg"
+            alt="obscurus"
+            width={60}
+            height={60}
+          />
+        </Link>
 
-          <NavigationMenuList>
-             <Link href="/">
-              <NavigationMenuItem>
+            <NavigationMenuList>
+              <Link href="/">
+                <NavigationMenuItem>
+                  <span
+                    className="font-bold text-xl p-5 hover:cursor-pointer"
+                  >
+                    obscurus
+                  </span>
+                </NavigationMenuItem>
+              </Link>
+              
+              {/* <Link href="../CreateRequest">
+                <NavigationMenuItem>
                 <span
-                  className="font-bold text-xl p-5 hover:cursor-pointer"
-                >
-                  obscurus
-                </span>
-              </NavigationMenuItem>
-            </Link>
-            {/*
-            <Link href="../CreateRequest">
-              <NavigationMenuItem>
-              <span
-                  className="font-bold text-xl p-5 hover:cursor-pointer">
-                  Create Request
-                </span>
-              </NavigationMenuItem>
-            </Link>
+                    className="font-bold text-xl p-5 hover:cursor-pointer">
+                    Create Request
+                  </span>
+                </NavigationMenuItem>
+              </Link>
 
             <Link href="../MyRequests">
               <NavigationMenuItem>
