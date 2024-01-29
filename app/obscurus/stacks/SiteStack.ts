@@ -6,10 +6,11 @@ import {
   Function,
   RDS,
   Api,
+  Job,
   Service,
   Cognito,
+  Config,
   Queue,
-  Job,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
@@ -28,16 +29,6 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
-    // cdk: {
-    //   cluster: {
-    //     vpc: ec2.Vpc.fromLookup(stack, "VPC", {
-    //       vpcId: "vpc-0c4351dc153642aae",
-    //     }),
-    //     vpcSubnets: {
-    //       subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-    //     },
-    //   },
-    // },
   });
 
   const steveJobs = new Job(stack, "SteveJobs", {
@@ -61,6 +52,9 @@ export default function SiteStack({ stack }: StackContext) {
 
   const api = new Api(stack, "Api", {
     defaults: {
+      function: {
+        bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
+      },
       authorizer: "iam",
     },
     routes: {
@@ -94,6 +88,10 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
+    // triggers: {
+    //   preAuthentication: "./stacks/core/src/preAuthentication.main",
+    //   postAuthentication: "./stacks/core/src/postAuthentication.main",
+    // },
   });
 
   // Allow authenticated users invoke API

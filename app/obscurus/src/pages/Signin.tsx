@@ -1,15 +1,7 @@
 //this code is mainly from AI
 import React, { useState } from "react";
-import { Auth, Amplify } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { authMethods } from "../auth/authMethods";
-
-Amplify.configure({
-  Auth: {
-    region: "us-west-2",
-    userPoolId: "us-west-2_Zjw9UuRG5",
-    userPoolWebClientId: "g0arfuhrmi7uctc1g07reudp3",
-  },
-});
 
 export default function Login() {
   const [email, setEmail] = useState("");
