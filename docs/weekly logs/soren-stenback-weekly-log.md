@@ -184,3 +184,20 @@
 ### Picture of T2 Week 2's Survey
 
 ![T2 Week 2 Survey](img/soren-stenback/T2Week2-Survey-ID4.png)
+
+---
+
+## T2 Week 3
+
+### January 22 - January 28, 2023
+
+- This week I worked on Milestone #4, Peer Testing #1.
+- The goals for this week were to implement the sign in, forgot password, and sign up functionality to the web app through Cognito and Amplify Auth.
+
+### Picture of Project Board
+
+![T2 Week 3 Project Board](img/soren-stenback/T2Week3-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 3's Survey
+
+![T2 Week 3 Survey](img/soren-stenback/T2Week3-Survey-ID4.png)
