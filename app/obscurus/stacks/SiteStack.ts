@@ -101,7 +101,7 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         }
       },
-      "GET /secrets": {
+      "POST /secrets": {
         function: {
           handler: "./stacks/lambdas/secrets.handler",
           timeout: 20,
@@ -116,6 +116,14 @@ export default function SiteStack({ stack }: StackContext) {
           timeout: 20,
           permissions: [steveJobs, inputBucket],
           bind: [steveJobs, inputBucket], 
+        },
+      },
+      "POST /createRequest": {
+        function: {
+          handler: "./stacks/lambdas/createRequest.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds], 
         },
       }
     },
@@ -132,7 +140,6 @@ export default function SiteStack({ stack }: StackContext) {
     //       email: { required: true, mutable: false },
     //       givenName: { required: true, mutable: true },
     //       familyName: { required: true, mutable: true },
-    //       birthdate: { required: true, mutable: false },
     //     },
     //   },
     // },

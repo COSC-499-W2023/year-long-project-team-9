@@ -5,14 +5,14 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Mail } from "../data"
-import { useMail } from "../use-mail"
+import { Mail } from "../data/data"
+import { useMail } from "./hooks/use-mail"
 
 interface MailListProps {
   items: Mail[]
 }
 
-export function MailList({ items }: MailListProps) {
+export default function MailList({ items }: MailListProps) {
   const [mail, setMail] = useMail()
 
   return (

@@ -20,7 +20,7 @@ interface AccountSwitcherProps {
   }[]
 }
 
-export function AccountSwitcher({
+export default function AccountSwitcher({
   isCollapsed,
   accounts,
 }: AccountSwitcherProps) {

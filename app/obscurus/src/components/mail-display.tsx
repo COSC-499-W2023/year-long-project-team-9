@@ -42,13 +42,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Mail } from "../data"
+import { Mail } from "../data/data"
 
 interface MailDisplayProps {
   mail: Mail | null
 }
 
-export function MailDisplay({ mail }: MailDisplayProps) {
+export default function MailDisplay({ mail }: MailDisplayProps) {
   const today = new Date()
 
   return (

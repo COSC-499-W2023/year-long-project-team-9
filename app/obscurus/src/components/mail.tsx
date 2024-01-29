@@ -20,12 +20,12 @@ import {
   FileUp,
 } from "lucide-react";
 
-import { AccountSwitcher } from "./account-switcher";
-import { MailDisplay } from "../components/mail-display";
-import { MailList } from "../components/mail-list";
-import { Nav } from "../components/nav";
-import { Mail } from "../data";
-import { useMail } from "../use-mail";
+import AccountSwitcher from "./account-switcher";
+import MailDisplay from "../components/mail-display";
+import MailList from "../components/mail-list";
+import  Nav from "../components/nav";
+import { Mail } from "../data/data";
+import { useMail } from "./hooks/use-mail";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
@@ -51,7 +51,7 @@ interface MailProps {
   navCollapsedSize: number;
 }
 
-export function Mail({
+export default function Mail({
   accounts,
   mails,
   defaultLayout = [265, 440, 655],
@@ -101,25 +101,21 @@ export function Mail({
                 title: "Requests",
                 icon: Inbox,
                 variant: "default",
-                href:"/"
               },
               {
                 title: "Submissions",
                 icon: FileUp,
                 variant: "ghost",
-                href:"/MyRequests"
               },
               {
                 title: "My Videos",
                 icon: Youtube,
                 variant: "ghost",
-                href: "/"
               },
               {
                 title: "Chat",
                 icon: MessageCircle,
                 variant: "ghost",
-                href: "/"
               },
             ]}
           />
@@ -156,7 +152,6 @@ export function Mail({
                         title: "Create Request",
                         icon: Send,
                         variant: "ghost",
-                        href: "/CreateRequest"
                       },
                     ]}
                   />

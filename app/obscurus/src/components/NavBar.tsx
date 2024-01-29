@@ -43,15 +43,15 @@ const NavBar = () => {
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
 
-  useEffect(() => {
-    const checkAsyncUserSignIn = async () => {
-      const userBoolean = await isSignedIn();
-      return userBoolean;
-    };
-    checkAsyncUserSignIn().then((result) => {
-      setUserSignedIn(result);
-    });
-  });
+  // useEffect(() => {
+  //   const checkAsyncUserSignIn = async () => {
+  //     const userBoolean = await isSignedIn();
+  //     return userBoolean;
+  //   };
+  //   checkAsyncUserSignIn().then((result) => {
+  //     setUserSignedIn(result);
+  //   });
+  // });
 
   return (
     <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
