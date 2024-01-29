@@ -1,5 +1,5 @@
-import { isEmailValid } from "../../regular-expression/emailRegularExpression";
-import { formSchema } from "../../pages/CreateRequest";
+import { isEmailValid } from "../regular-expression/emailRegularExpression";
+import { formSchema } from "../app/CreateRequest/page";
 
 export function createRequestValidation(data: formSchema): boolean {
   // checking if data is a valid formSchema type
@@ -79,15 +79,16 @@ export function createRequestValidation(data: formSchema): boolean {
     return false;
   }
   for (let i = 0; i < numberOfEmails; i++) {
-    if (data.clients.at(i)?.value === undefined) {
-      return false;
-    }
-    // the above codition makes sure that data.clients.at(i) is not undefined
-    const emailValid = isEmailValid(data.clients.at(i).value);
-    if (emailValid === false) {
-      return false;
-    }
+  const client = data.clients.at(i);
+  if (client?.value === undefined) {
+    return false;
   }
+  // the above condition makes sure that client is not undefined
+  const emailValid = isEmailValid(client.value);
+  if (emailValid === false) {
+    return false;
+  }
+}
 
   return true;
 }

@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,9 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useScroll from "@/components/hooks/scroll";
-import Login from "../components/Login";
+import Login from "./Login";
 
 export async function getServerSideProps() {
   return {
@@ -64,24 +65,20 @@ const NavBar = () => {
           </Link>
 
           <NavigationMenuList>
-            <Link href="/">
+             <Link href="/">
               <NavigationMenuItem>
                 <span
-                  className={`font-bold text-xl p-5 hover:cursor-pointer ${
-                    router.pathname === "/" ? " underline font-extrabold" : ""
-                  }`}
+                  className="font-bold text-xl p-5 hover:cursor-pointer"
                 >
                   obscurus
                 </span>
               </NavigationMenuItem>
             </Link>
+            {/*
             <Link href="../CreateRequest">
               <NavigationMenuItem>
               <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/CreateRequest" ? " underline font-extrabold" : ""
-                  }`}
-                >
+                  className="font-bold text-xl p-5 hover:cursor-pointer">
                   Create Request
                 </span>
               </NavigationMenuItem>
@@ -90,10 +87,7 @@ const NavBar = () => {
             <Link href="../MyRequests">
               <NavigationMenuItem>
               <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/MyRequests" ? " underline font-extrabold" : ""
-                  }`}
-                >
+                  className="font-bold text-xl p-5 hover:cursor-pointer">
                   My Requests
                 </span>
               </NavigationMenuItem>
@@ -101,14 +95,11 @@ const NavBar = () => {
             <Link href="/submit">
               <NavigationMenuItem>
               <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/submit" ? " underline font-extrabold" : ""
-                  }`}
-                >
+                  className="font-bold text-xl p-5 hover:cursor-pointer">
                   Submit
                 </span>
               </NavigationMenuItem>
-            </Link>
+            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>

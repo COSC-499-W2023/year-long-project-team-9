@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai"
 
-import { Mail, mails } from "@/app/examples/mail/data"
+import { Mail, mails } from "./data"
 
 type Config = {
   selected: Mail["id"] | null

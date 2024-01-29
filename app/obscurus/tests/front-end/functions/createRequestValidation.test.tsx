@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
-import { createRequestValidation } from "../../../src/form-validation/create-request-form-validation/createRequestValidation";
-import { formSchema } from "../../../src/pages/CreateRequest";
+import { createRequestValidation } from "../../../src/create-request-form-validation/createRequestValidation";
+import { formSchema } from "../../../src/app/CreateRequest/page";
 
 test("testing createRequestValidation clients 1", () => {
   const localFormSchema: formSchema = {

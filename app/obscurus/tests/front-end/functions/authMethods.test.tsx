@@ -2,7 +2,7 @@ import {
   getEmail,
   getSub,
   isAuthenticated,
-} from "../../../src/auth/authMethods";
+} from "../../../src/app/auth/authMethods";
 
 test("testing isAuthenticated()", () => {
   expect(isAuthenticated()).toBe(false);

@@ -20,23 +20,23 @@ import {
   FileUp
 } from "lucide-react"
 
-import { AccountSwitcher } from "@/app/examples/mail/components/account-switcher"
-import { MailDisplay } from "@/app/examples/mail/components/mail-display"
-import { MailList } from "@/app/examples/mail/components/mail-list"
-import { Nav } from "@/app/examples/mail/components/nav"
-import { Mail } from "@/app/examples/mail/data"
-import { useMail } from "@/app/examples/mail/use-mail"
+import { AccountSwitcher } from "./account-switcher"
+import { MailDisplay } from "../components/mail-display"
+import { MailList } from "../components/mail-list"
+import { Nav } from "../components/nav"
+import { Mail } from "../data"
+import { useMail } from "../use-mail"
 import { cn } from "@/lib/utils"
-import { Separator } from "@/registry/new-york/ui/separator"
-import { Input } from "@/registry/new-york/ui/input"
+import { Separator } from "@/components/ui/separator"
+import { Input } from "@/components/ui/input"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/registry/new-york/ui/tabs"
-import { TooltipProvider } from "@/registry/new-york/ui/tooltip"
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/registry/new-york/ui/resizable"
+} from "@/components/ui/tabs"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
 interface MailProps {
   accounts: {
@@ -77,12 +77,12 @@ export function Mail({
           collapsible={true}
           minSize={15}
           maxSize={20}
-          onCollapse={(collapsed) => {
-            setIsCollapsed(collapsed)
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              collapsed
-            )}`
-          }}
+        //   onCollapse={(collapsed: boolean) => {
+        //     setIsCollapsed(collapsed)
+        //     document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+        //       collapsed
+        //     )}`
+        //   }}
           className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
         >
           <div className={cn("flex h-[52px] items-center justify-center", isCollapsed ? 'h-[52px]': 'px-2')}>

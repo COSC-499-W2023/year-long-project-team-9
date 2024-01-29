@@ -1,7 +1,7 @@
 //this code is mainly from AI
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { authMethods } from "../auth/authMethods";
+import { authMethods } from "./auth/authMethods";
 
 export default function Login() {
   const [email, setEmail] = useState("");

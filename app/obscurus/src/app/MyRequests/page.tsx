@@ -1,6 +1,7 @@
+"use client"
 import Layout from "@/components/layout";
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,11 +12,11 @@ import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {},
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   return {
+//     props: {},
+//   };
+// };
 
 type ClientType = {
   client: string;
@@ -127,7 +128,7 @@ const MyRequests = () => {
       }
     } else {
       setNoTitle(false);
-      router.reload();
+      router.refresh()
     }
   };
   const clientsEmpty = () => {

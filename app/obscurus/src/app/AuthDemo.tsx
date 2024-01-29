@@ -9,7 +9,7 @@ const Dashboard = () => {
     const searchParams = useSearchParams()
     let codePresent = false;
     try {
-        const code = searchParams.get('code')
+        const code = searchParams?.get('code')
         if(code != null) {
             codePresent = true;
         } else {

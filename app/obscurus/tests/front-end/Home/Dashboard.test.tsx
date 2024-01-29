@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import AuthDemo from "@/pages/AuthDemo";
+import AuthDemo from "@/app/AuthDemo";
 import '@testing-library/jest-dom'
 
 {/*Testing in title in the document*/}

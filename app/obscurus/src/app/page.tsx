@@ -1,3 +1,4 @@
+'use client'
 import Hero from "../components/Hero";
 import About from "../components/About";
 import Features from "../components/Features";
@@ -5,11 +6,11 @@ import HowTo from "../components/HowTo";
 import { ArrowBigDownIcon } from "lucide-react";
 import type { GetStaticProps } from 'next'
 
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {}, 
-  };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   return {
+//     props: {}, 
+//   };
+// };
 
 
 export default function Home() {

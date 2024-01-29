@@ -3,10 +3,10 @@ import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NavBar from "@/components/NavBar";
 import * as Login from "@/components/Login";
-import * as nextRouter from "next/router";
+import * as nextRouter from "next/navigation";
 import * as nextThemes from "next-themes";
 
-jest.mock("next/router", () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
       route: "/",
