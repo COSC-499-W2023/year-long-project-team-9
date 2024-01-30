@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import NavBar from "./NavBar";
 import { ThemeProvider } from "./ui/theme-provider";
@@ -28,6 +28,7 @@ import {
 import { Mail, mails } from "../data/data";
 import Messages from "@/pages/messages";
 import MyVideos from "@/pages/MyVideos";
+import { useTheme } from "next-themes";
 
 type LayoutProps = {
   children: ReactNode;
@@ -39,13 +40,23 @@ export default function Layout({ children }: LayoutProps) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [mail] = useMail();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
   return (
     <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    attribute="class"
+    defaultTheme="system"
+    enableSystem
+    disableTransitionOnChange
+  >
     <div className="flex flex-col h-full fixed">
     <NavBar />
       <TooltipProvider delayDuration={0}>
@@ -118,7 +129,7 @@ export default function Layout({ children }: LayoutProps) {
                   className="ml-auto"
                   onClick={() => router.push("/CreateRequest")}
                 >
-                  <Nav
+                  {/* <Nav
                     isCollapsed={false}
                     links={[
                       {
@@ -128,7 +139,7 @@ export default function Layout({ children }: LayoutProps) {
                         href: "/CreateRequest",
                       },
                     ]}
-                  />
+                  /> */}
                 </div>
               </div>
               <Separator className="primary" />
@@ -150,13 +161,12 @@ export default function Layout({ children }: LayoutProps) {
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={1} minSize={50}>
-            <MyVideos />
+          {children}
           </ResizablePanel>
         </ResizablePanelGroup>
-
-        <main>{children}</main>
       </TooltipProvider>
     </div>
     </ThemeProvider>
+
   );
 }

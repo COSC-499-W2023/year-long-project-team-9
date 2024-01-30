@@ -24,6 +24,7 @@ import { Send, Search } from "lucide-react";
 import router, { useRouter } from "next/router";
 import { Mail as m } from "../data/data";
 import { useMail } from "@/components/hooks/use-mail";
+import MyVideos from "./MyVideos";
 
 export function MailPage() {
   // interface MailProps {
@@ -48,6 +49,7 @@ export function MailPage() {
     <>
       <TooltipProvider delayDuration={0}>
         <ResizablePanelGroup
+        
           direction="horizontal"
           onLayout={(sizes: number[]) => {
             document.cookie = `react-resizable-panels:layout=${JSON.stringify(
@@ -130,7 +132,7 @@ export function MailPage() {
 
 const IndexPage: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-  return <Layout>h</Layout>
+  return <Layout><MyVideos/></Layout>
 };
 
 export default IndexPage;

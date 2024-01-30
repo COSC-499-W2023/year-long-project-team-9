@@ -46,11 +46,6 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // }, [data]);
 
   return getLayout(
-    // <AnimatePresence
-    //   mode="wait"
-    //   initial={false}
-    //   onExitComplete={() => window.scrollTo(0, 0)}
-    // >
     <>
       <Head>
         <title>obscurus</title>
