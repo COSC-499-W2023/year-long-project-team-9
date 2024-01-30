@@ -1,4 +1,4 @@
-export const mails = [
+export const requests = [
   {
     id: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
     name: "Daniel Woods",
@@ -171,7 +171,7 @@ export const mails = [
   },
 ]
 
-export type Mail = (typeof mails)[number]
+export type Mail = (typeof requests)[number]
 
 export const accounts = [
   {

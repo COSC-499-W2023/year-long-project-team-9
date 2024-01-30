@@ -3,7 +3,7 @@ import Layout from "@/components/layout";
 import { useState } from "react";
 import Image from "next/image";
 
-import { accounts, mails } from "../data/data";
+import { accounts, requests } from "../data/data";
 import Mail from "@/components/mail";
 import Home from "./Home";
 import mail from "@/components/mail";
@@ -25,8 +25,49 @@ import router, { useRouter } from "next/router";
 import { Mail as m } from "../data/data";
 import { useMail } from "@/components/hooks/use-mail";
 import MyVideos from "./MyVideos";
+import { Api } from "sst/node/api";
+import useSWR from "swr";
+import Hero from "@/components/Hero";
+import CreateRequest from "./CreateRequest";
 
-export function MailPage() {
+
+export async function getServerSideProps() {
+  const fetchData = async () => {
+    try {
+      const apiURL = Api.Api.url
+      const response = await fetch(apiURL + "/getSubmissions");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await response.json(); // return the data
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const submissions = await fetchData(); // get the data
+  return {
+    props: { submissions }, // pass the data as a prop
+  };
+};
+
+const fetcher = (url: string, init?: RequestInit) =>
+  fetch(url, init).then((res) => res.json());
+
+export function Index({ submissions }: { submissions: any }) {
+
+  const { data, error } = useSWR("/api/getSubmissions", fetcher);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+  
+  console.log(data)
   // interface MailProps {
   //   accounts: {
   //     label: string;
@@ -69,7 +110,7 @@ export function MailPage() {
           </div> */}
 
           <ResizablePanel
-            defaultSize={defaultLayout[0]}
+            defaultSize={defaultLayout[1]}
             collapsedSize={1}
             collapsible={true}
             minSize={15}
@@ -83,7 +124,7 @@ export function MailPage() {
           <ResizablePanel defaultSize={1} minSize={30}>
             <Tabs defaultValue="all">
               <div className="flex items-center px-4">
-                <h1 className="text-xl font-bold">Requests</h1>
+                <h1 className="text-xl font-bold"></h1>
                 <div
                   className="ml-auto"
                   onClick={() => router.push("/CreateRequest")}
@@ -111,17 +152,17 @@ export function MailPage() {
                 </form>
               </div>
               <TabsContent value="all" className="m-0">
-                <MailList items={mails} />
+                <MailList items={requests} />
               </TabsContent>
               <TabsContent value="unread" className="m-0">
-                <MailList items={mails.filter((item) => !item.read)} />
+                <MailList items={requests.filter((item) => !item.read)} />
               </TabsContent>
             </Tabs>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={defaultLayout[2]}>
             <MailDisplay
-              mail={mails.find((item) => item.id === mail.selected) || null}
+              mail={requests.find((item) => item.id === mail.selected) || null}
             />
           </ResizablePanel>
         </ResizablePanelGroup>
@@ -132,7 +173,7 @@ export function MailPage() {
 
 const IndexPage: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-  return <Layout><MyVideos/></Layout>
+  return <Layout><MyVideos videoUrl={"test3.mp4"}/></Layout>
 };
 
 export default IndexPage;

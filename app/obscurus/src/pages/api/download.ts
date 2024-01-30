@@ -11,11 +11,10 @@ type ResponseData = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-    const bucket = Bucket.inputBucket.bucketName; // Get the bucket name from SST Bucket
+    const bucket = Bucket.inputBucket.bucketName; 
     const { key, fileExt } = req.body;
     console.log(key)
     try {
-        // Generate a unique key if it's not provided
         const objectKey = key || `${crypto.randomUUID()}.${fileExt}`;
 
         const command = new GetObjectCommand({

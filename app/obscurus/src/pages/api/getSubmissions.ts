@@ -5,22 +5,14 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
   ) {
-
     const fetchData = async () => {
         const response = await fetch(
-         Api.Api.url + "/createUser",{
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              requestId: null,
-            }),
-          });
+         Api.Api.url + "/getSubmissions"
+        );
         
-        const data = await response.json();
 
-        return data;
+
+        return response;
     };
 
     const data = await fetchData();

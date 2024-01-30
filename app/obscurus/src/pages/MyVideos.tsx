@@ -1,10 +1,17 @@
 import VideoPlayer from "../components/VideoPlayer";
 
-const MyVideos = () => {
+
+
+interface MyVideosProps {
+  videoUrl: string | null;
+}
+
+const MyVideos: React.FC<MyVideosProps> = ({ videoUrl }) => {
   return (
-    <div>
-      <h1 className="text-lg font-semibold">Spanish Lesson</h1>
-      <VideoPlayer videoUrl={"test3.mp4"} />
+    <div className="p-10">
+      <h1 className="text-lg font-semibold ">Spanish Lesson</h1>
+      <div className="text-md text-blue-400">January 30, 2024</div>
+      <VideoPlayer videoUrl={videoUrl} />
     </div>
   );
 };

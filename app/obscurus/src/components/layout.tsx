@@ -25,7 +25,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "./ui/resizable";
-import { Mail, mails } from "../data/data";
+import { Mail, requests } from "../data/data";
 import Messages from "@/pages/messages";
 import MyVideos from "@/pages/MyVideos";
 import { useTheme } from "next-themes";
@@ -152,10 +152,10 @@ export default function Layout({ children }: LayoutProps) {
                 </form>
               </div>
               <TabsContent value="all" className="m-0">
-                <MailList items={mails} />
+                <MailList items={requests} />
               </TabsContent>
               <TabsContent value="unread" className="m-0">
-                <MailList items={mails.filter((item) => !item.read)} />
+                <MailList items={requests.filter((item) => !item.read)} />
               </TabsContent>
             </Tabs>
           </ResizablePanel>

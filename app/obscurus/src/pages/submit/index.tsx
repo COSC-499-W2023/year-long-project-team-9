@@ -75,10 +75,21 @@ const Index = ({ url, s3Key }: { url: string; s3Key: string }) => {
     });
 
     if (response.ok) {
-      console.log("Video jobbed successfully");
+
+      const response = await fetch("/api/hello", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestId: filename,
+        }),
+      });
     } else {
       console.error("Error jobbing video:", response.statusText);
     }
+
+    console.log("Video jobbed successfully");
   };
 
   const handleUploadClick = () => {
