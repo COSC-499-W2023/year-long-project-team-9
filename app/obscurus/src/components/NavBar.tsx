@@ -79,7 +79,7 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href="../CreateRequest">
+            <Link href={userSignedIn ? "../CreateRequest" : "/"}>
               <NavigationMenuItem>
                 <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
@@ -119,7 +119,7 @@ const NavBar = () => {
                 </span>
               </NavigationMenuItem>
             </Link>
-          </NavigationMenuList> 
+          </NavigationMenuList>
         </NavigationMenu>
       </div>
       <div className="grid grid-flow-col gap-2 justify-end items-center pr-5 ">
