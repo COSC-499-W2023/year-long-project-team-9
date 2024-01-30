@@ -16,7 +16,6 @@ export interface Users {
   email: string;
   given_name: string;
   family_name: string;
-  birthdate: Date;
   timezone: string;
   language: string;
   is_logged_in_with_social_identity_provider: boolean;

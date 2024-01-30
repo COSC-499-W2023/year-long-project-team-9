@@ -5,7 +5,7 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
 
 const newRequest = {
     
-        request_id: 1,
+        request_id: 22,
         description: 'Some description',
         request_title: 'Some title',
         requester_sub: 'sub',
@@ -15,6 +15,8 @@ const newRequest = {
         creation_date: new Date(), 
     };
   const requests = await Requests.insert(newRequest);
+
+
 
   return {
     statusCode: 200,

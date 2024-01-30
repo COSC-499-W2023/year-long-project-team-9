@@ -82,7 +82,7 @@ export default function SiteStack({ stack }: StackContext) {
       //     },
       //   },
       // },
-      "GET /users": {
+      "GET /getUsers": {
         function: {
           handler: "./stacks/lambdas/listUsers.handler",
           timeout: 20,
@@ -124,7 +124,24 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [steveJobs, inputBucket, rds],
           bind: [steveJobs, inputBucket, rds], 
         },
-      }
+      },
+      "POST /createUser": {
+        function: {
+          handler: "./stacks/lambdas/createUser.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds], 
+        },
+      },
+      "GET /getSubmissions": {
+        function: {
+          handler: "./stacks/lambdas/listSubmissions.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        }
+      },
     },
   });
 
