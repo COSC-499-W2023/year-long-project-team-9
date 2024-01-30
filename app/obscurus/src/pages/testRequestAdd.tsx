@@ -2,7 +2,7 @@ import Layout from "@/components/layout";
 import { formSchema } from "./CreateRequest";
 import { Api } from "sst/node/api";
 import { ta } from "date-fns/locale";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GetServerSideProps } from "next";
 import { sendDataToLambda } from "../pages/api/request";
@@ -22,7 +22,7 @@ export default async function testRequestAdd() {
         const result = await response.json();
         setData(result);
       } catch (err) {
-        setError(err);
+        // setError(err);
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ export default async function testRequestAdd() {
   }, []); // Empty dependency array means this runs once after the initial render
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
