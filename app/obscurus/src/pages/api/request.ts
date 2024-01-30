@@ -1,6 +1,6 @@
 import { Api } from "sst/node/api";
 
-export async function sendDataToLambda(data) {
+export async function sendDataToLambda(data: string) {
   const apiURL = Api.Api.url;
   const response = await fetch(apiURL + "/requests", {
     method: "POST",
