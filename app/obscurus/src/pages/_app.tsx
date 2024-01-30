@@ -15,6 +15,7 @@ import { Amplify } from "aws-amplify";
 import { Api } from "sst/node/api";
 import useSWR from "swr";
 
+
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -47,12 +48,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // }, [data]);
 
   return getLayout(
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+   
       <AnimatePresence
         mode="wait"
         initial={false}
@@ -61,10 +57,10 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <Head>
           <title>obscurus</title>
         </Head>
-        <NavBar />
+  
 
         {loading ? <LoadingPage /> : <Component {...pageProps} />}
       </AnimatePresence>
-    </ThemeProvider>
+
   );
 }
