@@ -27,6 +27,7 @@ import {
 } from "./ui/resizable";
 import { Mail, mails } from "../data/data";
 import Messages from "@/pages/messages";
+import MyVideos from "@/pages/MyVideos";
 
 type LayoutProps = {
   children: ReactNode;
@@ -148,8 +149,8 @@ export default function Layout({ children }: LayoutProps) {
             </Tabs>
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={defaultLayout[2]}>
-            <Messages />
+          <ResizablePanel defaultSize={1} minSize={50}>
+            <MyVideos />
           </ResizablePanel>
         </ResizablePanelGroup>
 

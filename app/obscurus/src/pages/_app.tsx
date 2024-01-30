@@ -15,7 +15,6 @@ import { Amplify } from "aws-amplify";
 import { Api } from "sst/node/api";
 import useSWR from "swr";
 
-
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -33,7 +32,6 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   // const { data, error } = useSWR("/api/secrets", fetcher);
 
-  
   // useEffect(() => {
   //   if (data) {
   //     console.log(data)
@@ -48,19 +46,17 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // }, [data]);
 
   return getLayout(
-   
-      <AnimatePresence
-        mode="wait"
-        initial={false}
-        onExitComplete={() => window.scrollTo(0, 0)}
-      >
-        <Head>
-          <title>obscurus</title>
-        </Head>
-  
+    // <AnimatePresence
+    //   mode="wait"
+    //   initial={false}
+    //   onExitComplete={() => window.scrollTo(0, 0)}
+    // >
+    <>
+      <Head>
+        <title>obscurus</title>
+      </Head>
 
-        {loading ? <LoadingPage /> : <Component {...pageProps} />}
-      </AnimatePresence>
-
+      {loading ? <LoadingPage /> : <Component {...pageProps} />}
+    </>
   );
 }

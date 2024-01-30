@@ -71,10 +71,7 @@ const NavBar = () => {
             <Link href="/">
               <NavigationMenuItem>
                 <span
-                  className={`font-bold text-xl p-5 hover:cursor-pointer ${
-                    router.pathname === "/" ? " underline font-extrabold" : ""
-                  }`}
-                >
+                  className="font-bold text-xl p-5 hover:cursor-pointer">
                   obscurus
                 </span>
               </NavigationMenuItem>
