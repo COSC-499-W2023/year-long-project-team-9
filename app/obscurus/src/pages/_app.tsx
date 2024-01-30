@@ -33,18 +33,18 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // const { data, error } = useSWR("/api/secrets", fetcher);
 
   
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data)
-  //     Amplify.configure({
-  //       Auth: {
-  //         region: "us-west-2",
-  //         userPoolId: data.userPoolId,
-  //         userPoolWebClientId: data.userPoolWebClientId,
-  //       },
-  //     });
-  //   }
-  // }, [data]);
+  
+  useEffect(() => {
+    
+      Amplify.configure({
+        Auth: {
+          region: "us-west-2",
+          userPoolId: "us-west-2_vfiV2j2Al",
+          userPoolWebClientId: "3rms1a17eb5f6rd0vrp3d4kho2",
+        },
+      });
+    }
+  );
 
   return getLayout(
     <ThemeProvider
