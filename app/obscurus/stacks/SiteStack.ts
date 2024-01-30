@@ -249,6 +249,39 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /processVideo": {
+        function: {
+          handler: "./stacks/lambdas/process.handler",
+          timeout: 20,
+          permissions: [inputBucket],
+          bind: [inputBucket],
+        },
+      },
+      "POST /createRequest": {
+        function: {
+          handler: "./stacks/lambdas/createRequest.handler",
+          timeout: 20,
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds], 
+        },
+      },
+      "POST /createUser": {
+        function: {
+          handler: "./stacks/lambdas/createUser.handler",
+          timeout: 20,
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds], 
+        },
+      },
+      "GET /getSubmissions": {
+        function: {
+          handler: "./stacks/lambdas/listSubmissions.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        }
+      },
     },
   });
 
@@ -268,18 +301,6 @@ export default function SiteStack({ stack }: StackContext) {
     [stateMachine, "grantStartExecution"],
   ]);
 
-  const service = new Service(stack, "processVideo", {
-    path: "./service",
-    port: 8080,
-    bind: [inputBucket, outputBucket],
-    cdk: {
-      applicationLoadBalancer: false,
-      cloudfrontDistribution: false,
-      fargateService: {
-        circuitBreaker: { rollback: true },
-      },
-    },
-  });
 
   const amplifySecrets = new Function(stack, "AmplifySecrets", {
     handler: "./stacks/lambdas/secrets.handler",
@@ -288,7 +309,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, service],
+    bind: [inputBucket, outputBucket, rds, api],
     permissions: [rekognitionPolicyStatement],
   });
 
