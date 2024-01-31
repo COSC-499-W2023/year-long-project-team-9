@@ -106,46 +106,46 @@ export async function up(db) {
     .insertInto("submissions")
     .values([
       {
-        requestee_email: "walter@hotmail.com",
+        requestee_email: "walter@gotmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 1,
+        request_id: '1',
       },
       {
         requestee_email: "mike@gmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 1,
+        request_id: '111',
       },
       {
         requestee_email: "walter@hotmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 2,
+        request_id: '11111',
       },
       {
-        requestee_email: "mike@gmail.com",
+        requestee_email: "mike@hmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 2,
+        request_id: '1111111',
       },
       {
-        requestee_email: "walter@hotmail.com",
+        requestee_email: "walter@thotmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 3,
+        request_id: '3',
       },
       {
         requestee_email: "richie@hotmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 3,
+        request_id: '22222222',
       },
       {
         requestee_email: "doe@gmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 4,
+        request_id: '99999',
       },
     ])
     .execute();
