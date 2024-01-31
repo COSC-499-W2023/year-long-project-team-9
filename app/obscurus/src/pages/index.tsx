@@ -16,6 +16,7 @@ import { Inbox, FileUp, Youtube, MessageCircle } from "lucide-react";
 import Home from "@/components/Home";
 import TestDatabase from "@/components/TestDatabase";
 import Hero from "@/components/Hero";
+import RequestDisplay from "@/components/request-display";
 
 export async function getServerSideProps() {
   const fetchData = async (route: string) => {
@@ -49,8 +50,6 @@ const IndexPage = ({
   submissions: Submissions[];
   users: Users[];
 }) => {
-  const r: Requests[] = requests;
-  console.log(r)
   const u: Users[] = users;
   const s: Submissions[] = submissions;
   const defaultLayout = [265, 440, 655];
@@ -58,64 +57,68 @@ const IndexPage = ({
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   return (
     <Layout>
-        <TooltipProvider delayDuration={0}>
-          <ResizablePanelGroup
-            direction="horizontal"
-            className="h-full max-h-[800px] items-stretch"
+      <TooltipProvider delayDuration={0}>
+        <ResizablePanelGroup
+          direction="horizontal"
+          className="h-full max-h-[800px] items-stretch"
+        >
+          <ResizablePanel
+            defaultSize={defaultLayout[0]}
+            collapsedSize={1}
+            collapsible={false}
+            minSize={15}
+            maxSize={20}
+            className={cn(
+              isCollapsed &&
+                "min-w-[50px] transition-all duration-300 ease-in-out"
+            )}
           >
-            <ResizablePanel
-              defaultSize={defaultLayout[0]}
-              collapsedSize={1}
-              collapsible={false}
-              minSize={15}
-              maxSize={20}
-              className={cn(
-                isCollapsed &&
-                  "min-w-[50px] transition-all duration-300 ease-in-out"
-              )}
-            >
-              <Nav
-                isCollapsed={false}
-                links={[
-                  {
-                    title: "Requests",
-                    icon: Inbox,
-                    variant: "default",
-                    href: "/MyRequests",
-                  },
-                  {
-                    title: "Submissions",
-                    icon: FileUp,
-                    variant: "ghost",
-                    href: "/Submissions",
-                  },
-                  {
-                    title: "My Videos",
-                    icon: Youtube,
-                    variant: "ghost",
-                    href: "/MyVideos",
-                  },
-                  {
-                    title: "Chat",
-                    icon: MessageCircle,
-                    variant: "ghost",
-                    href: "/Messages",
-                  },
-                ]}
-              />
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel>
-              {r ? ( <ListRequests requests={r} />):(<Home/>)}
-             
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel>
-              <CreateRequest />
-            </ResizablePanel>
-            {/* <CreateRequest /> */}
-          </ResizablePanelGroup>
-        </TooltipProvider>
+            <Nav
+              isCollapsed={false}
+              links={[
+                {
+                  title: "Requests",
+                  icon: Inbox,
+                  variant: "default",
+                  href: "/MyRequests",
+                },
+                {
+                  title: "Submissions",
+                  icon: FileUp,
+                  variant: "ghost",
+                  href: "/Submissions",
+                },
+                {
+                  title: "My Videos",
+                  icon: Youtube,
+                  variant: "ghost",
+                  href: "/MyVideos",
+                },
+                {
+                  title: "Chat",
+                  icon: MessageCircle,
+                  variant: "ghost",
+                  href: "/Messages",
+                },
+              ]}
+            />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel>
+            {requests ? <ListRequests requests={requests} /> : <Home />}
+          </ResizablePanel>
+      
+
+          <ResizableHandle withHandle />
+          <ResizablePanel>
+            {requests ? (
+              requests.map((request) => <RequestDisplay request={request} key={request.request_id} />)
+            ) : (
+              <Home />
+            )}
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </TooltipProvider>
     </Layout>
   );
 };

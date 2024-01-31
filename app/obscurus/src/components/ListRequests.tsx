@@ -8,15 +8,9 @@ import { Send, Search } from "lucide-react"
 import router from "next/router"
 import { Requests } from "stacks/core/src/sql.generated"
 
-export type TabType = {
-  requests: Requests[]
 
 
-};
-
-
-
-export const ListRequests: React.FC<TabType> = ({ requests }) => {
+export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
     return (
         <Tabs defaultValue="all">
               <div className="flex items-center px-4">
@@ -47,11 +41,11 @@ export const ListRequests: React.FC<TabType> = ({ requests }) => {
                   </div>
                 </form>
               </div>
-              {/* <TabsContent value="all" className="m-0">
+              <TabsContent value="all" className="m-0">
                 <MailList items={requests} />
-              </TabsContent> */}
+              </TabsContent>
               <TabsContent value="unread" className="m-0">
-                <MailList items={requests.filter((item) => !item.read)} />
+                {/* <MailList items={requests.filter((item) => !item.read)} /> */}
               </TabsContent>
             </Tabs>
     )
