@@ -1,7 +1,7 @@
-import Hero from "../components/Hero";
-import About from "../components/About";
-import Features from "../components/Features";
-import HowTo from "../components/HowTo";
+import Hero from "./Hero";
+import About from "./About";
+import Features from "./Features";
+import HowTo from "./HowTo";
 import { ArrowBigDownIcon } from "lucide-react";
 import { useEffect, useState, useContext, ReactNode, FC } from "react";
 import AOS from "aos";
@@ -9,7 +9,7 @@ import "aos/dist/aos.css";
 import Layout from "@/components/layout";
 import LoadingPage from "@/components/LoadingPage";
 import { useRouter } from "next/router";
-import { NextPageWithLayout } from "./_app";
+import { NextPageWithLayout } from "../pages/_app";
 
 export const getStaticProps = async () => {
   return { props: {} };

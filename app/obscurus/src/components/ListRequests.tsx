@@ -1,13 +1,22 @@
 import MailList from "@/components/mail-list"
 import Nav from "@/components/nav"
 import { Input } from "@/components/ui/input"
-import { requests } from "@/data/data"
+
 import { Separator } from "@radix-ui/react-dropdown-menu"
 import { Tabs, TabsContent } from "@radix-ui/react-tabs"
 import { Send, Search } from "lucide-react"
 import router from "next/router"
+import { Requests } from "stacks/core/src/sql.generated"
 
-export const ListRequests = () => {
+export type TabType = {
+  requests: Requests[]
+
+
+};
+
+
+
+export const ListRequests: React.FC<TabType> = ({ requests }) => {
     return (
         <Tabs defaultValue="all">
               <div className="flex items-center px-4">
@@ -38,9 +47,9 @@ export const ListRequests = () => {
                   </div>
                 </form>
               </div>
-              <TabsContent value="all" className="m-0">
+              {/* <TabsContent value="all" className="m-0">
                 <MailList items={requests} />
-              </TabsContent>
+              </TabsContent> */}
               <TabsContent value="unread" className="m-0">
                 <MailList items={requests.filter((item) => !item.read)} />
               </TabsContent>

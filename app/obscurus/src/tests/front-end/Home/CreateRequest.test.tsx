@@ -3,13 +3,12 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import CreateRequest from "@/pages/CreateRequest";
+import CreateRequest from "@/components/CreateRequest";
 import { useRouter } from "next/router";
 
 {/*MOCKS*/}
 {/*Mock Next/Router*/}
 jest.mock("next/router", () => ({
-    __esModule: true,
     useRouter: jest.fn()
 }));
 {/*Mock Resize-Observer*/}

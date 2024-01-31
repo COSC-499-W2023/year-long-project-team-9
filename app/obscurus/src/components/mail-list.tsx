@@ -7,58 +7,82 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Mail } from "../data/data"
 import { useMail } from "./hooks/use-mail"
+import { Requests } from "stacks/core/src/sql.generated"
 
-interface MailListProps {
-  items: Mail[]
+interface RequestListProps {
+  items: Requests[]
 }
 
-export default function MailList({ items }: MailListProps) {
+export async function getServerSideProps() {
+  // const fetchData = async (route: string) => {
+  //   try {
+  //     const apiURL = Api.Api.url;
+  //     const response = await fetch(apiURL + route);
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     } else {
+  //       return response.json();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  // const requests: Requests[] = await fetchData("/getRequests");
+  // const submissions: Submissions[] = await fetchData("/getSubmissions");
+  // const users: Users[] = await fetchData("/getUsers");
+  return {
+   
+  };
+}
+
+export default function RequestList({ items }: RequestListProps) {
   const [mail, setMail] = useMail()
 
+  console.log(JSON.stringify(items))
+
   return (
-    <ScrollArea className="h-screen">
+
       <div className="flex flex-col gap-2 p-4 pt-0">
         {items.map((item) => (
           <button
-            key={item.id}
+            key={item.request_id}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              mail.selected === item.id && "bg-muted"
+              mail.selected === item.request_id && "bg-muted"
             )}
             onClick={() =>
               setMail({
                 ...mail,
-                selected: item.id,
+                selected: item.request_id,
               })
             }
           >
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
-                  <div className="font-semibold">{item.name}</div>
-                  {!item.read && (
+                  <div className="font-semibold">{item.requester_sub}</div>
+                  {!item.video_processing && (
                     <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                   )}
                 </div>
                 <div
                   className={cn(
                     "ml-auto text-xs",
-                    mail.selected === item.id
+                    mail.selected === item.request_id
                       ? "text-foreground"
                       : "text-muted-foreground"
                   )}
                 >
-                  {formatDistanceToNow(new Date(item.date), {
-                    addSuffix: true,
-                  })}
+  
                 </div>
               </div>
-              <div className="text-xs font-medium">{item.subject}</div>
+              <div className="text-xs font-medium">{item.request_title}</div>
             </div>
             <div className="line-clamp-2 text-xs text-muted-foreground">
-              {item.text.substring(0, 300)}
+              {item.description?.substring(0, 300)}
             </div>
-            {item.labels.length ? (
+            {/* {item..length ? (
               <div className="flex items-center gap-2">
                 {item.labels.map((label) => (
                   <Badge key={label} variant={getBadgeVariantFromLabel(label)}>
@@ -66,11 +90,10 @@ export default function MailList({ items }: MailListProps) {
                   </Badge>
                 ))}
               </div>
-            ) : null}
+            ) : null} */}
           </button>
         ))}
       </div>
-    </ScrollArea>
   )
 }
 

@@ -1,6 +1,6 @@
 export * as Requests from "./requests";
 
-import { formSchema } from "@/pages/CreateRequest";
+import { formSchema } from "@/components/CreateRequest";
 import { SQL } from "./sql";
 import { Requests } from "./sql.generated";
 

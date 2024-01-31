@@ -34,6 +34,7 @@ export interface Requests {
   due_date: Date;
   video_language: string;
   creation_date: Date;
+  read: boolean;
 }
 {
   /*Submissions table interace*/

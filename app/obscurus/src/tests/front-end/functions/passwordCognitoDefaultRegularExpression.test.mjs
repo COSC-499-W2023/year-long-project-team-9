@@ -1,4 +1,4 @@
-import { passwordCognitoDefaultRegularExpression } from "../../../src/regular-expression/passwordCognitoDefaultRegularExpression";
+import { passwordCognitoDefaultRegularExpression } from "../../../regular-expression/passwordCognitoDefaultRegularExpression";
 
 test("testing passwordCognitoDefaultRegularExpression 1", () => {
   expect(passwordCognitoDefaultRegularExpression(null)).toBe(false);
