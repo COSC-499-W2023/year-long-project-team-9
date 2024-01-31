@@ -31,13 +31,13 @@ import Hero from "@/components/Hero";
 import CreateRequest from "./CreateRequest";
 import { ListRequests } from "./ListRequests";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { Submissions } from "stacks/core/src/sql.generated";
+import { Requests, Submissions, Users } from "stacks/core/src/sql.generated";
 
 export async function getServerSideProps() {
-  const fetchData = async () => {
+  const fetchData = async (route: string) => {
     try {
       const apiURL = Api.Api.url;
-      const response = await fetch(apiURL + "/getSubmissions");
+      const response = await fetch(apiURL + route);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
@@ -49,56 +49,40 @@ export async function getServerSideProps() {
     }
   };
 
-  const submissions: Submissions[] = await fetchData(); // get the data
+  const requests: Requests[] = await fetchData("/getRequests");
+  const submissions: Submissions[] = await fetchData("/getSubmissions")
+  const users: Users[] = await fetchData("/getUsers")
   return {
-    props: { submissions }, // pass the data as a prop
+    props: { requests, submissions, users }, // pass the data as a prop
   };
 }
 
-// const fetcher = (url: string, init?: RequestInit) =>
-//   fetch(url, init).then((res) => res.json());
-
-const IndexPage = ({ submissions }: { submissions: Submissions[] }) => {
-  const [loggedIn, setLoggedIn] = useState(true);
+const IndexPage = ({ requests, submissions, users }: { requests: Requests[], submissions: Submissions[], users: Users[] }) => {
+  const r: Requests[] = requests;
+  const u: Users[] = users;
   const s: Submissions[] = submissions;
-  // const { data, error, isLoading } = useSWR("/api/getSubmissions", fetcher);
-
-  // if (error) {
-  //   return <div>error</div>
-  // }
-
-  // if (!data) {
-  //   return <div>"No data."</div>
-  // }
-
-  // if (isLoading){
-  //   return <div>loading...</div>
-  // }
-
-  // if(data){
-  //   console.log(JSON.stringify(data))
-  //}
   return (
     <Layout>
       {" "}
-      { s ? ( <><div className="grid justify-center items-center pt-10 pb-5">
-        <h1 className="text-3xl font-extrabold">Submissions</h1>
+      { r? ( <><div className="grid justify-center items-center pt-10 pb-5">
+        <h1 className="text-3xl font-extrabold">Requests</h1>
       </div><div className="grid grid-cols-3 gap-3 px-2">
-          {s.map((i: Submissions) => (
+          {r.map((i: Requests)  => (
             <Card
+            key={i.request_id}
               id="collapsed"
               className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
             >
               <CardHeader>
                 <div className="space-x-2 flex items-center">
                   <CardTitle className="text-xl">
-                    {i.request_id}
+                    {i.request_title}
                   </CardTitle>
                 </div>
                 <div className="grid grid-cols-1 gap-2">
-                  <Label>Email: {i.requestee_email}</Label>
-                  {/* <Label>Timezone: {user.timezone}</Label>
-            <Label>Language: {user.language}</Label>
+                  <Label>ID: {i.request_id}</Label>
+                  <Label>Created on: {i.creation_date.toString()}</Label>
+            {/* <Label>Language: {user.language}</Label>
             <Label>
               Social Identity User:{" "}
               {user.is_logged_in_with_social_identity_provider}
