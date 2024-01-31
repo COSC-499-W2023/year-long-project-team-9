@@ -10,7 +10,6 @@ export async function up(db) {
     .addColumn("email", "varchar", (col) => col.notNull().unique())
     .addColumn("given_name", "varchar", (col) => col.notNull())
     .addColumn("family_name", "varchar", (col) => col.notNull())
-    .addColumn("birthdate", "date", (col) => col.notNull())
     .addColumn("timezone", "varchar")
     .addColumn("language", "varchar")
     .addColumn("is_logged_in_with_social_identity_provider", "boolean", (col) =>

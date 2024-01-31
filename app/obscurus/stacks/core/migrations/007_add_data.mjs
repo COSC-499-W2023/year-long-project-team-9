@@ -1,10 +1,9 @@
 import { Kysely, sql } from "kysely";
-import { Submissions } from "../src/sql.generated";
 
 /**
  * @param {Kysely<any>} db
  */
-export async function up(db: { insertInto: (arg0: string) => { (): any; new(): any; values: { (arg0: { sub: string; email: string; given_name: string; family_name: string; timezone: string; language: string; is_logged_in_with_social_identity_provider: boolean; is_admin: boolean; profile_image: string; }[] | { request_title: string; requester_sub: string; description: string; video_processing: boolean; due_date: Date; video_language: string; }[] | { requestee_email: string; is_completed: string; submitted_date: null; request_id: number; }[]): { (): any; new(): any; execute: { (): any; new(): any; }; }; new(): any; }; }; }) {
+export async function up(db) {
   const newDataForUsers = await db
     .insertInto("users")
     .values([
@@ -103,7 +102,7 @@ export async function up(db: { insertInto: (arg0: string) => { (): any; new(): a
       },
     ])
     .execute();
-  const newDataForSubmission: Submissions = await db
+  const newDataForSubmission = await db
     .insertInto("submissions")
     .values([
       {
@@ -155,7 +154,7 @@ export async function up(db: { insertInto: (arg0: string) => { (): any; new(): a
 /**
  * @param {Kysely<any>} db
  */
-export async function down(db: { deleteFrom: (arg0: string) => { (): any; new(): any; execute: { (): any; new(): any; }; }; }) {
+export async function down(db) {
   const deleteFromUsers = await db.deleteFrom("users").execute();
   const deleteFromRequests = await db.deleteFrom("requests").execute();
   const deleteFromSubmissions = await db.deleteFrom("submissions").execute();

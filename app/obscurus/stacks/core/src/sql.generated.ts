@@ -26,7 +26,7 @@ export interface Users {
   /*Requests table interace*/
 }
 export interface Requests {
-  request_id: number;
+  request_id: string;
   request_title: string;
   requester_sub: string;
   description: string;

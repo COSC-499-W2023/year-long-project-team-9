@@ -2,6 +2,7 @@ export * as Requests from "./requests";
 
 import { formSchema } from "@/pages/CreateRequest";
 import { SQL } from "./sql";
+import { Requests } from "./sql.generated";
 
 export function list() {
     return SQL.DB.selectFrom("requests")
@@ -9,7 +10,7 @@ export function list() {
     .execute();
 }
 
-export function insert(request:any){
+export function insert(request:Requests){
     console.log(request.requester_sub)
     return SQL.DB.insertInto("requests").values({
         request_id: request.request_id,
