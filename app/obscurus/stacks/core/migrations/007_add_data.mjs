@@ -70,6 +70,7 @@ export async function up(db) {
     .values([
       {
         request_title: "Spanish Lesson 1",
+        request_id: "1",
         requester_sub: "sub3",
         description: "Please send me your video for lesson 1.",
         video_processing: true,
@@ -79,6 +80,7 @@ export async function up(db) {
       {
         request_title: "Spanish Lesson 2",
         requester_sub: "sub3",
+        request_id: "111",
         description: "Please send me your video for lesson 2.",
         video_processing: true,
         due_date: new Date("2024-06-06"),
@@ -87,6 +89,7 @@ export async function up(db) {
       {
         request_title: "Spanish Lesson 2",
         requester_sub: "sub3",
+        request_id: "11111",
         description: "Please send me your video for lesson 2.",
         video_processing: true,
         due_date: new Date("2024-07-07"),
@@ -95,6 +98,7 @@ export async function up(db) {
       {
         request_title: "Musical Auditions",
         requester_sub: "sub4",
+        request_id: "1111111",
         description: "Submit a video with you audition",
         video_processing: false,
         due_date: new Date("2024-08-08"),
@@ -110,43 +114,47 @@ export async function up(db) {
         is_completed: "NULL",
         submitted_date: null,
         request_id: '1',
+        submission_id: "a"
       },
       {
         requestee_email: "mike@gmail.com",
         is_completed: "NULL",
         submitted_date: null,
         request_id: '111',
+        submission_id: "b"
       },
       {
         requestee_email: "walter@hotmail.com",
         is_completed: "NULL",
         submitted_date: null,
         request_id: '11111',
+        submission_id: "c"
       },
       {
         requestee_email: "mike@hmail.com",
         is_completed: "NULL",
         submitted_date: null,
         request_id: '1111111',
+        submission_id: "d"
       },
-      {
-        requestee_email: "walter@thotmail.com",
-        is_completed: "NULL",
-        submitted_date: null,
-        request_id: '3',
-      },
-      {
-        requestee_email: "richie@hotmail.com",
-        is_completed: "NULL",
-        submitted_date: null,
-        request_id: '22222222',
-      },
-      {
-        requestee_email: "doe@gmail.com",
-        is_completed: "NULL",
-        submitted_date: null,
-        request_id: '99999',
-      },
+      // {
+      //   requestee_email: "walter@thotmail.com",
+      //   is_completed: "NULL",
+      //   submitted_date: null,
+      //   request_id: '3',
+      // },
+      // {
+      //   requestee_email: "richie@hotmail.com",
+      //   is_completed: "NULL",
+      //   submitted_date: null,
+      //   request_id: '22222222',
+      // },
+      // {
+      //   requestee_email: "doe@gmail.com",
+      //   is_completed: "NULL",
+      //   submitted_date: null,
+      //   request_id: '99999',
+      // },
     ])
     .execute();
 }
