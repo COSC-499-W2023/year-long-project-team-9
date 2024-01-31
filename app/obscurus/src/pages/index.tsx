@@ -17,7 +17,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import { Label, Separator } from "@radix-ui/react-dropdown-menu";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Send, Search } from "lucide-react";
@@ -29,151 +29,90 @@ import { Api } from "sst/node/api";
 import useSWR from "swr";
 import Hero from "@/components/Hero";
 import CreateRequest from "./CreateRequest";
-
+import { ListRequests } from "./ListRequests";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Submissions } from "stacks/core/src/sql.generated";
 
 export async function getServerSideProps() {
   const fetchData = async () => {
     try {
-      const apiURL = Api.Api.url
+      const apiURL = Api.Api.url;
       const response = await fetch(apiURL + "/getSubmissions");
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        return response.json();
       }
-
-      return await response.json(); // return the data
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
+    } finally {
     }
   };
 
-  const submissions = await fetchData(); // get the data
+  const submissions: Submissions[] = await fetchData(); // get the data
   return {
     props: { submissions }, // pass the data as a prop
   };
-};
-
-const fetcher = (url: string, init?: RequestInit) =>
-  fetch(url, init).then((res) => res.json());
-
-export function Index({ submissions }: { submissions: any }) {
-
-  const { data, error } = useSWR("/api/getSubmissions", fetcher);
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-  
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-  
-  console.log(data)
-  // interface MailProps {
-  //   accounts: {
-  //     label: string;
-  //     email: string;
-  //     icon: React.ReactNode;
-  //   }[];
-  //   mails: Mail[];
-  //   defaultLayout: number[] | undefined;
-  //   defaultCollapsed?: boolean;
-  //   navCollapsedSize: number;
-  // }
-
-  const defaultLayout = [265, 440, 655];
-  const defaultCollapsed = false;
-  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const [mail] = useMail();
-  const router = useRouter();
-
-  return (
-    <>
-      <TooltipProvider delayDuration={0}>
-        <ResizablePanelGroup
-        
-          direction="horizontal"
-          onLayout={(sizes: number[]) => {
-            document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-              sizes
-            )}`;
-          }}
-          className="h-full max-h-[800px] items-stretch"
-        >
-          {/* <div className=" flex-col flex">
-            <Mail
-              accounts={accounts}
-              mails={mails}
-              defaultLayout={[1, 2, 3]}
-              defaultCollapsed={false}
-              navCollapsedSize={4}
-            />
-          </div> */}
-
-          <ResizablePanel
-            defaultSize={defaultLayout[1]}
-            collapsedSize={1}
-            collapsible={true}
-            minSize={15}
-            maxSize={20}
-            className={cn(
-              isCollapsed &&
-                "min-w-[50px] transition-all duration-300 ease-in-out"
-            )}
-          ></ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={1} minSize={30}>
-            <Tabs defaultValue="all">
-              <div className="flex items-center px-4">
-                <h1 className="text-xl font-bold"></h1>
-                <div
-                  className="ml-auto"
-                  onClick={() => router.push("/CreateRequest")}
-                >
-                  <Nav
-                    isCollapsed={false}
-                    links={[
-                      {
-                        title: "Create Request",
-                        icon: Send,
-                        variant: "ghost",
-                        href: "/CreateRequest",
-                      },
-                    ]}
-                  />
-                </div>
-              </div>
-              <Separator />
-              <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <form>
-                  <div className="relative">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input placeholder="Search" className="pl-8" />
-                  </div>
-                </form>
-              </div>
-              <TabsContent value="all" className="m-0">
-                <MailList items={requests} />
-              </TabsContent>
-              <TabsContent value="unread" className="m-0">
-                <MailList items={requests.filter((item) => !item.read)} />
-              </TabsContent>
-            </Tabs>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={defaultLayout[2]}>
-            <MailDisplay
-              mail={requests.find((item) => item.id === mail.selected) || null}
-            />
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </TooltipProvider>
-    </>
-  );
 }
 
-const IndexPage: NextPage = () => {
+// const fetcher = (url: string, init?: RequestInit) =>
+//   fetch(url, init).then((res) => res.json());
+
+const IndexPage = ({ submissions }: { submissions: Submissions[] }) => {
   const [loggedIn, setLoggedIn] = useState(true);
-  return <Layout><MyVideos videoUrl={"test3.mp4"}/></Layout>
+  const s: Submissions[] = submissions;
+  // const { data, error, isLoading } = useSWR("/api/getSubmissions", fetcher);
+
+  // if (error) {
+  //   return <div>error</div>
+  // }
+
+  // if (!data) {
+  //   return <div>"No data."</div>
+  // }
+
+  // if (isLoading){
+  //   return <div>loading...</div>
+  // }
+
+  // if(data){
+  //   console.log(JSON.stringify(data))
+  //}
+  return (
+    <Layout>
+      {" "}
+      { s ? ( <><div className="grid justify-center items-center pt-10 pb-5">
+        <h1 className="text-3xl font-extrabold">Submissions</h1>
+      </div><div className="grid grid-cols-3 gap-3 px-2">
+          {s.map((i: Submissions) => (
+            <Card
+              id="collapsed"
+              className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
+            >
+              <CardHeader>
+                <div className="space-x-2 flex items-center">
+                  <CardTitle className="text-xl">
+                    {i.request_id}
+                  </CardTitle>
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <Label>Email: {i.requestee_email}</Label>
+                  {/* <Label>Timezone: {user.timezone}</Label>
+            <Label>Language: {user.language}</Label>
+            <Label>
+              Social Identity User:{" "}
+              {user.is_logged_in_with_social_identity_provider}
+            </Label>
+            <Label>Admin: {user.is_admin}</Label>
+            <Label>Specialised ID: {user.sub}</Label> */}
+                </div>
+              </CardHeader>
+            </Card>
+          ))}
+        </div></>):(<div>NA</div>)}
+     
+    </Layout>
+  );
 };
 
 export default IndexPage;

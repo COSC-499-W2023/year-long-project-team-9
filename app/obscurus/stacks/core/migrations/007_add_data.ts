@@ -1,9 +1,10 @@
 import { Kysely, sql } from "kysely";
+import { Submissions } from "../src/sql.generated";
 
 /**
  * @param {Kysely<any>} db
  */
-export async function up(db) {
+export async function up(db: { insertInto: (arg0: string) => { (): any; new(): any; values: { (arg0: { sub: string; email: string; given_name: string; family_name: string; timezone: string; language: string; is_logged_in_with_social_identity_provider: boolean; is_admin: boolean; profile_image: string; }[] | { request_title: string; requester_sub: string; description: string; video_processing: boolean; due_date: Date; video_language: string; }[] | { requestee_email: string; is_completed: string; submitted_date: null; request_id: number; }[]): { (): any; new(): any; execute: { (): any; new(): any; }; }; new(): any; }; }; }) {
   const newDataForUsers = await db
     .insertInto("users")
     .values([
@@ -12,7 +13,6 @@ export async function up(db) {
         email: "doe@gmail.com",
         given_name: "John",
         family_name: "Doe",
-        birthdate: new Date("2010-02-02"),
         timezone: "PST",
         language: "English",
         is_logged_in_with_social_identity_provider: true,
@@ -24,7 +24,6 @@ export async function up(db) {
         email: "mike@gmail.com",
         given_name: "Mike",
         family_name: "Smith",
-        birthdate: new Date("1998-02-02"),
         timezone: "PST",
         language: "English",
         is_logged_in_with_social_identity_provider: false,
@@ -36,7 +35,6 @@ export async function up(db) {
         email: "davey@hotmail.com",
         given_name: "Bavey",
         family_name: "Woods",
-        birthdate: new Date("1928-02-02"),
         timezone: "PST",
         language: "Spanish",
         is_logged_in_with_social_identity_provider: false,
@@ -48,7 +46,6 @@ export async function up(db) {
         email: "richie@hotmail.com",
         given_name: "Richie",
         family_name: "Aprile",
-        birthdate: new Date("1948-11-02"),
         timezone: "PST",
         language: "German",
         is_logged_in_with_social_identity_provider: false,
@@ -60,7 +57,6 @@ export async function up(db) {
         email: "walter@hotmail.com",
         given_name: "Walter",
         family_name: "White",
-        birthdate: new Date("1978-05-02"),
         timezone: "PST",
         language: "English",
         is_logged_in_with_social_identity_provider: false,
@@ -107,7 +103,7 @@ export async function up(db) {
       },
     ])
     .execute();
-  const newDataForSubmission = await db
+  const newDataForSubmission: Submissions = await db
     .insertInto("submissions")
     .values([
       {
@@ -159,7 +155,7 @@ export async function up(db) {
 /**
  * @param {Kysely<any>} db
  */
-export async function down(db) {
+export async function down(db: { deleteFrom: (arg0: string) => { (): any; new(): any; execute: { (): any; new(): any; }; }; }) {
   const deleteFromUsers = await db.deleteFrom("users").execute();
   const deleteFromRequests = await db.deleteFrom("requests").execute();
   const deleteFromSubmissions = await db.deleteFrom("submissions").execute();

@@ -18,5 +18,5 @@ export default async function handler(
     const data = await fetchData();
     console.log("Server resp: ", data);
 
-    res.status(200).send(data);
+    res.status(200).send(JSON.stringify(data));
 }
