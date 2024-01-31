@@ -63,11 +63,11 @@ const IndexPage = ({
           className="h-full max-h-[800px] items-stretch"
         >
           <ResizablePanel
-            defaultSize={defaultLayout[0]}
+            defaultSize={10}
             collapsedSize={1}
             collapsible={false}
-            minSize={15}
-            maxSize={20}
+            minSize={10}
+            maxSize={15}
             className={cn(
               isCollapsed &&
                 "min-w-[50px] transition-all duration-300 ease-in-out"
@@ -104,18 +104,19 @@ const IndexPage = ({
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel>
+          <ResizablePanel className="" defaultSize={15}>
             {requests ? <ListRequests requests={requests} /> : <Home />}
           </ResizablePanel>
       
 
           <ResizableHandle withHandle />
-          <ResizablePanel>
+          <ResizablePanel defaultSize={20}>
             {requests ? (
               requests.map((request) => <RequestDisplay request={request} key={request.request_id} />)
             ) : (
               <Home />
             )}
+            {/* <CreateRequest /> */}
           </ResizablePanel>
         </ResizablePanelGroup>
       </TooltipProvider>
