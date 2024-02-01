@@ -22,7 +22,7 @@
       "@/*": [
         "./packages/web/src/*"
       ],
-      "@obscurus/core/*": ["../core/src/*"]
+      "@standard-nextjs/core/*": ["../core/src/*"]
     },
     "plugins": [
       {

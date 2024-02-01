@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { Requests } from "../core/src/requests";
-import { Requests as r } from "stacks/core/src/sql.generated";
+import { Requests as r } from "../core/src/sql.generated";
 
 export const handler: APIGatewayProxyHandlerV2 = async () => {
 

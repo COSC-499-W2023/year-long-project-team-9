@@ -1,10 +1,9 @@
 {
-  "name": "obscurus",
+  "name": "functions",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "sst bind next dev",
-    "next": "concurrently --success first --kill-others \"npx sst dev\" \"cd ./packages/web && npm run dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -71,16 +70,14 @@
     "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "ts-node": "^10.9.2",
     "use-resize-observer": "^9.1.0",
     "yauzl": "^2.10.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.23.3",
     "@playwright/test": "^1.39.0",
-    "@testing-library/jest-dom": "^6.4.1",
-    "@testing-library/react": "^14.2.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
     "@types/aos": "^3.0.6",
     "@types/aws-lambda": "^8.10.131",
     "@types/jest": "^29.5.7",
@@ -102,7 +99,6 @@
     "postcss": "^8",
     "sst": "^2.35.1",
     "tailwindcss": "^3",
-    "ts-jest": "^29.1.2",
     "typescript": "^5",
     "vitest": "^1.2.1",
     "wait-on": "^7.2.0"
