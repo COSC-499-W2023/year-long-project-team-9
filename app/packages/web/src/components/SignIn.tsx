@@ -363,7 +363,7 @@ const SignIn = () => {
           <Dialog open={showSignInDialog} onOpenChange={setShowSignInDialog}>
             <DialogTrigger asChild>
               <Button>
-                <span className="font-bold text-base">Sign In</span>
+                <span className=" text-base">Sign In</span>
               </Button>
             </DialogTrigger>
             <DialogContent

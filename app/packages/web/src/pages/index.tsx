@@ -1,6 +1,6 @@
 import Layout from "@/components/layout";
 import { Api } from "sst/node/api";
-import { Requests, Submissions, Users } from "stacks/core/src/sql.generated";
+import { Requests, Submissions, Users } from "../../../core/src/sql.generated"
 import { ListRequests } from "@/components/ListRequests";
 import { useState } from "react";
 import CreateRequest from "@/components/CreateRequest";

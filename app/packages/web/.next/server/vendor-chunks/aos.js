@@ -10,10 +10,10 @@ exports.id = "vendor-chunks/aos";
 exports.ids = ["vendor-chunks/aos"];
 exports.modules = {
 
-/***/ "./node_modules/aos/dist/aos.css":
-/*!***************************************!*\
-  !*** ./node_modules/aos/dist/aos.css ***!
-  \***************************************/
+/***/ "../../node_modules/aos/dist/aos.css":
+/*!*******************************************!*\
+  !*** ../../node_modules/aos/dist/aos.css ***!
+  \*******************************************/
 /***/ (() => {
 
 
