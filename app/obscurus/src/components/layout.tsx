@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Nav from "./nav";
 import { useMail } from "./hooks/use-mail";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
@@ -28,7 +28,7 @@ import {
 import { Mail, requests } from "../data/data";
 import MyVideos from "@/components/MyVideos";
 import { useTheme } from "next-themes"; 
-import Home from "@/components/Home";
+
 import { ListRequests } from "./ListRequests";
 
 type LayoutProps = {
@@ -69,7 +69,7 @@ export default function Layout({ children }: LayoutProps) {
 
            <>{children}</>
         ) : (
-          <Home />
+          <div>Hello</div>
         )}
       </div>
     </ThemeProvider>

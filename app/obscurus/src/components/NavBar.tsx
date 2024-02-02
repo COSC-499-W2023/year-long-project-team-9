@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,10 +16,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useScroll from "@/components/hooks/scroll";
 import SignIn from "@/components/SignIn";
-import { isSignedIn } from "@/auth/authenticationMethods";
+// import { isSignedIn } from "@/auth/authenticationMethods";
 
 export async function getServerSideProps() {
   return {

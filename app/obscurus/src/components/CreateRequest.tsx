@@ -26,12 +26,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Calendar as CalendarIcon } from "lucide-react";
-<<<<<<<< HEAD:app/obscurus/src/components/CreateRequest.tsx
-import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
+import { createRequestValidation } from "../create-request-form-validation/createRequestValidation";
 import { ScrollArea } from "./ui/scroll-area";
-========
-import { createRequestValidation } from "../../create-request-form-validation/createRequestValidation";
->>>>>>>> origin/app-router:app/obscurus/src/app/CreateRequest/page.tsx
 
 // export async function getServerSideProps() {
 //   return {
