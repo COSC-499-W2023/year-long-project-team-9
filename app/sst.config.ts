@@ -1,5 +1,11 @@
 import { SSTConfig } from "sst";
-import SiteStack from "./stacks/Web";
+// import { Api } from "stacks/Api";
+// import { Auth } from "stacks/Auth";
+// import { Database } from "stacks/Database";
+// import Web from "stacks/Web";
+// import { inputBucket, outputBucket } from "stacks/Buckets";
+// import { SteveJobs } from "stacks/Process";
+import SiteStack from "./stacks/SiteStack"
 
 export default {
   config(_input) {
@@ -11,4 +17,4 @@ export default {
   stacks(app) {
     app.stack(SiteStack);
   },
-} satisfies SSTConfig;
+} satisfies SSTConfig;  

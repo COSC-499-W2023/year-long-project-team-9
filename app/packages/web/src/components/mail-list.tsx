@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Mail } from "../data/data"
 import { useMail } from "./hooks/use-mail"
-import { Requests } from "stacks/core/src/sql.generated"
+import { Requests } from "@obscurus/core/sql.generated"
 
 interface RequestListProps {
   items: Requests[]

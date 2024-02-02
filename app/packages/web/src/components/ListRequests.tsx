@@ -6,7 +6,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu"
 import { Tabs, TabsContent } from "@radix-ui/react-tabs"
 import { Send, Search } from "lucide-react"
 import router from "next/router"
-import { Requests } from "stacks/core/src/sql.generated"
+import { Requests } from "@obscurus/core/sql.generated"
 
 
 

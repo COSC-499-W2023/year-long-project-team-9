@@ -39,7 +39,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Requests } from "stacks/core/src/sql.generated";
+import { Requests } from "@obscurus/core/sql.generated";
 import router from "next/router";
 import { Card, CardContent, CardTitle } from "./ui/card";
 

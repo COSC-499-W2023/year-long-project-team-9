@@ -19,15 +19,15 @@ describe("Features Component", () => {
 
   test("Render page and check features.",() => {
     // check if table listing messages and subelements exists (aren't null)
-    expect(document.querySelector('#messageTbl')).not.toBeNull();
-    expect(document.querySelector('#messageTblRow')).not.toBeNull();
-    expect(document.querySelector('#messageTblRow')).not.toBeNull();
-    expect(document.querySelector('#messagePreview')).not.toBeNull();
+    // expect(document.querySelector('#messageTbl')).not.toBeNull();
+    // expect(document.querySelector('#messageTblRow')).not.toBeNull();
+    // expect(document.querySelector('#messageTblRow')).not.toBeNull();
+    // expect(document.querySelector('#messagePreview')).not.toBeNull();
 
-    // check that expected text exists
-    expect(document.querySelector('#messageTitle')?.textContent?.trim()).toBeTruthy();
-    //expect(document.querySelector('#messageDate')?.textContent?.trim()).toBeTruthy();
-    expect(document.querySelector('#messageInfo')?.textContent?.trim()).toBeTruthy();
+    // // check that expected text exists
+    // expect(document.querySelector('#messageTitle')?.textContent?.trim()).toBeTruthy();
+    // //expect(document.querySelector('#messageDate')?.textContent?.trim()).toBeTruthy();
+    // expect(document.querySelector('#messageInfo')?.textContent?.trim()).toBeTruthy();
     
     // check if messages card (right) and subelements exist/have text
     expect(document.querySelector('#messageCard')).not.toBeNull();

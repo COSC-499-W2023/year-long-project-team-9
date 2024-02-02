@@ -34,7 +34,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "packages/web/tests/Home/RequestListings.test.tsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai"
 
 import { Mail, requests } from "../../data/data"
-import { Requests } from "stacks/core/src/sql.generated"
+import { Requests } from "@obscurus/core/sql.generated"
 
 
 
