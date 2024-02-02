@@ -1,11 +1,11 @@
 import { passwordCognitoDefaultRegularExpression } from "../../../regular-expression/passwordCognitoDefaultRegularExpression";
 
 test("testing passwordCognitoDefaultRegularExpression 1", () => {
-  expect(passwordCognitoDefaultRegularExpression(null)).toBe(false);
+  expect(passwordCognitoDefaultRegularExpression(String(null))).toBe(false);
 });
 
 test("testing passwordCognitoDefaultRegularExpression undefined", () => {
-  expect(passwordCognitoDefaultRegularExpression(undefined)).toBe(false);
+  expect(passwordCognitoDefaultRegularExpression(String(undefined))).toBe(false);
 });
 
 test("testing passwordCognitoDefaultRegularExpression '' v1", () => {
