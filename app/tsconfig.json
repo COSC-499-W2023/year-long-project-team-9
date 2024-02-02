@@ -32,9 +32,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "packages/web/tests/Home/RequestListings.test.tsx"  ],
+    "**/*.ts"  ],
   "exclude": [
     "node_modules"
   ]

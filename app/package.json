@@ -2,16 +2,14 @@
   "name": "obscurus",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "sst bind next dev",
-    "next": "concurrently --success first --kill-others \"npx sst dev\" \"cd ./packages/web && npm run dev\"",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "jest",
-    "test:sst": "sst bind vitest run --config ./vitest.config.mjs",
-    "gen": "hygen",
-    "test:e2e": "concurrently --success first --kill-others \"npm run dev\" \"wait-on http://localhost:3000 && npx playwright test\""
+    "dev": "sst dev",
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove",
+    "console": "sst console",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.445.0",
