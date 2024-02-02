@@ -12,7 +12,6 @@ export async function up(db) {
         email: "doe@gmail.com",
         given_name: "John",
         family_name: "Doe",
-        birthdate: new Date("2010-02-02"),
         timezone: "PST",
         language: "English",
         is_logged_in_with_social_identity_provider: true,
@@ -24,7 +23,6 @@ export async function up(db) {
         email: "mike@gmail.com",
         given_name: "Mike",
         family_name: "Smith",
-        birthdate: new Date("1998-02-02"),
         timezone: "PST",
         language: "English",
         is_logged_in_with_social_identity_provider: false,
@@ -36,7 +34,6 @@ export async function up(db) {
         email: "davey@hotmail.com",
         given_name: "Bavey",
         family_name: "Woods",
-        birthdate: new Date("1928-02-02"),
         timezone: "PST",
         language: "Spanish",
         is_logged_in_with_social_identity_provider: false,
@@ -48,7 +45,6 @@ export async function up(db) {
         email: "richie@hotmail.com",
         given_name: "Richie",
         family_name: "Aprile",
-        birthdate: new Date("1948-11-02"),
         timezone: "PST",
         language: "German",
         is_logged_in_with_social_identity_provider: false,
@@ -60,7 +56,6 @@ export async function up(db) {
         email: "walter@hotmail.com",
         given_name: "Walter",
         family_name: "White",
-        birthdate: new Date("1978-05-02"),
         timezone: "PST",
         language: "English",
         is_logged_in_with_social_identity_provider: false,
@@ -75,6 +70,7 @@ export async function up(db) {
     .values([
       {
         request_title: "Spanish Lesson 1",
+        request_id: "1",
         requester_sub: "sub3",
         description: "Please send me your video for lesson 1.",
         video_processing: true,
@@ -84,6 +80,7 @@ export async function up(db) {
       {
         request_title: "Spanish Lesson 2",
         requester_sub: "sub3",
+        request_id: "111",
         description: "Please send me your video for lesson 2.",
         video_processing: true,
         due_date: new Date("2024-06-06"),
@@ -92,6 +89,7 @@ export async function up(db) {
       {
         request_title: "Spanish Lesson 2",
         requester_sub: "sub3",
+        request_id: "11111",
         description: "Please send me your video for lesson 2.",
         video_processing: true,
         due_date: new Date("2024-07-07"),
@@ -100,6 +98,7 @@ export async function up(db) {
       {
         request_title: "Musical Auditions",
         requester_sub: "sub4",
+        request_id: "1111111",
         description: "Submit a video with you audition",
         video_processing: false,
         due_date: new Date("2024-08-08"),
@@ -111,47 +110,51 @@ export async function up(db) {
     .insertInto("submissions")
     .values([
       {
-        requestee_email: "walter@hotmail.com",
+        requestee_email: "walter@gotmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 1,
+        request_id: '1',
+        submission_id: "a"
       },
       {
         requestee_email: "mike@gmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 1,
+        request_id: '111',
+        submission_id: "b"
       },
       {
         requestee_email: "walter@hotmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 2,
+        request_id: '11111',
+        submission_id: "c"
       },
       {
-        requestee_email: "mike@gmail.com",
+        requestee_email: "mike@hmail.com",
         is_completed: "NULL",
         submitted_date: null,
-        request_id: 2,
+        request_id: '1111111',
+        submission_id: "d"
       },
-      {
-        requestee_email: "walter@hotmail.com",
-        is_completed: "NULL",
-        submitted_date: null,
-        request_id: 3,
-      },
-      {
-        requestee_email: "richie@hotmail.com",
-        is_completed: "NULL",
-        submitted_date: null,
-        request_id: 3,
-      },
-      {
-        requestee_email: "doe@gmail.com",
-        is_completed: "NULL",
-        submitted_date: null,
-        request_id: 4,
-      },
+      // {
+      //   requestee_email: "walter@thotmail.com",
+      //   is_completed: "NULL",
+      //   submitted_date: null,
+      //   request_id: '3',
+      // },
+      // {
+      //   requestee_email: "richie@hotmail.com",
+      //   is_completed: "NULL",
+      //   submitted_date: null,
+      //   request_id: '22222222',
+      // },
+      // {
+      //   requestee_email: "doe@gmail.com",
+      //   is_completed: "NULL",
+      //   submitted_date: null,
+      //   request_id: '99999',
+      // },
     ])
     .execute();
 }

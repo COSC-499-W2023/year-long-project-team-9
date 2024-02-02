@@ -4,9 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { Api } from 'sst/node/api'
 import {Bucket} from 'sst/node/bucket'
 
-type ResponseData = {
-  message: string
-}
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const bucket = Bucket.inputBucket.bucketName
@@ -22,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const url = await getSignedUrl(new S3Client({}), command);
           res.status(200).send({key})
       } catch (err) {
-        res.status(500).json({ error: 'Upload failed...' })
+        res.status(500).json({ error: 'Failed...' })
       }
     
   }

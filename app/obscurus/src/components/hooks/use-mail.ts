@@ -1,13 +1,16 @@
 import { atom, useAtom } from "jotai"
 
-import { Mail, mails } from "../../data/data"
+import { Mail, requests } from "../../data/data"
+import { Requests } from "stacks/core/src/sql.generated"
+
+
 
 type Config = {
-  selected: Mail["id"] | null
+  selected: Requests["request_id"] | null
 }
 
 const configAtom = atom<Config>({
-  selected: mails[0].id,
+  selected: requests[0].id,
 })
 
 export function useMail() {

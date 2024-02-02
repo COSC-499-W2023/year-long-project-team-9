@@ -62,12 +62,12 @@ export default function SiteStack({ stack }: StackContext) {
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
   const api = new Api(stack, "Api", {
-    defaults: {
-      function: {
-        bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
-      },
-      authorizer: "iam",
-    },
+    // defaults: {
+    //   function: {
+    //     bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
+    //   },
+    //   authorizer: "iam",
+    // },
     routes: {
       "GET /private": "./stacks/lambdas/private.main",
       "GET /public": {
@@ -82,7 +82,7 @@ export default function SiteStack({ stack }: StackContext) {
       //     },
       //   },
       // },
-      "GET /users": {
+      "GET /getUsers": {
         function: {
           handler: "./stacks/lambdas/listUsers.handler",
           timeout: 20,
@@ -124,7 +124,24 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [steveJobs, inputBucket, rds],
           bind: [steveJobs, inputBucket, rds], 
         },
-      }
+      },
+      "POST /createUser": {
+        function: {
+          handler: "./stacks/lambdas/createUser.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds], 
+        },
+      },
+      "GET /getSubmissions": {
+        function: {
+          handler: "./stacks/lambdas/listSubmissions.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        }
+      },
     },
   });
 
@@ -149,7 +166,7 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   // Allow authenticated users invoke API
-  auth.attachPermissionsForAuthUsers(stack, [api]);
+  // auth.attachPermissionsForAuthUsers(stack, [api]);
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],

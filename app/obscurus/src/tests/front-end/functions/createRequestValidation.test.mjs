@@ -1,9 +1,9 @@
 import { expect } from "@playwright/test";
-import { createRequestValidation } from "../../../src/form-validation/create-request-form-validation/createRequestValidation";
-import { formSchema } from "../../../src/pages/CreateRequest";
+import { createRequestValidation } from "../../../form-validation/create-request-form-validation/createRequestValidation";
+import { formSchema } from "../../../components/CreateRequest";
 
 test("testing createRequestValidation clients 1", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "@gmail.com" }],
     description: "a",
@@ -16,7 +16,7 @@ test("testing createRequestValidation clients 1", () => {
 });
 
 test("testing createRequestValidation clients 2", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -29,7 +29,7 @@ test("testing createRequestValidation clients 2", () => {
 });
 
 test("testing createRequestValidation clients 3", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "" }],
     description: "a",
@@ -42,7 +42,7 @@ test("testing createRequestValidation clients 3", () => {
 });
 
 test("testing createRequestValidation clients 4", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@ubc.gmail.com" }],
     description: "a",
@@ -55,7 +55,7 @@ test("testing createRequestValidation clients 4", () => {
 });
 
 test("testing createRequestValidation clients 5", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [
       {
@@ -73,7 +73,7 @@ test("testing createRequestValidation clients 5", () => {
 });
 
 test("testing createRequestValidation clients 6", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{}],
     description: "a",
@@ -86,7 +86,7 @@ test("testing createRequestValidation clients 6", () => {
 });
 
 test("testing createRequestValidation clients 7", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [
       { value: "bob@ubc.gmail.com" },
@@ -104,7 +104,7 @@ test("testing createRequestValidation clients 7", () => {
 });
 
 test("testing createRequestValidation clients 8", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [
       { value: "bob@ubc.gmail.com" },
@@ -128,7 +128,7 @@ test("testing createRequestValidation clients 8", () => {
 });
 
 test("testing createRequestValidation clients 9", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [
       { value: "bob@ubc.gmail.com" },
@@ -153,17 +153,17 @@ test("testing createRequestValidation clients 9", () => {
 });
 
 test("Invalid: data is null", () => {
-  const localFormSchema: formSchema = null;
+  const localFormSchema = null;
   expect(createRequestValidation(localFormSchema)).toBe(false);
 });
 
 test("Invalid: data is undefined", () => {
-  const localFormSchema: formSchema = undefined;
+  const localFormSchema = undefined;
   expect(createRequestValidation(localFormSchema)).toBe(false);
 });
 
 test("Invalid: stringTitle.length <= 0", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -176,7 +176,7 @@ test("Invalid: stringTitle.length <= 0", () => {
 });
 
 test("Invalid: stringTitle.length == 120", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title:
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     clients: [{ value: "bob@gmail.com" }],
@@ -190,7 +190,7 @@ test("Invalid: stringTitle.length == 120", () => {
 });
 
 test("Invalid: stringTitle.length > 120", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title:
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     clients: [{ value: "bob@gmail.com" }],
@@ -204,7 +204,7 @@ test("Invalid: stringTitle.length > 120", () => {
 });
 
 test("Invalid: stringTitle.length null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: null,
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -217,7 +217,7 @@ test("Invalid: stringTitle.length null", () => {
 });
 
 test("Invalid: stringTitle.length undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: undefined,
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -230,7 +230,7 @@ test("Invalid: stringTitle.length undefined", () => {
 });
 
 test("Invalid: stringDescripion <= 0", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "",
@@ -243,7 +243,7 @@ test("Invalid: stringDescripion <= 0", () => {
 });
 
 test("Invalid: stringDescripion null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: null,
@@ -256,7 +256,7 @@ test("Invalid: stringDescripion null", () => {
 });
 
 test("Invalid: stringDescripion undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: undefined,
@@ -269,7 +269,7 @@ test("Invalid: stringDescripion undefined", () => {
 });
 
 test("Invalid: Object.prototype.toString.call()", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -282,7 +282,7 @@ test("Invalid: Object.prototype.toString.call()", () => {
 });
 
 test("Invalid: dueDate null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -295,7 +295,7 @@ test("Invalid: dueDate null", () => {
 });
 
 test("Invalid: dueDate undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -308,7 +308,7 @@ test("Invalid: dueDate undefined", () => {
 });
 
 test("Invalid: term false", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -321,7 +321,7 @@ test("Invalid: term false", () => {
 });
 
 test("Invalid: term null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -334,7 +334,7 @@ test("Invalid: term null", () => {
 });
 
 test("Invalid: term undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -347,7 +347,7 @@ test("Invalid: term undefined", () => {
 });
 
 test("Invalid: language <= 0", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -360,7 +360,7 @@ test("Invalid: language <= 0", () => {
 });
 
 test("Invalid: language == 30", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -373,7 +373,7 @@ test("Invalid: language == 30", () => {
 });
 
 test("Invalid: language == 30", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -386,7 +386,7 @@ test("Invalid: language == 30", () => {
 });
 
 test("Invalid: language null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -399,7 +399,7 @@ test("Invalid: language null", () => {
 });
 
 test("Invalid: language undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -412,7 +412,7 @@ test("Invalid: language undefined", () => {
 });
 
 test("Invalid: blurred null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -425,7 +425,7 @@ test("Invalid: blurred null", () => {
 });
 
 test("Invalid: blurred undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description: "a",
@@ -438,7 +438,7 @@ test("Invalid: blurred undefined", () => {
 });
 
 test("Invalid: clients undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: undefined,
     description: "a",
@@ -451,7 +451,7 @@ test("Invalid: clients undefined", () => {
 });
 
 test("Invalid: clients null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: null,
     description: "a",
@@ -464,7 +464,7 @@ test("Invalid: clients null", () => {
 });
 
 test("Invalid: value: null", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }, { value: null }],
     description: "a",
@@ -477,7 +477,7 @@ test("Invalid: value: null", () => {
 });
 
 test("Invalid: value: undefined", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }, { value: undefined }],
     description: "a",
@@ -490,7 +490,7 @@ test("Invalid: value: undefined", () => {
 });
 
 test("testing createRequestValidation other", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [
       { value: "bob@ubc.gmail.com" },
@@ -508,7 +508,7 @@ test("testing createRequestValidation other", () => {
 });
 
 test("Doctor Meeting", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "Doctor Meeting",
     clients: [
       { value: "bob@ubc.gmail.com" },
@@ -526,7 +526,7 @@ test("Doctor Meeting", () => {
 });
 
 test("Spanish Lessons 1", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "Spanish Lessons 1",
     clients: [{ value: "daniel.woods@gmail.com" }],
     description:
@@ -540,7 +540,7 @@ test("Spanish Lessons 1", () => {
 });
 
 test("Spanish Lessons 2", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "Spanish Lessons 2",
     clients: [{ value: "daniel.woods@gmail.com" }],
     description:
@@ -554,7 +554,7 @@ test("Spanish Lessons 2", () => {
 });
 
 test("Spanish Lessons 3", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "Spanish Lessons 3",
     clients: [{ value: "daniel.woods@gmail.com" }],
     description:
@@ -568,7 +568,7 @@ test("Spanish Lessons 3", () => {
 });
 
 test("Spanish Lessons 3 v2", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "Spanish Lessons 3",
     clients: [{ value: "daniel.woods@gmail.com" }],
     description:
@@ -582,7 +582,7 @@ test("Spanish Lessons 3 v2", () => {
 });
 
 test("Invalid: stringDescripion == 500", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description:
@@ -596,7 +596,7 @@ test("Invalid: stringDescripion == 500", () => {
 });
 
 test("Invalid: stringDescripion > 500", () => {
-  const localFormSchema: formSchema = {
+  const localFormSchema = {
     title: "a",
     clients: [{ value: "bob@gmail.com" }],
     description:

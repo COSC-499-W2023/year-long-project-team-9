@@ -32,7 +32,6 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   // const { data, error } = useSWR("/api/secrets", fetcher);
 
-  
   // useEffect(() => {
   //   if (data) {
   //     console.log(data)
@@ -47,24 +46,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // }, [data]);
 
   return getLayout(
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <AnimatePresence
-        mode="wait"
-        initial={false}
-        onExitComplete={() => window.scrollTo(0, 0)}
-      >
-        <Head>
-          <title>obscurus</title>
-        </Head>
-        <NavBar />
+    <>
+      <Head>
+        <title>obscurus</title>
+      </Head>
 
-        {loading ? <LoadingPage /> : <Component {...pageProps} />}
-      </AnimatePresence>
-    </ThemeProvider>
+      {loading ? <LoadingPage /> : <Component {...pageProps} />}
+    </>
   );
 }

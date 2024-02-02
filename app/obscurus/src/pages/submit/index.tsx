@@ -31,7 +31,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Webcam from "react-webcam";
-import { Accept } from "./accept";
+import { Accept } from "@/components/accept";
 import { Progress } from "@/components/ui/progress";
 import { Job } from "sst/node/job";
 import useSWR from "swr";
@@ -75,10 +75,21 @@ const Index = ({ url, s3Key }: { url: string; s3Key: string }) => {
     });
 
     if (response.ok) {
-      console.log("Video jobbed successfully");
+
+      const response = await fetch("/api/hello", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestId: filename,
+        }),
+      });
     } else {
       console.error("Error jobbing video:", response.statusText);
     }
+
+    console.log("Video jobbed successfully");
   };
 
   const handleUploadClick = () => {
@@ -96,7 +107,7 @@ const Index = ({ url, s3Key }: { url: string; s3Key: string }) => {
     }
 
     const fileExt = file.name.split(".").pop();
-    const apiUrl = "/api/upload"; // Replace with your actual API endpoint
+    const apiUrl = "/api/upload"; 
 
     try {
       // Send a POST request to the API
@@ -116,14 +127,12 @@ const Index = ({ url, s3Key }: { url: string; s3Key: string }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Process the response data (if needed)
       const data = await response.json();
       console.log("Response from server:", data);
 
       // Handle the successful upload (update UI, etc.)
       // ...
     } catch (error) {
-      // Handle any errors that occurred during the fetch
       console.error("Error during fetch:", error);
     }
     const response = await fetch(url, {

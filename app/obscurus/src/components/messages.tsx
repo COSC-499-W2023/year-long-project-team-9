@@ -11,6 +11,7 @@ import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
@@ -35,6 +36,9 @@ type RequestType = {
 
 const exampleText =
   "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.";
+
+
+
 
 const Messages = () => {
   const requests: RequestType[] = [
@@ -142,82 +146,13 @@ const Messages = () => {
   };
 
   return (
-    <Layout>
-      <div className="md:px-20">
-        <div className="container grid grid-cols-2 gap-7">
-          <Table id="messageTbl" className="justify-items-start cursor-pointer">
-            <TableBody>
-              {requests.map((request) => (
-                <TableRow 
-                  id="messageTblRow"
-                  key={request.reqtitle}
-                  onClick={() => handleRequestClick(request)}
-                >
-                  <TableCell id="messageTblCell ">
-                    <Card
-                      id="messagePreview"
-                      className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
-                    >
-                      <CardHeader>
-                        <div className="space-x-4 flex items-center">
-                          <CardTitle id="messageTitle" className="text-xl">
-                            {request.sender}
-                          </CardTitle>
-                          <Label id="message">{request.reqdue}</Label>
-                        </div>
-                        <div className="space-x-5 flex" id="messageInfo">
-                          <Label>From:</Label>
-                          <Label>
-                            <span className="text-blue-600">
-                              {request.sender}
-                            </span>{" "}
-                            ({request.senderEmail})
-                          </Label>
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+
+        
           <Card
             id="messageCard"
-            className="drop-shadow-md border-2 bg-card grid h-full items-start"
+            className=" h-full items-start border-none"
           >
-            {selectedRequest ? (
-              <>
-                <div className="flex flex-col h-full">
-                  <CardHeader className="flex">
-                    <CardTitle id="messageSender" className="text-2xl">
-                      {selectedRequest.sender}
-                    </CardTitle>
-                    <CardDescription id="messageEmail">{selectedRequest.senderEmail}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="mt-auto text-sm">
-                    <ScrollArea>
-                      <div className="flex w-3/4 m-1">
-                        <div id="message1" className="rounded-md bg-accent p-2">
-                          {selectedRequest.message1}
-                        </div>
-                      </div>
-                      <div className="flex justify-end">
-                        <div className="w-1/2"></div>
-                        <div id="message2" className="rounded-md m-1 bg-primary text-secondary p-2">
-                          {selectedRequest.message2}
-                        </div>
-                      </div>
-                    </ScrollArea>
-                    <Textarea
-                      className="items-end resize-none mt-2"
-                      placeholder={`Message ${selectedRequest.sender}`}
-                    >
-                    </Textarea>
-                  </CardContent>
-                </div>
-              </>
-            ) : (
-              <>
+            
                 <div id="messageUser" className="flex flex-col h-full">
                 <CardHeader className="flex">
                     <CardTitle id="messageSender" className="text-2xl">
@@ -225,6 +160,7 @@ const Messages = () => {
                     </CardTitle>
                     <CardDescription id="messageEmail">{requests[0].senderEmail}</CardDescription>
                   </CardHeader>
+                  <Separator className="bg-accent drop-shadow-sm"/>
                   <CardContent className="mt-auto text-sm">
                     <ScrollArea>
                       <div className="flex w-3/4 m-1">
@@ -247,12 +183,9 @@ const Messages = () => {
                     </Textarea>
                   </CardContent>
                 </div>
-              </>
-            )}
           </Card>
-        </div>
-      </div >
-    </Layout >
+
+
   );
 };
 

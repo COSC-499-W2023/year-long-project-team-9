@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Calendar as CalendarIcon } from "lucide-react";
 import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
+import { ScrollArea } from "./ui/scroll-area";
 
 export async function getServerSideProps() {
   return {
@@ -96,7 +97,17 @@ const CreateRequest = () => {
     /*Create a function to submit data*/
   }
   const onSubmit: SubmitHandler<formSchema> = (data: formSchema) => {
-    const added = createRequestValidation(data);
+    if (createRequestValidation(data)) {
+      const response = fetch("/api/createRequest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } else {
+      console.log("Invalid!");
+    }
   };
   const [title, setTitle] = React.useState("");
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,17 +156,13 @@ const CreateRequest = () => {
     /*Main return function to create web page*/
   }
   return (
-    <Layout>
-      {/*added by jan*/}
-      {/* <div className="grid justify-center items-center pt-10 ">
-        <h1 className="text-3xl font-extrabold">Create Request</h1>
-      </div> */}
-
+    <ScrollArea>
       <form role="form" onSubmit={handleSubmit(onSubmit)} className="md:px-24">
         {/*Div to contain the request card and the preview card*/}
+
         <div
           id="cards"
-          className="container grid grid-cols-1 md:grid-cols-2 pt-10 gap-10 "
+          className="flex flex-col pt-10 gap-10  overflow-y-scroll"
         >
           {/*Request Info Card*/}
           <Card
@@ -451,7 +458,7 @@ const CreateRequest = () => {
           </div>
         </div>
       </form>
-    </Layout>
+    </ScrollArea>
   );
 };
 
