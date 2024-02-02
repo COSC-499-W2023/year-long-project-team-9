@@ -35,7 +35,7 @@
     "**/*.tsx",
     "**/*.mjs",
     ".next/types/**/*.ts"
-, "stacks/core/migrations/007_add_data.mjs", "src/tests/front-end/functions/createRequestValidation.test.mjs", "src/tests/front-end/functions/emailRegularExpression.test.mjs", "src/tests/front-end/functions/passwordCognitoDefaultRegularExpression.test.mjs", "src/tests/front-end/functions/authMethods.test.mjs", "src/tests/front-end/Home/Dashboard.test.mjs", "src/tests/front-end/Home/RequestListings.test.mjs", "src/tests/front-end/Home/Messages.test.mjs", "src/tests/front-end/Home/CreateRequest.test.mjs", "src/tests/front-end/Home/Messages.test.tss"  ],
+, "stacks/core/migrations/007_add_data.mjs"  ],
   "exclude": [
     "node_modules"
   ]
