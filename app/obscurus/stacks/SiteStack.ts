@@ -11,8 +11,10 @@ import {
   Cognito,
   Config,
   Queue,
+  Auth,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as cognito from "aws-cdk-lib/aws-cognito";
 
 export default function SiteStack({ stack }: StackContext) {
   const inputBucket = new Bucket(stack, "inputBucket");
@@ -24,15 +26,12 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
-
-
   // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
   });
-
 
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
@@ -52,8 +51,8 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: "8 hours",
   });
 
-   //Create secret keys
-   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+  //Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
@@ -98,7 +97,7 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        }
+        },
       },
       "POST /secrets": {
         function: {
@@ -122,7 +121,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/createRequest.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds], 
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "POST /createUser": {
@@ -130,7 +129,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/createUser.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds], 
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "GET /getSubmissions": {
@@ -140,37 +139,57 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        }
+        },
       },
     },
   });
 
   steveJobs.bind([api]);
 
+  const site = new NextjsSite(stack, "site", {
+    bind: [inputBucket, outputBucket, rds, api, steveJobs],
+    permissions: [rekognitionPolicyStatement],
+  });
+
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    // cdk: {
-    //   userPool: {
-    //     standardAttributes: {
-    //       email: { required: true, mutable: false },
-    //       givenName: { required: true, mutable: true },
-    //       familyName: { required: true, mutable: true },
-    //     },
-    //   },
-    // },
-    // triggers: {
-    //   preAuthentication: "./stacks/core/src/preAuthentication.main",
-    //   postAuthentication: "./stacks/core/src/postAuthentication.main",
-    // },
+    cdk: {
+      userPoolClient: {
+        supportedIdentityProviders: [
+          cognito.UserPoolClientIdentityProvider.GOOGLE,
+        ],
+        oAuth: {
+          callbackUrls: ["http://localhost:3000"],
+          logoutUrls: ["http://localhost:3000"],
+        },
+      },
+    },
   });
+  //   userPool: {
+  //     standardAttributes: {
+  //       email: { required: true, mutable: false },
+  //       givenName: { required: true, mutable: true },
+  //       familyName: { required: true, mutable: true },
+  //     },
+  //   },
+  // },
+  // triggers: {
+  //   preAuthentication: "./stacks/core/src/preAuthentication.main",
+  //   postAuthentication: "./stacks/core/src/postAuthentication.main",
+  // },
 
   // Allow authenticated users invoke API
   // auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs],
-    permissions: [rekognitionPolicyStatement],
+  const googleAuth = new Auth(stack, "googleAuth", {
+    authenticator: {
+      handler: "./stacks/core/src/googleAuth.handler",
+    },
+  });
+  googleAuth.attach(stack, {
+    api,
+    prefix: "/auth",
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
