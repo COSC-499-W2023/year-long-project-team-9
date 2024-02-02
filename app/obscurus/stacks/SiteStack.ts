@@ -7,6 +7,7 @@ import {
   RDS,
   Api,
   Job,
+  Job,
   Service,
   Cognito,
   Config,
@@ -61,6 +62,7 @@ export default function SiteStack({ stack }: StackContext) {
   // Create secret keys
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
+
   const api = new Api(stack, "Api", {
     // defaults: {
     //   function: {
@@ -101,6 +103,15 @@ export default function SiteStack({ stack }: StackContext) {
         }
       },
       "POST /secrets": {
+        function: {
+          handler: "./stacks/lambdas/secrets.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "GET /secrets": {
         function: {
           handler: "./stacks/lambdas/secrets.handler",
           timeout: 20,
@@ -156,6 +167,7 @@ export default function SiteStack({ stack }: StackContext) {
     //       email: { required: true, mutable: false },
     //       givenName: { required: true, mutable: true },
     //       familyName: { required: true, mutable: true },
+    //       birthdate: { required: true, mutable: false },
     //     },
     //   },
     // },
@@ -166,7 +178,9 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   // Allow authenticated users invoke API
-  // auth.attachPermissionsForAuthUsers(stack, [api]);
+  auth.attachPermissionsForAuthUsers(stack, [api]);
+
+
 
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],

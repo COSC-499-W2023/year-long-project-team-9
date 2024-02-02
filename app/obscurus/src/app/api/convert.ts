@@ -28,7 +28,7 @@ export default async function handler (event: any ){
             fs.writeFileSync(inputFilePath, inputData.Body);
           }
 
-          
+
 
         // Convert the video using FFmpeg
         execSync(`ffmpeg -i ${inputFilePath} -c:v libx264 -preset slow -crf 22 -c:a aac -b:a 128k ${outputFilePath}`);

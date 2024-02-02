@@ -1,3 +1,5 @@
+
+"use client"
 import Layout from "@/components/layout";
 import crypto from "crypto";
 import { Bucket } from "sst/node/bucket";
@@ -36,7 +38,7 @@ import { Progress } from "@/components/ui/progress";
 import { Job } from "sst/node/job";
 import useSWR from "swr";
 
-export async function getServerSideProps() {
+export async function getData() {
   const s3Key = crypto.randomUUID() + ".mp4";
   const command = new PutObjectCommand({
     ACL: "public-read",
@@ -45,17 +47,19 @@ export async function getServerSideProps() {
   });
   const url = await getSignedUrl(new S3Client({}), command);
   console.log("s3Key: ", s3Key);
-  return { props: { url, s3Key } };
+  return { url, s3Key };
+ 
 }
+
 
 const fetcher = (url: string, init?: RequestInit) =>
   fetch(url, init).then((res) => res.json());
 
-const Index = ({ url, s3Key }: { url: string; s3Key: string }) => {
-  console.log("Raw s3key:" + s3Key);
+const Index = async() => {
 
-  const { data, error } = useSWR("/api/upload", fetcher);
-  console.log(data);
+  const {url, s3Key} = await getData();
+
+
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
