@@ -11,11 +11,11 @@ import LoadingPage from "@/components/LoadingPage";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "../pages/_app";
 
-export const getStaticProps = async () => {
-  return { props: {} };
-};
+// export const getStaticProps = async () => {
+//   return { props: {} };
+// };
 
-const Home: FC & NextPageWithLayout = () => {
+export const Home: FC = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -55,10 +55,6 @@ const Home: FC & NextPageWithLayout = () => {
       <About />
     </div>
   );
-};
-
-Home.getLayout = (page: ReactNode) => {
-  return <Layout>{page}</Layout>;
 };
 
 export default Home;
