@@ -160,25 +160,11 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    // cdk: {
-    //   userPool: {
-    //     standardAttributes: {
-    //       email: { required: true, mutable: false },
-    //       givenName: { required: true, mutable: true },
-    //       familyName: { required: true, mutable: true },
-    //     },
-    //   },
-    // },
-    // triggers: {
-    // preAuthentication: "./stacks/core/src/preAuthentication.main",
-    // postAuthentication: "./stacks/core/src/postAuthentication.main",
-    // },
+    triggers: {},
   });
 
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
-
-  site.attachPermissions([rekognitionPolicyStatement]);
 
   steveJobs.bind([site]);
 

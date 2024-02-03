@@ -56,7 +56,6 @@ const IndexPage = ({
   const defaultLayout = [265, 440, 655];
   const defaultCollapsed = false;
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  console.log(authenticationMethods.isSignedIn());
   return (
     <Layout>
       <TooltipProvider delayDuration={0}>
