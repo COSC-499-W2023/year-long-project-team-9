@@ -135,8 +135,25 @@ export default function SiteStack({ stack }: StackContext) {
 
   steveJobs.bind([api]);
 
+  //Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+    stack,
+    "USER_POOL_WEB_CLIENT_ID_KEY"
+  );
+
+  // Create secret keys
+  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
+
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs],
+    bind: [
+      inputBucket,
+      outputBucket,
+      rds,
+      api,
+      steveJobs,
+      USER_POOL_WEB_CLIENT_ID_KEY,
+      USER_POOL_ID_KEY,
+    ],
     permissions: [rekognitionPolicyStatement],
   });
 
@@ -164,15 +181,6 @@ export default function SiteStack({ stack }: StackContext) {
   site.attachPermissions([rekognitionPolicyStatement]);
 
   steveJobs.bind([site]);
-
-  //Create secret keys
-  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
-    stack,
-    "USER_POOL_WEB_CLIENT_ID_KEY"
-  );
-
-  // Create secret keys
-  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,

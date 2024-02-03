@@ -247,38 +247,6 @@ const SignIn = () => {
       setSignUpNamesValid(false);
     }
   };
-  const [signUpBirthdate, setSignUpBirthdate] = useState<Date | undefined>(
-    new Date()
-  );
-  const [signUpBirthdateString, setSignUpBirthdateString] = useState("");
-  const [signUpBirthdateValid, setSignUpBirthdateValid] = useState(true);
-  const handleSignUpBirthdateSubmit = () => {
-    const currDate = new Date();
-    if (signUpBirthdate === undefined) {
-      setSignUpBirthdateValid(false);
-    } else {
-      let age = currDate.getFullYear() - signUpBirthdate?.getFullYear();
-      const monthDiff = currDate.getMonth() - signUpBirthdate.getMonth();
-      // If the current month is before the birth month, or it's the same month but the day is before the birth day, subtract a year.
-      if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && currDate.getDate() < signUpBirthdate.getDate())
-      ) {
-        age--;
-      }
-      if (age < 13) {
-        setSignUpBirthdateValid(false);
-      } else {
-        setSignUpBirthdateValid(true);
-        if (signUpBirthdate === undefined) {
-          setSignUpBirthdateString("");
-        } else {
-          setSignUpBirthdateString(format(signUpBirthdate, "yyyy-MM-dd"));
-        }
-        setSignUpState(3);
-      }
-    }
-  };
   const [signUpPassword, setSignUpPassword] = useState("");
   const handleSignUpPasswordChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -306,10 +274,9 @@ const SignIn = () => {
           attributes: {
             given_name: signUpGivenName,
             family_name: signUpFamilyName,
-            birthdate: signUpBirthdateString,
           },
         });
-        setSignUpState(5);
+        setSignUpState(3);
       } catch (error) {
         console.log(error);
       }
@@ -325,7 +292,7 @@ const SignIn = () => {
   const handleSignUpVerificationSubmit = () => {
     try {
       Auth.confirmSignUp(signUpEmail, signUpVerificationCode);
-      setSignUpState(6);
+      setSignUpState(4);
     } catch (error) {
       console.log(error);
       setSignUpVerificationValid(false);
@@ -391,9 +358,6 @@ const SignIn = () => {
                 setSignUpGivenName(""),
                 setSignUpFamilyName(""),
                 setSignUpNamesValid(true),
-                setSignUpBirthdate(new Date()),
-                setSignUpBirthdateString(""),
-                setSignUpBirthdateValid(true),
                 setSignUpPassword(""),
                 setSignUpConfirmPassword(""),
                 setSignUpPasswordMatch(true),
@@ -742,114 +706,6 @@ const SignIn = () => {
                   )}
                   {signUpState === 2 && (
                     <div className="flex flex-col w-full items-center">
-                      <div id="birthdateSignUp" className="grid gap-1.5 pb-2">
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button variant={"outline"} className="w-full">
-                              <CalendarIcon className="mr-2 h-4 w-4 flex-wrap" />
-                              {signUpBirthdate
-                                ? format(signUpBirthdate, "yyyy-MM-dd")
-                                : ""}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
-                            <Calendar
-                              mode="single"
-                              selected={signUpBirthdate}
-                              onSelect={setSignUpBirthdate}
-                              onDayClick={setSignUpBirthdate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        {!signUpBirthdateValid && (
-                          <p role="alert" className="text-red-500 text-xs">
-                            Users must be 13 or older to use obscurus!
-                          </p>
-                        )}
-                        <Button
-                          className="w-full"
-                          onClick={handleSignUpBirthdateSubmit}
-                        >
-                          <span>Next</span>
-                        </Button>
-                      </div>
-                      <div id="signUpGoBack" className="relative pb-2">
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-background px-2 text-muted-foreground">
-                            Or
-                          </span>
-                        </div>
-                        <Button
-                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                          onClick={() => setSignUpState(signUpState - 1)}
-                        >
-                          Go Back a Step
-                        </Button>
-                      </div>
-                      <hr className="w-3/4 bg-gray-500" />
-                      <div id="signInConnector" className="w-3/4 text-center">
-                        <Button
-                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                          onClick={() => setDialogState(0)}
-                        >
-                          Sign in to your account
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {signUpState === 3 && (
-                    <div className="flex flex-col w-full items-center">
-                      <div id="checkSignUp" className="grid gap-1.5 pb-2">
-                        <Label className="font-bold justify-self-center text-ellipsis overflow-hidden pb-1">
-                          Is your information correct?
-                        </Label>
-                        <Label className="justify-self-center text-ellipsis overflow-hidden pb-1">
-                          {signUpEmail}
-                        </Label>
-                        <Label className="justify-self-center text-ellipsis overflow-hidden pb-1">
-                          {signUpGivenName} {signUpFamilyName}
-                        </Label>
-                        <Label className="justify-self-center text-ellipsis overflow-hidden pb-1">
-                          {signUpBirthdate ? (
-                            format(signUpBirthdate, "yyyy-MM-dd")
-                          ) : (
-                            <span></span>
-                          )}
-                        </Label>
-                        <Button
-                          className="w-full"
-                          onClick={() => setSignUpState(4)}
-                        >
-                          <span>Next</span>
-                        </Button>
-                      </div>
-                      <div id="signUpGoBack" className="relative pb-2">
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-background px-2 text-muted-foreground">
-                            Or
-                          </span>
-                        </div>
-                        <Button
-                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                          onClick={() => setSignUpState(signUpState - 1)}
-                        >
-                          Go Back a Step
-                        </Button>
-                      </div>
-                      <hr className="w-3/4 bg-gray-500" />
-                      <div id="signInConnector" className="w-3/4 text-center">
-                        <Button
-                          className="bg-background text-primary text-xs justify-self-center hover:bg-transparent shadow-none h-3/4"
-                          onClick={() => setDialogState(0)}
-                        >
-                          Sign in to your account
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                  {signUpState === 4 && (
-                    <div className="flex flex-col w-full items-center">
                       <div id="passwordSignUp" className="grid gap-1.5 pb-2">
                         <Input
                           type="password"
@@ -905,7 +761,7 @@ const SignIn = () => {
                       </div>
                     </div>
                   )}
-                  {signUpState === 5 && (
+                  {signUpState === 3 && (
                     <div className="flex flex-col w-full items-center">
                       <div id="verifySignUp" className="grid gap-1.5 pb-2">
                         <Label className="font-bold justify-self-center text-ellipsis overflow-hidden pb-1">
@@ -931,7 +787,7 @@ const SignIn = () => {
                       </div>
                     </div>
                   )}
-                  {signUpState === 6 && (
+                  {signUpState === 4 && (
                     <div className="flex flex-col w-full items-center">
                       <div id="finalSignUp" className="grid gap-1.5 pb-2">
                         <Label className="font-bold justify-self-center text-ellipsis overflow-hidden pb-1">
