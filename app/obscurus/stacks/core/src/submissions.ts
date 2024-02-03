@@ -3,13 +3,14 @@ export * as Submissions from "./submissions";
 import { SQL } from "./sql";
 import type { Submissions } from "./sql.generated";
 
-export function update(newValues : Submissions) {
-    return SQL.DB.updateTable("submissions").set(newValues).where("submission_id", "=", 1)
+// export function update(newValues : Submissions) {
+//     return SQL.DB.updateTable("submissions").set(newValues).where("submission_id", "=", 1)
 
-}
+// }
+
+
 export function list() {
-    return SQL.DB.selectFrom("requests")
-    .selectAll()
+    return SQL.DB.selectFrom("submissions").selectAll()
     .execute();
 }
 export function insert(newValues: Submissions) {

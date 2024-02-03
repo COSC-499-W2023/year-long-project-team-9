@@ -1,3 +1,4 @@
+"use client"
 import addDays from "date-fns/addDays";
 import addHours from "date-fns/addHours";
 import format from "date-fns/format";
@@ -40,13 +41,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Requests } from "stacks/core/src/sql.generated";
-import router from "next/router";
+import {useRouter} from "next/navigation";
 import { Card, CardContent, CardTitle } from "./ui/card";
 
 export default function RequestDisplay({ request }: { request: Requests }) {
   const today = new Date();
   console.log(request)
-
+  const router = useRouter();
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">

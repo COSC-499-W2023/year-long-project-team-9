@@ -1,3 +1,4 @@
+"use client"
 import MailList from "@/components/mail-list"
 import Nav from "@/components/nav"
 import { Input } from "@/components/ui/input"
@@ -5,12 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@radix-ui/react-dropdown-menu"
 import { Tabs, TabsContent } from "@radix-ui/react-tabs"
 import { Send, Search } from "lucide-react"
-import router from "next/router"
+import router, { useRouter } from "next/navigation"
 import { Requests } from "stacks/core/src/sql.generated"
 
 
 
 export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
+  const router = useRouter();
     return (
         <Tabs defaultValue="all">
               <div className="flex items-center px-4">

@@ -1,6 +1,4 @@
-{
-  /*IMPORTS*/
-}
+"use client"
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import Image from "next/image";
