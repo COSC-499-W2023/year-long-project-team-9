@@ -1,7 +1,7 @@
 {
   /*IMPORTS*/
 }
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -47,6 +47,16 @@ const SignIn = () => {
   const [signedIn, setSignedIn] = useState(false);
   const [showSignInDialog, setShowSignInDialog] = useState(false);
   const [dialogState, setDialogState] = useState(0);
+
+  useEffect(() => {
+    const checkAsyncUserSignIn = async () => {
+      const userBoolean = await isSignedIn();
+      return userBoolean;
+    };
+    checkAsyncUserSignIn().then((result) => {
+      setSignedIn(result);
+    });
+  });
 
   // SIGN IN FUNCTIONS
   const [signInState, setSignInState] = useState(0);

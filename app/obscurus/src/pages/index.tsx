@@ -17,6 +17,7 @@ import Home from "@/components/Home";
 import TestDatabase from "@/components/TestDatabase";
 import Hero from "@/components/Hero";
 import RequestDisplay from "@/components/request-display";
+import * as authenticationMethods from "@/auth/authenticationMethods";
 
 export async function getServerSideProps() {
   const fetchData = async (route: string) => {
@@ -55,6 +56,7 @@ const IndexPage = ({
   const defaultLayout = [265, 440, 655];
   const defaultCollapsed = false;
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  console.log(authenticationMethods.isSignedIn());
   return (
     <Layout>
       <TooltipProvider delayDuration={0}>
@@ -107,12 +109,13 @@ const IndexPage = ({
           <ResizablePanel className="" defaultSize={15}>
             {requests ? <ListRequests requests={requests} /> : <Home />}
           </ResizablePanel>
-      
 
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={20}>
             {requests ? (
-              requests.map((request) => <RequestDisplay request={request} key={request.request_id} />)
+              requests.map((request) => (
+                <RequestDisplay request={request} key={request.request_id} />
+              ))
             ) : (
               <Home />
             )}

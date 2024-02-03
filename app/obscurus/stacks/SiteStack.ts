@@ -169,10 +169,10 @@ export default function SiteStack({ stack }: StackContext) {
     //     },
     //   },
     // },
-    triggers: {
-      // preAuthentication: "./stacks/core/src/preAuthentication.main",
-      postAuthentication: "./stacks/core/src/postAuthentication.main",
-    },
+    // triggers: {
+    // preAuthentication: "./stacks/core/src/preAuthentication.main",
+    // postAuthentication: "./stacks/core/src/postAuthentication.main",
+    // },
   });
 
   // Allow authenticated users invoke API
