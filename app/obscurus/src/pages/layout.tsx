@@ -41,13 +41,9 @@ type LayoutProps = {
 };
 
 export default function Layout({
-  left,
-  center,
-  right,
+  children
 }: {
-  left?: React.ReactNode;
-  center: React.ReactNode;
-  right?: React.ReactNode | null;
+  children?: React.ReactNode;
 }) {
   const defaultLayout = [265, 440, 655];
   const defaultCollapsed = false;
@@ -58,15 +54,7 @@ export default function Layout({
   const { theme, setTheme } = useTheme();
   const [signedIn, isSignedIn] = useState(true);
 
-  // const [firstTab, setFirstTab] = useState<TabType>("Requests");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
   return (
     <ThemeProvider
       attribute="class"
@@ -76,72 +64,7 @@ export default function Layout({
     >
       <div className="flex flex-col h-screen  w-full">
         <NavBar />
-        {signedIn ? (
-          <TooltipProvider delayDuration={0}>
-            <ResizablePanelGroup
-              direction="horizontal"
-              className="h-full max-h-[800px] items-stretch border-y-2"
-            >
-              <ResizablePanel
-                defaultSize={defaultLayout[1]}
-                collapsedSize={1}
-                collapsible={true}
-                minSize={5}
-                maxSize={15}
-                className={cn(
-                  "min-w-[50px] transition-all duration-300 ease-in-out"
-                )}
-              >
-                <Nav
-                  isCollapsed={false}
-                  links={[
-                    {
-                      title: "Requests",
-                      icon: Inbox,
-                      variant: "default",
-                      href: "/CreateRequest",
-                    },
-                    {
-                      title: "Submissions",
-                      icon: FileUp,
-                      variant: "ghost",
-                      href: "MySubmissions",
-                    },
-                    {
-                      title: "My Videos",
-                      icon: Youtube,
-                      variant: "ghost",
-                      href: "/VideoPlayer",
-                    },
-                    {
-                      title: "Chat",
-                      icon: MessageCircle,
-                      variant: "ghost",
-                      href: "/Message",
-                    },
-                  ]}
-                />
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel className="" defaultSize={15} maxSize={50}>
-                {center}
-              </ResizablePanel>
-
-              {right ? (
-                <>
-                  <ResizableHandle withHandle />
-                  <ResizablePanel className="" defaultSize={10}>
-                    {right}
-                  </ResizablePanel>
-                </>
-              ) : (
-                <></>
-              )}
-            </ResizablePanelGroup>
-          </TooltipProvider>
-        ) : (
-          <Home />
-        )}
+      {children}
       </div>
     </ThemeProvider>
   );

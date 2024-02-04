@@ -74,8 +74,8 @@ export const columns: ColumnDef<Submissions>[] = [
       )
 
       if (!status) {
-        return <Badge variant={"default"}>Processed</Badge>
-      }
+        return <Badge variant={"secondary"}>Processing</Badge>
+      } 
 
       return (
         <div className="flex w-[100px] items-center">

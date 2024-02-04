@@ -62,8 +62,8 @@ const NavBar = () => {
               className="min-h-full"
               src="/logo.svg"
               alt="obscurus"
-              width={60}
-              height={60}
+              width={50}
+              height={50}
             />
           </Link>
 
@@ -71,7 +71,7 @@ const NavBar = () => {
             <Link href="/">
               <NavigationMenuItem>
                 <span
-                  className="font-bold text-xl p-5 hover:cursor-pointer">
+                  className="font-bold text-xl hover:cursor-pointer">
                   obscurus
                 </span>
               </NavigationMenuItem>

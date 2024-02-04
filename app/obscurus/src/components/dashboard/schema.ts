@@ -5,7 +5,7 @@ import { z } from "zod";
 export const videoSchema = z.object({
   submission_id: z.string(),
   requestee_email: z.string(),
-  is_completed: z.null(),
+  is_completed: z.string(),
   submitted_date: z.null(),
   request_id: z.string(),
 });

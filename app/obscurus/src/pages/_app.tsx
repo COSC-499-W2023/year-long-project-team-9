@@ -14,6 +14,7 @@ import Head from "next/head";
 import { Amplify } from "aws-amplify";
 import { Api } from "sst/node/api";
 import useSWR from "swr";
+import Layout from "./layout";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -30,28 +31,14 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [loading, setLoading] = useState(false);
 
-  // const { data, error } = useSWR("/api/secrets", fetcher);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data)
-  //     Amplify.configure({
-  //       Auth: {
-  //         region: "us-west-2",
-  //         userPoolId: data.userPoolId,
-  //         userPoolWebClientId: data.userPoolWebClientId,
-  //       },
-  //     });
-  //   }
-  // }, [data]);
-
   return getLayout(
     <>
       <Head>
         <title>obscurus</title>
       </Head>
 
-      {loading ? <LoadingPage /> : <Component {...pageProps} />}
+        <Component {...pageProps} />
+
     </>
   );
 }

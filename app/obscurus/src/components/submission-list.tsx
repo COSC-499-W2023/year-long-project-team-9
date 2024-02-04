@@ -1,37 +1,8 @@
 import { ComponentProps } from "react"
-import formatDistanceToNow from "date-fns/formatDistanceToNow"
-
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { Mail } from "../data/data"
 import { useMail } from "./hooks/use-mail"
 import { Submissions } from "stacks/core/src/sql.generated"
-
-
-export async function getServerSideProps() {
-  // const fetchData = async (route: string) => {
-  //   try {
-  //     const apiURL = Api.Api.url;
-  //     const response = await fetch(apiURL + route);
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     } else {
-  //       return response.json();
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // const submissions: Submissions[] = await fetchData("/getSubmissions");
-  // const submissions: Submissions[] = await fetchData("/getSubmissions");
-  // const users: Users[] = await fetchData("/getUsers");
-  return {
-   
-  };
-}
 
 export default function SubmissionList({ submissions }: {submissions: Submissions[]}) {
   const [mail, setMail] = useMail()
