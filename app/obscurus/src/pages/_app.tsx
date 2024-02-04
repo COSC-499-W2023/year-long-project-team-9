@@ -34,8 +34,8 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     Amplify.configure({
       Auth: {
         region: "us-west-2",
-        userPoolId: "us-west-2_L49ywPvrY",
-        userPoolWebClientId: "2u00g06jvrh19u88l9702eqjrf",
+        userPoolId: "us-west-2_SSqMKlUXx",
+        userPoolWebClientId: "444lautq34qslgp8pt9sr9obtq",
       },
     });
   });
