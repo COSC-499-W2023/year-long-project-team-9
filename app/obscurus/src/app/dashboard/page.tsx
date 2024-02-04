@@ -1,26 +1,10 @@
 "use server";
-import Layout from "../layout";
 import { Api } from "sst/node/api";
-import { Requests, Submissions, Users } from "stacks/core/src/sql.generated";
-import { ListRequests } from "@/components/ListRequests";
-import CreateRequest from "@/components/CreateRequest";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { cn } from "@/lib/utils";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { Inbox, FileUp, Youtube, MessageCircle } from "lucide-react";
-import TestDatabase from "@/components/TestDatabase";
-import Hero from "@/components/Hero";
-import RequestDisplay from "@/components/request-display";
-import Nav from "@/components/nav";
 import Image from "next/image";
 import { columns } from "./components/columns";
 import { UserNav } from "./components/user-nav";
 import { DataTable } from "./components/data-table";
-import { Task } from "./schema";
+import { Video } from "./schema";
 
 async function getSubmissions() {
   const res = await fetch(Api.Api.url + "/getSubmissions");
@@ -37,7 +21,7 @@ async function getSubmissions() {
 }
 
 export default async function Dashboard() {
-  const submissions: Task[] = await getSubmissions();
+  const submissions: Video[] = await getSubmissions();
   console.log("Raw submissions", submissions);
 
   console.log("Submission #1", submissions[0].request_id);

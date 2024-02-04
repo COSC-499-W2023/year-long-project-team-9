@@ -48,5 +48,5 @@ export default async function Page() {
   const submissions: Submissions[] = await getSubmissions();
   const requests: Requests[] = await getRequests();
   console.log(submissions);
-  return <Wrapper mainContent={<ListRequests requests={requests} />} sidebarContent={<Dashboard />} />;
+  return <Wrapper mainContent={<ListRequests requests={requests} />} sidebarContent={<Dashboard />}  />;
 }

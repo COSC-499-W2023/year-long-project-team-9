@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // We're keeping a simple non-relational schema here.
 // IRL, you will have a schema for your data models.
-export const taskSchema = z.object({
+export const videoSchema = z.object({
   submission_id: z.string(),
   requestee_email: z.string(),
   is_completed: z.string(),
@@ -10,4 +10,4 @@ export const taskSchema = z.object({
   request_id: z.string(),
 });
 
-export type Task = z.infer<typeof taskSchema>;
+export type Video = z.infer<typeof videoSchema>;

@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { labels } from "../data"
-import { taskSchema } from "../schema"
+import { videoSchema } from "../schema"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -28,8 +28,8 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const task = taskSchema.parse(row.original)
-
+  const task = videoSchema.parse(row.original)
+  console.log("task", task.submission_id)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
