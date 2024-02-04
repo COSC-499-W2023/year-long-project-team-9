@@ -40,11 +40,11 @@ export interface Requests {
   /*Submissions table interace*/
 }
 export interface Submissions {
-  submission_id: number;
+  submission_id: string;
   requestee_email: string;
   is_completed: string;
-  submitted_date: Date;
-  request_id: number;
+  submitted_date: Date | null;
+  request_id: string;
 }
 {
   /*Rooms table interace*/

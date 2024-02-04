@@ -26,7 +26,6 @@ export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
                         title: "Create Request",
                         icon: Send,
                         variant: "ghost",
-                        href: "/CreateRequest",
                       },
                     ]}
                   />

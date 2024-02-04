@@ -17,6 +17,10 @@ import Home from "@/components/Home";
 import TestDatabase from "@/components/TestDatabase";
 import Hero from "@/components/Hero";
 import RequestDisplay from "@/components/request-display";
+import { columns } from "@/components/dashboard/components/columns";
+import { DataTable } from "@/components/dashboard/components/data-table";
+import Dashboard from "@/components/dashboard";
+import VideoPlayer from "@/components/VideoPlayer";
 
 export async function getServerSideProps() {
   const fetchData = async (route: string) => {
@@ -60,7 +64,7 @@ const IndexPage = ({
       <TooltipProvider delayDuration={0}>
         <ResizablePanelGroup
           direction="horizontal"
-          className="h-full max-h-[800px] items-stretch"
+          className="h-full max-h-[800px] items-stretch border-2 border-accent"
         >
           <ResizablePanel
             defaultSize={10}
@@ -80,42 +84,40 @@ const IndexPage = ({
                   title: "Requests",
                   icon: Inbox,
                   variant: "default",
-                  href: "/MyRequests",
                 },
                 {
                   title: "Submissions",
                   icon: FileUp,
                   variant: "ghost",
-                  href: "/Submissions",
                 },
                 {
                   title: "My Videos",
                   icon: Youtube,
                   variant: "ghost",
-                  href: "/MyVideos",
                 },
                 {
                   title: "Chat",
                   icon: MessageCircle,
                   variant: "ghost",
-                  href: "/Messages",
                 },
               ]}
             />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel className="" defaultSize={15}>
-            {requests ? <ListRequests requests={requests} /> : <Home />}
+            <Dashboard submissions={submissions}  />
           </ResizablePanel>
-      
 
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={20}>
-            {requests ? (
-              requests.map((request) => <RequestDisplay request={request} key={request.request_id} />)
+            <VideoPlayer videoUrl={"test3.mp4"} />
+            {/* {requests ? (
+              requests.map((request) => (
+                <RequestDisplay request={request} key={request.request_id} />
+              ))
             ) : (
               <Home />
-            )}
+            )} */}
             {/* <CreateRequest /> */}
           </ResizablePanel>
         </ResizablePanelGroup>

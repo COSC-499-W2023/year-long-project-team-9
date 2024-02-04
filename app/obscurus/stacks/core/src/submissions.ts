@@ -4,11 +4,11 @@ import { SQL } from "./sql";
 import type { Submissions } from "./sql.generated";
 
 export function update(newValues : Submissions) {
-    return SQL.DB.updateTable("submissions").set(newValues).where("submission_id", "=", 1)
+    return SQL.DB.updateTable("submissions").set(newValues).where("submission_id", "=", "1")
 
 }
 export function list() {
-    return SQL.DB.selectFrom("requests")
+    return SQL.DB.selectFrom("submissions")
     .selectAll()
     .execute();
 }
