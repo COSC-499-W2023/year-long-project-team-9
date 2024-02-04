@@ -201,3 +201,20 @@
 ### Picture of T2 Week 3's Survey
 
 ![T2 Week 3 Survey](img/soren-stenback/T2Week3-Survey-ID4.png)
+
+---
+
+## T2 Week 4
+
+### January 29 - February 4, 2023
+
+- This week I worked on Milestone #4, Peer Testing #1.
+- The goals for this week were to perform the peer testing presentation and to examine how Cognito triggers function.
+
+### Picture of Project Board
+
+![T2 Week 4 Project Board](img/soren-stenback/T2Week4-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 4's Survey
+
+![T2 Week 4 Survey](img/soren-stenback/T2Week4-Survey-ID4.png)
