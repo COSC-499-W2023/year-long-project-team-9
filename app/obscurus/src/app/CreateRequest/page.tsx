@@ -2,7 +2,6 @@
 {
   /*IMPORTS*/
 }
-import Layout from "@/components/layout";
 import React from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -26,12 +25,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Calendar as CalendarIcon } from "lucide-react";
-<<<<<<<< HEAD:app/obscurus/src/components/CreateRequest.tsx
-import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
-import { ScrollArea } from "./ui/scroll-area";
-========
-import { createRequestValidation } from "../../create-request-form-validation/createRequestValidation";
->>>>>>>> origin/app-router:app/obscurus/src/app/CreateRequest/page.tsx
+import { createRequestValidation } from "@/create-request-form-validation/createRequestValidation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // export async function getServerSideProps() {
 //   return {

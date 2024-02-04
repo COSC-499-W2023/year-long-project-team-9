@@ -1,6 +1,4 @@
-
-"use client"
-import Layout from "@/components/layout";
+"use client";
 import crypto from "crypto";
 import { Bucket } from "sst/node/bucket";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -38,27 +36,23 @@ import { Progress } from "@/components/ui/progress";
 import { Job } from "sst/node/job";
 import useSWR from "swr";
 
-export async function getData() {
-  const s3Key = crypto.randomUUID() + ".mp4";
-  const command = new PutObjectCommand({
-    ACL: "public-read",
-    Key: s3Key,
-    Bucket: Bucket.inputBucket.bucketName,
-  });
-  const url = await getSignedUrl(new S3Client({}), command);
-  console.log("s3Key: ", s3Key);
-  return { url, s3Key };
- 
-}
-
+// export async function getData() {
+//   const s3Key = crypto.randomUUID() + ".mp4";
+//   const command = new PutObjectCommand({
+//     ACL: "public-read",
+//     Key: s3Key,
+//     Bucket: Bucket.inputBucket.bucketName,
+//   });
+//   const url = await getSignedUrl(new S3Client({}), command);
+//   console.log("s3Key: ", s3Key);
+//   return { url, s3Key };
+// }
 
 const fetcher = (url: string, init?: RequestInit) =>
   fetch(url, init).then((res) => res.json());
 
-const Index = async() => {
-
-  const {url, s3Key} = await getData();
-
+const Index = async () => {
+  // const { url, s3Key } = await getData();
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -79,7 +73,6 @@ const Index = async() => {
     });
 
     if (response.ok) {
-
       const response = await fetch("/api/hello", {
         method: "POST",
         headers: {
@@ -111,49 +104,49 @@ const Index = async() => {
     }
 
     const fileExt = file.name.split(".").pop();
-    const apiUrl = "/api/upload"; 
+    const apiUrl = "/api/upload";
 
     try {
       // Send a POST request to the API
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: s3Key,
-          extension: fileExt,
-        }),
-      });
+      // const response = await fetch(apiUrl, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     key: s3Key,
+      //     extension: fileExt,
+      //   }),
+      // });
 
       // Check if the request was successful
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
 
-      const data = await response.json();
-      console.log("Response from server:", data);
+      // const data = await response.json();
+      // console.log("Response from server:", data);
 
       // Handle the successful upload (update UI, etc.)
       // ...
     } catch (error) {
       console.error("Error during fetch:", error);
     }
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": file.type,
-        "Content-Disposition": `attachment; filename*=UTF-8''${s3Key}`,
-      },
-      body: file,
-    });
+    // const response = await fetch(url, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": file.type,
+    //     "Content-Disposition": `attachment; filename*=UTF-8''${s3Key}`,
+    //   },
+    //   body: file,
+    // });
 
-    if (response.ok) {
-      console.log("Upload successful");
-      await triggerJob(s3Key);
-    } else {
-      console.error("Upload failed:", response.statusText);
-    }
+    // if (response.ok) {
+    //   console.log("Upload successful");
+    //   await triggerJob(s3Key);
+    // } else {
+    //   console.error("Upload failed:", response.statusText);
+    // }
 
     // const completionStatus = await triggerJob(s3Key);
     // console.log(completionStatus)
@@ -202,24 +195,24 @@ const Index = async() => {
 
       try {
         console.log("File:", file);
-        const response = await fetch(url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "video/mp4",
-            "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
-          },
-          body: file,
-        });
+        // const response = await fetch(url, {
+        //   method: "PUT",
+        //   headers: {
+        //     "Content-Type": "video/mp4",
+        //     "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
+        //   },
+        //   body: file,
+        // });
 
-        if (response.ok) {
-          // const location =
-          //   response.headers.get("Location") || url.split("?")[0];
-          // window.location.href = location;
-          console.log("Upload successful:", location);
-          setIsUploaded(true);
-        } else {
-          console.error("Upload failed:", response.statusText);
-        }
+        // if (response.ok) {
+        //   // const location =
+        //   //   response.headers.get("Location") || url.split("?")[0];
+        //   // window.location.href = location;
+        //   console.log("Upload successful:", location);
+        //   setIsUploaded(true);
+        // } else {
+        //   console.error("Upload failed:", response.statusText);
+        // }
       } catch (error) {
         console.error("Upload error:", error);
       } finally {
@@ -268,7 +261,7 @@ const Index = async() => {
   const [isUploaded, setIsUploaded] = useState(false);
 
   return (
-    <NestedLayout>
+    <div>
       <Progress className="my-5 max-w-md" value={(current / count) * 100} />
       <Carousel
         setApi={setApi}
@@ -430,7 +423,7 @@ const Index = async() => {
         <CarouselPrevious />
         <CarouselNext disabled={determineNextButtonDisabled()} />
       </Carousel>
-    </NestedLayout>
+    </div>
   );
 };
 

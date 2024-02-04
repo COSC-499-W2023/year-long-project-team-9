@@ -2,7 +2,6 @@
 {
   /*IMPORTS*/
 }
-import Layout from "@/components/layout";
 import React from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";

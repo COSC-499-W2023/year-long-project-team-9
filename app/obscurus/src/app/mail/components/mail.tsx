@@ -101,25 +101,21 @@ export function Mail({
                 title: "Requests",
                 icon: Inbox,
                 variant: "default",
-                href:"/"
               },
               {
                 title: "Submissions",
                 icon: FileUp,
                 variant: "ghost",
-                href:"/MyRequests"
               },
               {
                 title: "My Videos",
                 icon: Youtube,
                 variant: "ghost",
-                href: "/"
               },
               {
                 title: "Chat",
                 icon: MessageCircle,
                 variant: "ghost",
-                href: "/"
               },
             ]}
           />
@@ -156,7 +152,6 @@ export function Mail({
                         title: "Create Request",
                         icon: Send,
                         variant: "ghost",
-                        href: "/CreateRequest"
                       },
                     ]}
                   />
