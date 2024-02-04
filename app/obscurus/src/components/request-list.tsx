@@ -9,9 +9,6 @@ import { Mail } from "../data/data"
 import { useMail } from "./hooks/use-mail"
 import { Requests } from "stacks/core/src/sql.generated"
 
-interface RequestListProps {
-  items: Requests[]
-}
 
 export async function getServerSideProps() {
   // const fetchData = async (route: string) => {
@@ -36,15 +33,15 @@ export async function getServerSideProps() {
   };
 }
 
-export default function RequestList({ items }: RequestListProps) {
+export default function RequestList({ requests }: {requests: Requests[]}) {
   const [mail, setMail] = useMail()
 
-  console.log(JSON.stringify(items))
+  console.log(JSON.stringify(requests))
 
   return (
 
       <div className="flex flex-col gap-2 p-4 pt-0">
-        {items.map((item) => (
+        {requests && requests.map((item) => (
           <button
             key={item.request_id}
             className={cn(

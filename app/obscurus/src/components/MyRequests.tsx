@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
+import { Requests } from "stacks/core/src/sql.generated";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
@@ -31,36 +32,9 @@ type RequestType = {
   description: string;
 };
 
-const exampleText =
-  "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.";
 
-const MyRequests = () => {
-  const requests: RequestType[] = [
-    {
-      reqtitle: "Spanish Lessons 1",
-      reqdue: "October 1st 2023",
-      sender: "Daniel Woods",
-      senderEmail: "daniel.woods@gmail.com",
-      description:
-        "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.",
-    },
-    {
-      reqtitle: "Spanish Lessons 2",
-      reqdue: "November 9th 2023",
-      sender: "Daniel Woods",
-      senderEmail: "daniel.woods@gmail.com",
-      description:
-        "Hello,\n\nContinuing from last week's lesson, this week, please record a video of yourselves ordering three separate items from a traditional Spanish restaurant menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra sauce or no onions.",
-    },
-    {
-      reqtitle: "Spanish Lessons 3",
-      reqdue: "December 15th 2023",
-      sender: "Daniel Woods",
-      senderEmail: "daniel.woods@gmail.com",
-      description:
-        "Hello all,\n\nFor the final lesson, please record a video of yourselves having a full conversation in a restaurant setting in Castilian Spanish.\n\n Include greetings, ordering food, asking for recommendations, and thanking the staff.",
-    },
-  ];
+
+const MyRequests = (requests: Requests[]) => {
 
   const [selectedRequest, setSelectedRequest] =
     React.useState<RequestType | null>(null);
@@ -140,7 +114,6 @@ const MyRequests = () => {
   };
 
   return (
-    <Layout>
       <div className="md:px-24 ">
         <div className="grid items-center gap-5">
           {/* <h1 className="text-3xl font-extrabold justify-self-center pt-10">
@@ -184,42 +157,6 @@ const MyRequests = () => {
         </div>
         <br />
         <div className="grid grid-cols-2 gap-5">
-          <Table id="requestsTbl" className="justify-items-start cursor-pointer">
-            <TableBody>
-              {requests.map((request) => (
-                <TableRow
-                id="requestsTblRow"
-                  key={request.reqtitle}
-                  onClick={() => handleRequestClick(request)}
-                >
-                  <TableCell id="requestsTblCell">
-                    <Card
-                      id="collapsed"
-                      className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
-                    >
-                      <CardHeader>
-                        <div className="space-x-4 flex items-center">
-                          <CardTitle className="text-xl" id="requestTitle">
-                            {request.reqtitle}
-                          </CardTitle>
-                          <Label>{request.reqdue}</Label>
-                        </div>
-                        <div className="space-x-5 flex">
-                          <Label>From:</Label>
-                          <Label>
-                            <span className="text-blue-600">
-                              {request.sender}
-                            </span>{" "}
-                            ({request.senderEmail})
-                          </Label>
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
 
           <Card
             id="previewCard"
@@ -386,7 +323,7 @@ const MyRequests = () => {
           </Button>
         </div>
       </div>
-    </Layout>
+
   );
 };
 

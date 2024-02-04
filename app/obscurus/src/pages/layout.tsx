@@ -18,7 +18,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import MailDisplay from "../components/mail-display";
-import MailList from "../components/mail-list";
+import MailList from "../components/request-list";
 import { Input } from "../components/ui/input";
 import {
   ResizablePanelGroup,
@@ -33,14 +33,22 @@ import { ListRequests } from "../components/ListRequests";
 
 type LayoutProps = {
   children: ReactNode;
-  panels : {
+  panels: {
     left: React.ReactNode;
     center: React.ReactNode;
     right: React.ReactNode;
-  }
+  };
 };
 
-export default function Layout({ left, center, right }: {left: React.ReactNode; center: React.ReactNode; right: React.ReactNode;}) {
+export default function Layout({
+  left,
+  center,
+  right,
+}: {
+  left?: React.ReactNode;
+  center: React.ReactNode;
+  right?: React.ReactNode | null;
+}) {
   const defaultLayout = [265, 440, 655];
   const defaultCollapsed = false;
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
@@ -77,8 +85,8 @@ export default function Layout({ left, center, right }: {left: React.ReactNode; 
               <ResizablePanel
                 defaultSize={defaultLayout[1]}
                 collapsedSize={1}
-                collapsible={false}
-                minSize={10}
+                collapsible={true}
+                minSize={5}
                 maxSize={15}
                 className={cn(
                   "min-w-[50px] transition-all duration-300 ease-in-out"
@@ -118,10 +126,17 @@ export default function Layout({ left, center, right }: {left: React.ReactNode; 
               <ResizablePanel className="" defaultSize={15} maxSize={50}>
                 {center}
               </ResizablePanel>
-              {/* <ResizableHandle withHandle /> */}
-              {/* <ResizablePanel className="" defaultSize={10}>
-                {right}
-              </ResizablePanel> */}
+
+              {right ? (
+                <>
+                  <ResizableHandle withHandle />
+                  <ResizablePanel className="" defaultSize={10}>
+                    {right}
+                  </ResizablePanel>
+                </>
+              ) : (
+                <></>
+              )}
             </ResizablePanelGroup>
           </TooltipProvider>
         ) : (

@@ -7,10 +7,11 @@ import { Tabs, TabsContent } from "@radix-ui/react-tabs"
 import { Send, Search } from "lucide-react"
 import router from "next/router"
 import { Api } from "sst/node/api"
-import { Requests } from "stacks/core/src/sql.generated"
+import { Requests, Submissions } from "stacks/core/src/sql.generated"
+import SubmissionList from "./submission-list"
 
 
-export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
+export const  ListSubmissions = ({ submissions }: {submissions: Submissions[]}) => {
     return (
         <Tabs defaultValue="all">
               <div className="flex items-center px-4">
@@ -42,7 +43,7 @@ export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
                 </form>
               </div>
               <TabsContent value="all" className="m-0">
-                <MailList requests={requests} />
+                <SubmissionList submissions={submissions} />
               </TabsContent>
               <TabsContent value="unread" className="m-0">
                 {/* <MailList items={requests.filter((item) => !item.read)} /> */}
