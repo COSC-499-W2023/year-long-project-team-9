@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { Api } from "sst/node/api";
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import Dashboard from "./dashboard/page";
@@ -44,10 +44,11 @@ async function getUsers() {
   return res.json();
 }
 
-
 export default async function Page() {
   const submissions: Submissions[] = await getSubmissions();
   const requests: Requests[] = await getRequests();
   console.log(submissions);
-  return <Wrapper mainContent={<ListRequests requests={requests} />} sidebarContent={<Dashboard/>}  />;
+  return (
+    <Wrapper requests={requests}/>
+  );
 }
