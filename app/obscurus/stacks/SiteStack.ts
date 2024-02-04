@@ -160,7 +160,10 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    triggers: {},
+    triggers: {
+      postAuthentication: "./stacks/lambdas/postAuthentication.main",
+      preSignUp: "./stacks/lambdas/preSignUp.main",
+    },
   });
 
   // Allow authenticated users invoke API
