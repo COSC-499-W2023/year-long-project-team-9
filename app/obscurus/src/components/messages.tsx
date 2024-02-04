@@ -1,8 +1,14 @@
-'use client'
-import Layout from "@/components/layout";
+"use client";
+
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -11,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { GetServerSideProps } from "next";
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
@@ -38,40 +44,36 @@ type RequestType = {
 const exampleText =
   "Hello everyone,\n\nFor this week's Spanish lesson, please record a video of yourselves ordering three separate items from a fast food menu in Castilian Spanish.\n\nFor one of the three items, add a modification like extra cheese or no tomato.";
 
-<<<<<<<< HEAD:app/obscurus/src/components/messages.tsx
-
-
-
 const Messages = () => {
-========
-const Messages = () => {
-  const router = useRouter()
-  
->>>>>>>> origin/app-router:app/obscurus/src/app/messages.tsx
+  const router = useRouter();
+
   const requests: RequestType[] = [
     {
       reqtitle: "Spanish Lessons 1",
       reqdue: "October 1st 2023",
       sender: "Daniel Woods",
       senderEmail: "daniel.woods@gmail.com",
-      message1: "Hello, I just wanted to remind you about the spanish lesson assignment this week",
-      message2: "yes i'll get right on it"
+      message1:
+        "Hello, I just wanted to remind you about the spanish lesson assignment this week",
+      message2: "yes i'll get right on it",
     },
     {
       reqtitle: "Spanish Lessons 2",
       reqdue: "November 9th 2023",
       sender: "Michael Jefferson",
       senderEmail: "mikejeff@gmail.com",
-      message1: "Hi, I will be uploading my submission tomorrow my internet is currently down",
-      message2: "thanks for letting me know"
+      message1:
+        "Hi, I will be uploading my submission tomorrow my internet is currently down",
+      message2: "thanks for letting me know",
     },
     {
       reqtitle: "Spanish Lessons 3",
       reqdue: "December 15th 2023",
       sender: "Stephanie Brooks",
       senderEmail: "stephiebr@gmail.com",
-      message1: "Thank you for your submission. We will keep you posted on if you'll get the position.",
-      message2: "Your welcome"
+      message1:
+        "Thank you for your submission. We will keep you posted on if you'll get the position.",
+      message2: "Your welcome",
     },
   ];
 
@@ -153,46 +155,42 @@ const Messages = () => {
   };
 
   return (
-
-        
-          <Card
-            id="messageCard"
-            className=" h-full items-start border-none"
-          >
-            
-                <div id="messageUser" className="flex flex-col h-full">
-                <CardHeader className="flex">
-                    <CardTitle id="messageSender" className="text-2xl">
-                      {requests[0].sender}
-                    </CardTitle>
-                    <CardDescription id="messageEmail">{requests[0].senderEmail}</CardDescription>
-                  </CardHeader>
-                  <Separator className="bg-accent drop-shadow-sm"/>
-                  <CardContent className="mt-auto text-sm">
-                    <ScrollArea>
-                      <div className="flex w-3/4 m-1">
-                        <div id="message1" className="rounded-md bg-accent p-2">
-                          {requests[0].message1}
-                        </div>
-                      </div>
-                      <div className="flex justify-end">
-                        <div className="w-1/2"></div>
-                        <div id="message2" className="rounded-md m-1 bg-primary text-secondary p-2">
-                          {requests[0].message2}
-                        </div>
-                      </div>
-                    </ScrollArea>
-                    <Textarea
-                      id="textbox"
-                      className="items-end mt-2 resize-none "
-                      placeholder={`Message ${requests[0].sender}`}
-                    >
-                    </Textarea>
-                  </CardContent>
-                </div>
-          </Card>
-
-
+    <Card id="messageCard" className=" h-full items-start border-none">
+      <div id="messageUser" className="flex flex-col h-full">
+        <CardHeader className="flex">
+          <CardTitle id="messageSender" className="text-2xl">
+            {requests[0].sender}
+          </CardTitle>
+          <CardDescription id="messageEmail">
+            {requests[0].senderEmail}
+          </CardDescription>
+        </CardHeader>
+        <Separator className="bg-accent drop-shadow-sm" />
+        <CardContent className="mt-auto text-sm">
+          <ScrollArea>
+            <div className="flex w-3/4 m-1">
+              <div id="message1" className="rounded-md bg-accent p-2">
+                {requests[0].message1}
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <div className="w-1/2"></div>
+              <div
+                id="message2"
+                className="rounded-md m-1 bg-primary text-secondary p-2"
+              >
+                {requests[0].message2}
+              </div>
+            </div>
+          </ScrollArea>
+          <Textarea
+            id="textbox"
+            className="items-end mt-2 resize-none "
+            placeholder={`Message ${requests[0].sender}`}
+          ></Textarea>
+        </CardContent>
+      </div>
+    </Card>
   );
 };
 

@@ -150,7 +150,7 @@ const NavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <SignIn />
+        {/* <SignIn /> */}  
       </div>
     </div>
   );

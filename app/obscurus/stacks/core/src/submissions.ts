@@ -9,7 +9,7 @@ import type { Submissions } from "./sql.generated";
 // }
 
 
-export function list() {
+export function list()   {
     return SQL.DB.selectFrom("submissions").selectAll()
     .execute();
 }
