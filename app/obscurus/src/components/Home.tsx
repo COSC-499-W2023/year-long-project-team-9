@@ -6,7 +6,7 @@ import { ArrowBigDownIcon } from "lucide-react";
 import { useEffect, useState, useContext, ReactNode, FC } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Layout from "@/components/layout";
+import Layout from "@/pages/layout";
 import LoadingPage from "@/components/LoadingPage";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "../pages/_app";

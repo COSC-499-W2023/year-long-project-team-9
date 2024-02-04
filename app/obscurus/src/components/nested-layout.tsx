@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Layout from "./layout";
+import Layout from "../pages/layout";
 import { useCurrentTheme } from "./hooks/useCurrentTheme";
 import Link from "next/link";
 

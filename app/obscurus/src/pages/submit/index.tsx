@@ -1,4 +1,4 @@
-import Layout from "@/components/layout";
+import Layout from "@/pages/layout";
 import crypto from "crypto";
 import { Bucket } from "sst/node/bucket";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";

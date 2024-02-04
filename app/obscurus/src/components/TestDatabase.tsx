@@ -1,5 +1,5 @@
 {/*IMPORTS*/ }
-import Layout from "@/components/layout";
+import Layout from "@/pages/layout";
 import { GetServerSideProps } from "next";
 import { Api } from "sst/node/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

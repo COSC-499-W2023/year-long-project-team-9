@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import Layout from '@/components/layout';
+import Layout from '@/pages/layout';
 
 const LoadingPage: NextPage = () => {
     return(

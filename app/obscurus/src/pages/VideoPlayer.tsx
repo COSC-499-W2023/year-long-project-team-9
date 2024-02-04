@@ -9,7 +9,7 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ videoUrl }: VideoPlayerProps) {
   return (
-    <div className="flex h-full flex-col">
+    <div className=" flex-col">
       <div className="flex items-center">
         <div className="ml-auto flex items-center gap-2">
           {/* Additional controls or information can go here */}

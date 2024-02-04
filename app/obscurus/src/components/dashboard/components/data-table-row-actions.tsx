@@ -1,5 +1,3 @@
-"use client"
-
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Row } from "@tanstack/react-table"
 
@@ -20,6 +18,7 @@ import {
 
 import { labels } from "../data"
 import { videoSchema } from "../schema"
+import { Play } from "lucide-react"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -38,7 +37,7 @@ export function DataTableRowActions<TData>({
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
-          <DotsHorizontalIcon className="h-4 w-4" />
+          <Play className="h-4 w-4 fill-primary" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>

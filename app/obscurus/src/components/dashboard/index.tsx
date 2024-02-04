@@ -1,7 +1,6 @@
 import { Api } from "sst/node/api";
 import Image from "next/image";
 import { columns } from "./components/columns";
-import { UserNav } from "./components/user-nav";
 import { DataTable } from "./components/data-table";
 import { Video } from "./schema";
 import { Submissions } from "stacks/core/src/sql.generated";
@@ -9,7 +8,7 @@ import { Submissions } from "stacks/core/src/sql.generated";
 
 
 export default function Dashboard({ submissions }: { submissions: Submissions[] }) {
-  console.log("Dashboard:", submissions[0]);
+  console.log("Dashboard:", submissions);
   return (
     <>
       {submissions ? (

@@ -1,4 +1,4 @@
-import { formSchema } from "../components/CreateRequest";
+import { formSchema } from "../pages/CreateRequest";
 import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
 
 export function addRequest(data: formSchema): boolean {

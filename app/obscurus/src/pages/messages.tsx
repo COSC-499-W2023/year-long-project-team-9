@@ -1,4 +1,4 @@
-import Layout from "@/components/layout";
+import Layout from "@/pages/layout";
 import React from "react";
 import { useRouter } from "next/router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

@@ -1,5 +1,5 @@
 'use client'
-import Layout from "@/components/layout";
+import Layout from "@/pages/layout";
 import { Button } from "@/components/ui/button"
 import { useSearchParams } from 'next/navigation'
 

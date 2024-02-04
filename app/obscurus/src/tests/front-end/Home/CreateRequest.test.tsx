@@ -3,7 +3,7 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import CreateRequest from "@/components/CreateRequest";
+import CreateRequest from "@/pages/CreateRequest";
 import { useRouter } from "next/router";
 
 {/*MOCKS*/}

@@ -1,7 +1,7 @@
 {
   /*IMPORTS*/
 }
-import Layout from "@/components/layout";
+import Layout from "@/pages/layout";
 import React from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
@@ -26,7 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Calendar as CalendarIcon } from "lucide-react";
 import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "../components/ui/scroll-area";
 
 export async function getServerSideProps() {
   return {
