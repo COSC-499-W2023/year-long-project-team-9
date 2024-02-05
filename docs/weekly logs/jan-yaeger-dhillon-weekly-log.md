@@ -351,6 +351,40 @@ Screenshot from peer eval for Week 3:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-15.png)
 
+## Week 4 ##
+
+### Applicable Date Range ###
+January 29 - February 4, 2024
+
+### Tasks Worked On ###
+
+- This week for me was all about overhauling the user experience and evaluating the peer feedback so we set this milestone off on the right foot. 
+- I also migrated the project to using React Server Components to speed things up and make the data fetching more intuitive.
+- I spent a lot of time setting up the new "dashboard" view for when the user is signed in, and integrating the database with API routes
+- This week I hope to finish the video submissions process and start finalizing the UI.
+- I put in a lot of work this week and did a lot of planning so I think I deserve bonus marks.
+
+Screenshot from peer eval for Week 4:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-16.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-16.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-16.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-16.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-16.png)
+
+
 
 
 
