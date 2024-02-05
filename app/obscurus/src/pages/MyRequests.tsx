@@ -143,10 +143,10 @@ const MyRequests = () => {
     <Layout>
       <div className="md:px-24 ">
         <div className="grid items-center gap-5">
-          <h1 className="text-3xl font-extrabold justify-self-center pt-10">
+          {/* <h1 className="text-3xl font-extrabold justify-self-center pt-10">
             My Requests
-          </h1>
-          <div className="items-center    ">
+          </h1> */}
+          <div className="items-center">
             <Card
               id="searchbar"
               className="overflow-auto h-17 justify-self-start drop-shadow-md border-2 bg-card"
@@ -158,7 +158,7 @@ const MyRequests = () => {
                     placeholder="Search..."
                     className="text-bold border-2 border-secondary text-primary bg-background"
                   />
-                  <Button type="submit">
+                  <Button id="searchButton" type="submit">
                     <Search />
                   </Button>
                   <Tabs defaultValue="blurred">
@@ -184,21 +184,22 @@ const MyRequests = () => {
         </div>
         <br />
         <div className="grid grid-cols-2 gap-5">
-          <Table className="w-3/4 justify-items-start cursor-pointer">
+          <Table id="requestsTbl" className="justify-items-start cursor-pointer">
             <TableBody>
               {requests.map((request) => (
                 <TableRow
+                id="requestsTblRow"
                   key={request.reqtitle}
                   onClick={() => handleRequestClick(request)}
                 >
-                  <TableCell>
+                  <TableCell id="requestsTblCell">
                     <Card
                       id="collapsed"
                       className="overflow-auto justify-self-start drop-shadow-md border-2 hover:bg-accent bg-card"
                     >
                       <CardHeader>
                         <div className="space-x-4 flex items-center">
-                          <CardTitle className="text-xl">
+                          <CardTitle className="text-xl" id="requestTitle">
                             {request.reqtitle}
                           </CardTitle>
                           <Label>{request.reqdue}</Label>
@@ -229,7 +230,7 @@ const MyRequests = () => {
                 <>
                   <div className="grid">
                     <div id="prevTitle" className="pt-6 grid grid-row-3">
-                      <CardTitle className="break-all text-2xl">
+                      <CardTitle className="break-all text-2xl" id="requestTitle">
                         {selectedRequest.reqtitle}
                       </CardTitle>
                     </div>
@@ -376,6 +377,7 @@ const MyRequests = () => {
         </div>
         <div className="flex justify-end py-10">
           <Button
+            id="submitButton"
             type="submit"
             className=" justify-self-start font-bold p-5 "
             onClick={() => router.push("/submit")}

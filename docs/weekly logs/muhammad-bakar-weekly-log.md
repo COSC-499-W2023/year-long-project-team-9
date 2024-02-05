@@ -1,4 +1,5 @@
 # Muhammad Bakar Weekly Log
+
 ---
 
 ## Week 4
@@ -109,17 +110,79 @@
 - I also attended Thursday's class, and all other group meetings.
 
 ### Picture of Project Board Week 12
+
 ![Week 12 Bakar's Board](img/muhammad-bakar/mbakar-week-12-board.png)
+
 ### Picture of Week 12's Survey
+
 ![Week 12 Bakar's Survey](img/muhammad-bakar/mbakar-week-12-survey.png)
 
 ## Week 13
+
 ### November 27 2023 - December 03 2023
-- I worked on Milestone #3: Design Submission. 
-- My goals for this weeks was to make the ER diagram and add the database tables. I completed my goals. 
-![ER diagram](img/muhammad-bakar/Other/ER.png)
+
+- I worked on Milestone #3: Design Submission.
+- My goals for this weeks was to make the ER diagram and add the database tables. I completed my goals.
+  ![ER diagram](img/muhammad-bakar/Other/ER.png)
 - I also attended Tuesday's class, and all other group meetings.
+
 ### Picture of Project Board Week 13
+
 ![Week 13 Bakar's Board](img/muhammad-bakar/mbakar-week-13-board.png)
+
 ### Picture of Week 13's Survey
+
 ![Week 13 Bakar's Survey](img/muhammad-bakar/mbakar-week-13-survey.png)
+
+## Week 1 T 2
+
+### January 8 2024 - January 14 2024
+
+- I worked on Milestone #4: Peer Testing 1.
+- The goals for this week was to take into account teh client feedback regarding authentication, i.e. having a non-social sign in option. Moreover, adding custome CSS to the host ui. I did planned on a complete integration of Coginto and the app, however it was far too much work for one week.
+- Also, much of the week was looking over Soren's work since it was critical
+
+#### Custome CSS before and After
+
+![Before](img/muhammad-bakar/Other/custome-css-before.png)
+![After](img/muhammad-bakar/Other/custome-css-after.png)
+
+## Picture of Project Board Week 1 Term 2
+
+![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-1-T-2-board.png)
+
+### Picture of Week 1 Term 2's Survey
+
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-1-T-2-survey.png)
+
+## Week 2 T 2
+
+### January 15 2024 - January 21 2024
+
+- I worked on Milestone #4: Peer Testing 1.
+- I worked on AWS Cognito
+- I attend group meetings, I worked Soren
+
+### Picture of Project Board Week 2 Term 2
+
+![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-2-T-2-board.png)
+
+### Picture of Week 2 Term 2's Survey
+
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-2-T-2-survey.png)
+
+## Week 3 T 2
+
+### January 21 2024 - January 28 2024
+
+- I worked on Milestone #4: Peer Testing 1.
+- I worked on AWS Cognito, RDS, Amazon Simple email, and WorkMail
+- I attend group meetings, I worked with Soren
+
+### Picture of Project Board Week 3 Term 2
+
+![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
+
+### Picture of Week 3 Term 2's Survey
+
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-board.png)

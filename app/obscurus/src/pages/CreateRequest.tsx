@@ -25,12 +25,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Calendar as CalendarIcon } from "lucide-react";
+import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
 
 export async function getServerSideProps() {
   return {
     props: {}, // nothing yet
   };
-} 
+}
 
 {
   /*FUNCTIONS*/
@@ -38,7 +39,7 @@ export async function getServerSideProps() {
 {
   /*Create a type to determine the data of the form*/
 }
-interface formSchema {
+export interface formSchema {
   title: string;
   clients: { value: string }[];
   description: string;
@@ -94,8 +95,8 @@ const CreateRequest = () => {
   {
     /*Create a function to submit data*/
   }
-  const onSubmit: SubmitHandler<formSchema> = (data) => {
-    // console.log(data);
+  const onSubmit: SubmitHandler<formSchema> = (data: formSchema) => {
+    const added = createRequestValidation(data);
   };
   const [title, setTitle] = React.useState("");
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,9 +147,9 @@ const CreateRequest = () => {
   return (
     <Layout>
       {/*added by jan*/}
-      <div className="grid justify-center items-center pt-10 ">
+      {/* <div className="grid justify-center items-center pt-10 ">
         <h1 className="text-3xl font-extrabold">Create Request</h1>
-      </div>
+      </div> */}
 
       <form role="form" onSubmit={handleSubmit(onSubmit)} className="md:px-24">
         {/*Div to contain the request card and the preview card*/}
@@ -157,7 +158,10 @@ const CreateRequest = () => {
           className="container grid grid-cols-1 md:grid-cols-2 pt-10 gap-10 "
         >
           {/*Request Info Card*/}
-          <Card id="requestCard" className="flex flex-col drop-shadow-md border-2  bg-card">
+          <Card
+            id="requestCard"
+            className="flex flex-col drop-shadow-md border-2  bg-card"
+          >
             <CardContent className="grid gap-1">
               {/*Code for the Request Title input*/}
               <div id="requestTitle" className="pt-4">
@@ -184,26 +188,26 @@ const CreateRequest = () => {
                   <div key={field.id} className="flex pt-1 gap-1">
                     {/*added by jan*/}
                     <div className="flex-col flex-1">
-                    <Input
-                      className=""
-                      placeholder="Email"
-                      maxLength={320}
-                      aria-invalid={
-                        errors.clients?.[index]?.value ? "true" : "false"
-                      }
-                      {...register(`clients.${index}.value`, {
-                        required: true,
-                      })}
-                      value={clientList[index].client}
-                      onChange={(e) => handleClientChange(e, index)}
-                    />
-                    {errors.clients?.[index]?.value &&
-                      errors.clients?.[index]?.value?.type === "required" && (
-                        <p role="alert" className=" text-red-500 text-xs">
-                          This field is required!
-                        </p>
-                      )}
-                      </div>
+                      <Input
+                        className=""
+                        placeholder="Email"
+                        maxLength={320}
+                        aria-invalid={
+                          errors.clients?.[index]?.value ? "true" : "false"
+                        }
+                        {...register(`clients.${index}.value`, {
+                          required: true,
+                        })}
+                        value={clientList[index].client}
+                        onChange={(e) => handleClientChange(e, index)}
+                      />
+                      {errors.clients?.[index]?.value &&
+                        errors.clients?.[index]?.value?.type === "required" && (
+                          <p role="alert" className=" text-red-500 text-xs">
+                            This field is required!
+                          </p>
+                        )}
+                    </div>
                     {0 === index && fields.length < 10 && (
                       <Button type="button" onClick={handleClientAdd}>
                         <Plus />
@@ -242,7 +246,7 @@ const CreateRequest = () => {
                   <div id="requestBlurred">
                     <Label>Video Processing</Label>
                     <Tabs defaultValue="blurred" className="pt-0.5 pb-1.5">
-                       {/*shrink text on small screen*/}
+                      {/*shrink text on small screen*/}
                       <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger
                           value="notBlurred"
@@ -254,7 +258,7 @@ const CreateRequest = () => {
                         >
                           Not Blurred
                         </TabsTrigger>
-                         {/*shrink text on small screen*/}
+                        {/*shrink text on small screen*/}
                         <TabsTrigger
                           value="blurred"
                           onClick={() => {
@@ -352,7 +356,6 @@ const CreateRequest = () => {
                 {title.length >= 1 && (
                   <CardTitle className="break-all text-2xl">{title}</CardTitle>
                 )}
-                
               </div>
 
               <div id="prevClient">
@@ -386,7 +389,6 @@ const CreateRequest = () => {
                   />
                 </div>
                 <div className="grid grid-row-4">
-                  
                   <div id="prevDate" className="pb-1.5">
                     <Label className="font-bold">Due Date</Label>
                     <div className="w-full flex items-center">
@@ -396,28 +398,16 @@ const CreateRequest = () => {
                   </div>
                   <div id="prevBlurred" className="">
                     <Label className="font-bold">Video Processing</Label>
-                    {isBlurred && (
-                      <div className="w-full" >
-                        Blurred
-                      </div>
-                    )}
-                    {!isBlurred && (
-                      <div className="w-full">
-                        Not Blurred
-                      </div>
-                    )}
+                    {isBlurred && <div className="w-full">Blurred</div>}
+                    {!isBlurred && <div className="w-full">Not Blurred</div>}
                   </div>
                   <div id="prevLanguage" className="pb-1.5">
                     <Label className="font-bold">Video Language</Label>
                     {language.length < 1 && (
-                      <div className="w-full">
-                        Language
-                      </div>
+                      <div className="w-full">Language</div>
                     )}
                     {language.length >= 1 && (
-                      <div className="w-full break-all">
-                        {language}
-                      </div>
+                      <div className="w-full break-all">{language}</div>
                     )}
                   </div>
                   <div id="prevTerms" className="flex items-center space-x-2">

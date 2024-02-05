@@ -142,3 +142,5 @@ app/front-end/.open-next/**/*
 app/front-end/.sst/**/*
 .open-next/**/*
 .sst/**/*
+
+**/*/__pycache__
