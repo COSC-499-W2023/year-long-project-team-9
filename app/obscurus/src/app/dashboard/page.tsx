@@ -7,24 +7,28 @@ import { DataTable } from "./components/data-table";
 import { Video } from "./schema";
 
 async function getSubmissions() {
-  const res = await fetch(Api.Api.url + "/getSubmissions");
+  try {
+    const res = await fetch(Api.Api.url + "/getSubmissions");
+    // The return value is *not* serialized
+    // You can return Date, Map, Set, etc.
 
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+    if (res.ok) {
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+      return res.json();
+    } else {
+      return [];
+    }
+  } catch {
+    console.log("Failed...");
+    return [];
   }
-
-  return res.json();
 }
 
 export default async function Dashboard() {
   const submissions: Video[] = await getSubmissions();
   console.log("Raw submissions", submissions);
 
-  console.log("Submission #1", submissions[0].request_id);
+
 
   // const formattedSubmissions: Task[] = [
   //   {

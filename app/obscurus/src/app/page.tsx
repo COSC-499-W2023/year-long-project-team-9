@@ -11,41 +11,50 @@ import { cookies } from "next/headers";
 import { MainContent } from "./main-content";
 
 async function getSubmissions() {
-  const res = await fetch(Api.Api.url + "/getSubmissions");
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+  try {
+    const res = await fetch(Api.Api.url + "/getSubmissions");
+    // The return value is *not* serialized
+    // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    if (res.ok) {
+
+      return res.json();
+    }
+  } catch {
+    console.log("Failed...");
+    return [];
   }
-
-  return res.json();
 }
 
 async function getRequests() {
-  const res = await fetch(Api.Api.url + "/getRequests");
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+  try {
+    const res = await fetch(Api.Api.url + "/getRequests");
+    // The return value is *not* serialized
+    // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    if (res.ok) {
+
+      return res.json();
+    }
+  } catch {
+    console.log("Failed...");
+    return [];
   }
-
-  return res.json();
 }
 async function getUsers() {
-  const res = await fetch(Api.Api.url + "/getusers");
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+  try {
+    const res = await fetch(Api.Api.url + "/getUsers");
+    // The return value is *not* serialized
+    // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    if (res.ok) {
+
+      return res.json();
+    }
+  } catch {
+    console.log("Failed...");
+    return [];
   }
-
-  return res.json();
 }
 
 export default async function Page() {
@@ -59,7 +68,9 @@ export default async function Page() {
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
     <Wrapper
-      mainContent={<MainContent defaultLayout={defaultLayout} requests={requests} />}
+      mainContent={
+        <MainContent defaultLayout={defaultLayout} requests={requests} />
+      }
       defaultLayout={defaultLayout}
       navCollapsedSize={defaultCollapsed}
     />
