@@ -11,6 +11,8 @@ import {
   Cognito,
   Config,
   Queue,
+  Table,
+  WebSocketApi
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
@@ -23,8 +25,6 @@ export default function SiteStack({ stack }: StackContext) {
     effect: Effect.ALLOW,
     resources: ["*"],
   });
-
-
 
   // add RDS construct
   const rds = new RDS(stack, "Database", {
@@ -52,8 +52,8 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: "8 hours",
   });
 
-   //Create secret keys
-   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+  //Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
@@ -69,6 +69,10 @@ export default function SiteStack({ stack }: StackContext) {
     //   authorizer: "iam",
     // },
     routes: {
+      $connect: "../src/chat/connect.main",
+      $disconnect: "../src/chat/disconnect.main",
+      sendmessage: "../src/chat/sendMessage.main",
+
       "GET /private": "./stacks/lambdas/private.main",
       "GET /public": {
         function: "./stacks/lambdas/public.main",
@@ -122,7 +126,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/createRequest.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds], 
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "POST /createUser": {
@@ -130,7 +134,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/createUser.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds], 
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "GET /getSubmissions": {
