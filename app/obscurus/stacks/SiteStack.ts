@@ -25,12 +25,15 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
+
+
   // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
   });
+
 
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
@@ -47,10 +50,10 @@ export default function SiteStack({ stack }: StackContext) {
       OUTPUT_NAME: "processed.mp4",
     },
     memorySize: "15 GB",
-    timeout: "8 hours"
+    timeout: "8 hours",
   });
 
-   // Create secret keys
+   //Create secret keys
    const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
@@ -61,21 +64,56 @@ export default function SiteStack({ stack }: StackContext) {
 
 
   const api = new Api(stack, "Api", {
-    defaults: {
-      function: {
-        bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
-      },
-      authorizer: "iam",
-    },
+    // defaults: {
+    //   function: {
+    //     bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
+    //   },
+    //   authorizer: "iam",
+    // },
     routes: {
       "GET /private": "./stacks/lambdas/private.main",
       "GET /public": {
         function: "./stacks/lambdas/public.main",
         authorizer: "none",
       },
-      "GET /users": {
+      // "GET /start-machine": {
+      //   function: {
+      //     handler: "./stacks/lambdas/startMachine.handler",
+      //     environment: {
+      //       STATE_MACHINE: stateMachine.stateMachineArn,
+      //     },
+      //   },
+      // },
+      "GET /getUsers": {
         function: {
-          handler: "./stacks/lambdas/list.handler",
+          handler: "./stacks/lambdas/listUsers.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "GET /getRequests": {
+        function: {
+          handler: "./stacks/lambdas/listRequests.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        }
+      },
+      "POST /secrets": {
+        function: {
+          handler: "./stacks/lambdas/secrets.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "GET /secrets": {
+        function: {
+          handler: "./stacks/lambdas/secrets.handler",
           timeout: 20,
           permissions: [rds],
           bind: [rds],
@@ -87,27 +125,52 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/process.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket],
-          bind: [steveJobs, inputBucket], 
+          bind: [steveJobs, inputBucket],
         },
-      }
+      },
+      "POST /createRequest": {
+        function: {
+          handler: "./stacks/lambdas/createRequest.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds], 
+        },
+      },
+      "POST /createUser": {
+        function: {
+          handler: "./stacks/lambdas/createUser.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds], 
+        },
+      },
+      "GET /getSubmissions": {
+        function: {
+          handler: "./stacks/lambdas/listSubmissions.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        }
+      },
     },
   });
 
-  steveJobs.bind([api])
+  steveJobs.bind([api]);
 
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    cdk: {
-      userPool: {
-        standardAttributes: {
-          email: { required: true, mutable: false },
-          givenName: { required: true, mutable: true },
-          familyName: { required: true, mutable: true },
-          birthdate: { required: true, mutable: false },
-        },
-      },
-    },
+    // cdk: {
+    //   userPool: {
+    //     standardAttributes: {
+    //       email: { required: true, mutable: false },
+    //       givenName: { required: true, mutable: true },
+    //       familyName: { required: true, mutable: true },
+    //       birthdate: { required: true, mutable: false },
+    //     },
+    //   },
+    // },
     // triggers: {
     //   preAuthentication: "./stacks/core/src/preAuthentication.main",
     //   postAuthentication: "./stacks/core/src/postAuthentication.main",
@@ -136,8 +199,7 @@ export default function SiteStack({ stack }: StackContext) {
 
   site.attachPermissions([rekognitionPolicyStatement]);
 
-  steveJobs.bind([site])
-  
+  steveJobs.bind([site]);
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,

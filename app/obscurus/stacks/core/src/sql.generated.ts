@@ -16,7 +16,6 @@ export interface Users {
   email: string;
   given_name: string;
   family_name: string;
-  birthdate: Date;
   timezone: string;
   language: string;
   is_logged_in_with_social_identity_provider: boolean;
@@ -27,7 +26,7 @@ export interface Users {
   /*Requests table interace*/
 }
 export interface Requests {
-  request_id: number;
+  request_id: string;
   request_title: string;
   requester_sub: string;
   description: string;
@@ -35,6 +34,7 @@ export interface Requests {
   due_date: Date;
   video_language: string;
   creation_date: Date;
+  read: boolean;
 }
 {
   /*Submissions table interace*/
@@ -43,7 +43,6 @@ export interface Submissions {
   submission_id: number;
   requestee_email: string;
   is_completed: string;
-  due_date: Date;
   submitted_date: Date;
   request_id: number;
 }

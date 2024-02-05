@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,10 +16,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useScroll from "@/components/hooks/scroll";
 import SignIn from "@/components/SignIn";
-import { isSignedIn } from "@/auth/authenticationMethods";
+// import { isSignedIn } from "@/auth/authenticationMethods";
 
 export async function getServerSideProps() {
   return {
@@ -43,18 +44,18 @@ const NavBar = () => {
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
 
-  useEffect(() => {
-    const checkAsyncUserSignIn = async () => {
-      const userBoolean = await isSignedIn();
-      return userBoolean;
-    };
-    checkAsyncUserSignIn().then((result) => {
-      setUserSignedIn(result);
-    });
-  });
+  // useEffect(() => {
+  //   const checkAsyncUserSignIn = async () => {
+  //     const userBoolean = await isSignedIn();
+  //     return userBoolean;
+  //   };
+  //   checkAsyncUserSignIn().then((result) => {
+  //     setUserSignedIn(result);
+  //   });
+  // });
 
   return (
-    <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
+    <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full border-b-2">
       <div className="p-1">
         <NavigationMenu>
           <Link href="/" className="p-5">
@@ -62,8 +63,8 @@ const NavBar = () => {
               className="min-h-full"
               src="/logo.svg"
               alt="obscurus"
-              width={60}
-              height={60}
+              width={50}
+              height={50}
             />
           </Link>
 
@@ -71,15 +72,12 @@ const NavBar = () => {
             <Link href="/">
               <NavigationMenuItem>
                 <span
-                  className={`font-bold text-xl p-5 hover:cursor-pointer ${
-                    router.pathname === "/" ? " underline font-extrabold" : ""
-                  }`}
-                >
+                  className="font-bold text-xl p-5 hover:cursor-pointer">
                   obscurus
                 </span>
               </NavigationMenuItem>
             </Link>
-            <Link href={userSignedIn ? "../CreateRequest" : "/"}>
+            {/* <Link href="../CreateRequest">
               <NavigationMenuItem>
                 <span
                   className={`font-bold text-base p-5 hover:cursor-pointer ${
@@ -118,7 +116,7 @@ const NavBar = () => {
                   Submit
                 </span>
               </NavigationMenuItem>
-            </Link>
+            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -152,7 +150,7 @@ const NavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <SignIn />
+        {/* <SignIn /> */}  
       </div>
     </div>
   );
