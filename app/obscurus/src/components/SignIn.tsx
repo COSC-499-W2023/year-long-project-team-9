@@ -34,7 +34,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { isEmailValid } from "@/regular-expression/emailRegularExpression";
 import { passwordCognitoDefaultRegularExpression } from "@/regular-expression/passwordCognitoDefaultRegularExpression";
-import { isSignedIn, signOutUser } from "../app/auth/authenticationMethods"
+import { isSignedIn, signOutUser } from "@/components/auth/authenticationMethods"
 import { format } from "date-fns";
 
 {
