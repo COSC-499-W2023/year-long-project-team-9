@@ -1,7 +1,7 @@
 import {
   getSub,
   isAuthenticated,
-} from "../../../auth/authMethods";
+} from "@/components/auth/authMethods";
 
 test("testing isAuthenticated()", () => {
   expect(isAuthenticated()).toBe(false);

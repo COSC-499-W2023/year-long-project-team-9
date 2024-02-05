@@ -1,11 +1,9 @@
-{
-  /*IMPORTS*/
-}
+"use client"
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -36,7 +34,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { isEmailValid } from "@/regular-expression/emailRegularExpression";
 import { passwordCognitoDefaultRegularExpression } from "@/regular-expression/passwordCognitoDefaultRegularExpression";
-import { isSignedIn, signOutUser } from "@/auth/authenticationMethods";
+import { isSignedIn, signOutUser } from "../app/auth/authenticationMethods"
 import { format } from "date-fns";
 
 {
