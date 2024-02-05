@@ -7,8 +7,8 @@ export async function up(db) {
   await db.schema
     .alterTable("submissions")
     .addCheckConstraint(
-      "status_constraint",
-      sql`(status = 'backlog' OR status = 'todo' OR status = 'in progress' OR status = 'done' OR status = 'canceled')`
+      "priorities_constraint",
+      sql`(priorities = 'low' OR priorities = 'medium' OR priorities = 'high')`
     )
     .execute();
 }
@@ -19,6 +19,6 @@ export async function up(db) {
 export async function down(db) {
   await db.schema
     .alterTable("submissions")
-    .dropConstraint("status_constraint")
+    .dropConstraint("priorities_constraint")
     .execute();
 }

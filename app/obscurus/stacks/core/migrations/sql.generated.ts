@@ -24,7 +24,7 @@ export interface users {
   /*Requests table interace*/
 }
 export interface requests {
-  request_id: number;
+  request_id: string;
   request_title: string;
   requester_email: string;
   is_starred: boolean;
@@ -38,14 +38,15 @@ export interface requests {
   /*Submissions table interace*/
 }
 export interface submissions {
-  submission_id: number;
+  submission_id: string;
   requestee_email: string;
-  is_completed: string;
+  status: string;
+  priorities: string;
   is_starred: boolean;
   grouping: string;
   is_read: boolean;
   submitted_date: Date;
-  request_id: number;
+  request_id: string;
 }
 {
   /*Rooms table interace*/
