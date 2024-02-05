@@ -13,6 +13,7 @@ import {
   Queue,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 
 export default function SiteStack({ stack }: StackContext) {
   const inputBucket = new Bucket(stack, "inputBucket");
@@ -121,6 +122,16 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
+    customDomain: {
+      domainName: "obscurus.me",
+      domainAlias: "www.obscurus.me",
+      cdk: {
+        hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+          hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+          zoneName: "obscurus.me",
+        }),
+      },
+    },
   });
 
   site.attachPermissions([rekognitionPolicyStatement]);
