@@ -2,9 +2,13 @@
 import { Api } from "sst/node/api";
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import Dashboard from "./dashboard/page";
-import Wrapper from "./wrapper";
+import { Wrapper } from "./wrapper";
 import Home from "./Home/page";
 import { ListRequests } from "@/components/ListRequests";
+import RequestDisplay from "@/components/request-display";
+import RequestList from "@/components/request-list";
+import { cookies } from "next/headers";
+import { MainContent } from "./main-content";
 
 async function getSubmissions() {
   const res = await fetch(Api.Api.url + "/getSubmissions");
@@ -47,8 +51,17 @@ async function getUsers() {
 export default async function Page() {
   const submissions: Submissions[] = await getSubmissions();
   const requests: Requests[] = await getRequests();
-  console.log(submissions);
+  console.log(requests);
+  const layout = cookies().get("react-resizable-panels:layout");
+  const collapsed = cookies().get("react-resizable-panels:collapsed");
+
+  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
-    <Wrapper requests={requests}/>
+    <Wrapper
+      mainContent={<MainContent defaultLayout={defaultLayout} requests={requests} />}
+      defaultLayout={defaultLayout}
+      navCollapsedSize={defaultCollapsed}
+    />
   );
 }

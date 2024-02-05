@@ -1,47 +1,60 @@
-import { ComponentProps } from "react"
-import formatDistanceToNow from "date-fns/formatDistanceToNow"
+"use client";
+import { ComponentProps } from "react";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { Mail } from "../data/data"
-import { useMail } from "./hooks/use-mail"
-import { Requests } from "stacks/core/src/sql.generated"
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Mail } from "../data/data";
+import { useMail } from "./hooks/use-mail";
+import { Requests } from "stacks/core/src/sql.generated";
+import { useRouter } from "next/navigation";
+import { Search, Send } from "lucide-react";
+import Nav from "./nav";
+import { request } from "@playwright/test";
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { Tabs, TabsContent } from "@radix-ui/react-tabs";
+import { Tooltip } from "@radix-ui/react-tooltip";
+import { Input } from "./ui/input";
 
 interface RequestListProps {
-  items: Requests[]
-}
-
-export async function getServerSideProps() {
-  // const fetchData = async (route: string) => {
-  //   try {
-  //     const apiURL = Api.Api.url;
-  //     const response = await fetch(apiURL + route);
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     } else {
-  //       return response.json();
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // const requests: Requests[] = await fetchData("/getRequests");
-  // const submissions: Submissions[] = await fetchData("/getSubmissions");
-  // const users: Users[] = await fetchData("/getUsers");
-  return {
-   
-  };
+  items: Requests[];
+  isCollapsed?: boolean;
 }
 
 export default function RequestList({ items }: RequestListProps) {
-  const [mail, setMail] = useMail()
+  const router = useRouter();
+  const [mail, setMail] = useMail();
 
-  console.log(JSON.stringify(items))
+  console.log(JSON.stringify(items));
 
   return (
+    <Tabs defaultValue="all">
+      <div className="flex items-center px-4">
+        <h1 className="text-xl font-bold">Requests</h1>
+        <div className="ml-auto" onClick={() => router.push("/CreateRequest")}>
+          <Nav
+            isCollapsed={false}
+            links={[
+              {
+                title: "Create Request",
+                icon: Send,
+                variant: "ghost",
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <Separator />
+      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <form>
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input placeholder="Search" className="pl-8" />
+          </div>
+        </form>
+      </div>
 
       <div className="flex flex-col gap-2 p-4 pt-0">
         {items.map((item) => (
@@ -73,9 +86,7 @@ export default function RequestList({ items }: RequestListProps) {
                       ? "text-foreground"
                       : "text-muted-foreground"
                   )}
-                >
-  
-                </div>
+                ></div>
               </div>
               <div className="text-xs font-medium">{item.request_title}</div>
             </div>
@@ -94,19 +105,20 @@ export default function RequestList({ items }: RequestListProps) {
           </button>
         ))}
       </div>
-  )
+    </Tabs>
+  );
 }
 
 function getBadgeVariantFromLabel(
   label: string
 ): ComponentProps<typeof Badge>["variant"] {
   if (["work"].includes(label.toLowerCase())) {
-    return "default"
+    return "default";
   }
 
   if (["personal"].includes(label.toLowerCase())) {
-    return "outline"
+    return "outline";
   }
 
-  return "secondary"
+  return "secondary";
 }

@@ -1,5 +1,5 @@
 "use client"
-import MailList from "@/components/mail-list"
+import MailList from "@/components/request-list"
 import Nav from "@/components/nav"
 import { Input } from "@/components/ui/input"
 
@@ -15,7 +15,7 @@ export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
   const router = useRouter();
     return (
         <Tabs defaultValue="all">
-              <div className="flex items-center px-4">
+              {/* <div className="flex items-center px-4">
                 <h1 className="text-xl font-bold"></h1>
                 <div
                   className="ml-auto"
@@ -41,7 +41,7 @@ export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
                     <Input placeholder="Search" className="pl-8" />
                   </div>
                 </form>
-              </div>
+              </div> */}
               <TabsContent value="all" className="m-0">
                 <MailList items={requests} />
               </TabsContent>

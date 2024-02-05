@@ -7,89 +7,137 @@ import {
 } from "@/components/ui/resizable";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { Inbox, FileUp, Youtube, MessageCircle, Sun } from "lucide-react";
+import {
+  Inbox,
+  FileUp,
+  Youtube,
+  MessageCircle,
+  Sun,
+  Search,
+  Send,
+  User,
+  LogOut,
+} from "lucide-react";
 import Nav from "@/components/nav";
 import NavBar from "@/components/NavBar";
 import { ListRequests } from "@/components/ListRequests";
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import Image from "next/image";
 import Home from "./Home/page";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import Dashboard from "./dashboard/page";
+import { useMail } from "./mail/use-mail";
+import { useRouter } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { MailDisplay } from "./mail/components/mail-display";
+import { MailList } from "./mail/components/mail-list";
+import { mails } from "./mail/data";
+import RequestList from "@/components/request-list";
+import RequestDisplay from "@/components/request-display";
 
 const componentMappings = {
-  Home: Home,
-  Requests: ListRequests,
-  Submissions: Dashboard,
-  // Add other mappings here
+  ListRequests: ListRequests,
 };
 
-export default function Wrapper({ requests }: { requests: Requests[] }) {
-  // const u: Users[] = users;
+export function Wrapper({
+  defaultLayout = [265, 440, 655],
+  defaultCollapsed = false,
+  navCollapsedSize,
+  mainContent,
+}: {
+  defaultLayout: number[] | undefined;
+  defaultCollapsed?: boolean;
+  navCollapsedSize: number;
+  mainContent: ReactNode;
+}) {
   // const s: Submissions[] = submissions;
-  const defaultLayout = [265, 440, 655];
-  const defaultCollapsed = false;
-  const [activeComponent, setActiveComponent] = useState<PageKeys>("Requests");
 
+  const [activeComponent, setActiveComponent] = useState("mainContent");
 
-  type PageKeys = 'Home' | 'Requests' | 'Submissions';
-  const ActiveComponent = componentMappings[activeComponent];
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const [mail] = useMail();
+  const router = useRouter();
 
   return (
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction="horizontal"
-        className="h-full max-h-[800px] items-stretch border-y-2"
+        onLayout={(sizes: number[]) => {
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+            sizes
+          )}`;
+        }}
+        className="h-full max-h-[800px] items-stretch"
       >
         <ResizablePanel
-          defaultSize={10}
+          defaultSize={defaultLayout[0]}
+          collapsedSize={10}
+          collapsible={true}
+          minSize={15}
           maxSize={20}
-          collapsedSize={1}
-          collapsible={false}
-          className={cn("min-w-[50px] transition-all duration-300 ease-in-out")}
+          //   onCollapse={(collapsed: boolean) => {
+          //     setIsCollapsed(collapsed)
+          //     document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+          //       collapsed
+          //     )}`
+          //   }}
+          className={cn(
+            isCollapsed &&
+              "min-w-[50px] transition-all duration-300 ease-in-out"
+          )}
         >
+          {/* <div className={cn("flex h-[52px] items-center justify-center", isCollapsed ? 'h-[52px]': 'px-2')}>
+    <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
+  </div>
+  <Separator /> */}
           <Nav
-            isCollapsed={false}
+            isCollapsed={isCollapsed}
             links={[
               {
                 title: "Requests",
                 icon: Inbox,
-                variant: "ghost",
-                onClick: () => setActiveComponent('Requests')
+                variant: "default",
               },
               {
                 title: "Submissions",
                 icon: FileUp,
                 variant: "ghost",
-                onClick: () => setActiveComponent('Requests')
               },
               {
                 title: "My Videos",
                 icon: Youtube,
                 variant: "ghost",
-                onClick: () => setActiveComponent('Requests')
               },
               {
                 title: "Chat",
                 icon: MessageCircle,
                 variant: "ghost",
-                onClick: () => setActiveComponent('Requests')
+              },
+            ]}
+          />
+
+          <Separator />
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Profile",
+                label: "",
+                icon: User,
+                variant: "ghost",
+              },
+              {
+                title: "Sign Out",
+                icon: LogOut,
+                variant: "ghost",
               },
             ]}
           />
         </ResizablePanel>
-        <ResizableHandle withHandle/>
-        <ResizablePanel defaultSize={10} minSize={5}>
-          {/* Render the active component */}
-          <ActiveComponent requests={requests} />
-        </ResizablePanel>
-        <ResizableHandle withHandle/>
-        <ResizablePanel defaultSize={10} minSize={5}>
-          {/* Render the active component */}
-          <ActiveComponent requests={requests} />
-        </ResizablePanel>
-        
+        <ResizableHandle withHandle />
+       {mainContent}
       </ResizablePanelGroup>
     </TooltipProvider>
   );

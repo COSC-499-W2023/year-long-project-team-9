@@ -55,7 +55,7 @@ const NavBar = () => {
   // });
 
   return (
-    <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full">
+    <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full border-b-2">
       <div className="p-1">
         <NavigationMenu>
           <Link href="/" className="p-5">
@@ -63,8 +63,8 @@ const NavBar = () => {
               className="min-h-full"
               src="/logo.svg"
               alt="obscurus"
-              width={60}
-              height={60}
+              width={50}
+              height={50}
             />
           </Link>
 

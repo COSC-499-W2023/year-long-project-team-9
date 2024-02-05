@@ -18,7 +18,7 @@ interface NavProps {
     label?: string
     icon: LucideIcon
     variant: "default" | "ghost",
-    onClick: () => void
+
   }[]
 }
 
