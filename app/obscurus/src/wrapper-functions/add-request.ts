@@ -1,5 +1,5 @@
 import { formSchema } from "../components/CreateRequest";
-import { createRequestValidation } from "../form-validation/create-request-form-validation/createRequestValidation";
+import { createRequestValidation } from "@/create-request-form-validation/createRequestValidation";
 
 export function addRequest(data: formSchema): boolean {
   const isDataValid = createRequestValidation(data);

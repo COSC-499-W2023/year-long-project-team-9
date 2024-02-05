@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Layout from "./layout";
 import { useCurrentTheme } from "./hooks/useCurrentTheme";
 import Link from "next/link";
 
@@ -13,10 +12,8 @@ export default function NestedLayout({
   progressBarPos,
 }: NestedLayoutProps) {
   return (
-    <Layout>
-      <main className="grid justify-items-center items-center p-10 gap-10">
-        {children}
-      </main>
-    </Layout>
+    <main className="grid justify-items-center items-center p-10 gap-10">
+      {children}
+    </main>
   );
 }
