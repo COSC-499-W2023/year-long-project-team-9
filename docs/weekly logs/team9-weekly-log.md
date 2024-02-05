@@ -1472,8 +1472,8 @@ The tasks identified for this week were:
 
 ### Test Report
 
-![test report](img/team-weekly-log-img/week-17/testreport1-week17.png)
-![test report](img/team-weekly-log-img/week-17/testreport2-week17.png)
+![test report](img/team-weekly-log-img/week-17/testreport-week17.png)
 
 End to end testing
+
 ![test report](img/team-weekly-log-img/week-17/e2etests-week17.png)
