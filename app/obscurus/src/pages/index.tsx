@@ -55,6 +55,9 @@ const IndexPage = ({
   const defaultLayout = [265, 440, 655];
   const defaultCollapsed = false;
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+
+  // Default email to use for getting a user from USERS table, change when needed.\
+  const userEmail = "";
   return (
     <Layout>
       <TooltipProvider delayDuration={0}>
@@ -107,12 +110,13 @@ const IndexPage = ({
           <ResizablePanel className="" defaultSize={15}>
             {requests ? <ListRequests requests={requests} /> : <Home />}
           </ResizablePanel>
-      
 
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={20}>
             {requests ? (
-              requests.map((request) => <RequestDisplay request={request} key={request.request_id} />)
+              requests.map((request) => (
+                <RequestDisplay request={request} key={request.request_id} />
+              ))
             ) : (
               <Home />
             )}
