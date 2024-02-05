@@ -27,13 +27,13 @@ import Home from "./Home/page";
 import { ReactNode, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import Dashboard from "./dashboard/page";
-import { useMail } from "./mail/use-mail";
+import { useMail } from "../components/ui/mail/use-mail";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { MailDisplay } from "./mail/components/mail-display";
-import { MailList } from "./mail/components/mail-list";
-import { mails } from "./mail/data";
+import { MailDisplay } from "../components/ui/mail/components/mail-display";
+import { MailList } from "../components/ui/mail/components/mail-list";
+import { mails } from "../components/ui/mail/data";
 import RequestList from "@/components/request-list";
 import RequestDisplay from "@/components/request-display";
 

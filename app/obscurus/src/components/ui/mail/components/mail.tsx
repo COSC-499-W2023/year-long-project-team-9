@@ -21,9 +21,9 @@ import {
 } from "lucide-react";
 
 import { AccountSwitcher } from "./account-switcher";
-import { MailDisplay } from "../components/mail-display";
-import { MailList } from "../components/mail-list";
-import { Nav } from "../components/nav";
+import { MailDisplay } from "./mail-display";
+import { MailList } from "./mail-list";
+import { Nav } from "./nav";
 import { Mail } from "../data";
 import { useMail } from "../use-mail";
 import { cn } from "@/lib/utils";
