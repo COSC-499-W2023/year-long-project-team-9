@@ -361,7 +361,8 @@ January 29 - February 4, 2024
 - This week for me was all about overhauling the user experience and evaluating the peer feedback so we set this milestone off on the right foot. 
 - I also migrated the project to using React Server Components to speed things up and make the data fetching more intuitive.
 - I spent a lot of time setting up the new "dashboard" view for when the user is signed in, and integrating the database with API routes
-- This week I hope to finish the video submissions process and start finalizing the UI
+- This week I hope to finish the video submissions process and start finalizing the UI.
+- I put in a lot of work this week and did a lot of planning so I think I deserve bonus marks.
 
 Screenshot from peer eval for Week 4:
 
