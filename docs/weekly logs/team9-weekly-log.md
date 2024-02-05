@@ -1160,7 +1160,7 @@ ___
 
 ## Work Period
 
-Week 2 ran from 00:00 on 2024/01/22 to 23:59 on 2024/01/28.
+Week 3 ran from 00:00 on 2024/01/22 to 23:59 on 2024/01/28.
 
 ## Milestone Goal Recap
 
@@ -1319,3 +1319,161 @@ All tasks for this milestone completed, any incomplete tasks are for next milest
 End to end testing
 ![test report](img/team-weekly-log-img/week-16/e2etests-week16.png)
 ___
+
+# TEAM 9 - TERM 2 WEEK 4
+
+## Milestone Features
+- Soren Stenback: Chat & Search Bar
+- Jan-Yaeger Dhillon: UI Overhaul & Video Submission Process
+- Baz Sivakua: Chat & Account Page
+- Muhammad Bakar: Overhaul Requests & User Experience Infrastructure 
+
+## Work Period
+
+Week 4 ran from 00:00 on 2024/01/29 to 23:59 on 2024/02/03.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Milestone 5 Plan 
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** N/a
+* **Description:** Ensure all team members are on the same page and know what tasks they should complete for the next milestone. 
+
+### Task 2: Peer Evaluation Recap 
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** N/a
+* **Description:** Discuss feedback recieved from peer evaluation session, address issues faced and how to best solve them. 
+
+### Task 3: Router 
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Migrate project to app router to use server components
+
+### Task 4: Intergrate Database
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Intergrate database via API routes
+
+### Task 5: New UI Code Template 
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create code template for UI overhaul 
+
+### Task 6: UI Overhaul 
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon & Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Implement new UI design
+
+### Task 7: Re-design RDS Schema 
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Redesign database schema
+
+### Task 8: Add RDS Data 
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add new data to database based on redesign of schema
+
+### Task 9: Setup Cognito Backend 
+
+* **Status:** Completed
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Setup Cognito Backend such that it enables the development of background features
+
+### Task 10: Create My Videos Page 
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create `My Videos` page, displaying uploaded videos and link to database
+
+### Task 11: Convert Videos Function
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create function to convert webm videos to mp4
+
+### Task 12: Revamp Code Base
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Code base file structure revamp
+
+### Task 13: Initialize Websockets 
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Initialize websockets to be used in chat feature
+
+### Task 14: Chat  
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create chat feature of website
+
+### Task 15: User Experience Infrastructure 
+
+* **Status:** In-progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create infrastructure to improve user experience
+
+### Task 13: Video Submission Process 
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete process allowing the video to be submitted and processed by the application
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-17/burnup-week17.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-17/completed-week17.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-17/inprogress-week17.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-17/testreport1-week17.png)
+![test report](img/team-weekly-log-img/week-17/testreport2-week17.png)
+
+End to end testing
+![test report](img/team-weekly-log-img/week-17/e2etests-week17.png)
