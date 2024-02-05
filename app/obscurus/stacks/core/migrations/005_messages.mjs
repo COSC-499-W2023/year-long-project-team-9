@@ -6,8 +6,8 @@ import { Kysely } from "kysely";
 export async function up(db) {
   await db.schema
     .createTable("messages")
-    .addColumn("message_id", "bigserial", (col) => col.primaryKey())
-    .addColumn("room_id", "bigserial", (col) =>
+    .addColumn("message_id", "varchar", (col) => col.primaryKey())
+    .addColumn("room_id", "varchar", (col) =>
       col.notNull().references("rooms.room_id")
     )
     .addColumn("sender_email", "varchar", (col) =>

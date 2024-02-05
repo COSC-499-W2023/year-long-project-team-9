@@ -6,7 +6,7 @@ import { Kysely } from "kysely";
 export async function up(db) {
   await db.schema
     .createTable("rooms")
-    .addColumn("room_id", "bigserial", (col) => col.primaryKey())
+    .addColumn("room_id", "varchar", (col) => col.primaryKey())
     .addColumn("connection_id", "varchar", (col) => col.notNull())
     .addColumn("participant_1_email", "varchar", (col) =>
       col.notNull().defaultTo("NULL")

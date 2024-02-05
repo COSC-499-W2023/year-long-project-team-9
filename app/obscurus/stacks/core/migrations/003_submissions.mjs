@@ -6,7 +6,7 @@ import { Kysely } from "kysely";
 export async function up(db) {
   await db.schema
     .createTable("submissions")
-    .addColumn("submission_id", "uuid", (col) => col.primaryKey())
+    .addColumn("submission_id", "varchar", (col) => col.primaryKey())
     .addColumn("requestee_email", "varchar", (col) =>
       col.notNull().defaultTo("NULL")
     )
@@ -17,8 +17,9 @@ export async function up(db) {
     )
     .addColumn("is_read", "boolean", (col) => col.notNull().defaultTo("false"))
     .addColumn("grouping", "varchar", (col) => col.notNull().defaultTo("NULL"))
+    .addColumn("title", "varchar", (col) => col.notNull().defaultTo("NULL"))
     .addColumn("submitted_date", "timestamp")
-    .addColumn("request_id", "uuid", (col) =>
+    .addColumn("request_id", "varchar", (col) =>
       col.notNull().references("requests.request_id")
     )
     .execute();

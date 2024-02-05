@@ -42,6 +42,7 @@ export interface submissions {
   requestee_email: string;
   status: string;
   priorities: string;
+  title: string;
   is_starred: boolean;
   grouping: string;
   is_read: boolean;
@@ -52,7 +53,7 @@ export interface submissions {
   /*Rooms table interace*/
 }
 export interface rooms {
-  room_id: number;
+  room_id: string;
   connection_id: string;
   participant_1_email: string;
   participant_2_email: string;
@@ -67,8 +68,8 @@ export interface rooms {
   /*Messages table interace*/
 }
 export interface messages {
-  message_id: number;
-  room_id: number;
+  message_id: string;
+  room_id: string;
   sender_email: string;
   creation_date: Date;
   message_content: string;
