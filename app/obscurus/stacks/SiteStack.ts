@@ -12,7 +12,7 @@ import {
   Config,
   Queue,
   Table,
-  WebSocketApi
+  WebSocketApi,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
@@ -32,7 +32,6 @@ export default function SiteStack({ stack }: StackContext) {
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
   });
-
 
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
@@ -69,15 +68,6 @@ export default function SiteStack({ stack }: StackContext) {
     //   authorizer: "iam",
     // },
     routes: {
-      $connect: "../src/chat/connect.main",
-      $disconnect: "../src/chat/disconnect.main",
-      sendmessage: "../src/chat/sendMessage.main",
-
-      "GET /private": "./stacks/lambdas/private.main",
-      "GET /public": {
-        function: "./stacks/lambdas/public.main",
-        authorizer: "none",
-      },
       // "GET /start-machine": {
       //   function: {
       //     handler: "./stacks/lambdas/startMachine.handler",
@@ -102,7 +92,7 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        }
+        },
       },
       "POST /secrets": {
         function: {
@@ -144,7 +134,7 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        }
+        },
       },
     },
   });
