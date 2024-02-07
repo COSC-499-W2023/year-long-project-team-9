@@ -139,6 +139,16 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
+  const wsApi = new WebSocketApi(stack, "WSApi", {
+    routes: {
+      $connect: "./stacks/lambdas/chat/connect.main",
+      $disconnect: "./stacks/lambdas/chat/disconnect.main",
+      sendmessage: "./stacks/lambdas/chat/sendMessage.main",
+    },
+  });
+
+  wsApi.attachPermissions(["rds-data"]);
+
   steveJobs.bind([api]);
 
   // Create auth provider
@@ -163,7 +173,7 @@ export default function SiteStack({ stack }: StackContext) {
   // auth.attachPermissionsForAuthUsers(stack, [api]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs],
+    bind: [inputBucket, outputBucket, rds, api, steveJobs, wsApi],
     permissions: [rekognitionPolicyStatement],
   });
 
@@ -174,6 +184,7 @@ export default function SiteStack({ stack }: StackContext) {
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
+    WebSocketApiEndpoint: wsApi.url,
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
