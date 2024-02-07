@@ -162,6 +162,13 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   // auth.attachPermissionsForAuthUsers(stack, [api]);
 
+  const table = new Table(stack, "Connections", {
+    fields: {
+      id: "string",
+    },
+    primaryIndex: { partitionKey: "id" },
+  });
+
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
