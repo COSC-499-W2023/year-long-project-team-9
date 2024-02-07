@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Nav from "@/components/nav";
+import Nav from "@/app/nav";
 import { Inbox, FileUp, Youtube, MessageCircle, Sun } from "lucide-react";
 
 export const Nav2 = () => {

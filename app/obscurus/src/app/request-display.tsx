@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Requests } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardTitle } from "./ui/card";
+import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { useState } from "react";
 
 export default function RequestDisplay({ request }: { request: Requests }) {
@@ -16,7 +16,7 @@ export default function RequestDisplay({ request }: { request: Requests }) {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
-    <div id="previewCard" className=" h-max bg-card">
+    <div id="previewCard" className=" h-max bg-card pt-3 pb-2">
       <CardContent className="grid">
         <div className="grid">
           <div id="prevTitle" className="pt-6 grid grid-row-3">

@@ -18,7 +18,7 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-import Nav from "@/components/nav";
+import Nav from "@/app/nav";
 import NavBar from "@/components/NavBar";
 import { ListRequests } from "@/components/ListRequests";
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
@@ -34,8 +34,22 @@ import { Input } from "@/components/ui/input";
 import { MailDisplay } from "../components/ui/mail/components/mail-display";
 import { MailList } from "../components/ui/mail/components/mail-list";
 import { mails } from "../components/ui/mail/data";
-import RequestList from "@/components/request-list";
-import RequestDisplay from "@/components/request-display";
+import RequestList from "@/app/request-list";
+import RequestDisplay from "@/app/request-display";
+import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import { AvatarFallback, AvatarImage, Avatar } from "@/components/ui/avatar";
+import { Switch } from "@/components/ui/switch";
 
 const componentMappings = {
   ListRequests: ListRequests,
@@ -57,6 +71,7 @@ export function Wrapper({
   const [activeComponent, setActiveComponent] = useState("mainContent");
 
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const { theme, setTheme } = useTheme();
   const [mail] = useMail();
   const router = useRouter();
 
@@ -69,7 +84,7 @@ export function Wrapper({
             sizes
           )}`;
         }}
-        className="h-full max-h-[800px] items-stretch"
+        className="h-full  items-stretch"
       >
         <ResizablePanel
           defaultSize={defaultLayout[0]}
@@ -94,6 +109,17 @@ export function Wrapper({
   <Separator /> */}
           <Nav
             isCollapsed={isCollapsed}
+            brand={
+              <Link href="/" className="">
+                <Image
+                  className="h-8 w-10 ml-3 min-w-full relative"
+                  src="/logo.svg"
+                  alt="obscurus"
+                  width={50}
+                  height={50}
+                />
+              </Link>
+            }
             links={[
               {
                 title: "Requests",
@@ -124,7 +150,6 @@ export function Wrapper({
             links={[
               {
                 title: "Profile",
-                label: "",
                 icon: User,
                 variant: "ghost",
               },
@@ -135,9 +160,63 @@ export function Wrapper({
               },
             ]}
           />
+          {/* <Switch />
+          <div className="grid grid-flow-col justify-around items-center p-4 ">
+            <div className="flex justify-end space-x-5">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    data-testid="theme-toggle"
+                  >
+                    <Sun size={25} className="stroke-primary fill-primary" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => setTheme("light")}
+                    data-testid="light"
+                  >
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setTheme("dark")}
+                    data-testid="dark"
+                  >
+                    Dark
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setTheme("system")}
+                    data-testid="system"
+                  >
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/jansdhillon.png" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Log out</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div> */}
         </ResizablePanel>
         <ResizableHandle withHandle />
-       {mainContent}
+        {mainContent}
       </ResizablePanelGroup>
     </TooltipProvider>
   );

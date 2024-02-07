@@ -10,25 +10,37 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { ReactNode } from "react"
 
 interface NavProps {
   isCollapsed: boolean
+  brand?: ReactNode
+  imagePath?: string
   links: {
-    title: string
+    title?: string
     label?: string
     icon: LucideIcon
-    variant: "default" | "ghost",
+    variant?: "default" | "ghost",
 
   }[]
 }
 
-export default function Nav({ links, isCollapsed }: NavProps) {
+export default function Nav({ links, isCollapsed, brand }: NavProps) {
   return (
     <div
       data-collapsed={isCollapsed}
-      className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+      className="group flex flex-col gap-4 pt-8  data-[collapsed=true]:py-2"
     >
-      <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+
+      {brand ? ( <div className="flex flex-row  items-center justify-start gap-6 pt-1">
+        {brand}
+        <div className="font-extrabold text-lg">
+          obscurus
+        </div>
+      </div>):(<></>)}
+     
+      
+      <nav className="grid gap-1 pt-3 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) =>
           isCollapsed ? (
             <Tooltip key={index} delayDuration={0}>
@@ -83,6 +95,7 @@ export default function Nav({ links, isCollapsed }: NavProps) {
           )
         )}
       </nav>
+
     </div>
   )
 }

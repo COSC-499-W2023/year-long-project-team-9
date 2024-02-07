@@ -3,7 +3,7 @@ import React from "react";
 import { ResizablePanel, ResizableHandle } from "../components/ui/resizable";
 import { ListRequests } from "@/components/ListRequests";
 import { Requests } from "stacks/core/src/sql.generated";
-import RequestDisplay from "@/components/request-display";
+import RequestDisplay from "@/app/request-display";
 
 export const MainContent = ({
   defaultLayout = [265, 440, 655],

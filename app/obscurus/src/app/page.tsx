@@ -5,8 +5,8 @@ import Dashboard from "./dashboard/page";
 import { Wrapper } from "./wrapper";
 import Home from "./Home/page";
 import { ListRequests } from "@/components/ListRequests";
-import RequestDisplay from "@/components/request-display";
-import RequestList from "@/components/request-list";
+import RequestDisplay from "@/app/request-display";
+import RequestList from "@/app/request-list";
 import { cookies } from "next/headers";
 import { MainContent } from "./main-content";
 
@@ -15,12 +15,9 @@ async function getSubmissions() {
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  if (res.ok) {
+    return res.json();
   }
-
-  return res.json();
 }
 
 async function getRequests() {
@@ -28,24 +25,18 @@ async function getRequests() {
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  if (res.ok) {
+    return res.json();
   }
-
-  return res.json();
 }
 async function getUsers() {
   const res = await fetch(Api.Api.url + "/getusers");
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  if (res.ok) {
+    return res.json();
   }
-
-  return res.json();
 }
 
 export default async function Page() {
@@ -58,10 +49,12 @@ export default async function Page() {
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
-    <Wrapper
-      mainContent={<MainContent defaultLayout={defaultLayout} requests={requests} />}
-      defaultLayout={defaultLayout}
-      navCollapsedSize={defaultCollapsed}
-    />
+      <Wrapper
+        mainContent={
+          <MainContent defaultLayout={defaultLayout} requests={requests} />
+        }
+        defaultLayout={defaultLayout}
+        navCollapsedSize={defaultCollapsed}
+      />
   );
 }

@@ -1,6 +1,6 @@
 "use client"
-import MailList from "@/components/request-list"
-import Nav from "@/components/nav"
+import MailList from "@/app/request-list"
+import Nav from "@/app/nav"
 import { Input } from "@/components/ui/input"
 
 import { Separator } from "@radix-ui/react-dropdown-menu"

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "./styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "@/components/NavBar";
 
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex flex-col h-screen w-full ${inter.className}`}
+        className={`flex flex-col h-screen  ${inter.className}`}
       >
         {" "}
         <ThemeProvider
@@ -28,7 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
+          {/* <NavBar /> */}
           {children}
         </ThemeProvider>
       </body>
