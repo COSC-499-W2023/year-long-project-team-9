@@ -30,15 +30,20 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    Amplify.configure({
-      Auth: {
-        region: "us-west-2",
-        userPoolId: "us-west-2_SSqMKlUXx",
-        userPoolWebClientId: "444lautq34qslgp8pt9sr9obtq",
-      },
-    });
-  });
+  // const { data, error } = useSWR("/api/secrets", fetcher);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data)
+  //     Amplify.configure({
+  //       Auth: {
+  //         region: "us-west-2",
+  //         userPoolId: data.userPoolId,
+  //         userPoolWebClientId: data.userPoolWebClientId,
+  //       },
+  //     });
+  //   }
+  // }, [data]);
 
   return getLayout(
     <>
