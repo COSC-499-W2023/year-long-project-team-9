@@ -32,7 +32,7 @@ export default function Nav({ links, isCollapsed, brand }: NavProps) {
       className="group flex flex-col gap-4 pt-8  data-[collapsed=true]:py-2"
     >
 
-      {brand ? ( <div className="flex flex-row  items-center justify-start gap-6 pt-1">
+      {brand ? ( <div className="flex flex-row  items-center justify-start gap-6 md:p-3">
         {brand}
         <div className="font-extrabold text-lg">
           obscurus

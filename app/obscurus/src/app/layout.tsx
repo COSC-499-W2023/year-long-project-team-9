@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import "./styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "@/components/NavBar";
@@ -19,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex flex-col h-screen  ${inter.className}`}
+        className={`flex await page.locator('body').click();
+        await page.locator('body').click();
+        await page.goto('http://localhost:3000/');h-screen  ${GeistSans.className}`}
       >
         {" "}
         <ThemeProvider

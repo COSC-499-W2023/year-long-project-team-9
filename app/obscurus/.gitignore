@@ -144,3 +144,7 @@ app/front-end/.sst/**/*
 .sst/**/*
 
 **/*/__pycache__
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
