@@ -28,7 +28,7 @@ export const main: APIGatewayProxyHandler = async (event) => {
         connection_id: event.requestContext.connectionId,
       };
       const connection = await Connections.removeConnection(newConnection);
-      return { statusCode: 200, body: "Connected" };
+      return { statusCode: 200, body: "Disconnected" };
     } else {
       return { statusCode: 500, body: "Error, undefined" };
     }
