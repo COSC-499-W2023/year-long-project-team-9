@@ -7,6 +7,7 @@ export interface Database {
   submissions: Submissions;
   rooms: Rooms;
   messages: Messages;
+  connections: Connections;
 }
 {
   /*Users table interace*/
@@ -65,3 +66,7 @@ export interface Rooms {
   /*Messages table interace*/
 }
 export interface Messages {}
+/*Connections table interface*/
+export interface Connections {
+  connection_id: string;
+}

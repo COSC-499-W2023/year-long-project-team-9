@@ -40,7 +40,6 @@ export default function SiteStack({ stack }: StackContext) {
       cmd: ["python3", "/var/task/app.py"],
     },
     bind: [inputBucket, outputBucket],
-    permissions: ["s3", rekognitionPolicyStatement],
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
@@ -162,19 +161,31 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   // auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  const table = new Table(stack, "Connections", {
-    fields: {
-      id: "string",
+  // const table = new Table(stack, "Connections", {
+  //   fields: {
+  //     id: "string",
+  //   },
+  //   primaryIndex: { partitionKey: "id" },
+  // });
+
+  const wsApi = new WebSocketApi(stack, "WSApi", {
+    defaults: {
+      function: {
+        bind: [rds],
+      },
     },
-    primaryIndex: { partitionKey: "id" },
+    routes: {
+      $connect: "./stacks/lambdas/chat/connect.main",
+      // $disconnect: "./stacks/lambdas/chat/disconnect.main",
+      // sendmessage: "./stacks/lambdas/chat/sendMessage.main",
+    },
   });
+
+  api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs],
-    permissions: [rekognitionPolicyStatement],
+    bind: [inputBucket, outputBucket, rds, api, steveJobs, wsApi],
   });
-
-  site.attachPermissions([rekognitionPolicyStatement]);
 
   steveJobs.bind([site]);
 
@@ -184,5 +195,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
+    WebSocketApiEndpoint: wsApi.url,
   });
 }
