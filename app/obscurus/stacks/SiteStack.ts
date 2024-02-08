@@ -24,15 +24,12 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
-
-
   // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "./stacks/core/migrations/",
   });
-
 
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
@@ -52,15 +49,14 @@ export default function SiteStack({ stack }: StackContext) {
     timeout: "8 hours",
   });
 
-   //Create secret keys
-   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
+  //Create secret keys
+  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
-    "USER_POOL_WEB_CLIENT_ID_KEY"
+    "USER_POOL_WEB_CLIENT_ID_KEY",
   );
 
   // Create secret keys
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
-
 
   const api = new Api(stack, "Api", {
     // defaults: {
@@ -99,7 +95,7 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        }
+        },
       },
       "POST /secrets": {
         function: {
@@ -132,7 +128,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/createRequest.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds], 
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "POST /createUser": {
@@ -140,7 +136,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stacks/lambdas/createUser.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds], 
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "GET /getSubmissions": {
@@ -150,7 +146,16 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        }
+        },
+      },
+      "POST /getRequestsViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getRequestsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
       },
     },
   });
@@ -179,8 +184,6 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-
-
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
@@ -198,3 +201,4 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolClientId: auth.userPoolClientId,
   });
 }
+
