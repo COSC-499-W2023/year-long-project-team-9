@@ -177,7 +177,7 @@ export default function SiteStack({ stack }: StackContext) {
     routes: {
       $connect: "./stacks/lambdas/chat/connect.main",
       $disconnect: "./stacks/lambdas/chat/disconnect.main",
-      // $sendmessage: "./stacks/lambdas/chat/sendMessage.main",
+      sendmessage: "./stacks/lambdas/chat/sendMessage.main",
     },
   });
 
