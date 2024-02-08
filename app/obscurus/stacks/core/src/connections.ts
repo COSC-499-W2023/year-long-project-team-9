@@ -10,3 +10,9 @@ export function addConnection(newConnection: Connections) {
     })
     .execute();
 }
+
+export function removeConnection(newConnection: Connections) {
+  return SQL.DB.deleteFrom("connections")
+    .where("connections.connection_id", "=", newConnection.connection_id)
+    .execute();
+}
