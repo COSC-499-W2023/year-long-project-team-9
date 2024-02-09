@@ -12,7 +12,13 @@ export async function getRequestsViaEmail(
       grouping: grouping,
     }),
   });
-  const data = res.json();
+
+  const data = new Map();
+
+  if (!res.ok) {
+    data;
+  }
+  console.log(await res.json());
   return data;
 }
 
