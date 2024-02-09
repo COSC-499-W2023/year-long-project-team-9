@@ -9,9 +9,11 @@ import RequestDisplay from "@/components/request-display";
 import RequestList from "@/components/request-list";
 import { cookies } from "next/headers";
 import { MainContent } from "./main-content";
-
-// when you want data from a particular user, set email to their email in the users table
-const email = "bakar.a.muhammad@gmail.com";
+import {
+  getRequestsViaEmail,
+  getSubmissionsViaEmail,
+  getUserEmail,
+} from "../wrapper-functions/get-data-from-database";
 
 async function getSubmissions() {
   const res = await fetch(Api.Api.url + "/getSubmissions");
@@ -51,23 +53,16 @@ async function getUsers() {
   return res.json();
 }
 
-export async function getRequestsViaEmail(email: string, grouping: string) {
-  const res = await fetch(Api.Api.url + "/getRequestsViaEmail", {
-    method: "post",
-    body: JSON.stringify({
-      email: email,
-      grouping: grouping,
-    }),
-  });
-  return res;
-}
-
 export default async function Page() {
   const submissions: Submissions[] = await getSubmissions();
   const requests: Requests[] = await getRequests();
-  const getRequestsForAUserTest = await getRequestsViaEmail(email, "NULL");
+  // when you want data from a particular user, set email to their email in the users table
+  const email = "bakar.a.muhammad@gmail.com";
+
+  await getRequestsViaEmail(email, null);
+  await getSubmissionsViaEmail(email, null);
+  //await getUserEmail(email);
   console.log(requests);
-  console.log(getRequestsForAUserTest);
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
 
@@ -77,10 +72,7 @@ export default async function Page() {
     <>
       <Wrapper
         mainContent={
-          <MainContent
-            defaultLayout={defaultLayout}
-            requests={getRequestsForAUserTest}
-          />
+          <MainContent defaultLayout={defaultLayout} requests={requests} />
         }
         defaultLayout={defaultLayout}
         navCollapsedSize={defaultCollapsed}

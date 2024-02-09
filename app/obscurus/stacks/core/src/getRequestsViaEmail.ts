@@ -1,13 +1,14 @@
 import { SQL } from "./sql";
 
-export async function getRequestsViaEmail(event: any) {
-  // getting email and grouping
-  const email = event.email;
-  const grouping = event.grouping;
+export async function getRequestsViaEmail(payload: any) {
+  const jsonPayload = JSON.parse(payload);
+  const email = jsonPayload.email;
+  const grouping = jsonPayload.grouping;
 
   let requests = SQL.DB.selectFrom("requests")
     .selectAll()
     .where("requester_email", "=", email)
+    .where("grouping", "is", grouping)
     .where("grouping", "=", grouping)
     .execute();
   let submissions = SQL.DB.selectFrom("submissions")
@@ -27,9 +28,9 @@ export async function getRequestsViaEmail(event: any) {
     .execute();
   const returnedRequests = JSON.stringify(await requests);
   const returnedSubmissions = JSON.stringify(await submissions);
-  return JSON.stringify({
+  return {
     requests: returnedRequests,
     submissions: returnedSubmissions,
-  });
+  };
   //return JSON.parse(returnedRequests, returnedSubmissions);
 }

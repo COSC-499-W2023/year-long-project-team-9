@@ -1,13 +1,13 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { getRequestsViaEmail } from "../core/src/getRequestsViaEmail";
+import { getUserViaEmail } from "../core/src/getUserViaEmail";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   // the data passed in the wrapper function
-  const requests = await getRequestsViaEmail(event.body);
+  const user = await getUserViaEmail(event.body);
 
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requests),
+    body: JSON.stringify(user),
   };
 };

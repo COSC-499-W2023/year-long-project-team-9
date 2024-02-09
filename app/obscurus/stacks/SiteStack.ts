@@ -157,6 +157,24 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /getSubmissionsViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getSubmissionsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "POST /getUserViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getUserViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
 
@@ -201,4 +219,3 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolClientId: auth.userPoolClientId,
   });
 }
-
