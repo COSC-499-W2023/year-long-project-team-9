@@ -22,6 +22,10 @@ export async function getSubmissionsViaEmail(payload: any) {
       .where("submissions.grouping", "=", grouping)
       .execute();
   }
-  const returnedSubmissions = JSON.stringify(await submissions);
-  return { returnedSubmissions };
+  const jsonSubmissions = {};
+  const returnedSubmissions = await submissions;
+  returnedSubmissions.forEach((row, index) => {
+    jsonSubmissions[index.toString()] = row;
+  });
+  return { submissions: jsonSubmissions };
 }
