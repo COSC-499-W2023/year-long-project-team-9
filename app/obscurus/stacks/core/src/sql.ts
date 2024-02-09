@@ -2,7 +2,7 @@ import { RDSData } from "@aws-sdk/client-rds-data";
 import { RDS } from "sst/node/rds";
 import { Kysely, Selectable } from "kysely";
 import { DataApiDialect } from "kysely-data-api";
-import type { Database } from "../migrations/sql.generated";
+import type { Database } from "./sql.generated";
 
 export const DB = new Kysely<Database>({
   dialect: new DataApiDialect({
@@ -21,4 +21,3 @@ export type Row = {
 };
 
 export * as SQL from "./sql";
-

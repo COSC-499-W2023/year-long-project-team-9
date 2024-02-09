@@ -58,11 +58,13 @@ export default async function Page() {
   const requests: Requests[] = await getRequests();
   // when you want data from a particular user, set email to their email in the users table
   const email = "bakar.a.muhammad@gmail.com";
-
-  await getRequestsViaEmail(email, null);
-  await getSubmissionsViaEmail(email, null);
-  //await getUserEmail(email);
-  console.log(requests);
+  console.log("=============================================================");
+  console.log(email);
+  console.log(await getRequestsViaEmail(email, null));
+  console.log(await getSubmissionsViaEmail(email, null));
+  console.log(await getUserEmail(email));
+  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  //console.log(requests);
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
 

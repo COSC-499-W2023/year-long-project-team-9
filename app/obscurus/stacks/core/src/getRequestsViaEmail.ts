@@ -4,13 +4,22 @@ export async function getRequestsViaEmail(payload: any) {
   const jsonPayload = JSON.parse(payload);
   const email = jsonPayload.email;
   const grouping = jsonPayload.grouping;
-
-  let requests = SQL.DB.selectFrom("requests")
-    .selectAll()
-    .where("requester_email", "=", email)
-    .where("grouping", "is", grouping)
-    .where("grouping", "=", grouping)
-    .execute();
+  // one cannot use "=" for null
+  // not waiting for async to increase speed
+  let requests;
+  if (grouping === null) {
+    requests = SQL.DB.selectFrom("requests")
+      .selectAll()
+      .where("requester_email", "=", email)
+      .where("grouping", "is", grouping)
+      .execute();
+  } else {
+    requests = SQL.DB.selectFrom("requests")
+      .selectAll()
+      .where("requester_email", "=", email)
+      .where("grouping", "=", grouping)
+      .execute();
+  }
   let submissions = SQL.DB.selectFrom("submissions")
     .innerJoin("requests", "submissions.request_id", "requests.request_id")
     .select([
@@ -26,11 +35,24 @@ export async function getRequestsViaEmail(payload: any) {
     ])
     .where("requests.requester_email", "=", email)
     .execute();
-  const returnedRequests = JSON.stringify(await requests);
-  const returnedSubmissions = JSON.stringify(await submissions);
+
+  let jsonRequests = {};
+  let jsonSubmissions = {};
+
+  // adding requests to json
+  const returnedRequests = await requests;
+  returnedRequests.forEach((row, index) => {
+    jsonRequests[index.toString()] = row;
+  });
+
+  // adding submissions json
+  const returnedSubmissions = await submissions;
+  returnedSubmissions.forEach((row, index) => {
+    jsonSubmissions[index.toString()] = row;
+  });
   return {
-    requests: returnedRequests,
-    submissions: returnedSubmissions,
+    requests: jsonRequests,
+    submissions: jsonSubmissions,
   };
   //return JSON.parse(returnedRequests, returnedSubmissions);
 }

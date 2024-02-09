@@ -1,8 +1,8 @@
 import { SQL } from "./sql";
 
-export async function getUserViaEmail(event: any) {
-  // getting email and grouping
-  const email = event.body;
+export async function getUserViaEmail(payload: any) {
+  const jsonPayload = JSON.parse(payload);
+  const email = jsonPayload.email;
   let submissions = SQL.DB.selectFrom("users")
     .selectAll()
     .where("email", "=", email)

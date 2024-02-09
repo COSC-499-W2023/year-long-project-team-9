@@ -12,7 +12,8 @@ export async function getRequestsViaEmail(
       grouping: grouping,
     }),
   });
-  return res;
+  const data = res.json();
+  return data;
 }
 
 export async function getSubmissionsViaEmail(

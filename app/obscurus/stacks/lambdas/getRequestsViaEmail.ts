@@ -4,7 +4,6 @@ import { getRequestsViaEmail } from "../core/src/getRequestsViaEmail";
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   // the data passed in the wrapper function
   const requests = await getRequestsViaEmail(event.body);
-
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
