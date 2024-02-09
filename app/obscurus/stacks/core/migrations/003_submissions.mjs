@@ -8,19 +8,18 @@ export async function up(db) {
     .createTable("submissions")
     .addColumn("submission_id", "varchar", (col) => col.primaryKey())
     .addColumn("requestee_email", "varchar", (col) =>
-      col.notNull().defaultTo("NULL")
+      col.notNull().defaultTo("NULL"),
     )
     .addColumn("status", "varchar", (col) => col.notNull().defaultTo("todo"))
-    .addColumn("priorities", "varchar", (col) => col.notNull().defaultTo("low"))
     .addColumn("is_starred", "boolean", (col) =>
-      col.notNull().defaultTo("false")
+      col.notNull().defaultTo("false"),
     )
     .addColumn("is_read", "boolean", (col) => col.notNull().defaultTo("false"))
-    .addColumn("grouping", "varchar", (col) => col.notNull().defaultTo("NULL"))
-    .addColumn("title", "varchar", (col) => col.notNull().defaultTo("NULL"))
+    .addColumn("grouping", "varchar")
+    .addColumn("title", "varchar")
     .addColumn("submitted_date", "timestamp")
     .addColumn("request_id", "varchar", (col) =>
-      col.notNull().references("requests.request_id")
+      col.notNull().references("requests.request_id"),
     )
     .execute();
 }

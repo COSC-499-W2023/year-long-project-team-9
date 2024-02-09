@@ -5,10 +5,10 @@ import { Kysely, sql } from "kysely";
  */
 export async function up(db) {
   await db.schema
-    .alterTable("submissions")
+    .alterTable("notifications")
     .addCheckConstraint(
-      "priorities_constraint",
-      sql`(priorities = 'low' OR priorities = 'medium' OR priorities = 'high')`
+      "notifications_type_constraint",
+      sql`(type = 'requests' OR type = 'submissions' OR type = 'messages')`,
     )
     .execute();
 }
@@ -18,7 +18,7 @@ export async function up(db) {
  */
 export async function down(db) {
   await db.schema
-    .alterTable("submissions")
-    .dropConstraint("priorities_constraint")
+    .alterTable("notifications")
+    .dropConstraint("notifications_type_constraint")
     .execute();
 }
