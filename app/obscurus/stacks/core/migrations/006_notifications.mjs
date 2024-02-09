@@ -12,7 +12,7 @@ export async function up(db) {
     )
     .addColumn("type", "varchar", (col) => col.notNull())
     .addColumn("creation_date", "timestamp", (col) =>
-      col.notNull().defaultTo(now()),
+      col.notNull().defaultTo("now()"),
     )
     .addColumn("content", "varchar", (col) => col.notNull())
     .addColumn("is_read", "boolean", (col) => col.notNull().defaultTo("false"))
