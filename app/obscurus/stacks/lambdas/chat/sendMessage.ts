@@ -4,7 +4,7 @@ import { Connections } from "../../core/src/connections";
 import { Connections as ConnectionsType } from "../../core/src/sql.generated";
 
 export const main: APIGatewayProxyHandler = async (event) => {
-  if (event.body != null) {
+  if (event.body != undefined) {
     // Save applicable data
     const messageData = JSON.parse(event.body).data;
     const { stage, domainName } = event.requestContext;

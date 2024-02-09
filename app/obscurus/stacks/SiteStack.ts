@@ -59,7 +59,6 @@ export default function SiteStack({ stack }: StackContext) {
   // Create secret keys
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
-
   const api = new Api(stack, "Api", {
     // defaults: {
     //   function: {
@@ -171,8 +170,6 @@ export default function SiteStack({ stack }: StackContext) {
 
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
-
-
 
   // const table = new Table(stack, "Connections", {
   //   fields: {
