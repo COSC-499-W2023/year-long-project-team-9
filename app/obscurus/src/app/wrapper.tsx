@@ -59,7 +59,7 @@ export function Wrapper({
         className="h-full  items-stretch"
       >
         <ResizablePanel
-          defaultSize={1}
+          defaultSize={10}
           collapsedSize={10}
           collapsible={true}
           minSize={15}
