@@ -7,23 +7,23 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Mail } from "../data/data";
-import { useMail } from "./hooks/use-mail";
-import { submissions } from "stacks/core/migrations/sql.generated";
+import { useMail } from "@/components/hooks/use-mail";
+import { Requests } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Search, Send } from "lucide-react";
-import Nav from "./nav";
+import Nav from "@/components/nav";
 import { request } from "@playwright/test";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { Input } from "./ui/input";
+import { Input } from "@/components/ui/input";
 
-interface SubmissionsListProps {
-  items: submissions[];
+interface RequestListProps {
+  items: Requests[];
   isCollapsed?: boolean;
 }
 
-export default function SubmissionsList({ items }: SubmissionsListProps) {
+export default function RequestList({ items }: RequestListProps) {
   const router = useRouter();
   const [mail, setMail] = useMail();
 
@@ -32,13 +32,13 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
   return (
     <Tabs defaultValue="all">
       <div className="flex items-center px-4">
-        <h1 className="text-xl font-bold">Submissionss</h1>
-        <div className="ml-auto" onClick={() => router.push("/CreateSubmissions")}>
+        <h1 className="text-xl font-bold">Requests</h1>
+        <div className="ml-auto" onClick={() => router.push("/CreateRequest")}>
           <Nav
             isCollapsed={false}
             links={[
               {
-                title: "Create Submissions",
+                title: "Create Request",
                 icon: Send,
                 variant: "ghost",
               },
@@ -74,8 +74,8 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
-                  <div className="font-semibold">{item.title}</div>
-                  {!item.is_read && (
+                  <div className="font-semibold">{item.requester_sub}</div>
+                  {!item.video_processing && (
                     <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                   )}
                 </div>
@@ -88,10 +88,10 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
                   )}
                 ></div>
               </div>
-              <div className="text-xs font-medium">{item.title}</div>
+              <div className="text-xs font-medium">{item.request_title}</div>
             </div>
             <div className="line-clamp-2 text-xs text-muted-foreground">
-              {item.status?.substring(0, 300)}
+              {item.description?.substring(0, 300)}
             </div>
             {/* {item..length ? (
               <div className="flex items-center gap-2">

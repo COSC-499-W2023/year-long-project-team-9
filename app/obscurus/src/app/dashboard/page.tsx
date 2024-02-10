@@ -5,6 +5,11 @@ import { columns } from "./components/columns";
 import { UserNav } from "./components/user-nav";
 import { DataTable } from "./components/data-table";
 import { Video } from "./schema";
+import { ReactNode } from "react";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import  SubmissionsList  from "@/components/request-list";
+import { Submissions } from "stacks/core/src/submissions";
+import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 
 async function getSubmissions() {
   const res = await fetch(Api.Api.url + "/getSubmissions");
@@ -42,6 +47,8 @@ export default async function Dashboard() {
     <>
       {submissions ? (
         <>
+        <ResizableHandle withHandle />
+        <ResizablePanel>
           <div className="md:hidden">
             <Image
               src="/examples/tasks-light.png"
@@ -74,7 +81,49 @@ export default async function Dashboard() {
             </div>
             <DataTable data={submissions} columns={columns} />
           </div>
+          
+            </ResizablePanel>
+            <ResizableHandle withHandle/>
+            <ResizablePanel>
+            <Tabs defaultValue="all">
+              {/* <div className="flex items-center px-4">
+                <h1 className="text-xl font-bold"></h1>
+                <div
+                  className="ml-auto"
+                  onClick={() => router.push("/CreateRequest")}
+                >
+                  <Nav
+                    isCollapsed={false}
+                    links={[
+                      {
+                        title: "Create Request",
+                        icon: Send,
+                        variant: "ghost",
+                      },
+                    ]}
+                  />
+                </div>
+              </div>
+              <Separator />
+              <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <form>
+                  <div className="relative">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="Search" className="pl-8" />
+                  </div>
+                </form>
+              </div> */}
+               
+              <TabsContent value="all" className="m-0">
+                {submissions? (<SubmissionsList items={submissions} />):(<div>Submissions</div>)}
+              </TabsContent>
+              <TabsContent value="unread" className="m-0">
+                {/* <MailList items={requests.filter((item) => !item.read)} /> */}
+              </TabsContent>
+            </Tabs>
+            </ResizablePanel>
         </>
+        
       ) : (
         <div>N/A</div>
       )}

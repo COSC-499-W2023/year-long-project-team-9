@@ -7,20 +7,17 @@ import RequestDisplay from "@/components/request-display";
 
 export const MainContent = ({
   defaultLayout = [265, 440, 655],
-  requests,
 }: {
   defaultLayout: number[] | undefined;
-  requests: Requests[];
 }) => {
-  console.log("Requests", requests)
   return (
     <>
+      <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <ListRequests requests={requests} />
+        <ListRequests/>
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[2]}>
-        <RequestDisplay request={requests[0]} />
       </ResizablePanel>
     </>
   );
