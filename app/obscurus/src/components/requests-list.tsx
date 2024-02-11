@@ -21,7 +21,7 @@ interface Submissions {
   isCollapsed?: boolean;
 }
 
-export default function SubmissionsList({ items }: RequestListProps) {
+export default function SubmissionsList({ items }: Submissions) {
   const router = useRouter();
   const [mail, setMail] = useMail();
 

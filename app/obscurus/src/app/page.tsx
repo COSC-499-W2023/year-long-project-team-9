@@ -4,7 +4,7 @@ import Submit  from "./submit/page";
 import Wrapper from "./wrapper";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 
-export function Page({ children }: { children: ReactNode }) {
+function Page() {
   return (
  
       <Submit/>
