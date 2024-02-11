@@ -55,7 +55,7 @@ const NavBar = () => {
   // });
 
   return (
-    <div className="sticky top-0 bg-gradient-to-b from-secondary to-background z-50 flex flex-column justify-between min-w-full border-b-2">
+    <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2">
       <div className="p-1">
         <NavigationMenu>
           <Link href="/" className="p-5">

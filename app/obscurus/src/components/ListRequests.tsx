@@ -1,5 +1,5 @@
 "use server"
-import MailList from "@/components/request-list"
+import MailList from "@/app/submit/components/submissions-list"
 import Nav from "@/components/nav"
 import { Input } from "@/components/ui/input"
 

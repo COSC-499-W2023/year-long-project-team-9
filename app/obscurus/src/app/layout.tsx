@@ -33,9 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative flex min-h-screen flex-col bg-background ">
+          <div className="relative flex min-h-screen flex-col bg-background h-screen ">
             <NavBar />
-            <Wrapper>{children}</Wrapper>
+            <Wrapper defaultLayout={defaultLayout} defaultCollapsed={defaultCollapsed} navCollapsedSize={15}>{children}</Wrapper>
           </div>
         </ThemeProvider>
       </body>

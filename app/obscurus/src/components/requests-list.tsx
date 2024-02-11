@@ -13,17 +13,15 @@ import { useRouter } from "next/navigation";
 import { Search, Send } from "lucide-react";
 import Nav from "@/components/nav";
 import { request } from "@playwright/test";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { Tabs, TabsContent } from "@radix-ui/react-tabs";
-import { Tooltip } from "@radix-ui/react-tooltip";
 import { Input } from "@/components/ui/input";
+import { Tabs } from "@/components/ui/tabs";
 
-interface RequestListProps {
+interface Submissions {
   items: Requests[];
   isCollapsed?: boolean;
 }
 
-export default function RequestList({ items }: RequestListProps) {
+export default function SubmissionsList({ items }: RequestListProps) {
   const router = useRouter();
   const [mail, setMail] = useMail();
 
@@ -31,7 +29,7 @@ export default function RequestList({ items }: RequestListProps) {
 
   return (
     <Tabs defaultValue="all">
-      <div className="flex items-center px-4">
+      <div className="flex items-center px-4 ">
         <h1 className="text-xl font-bold">Requests</h1>
         <div className="ml-auto" onClick={() => router.push("/CreateRequest")}>
           <Nav
@@ -57,43 +55,44 @@ export default function RequestList({ items }: RequestListProps) {
       </div>
 
       <div className="flex flex-col gap-2 p-4 pt-0">
-        {items.map((item) => (
-          <button
-            key={item.request_id}
-            className={cn(
-              "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              mail.selected === item.request_id && "bg-muted"
-            )}
-            onClick={() =>
-              setMail({
-                ...mail,
-                selected: item.request_id,
-              })
-            }
-          >
-            <div className="flex w-full flex-col gap-1">
-              <div className="flex items-center">
-                <div className="flex items-center gap-2">
-                  <div className="font-semibold">{item.requester_sub}</div>
-                  {!item.video_processing && (
-                    <span className="flex h-2 w-2 rounded-full bg-blue-600" />
-                  )}
+        <ScrollArea>
+          {items.map((item) => (
+            <button
+              key={item.request_id}
+              className={cn(
+                "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
+                mail.selected === item.request_id && "bg-muted"
+              )}
+              onClick={() =>
+                setMail({
+                  ...mail,
+                  selected: item.request_id,
+                })
+              }
+            >
+              <div className="flex w-full flex-col gap-1">
+                <div className="flex items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="font-semibold">{item.requester_sub}</div>
+                    {!item.video_processing && (
+                      <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                    )}
+                  </div>
+                  <div
+                    className={cn(
+                      "ml-auto text-xs",
+                      mail.selected === item.request_id
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    )}
+                  ></div>
                 </div>
-                <div
-                  className={cn(
-                    "ml-auto text-xs",
-                    mail.selected === item.request_id
-                      ? "text-foreground"
-                      : "text-muted-foreground"
-                  )}
-                ></div>
+                <div className="text-xs font-medium">{item.request_title}</div>
               </div>
-              <div className="text-xs font-medium">{item.request_title}</div>
-            </div>
-            <div className="line-clamp-2 text-xs text-muted-foreground">
-              {item.description?.substring(0, 300)}
-            </div>
-            {/* {item..length ? (
+              <div className="line-clamp-2 text-xs text-muted-foreground">
+                {item.description?.substring(0, 300)}
+              </div>
+              {/* {item..length ? (
               <div className="flex items-center gap-2">
                 {item.labels.map((label) => (
                   <Badge key={label} variant={getBadgeVariantFromLabel(label)}>
@@ -102,8 +101,9 @@ export default function RequestList({ items }: RequestListProps) {
                 ))}
               </div>
             ) : null} */}
-          </button>
-        ))}
+            </button>
+          ))}
+        </ScrollArea>
       </div>
     </Tabs>
   );

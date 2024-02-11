@@ -1,4 +1,8 @@
-const SubmissionPage = () => {
+import SubmissionsList from "@/app/submit/components/submissions-list"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
+import { submissions } from "stacks/core/migrations/sql.generated"
+
+export const Display = ({submissions}:{submissions:submissions[]}) => {
     return (
         <Tabs defaultValue="all">
         {/* <div className="flex items-center px-4">
@@ -38,5 +42,4 @@ const SubmissionPage = () => {
       </Tabs>
     )
 }
-
-export default Subm
+export default Display
