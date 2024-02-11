@@ -218,3 +218,20 @@
 ### Picture of T2 Week 4's Survey
 
 ![T2 Week 4 Survey](img/soren-stenback/T2Week4-Survey-ID4.png)
+
+---
+
+## T2 Week 5
+
+### February 5 - February 11, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to set up lambda functions for messaging and create a websocket API to allow users to send messages to each other..
+
+### Picture of Project Board
+
+![T2 Week 5 Project Board](img/soren-stenback/T2Week5-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 5's Survey
+
+![T2 Week 5 Survey](img/soren-stenback/T2Week5-Survey-ID4.png)
