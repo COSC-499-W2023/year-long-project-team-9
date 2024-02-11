@@ -15,7 +15,7 @@ export async function up(db) {
         family_name: "Dhillon",
         is_logged_in_with_social_identity_provider: false,
         is_admin: true,
-        profile_image: "NULL",
+        profile_image: null,
         preference: "{}",
       },
       {
@@ -24,7 +24,7 @@ export async function up(db) {
         family_name: "Stenback",
         is_logged_in_with_social_identity_provider: false,
         is_admin: true,
-        profile_image: "NULL",
+        profile_image: null,
         preference: "{}",
       },
       {
@@ -33,7 +33,7 @@ export async function up(db) {
         family_name: "Sivakua",
         is_logged_in_with_social_identity_provider: false,
         is_admin: true,
-        profile_image: "NULL",
+        profile_image: null,
         preference: "{}",
       },
       {
@@ -42,7 +42,7 @@ export async function up(db) {
         family_name: "Bakar",
         is_logged_in_with_social_identity_provider: false,
         is_admin: false,
-        profile_image: "NULL",
+        profile_image: null,
         preference: "{}",
       },
     ])
@@ -56,7 +56,7 @@ export async function up(db) {
         request_title: "Spanish Lesson 1",
         requester_email: "imightbejan@gmail.com",
         is_starred: false,
-        grouping: "NULL",
+        grouping: null,
         description: "Send video of you speaking section 1 from the textbook",
         blurred: true,
         creation_date: new Date("2023-12-12"),
@@ -67,7 +67,7 @@ export async function up(db) {
         request_title: "Math Lesson 2",
         requester_email: "imightbejan@gmail.com",
         is_starred: false,
-        grouping: "NULL",
+        grouping: null,
         description:
           "Send video of you reading out section 10 from the textbook",
         blurred: true,
@@ -79,7 +79,7 @@ export async function up(db) {
         request_title: "AWS Job Interview",
         requester_email: "ansivana@gmail.com",
         is_starred: true,
-        grouping: "NULL",
+        grouping: null,
         description:
           "Please answer the following: Tell me about yourself. Walk me through your resume. How did you hear about this position? Why do you want to work at this company? Why do you want this job? Why should we hire you? What can you bring to the company? What are your greatest strengths?",
         blurred: true,
@@ -90,7 +90,7 @@ export async function up(db) {
         request_title: "AWS Job Interview Stage 2",
         requester_email: "ansivana@gmail.com",
         is_starred: true,
-        grouping: "NULL",
+        grouping: null,
         description:
           "Please answer the following: Tell me about yourself. Walk me through your resume. How did you hear about this position? Why do you want to work at this company? Why do you want this job? Why should we hire you? What can you bring to the company? What are your greatest strengths?",
         blurred: true,
@@ -102,7 +102,7 @@ export async function up(db) {
         request_title: "AWS Job Interview Stage 3",
         requester_email: "ansivana@gmail.com",
         is_starred: true,
-        grouping: "NULL",
+        grouping: null,
         description:
           "What are you looking for from a new position? Are you considering other positions in other companies? What is the professional achievement you're most proud of? What kind of working environment do you work best in?",
         blurred: true,
@@ -113,7 +113,7 @@ export async function up(db) {
         request_title: "Test",
         requester_email: "bakar.a.muhammad@gmail.com",
         is_starred: true,
-        grouping: "NULL",
+        grouping: null,
         description: "This is a test",
         blurred: false,
         due_date: new Date("2024-01-02"),
@@ -240,7 +240,7 @@ export async function up(db) {
     .values([
       {
         room_id: "01b3f0b0-2c27-4ad7-86e5-ce04bcd9cd48",
-        connection_id: "NULL",
+        connection_id: null,
         participant_1_email: "imightbejan@gmail.com",
         participant_2_email: "soren.is@hotmail.ca",
         participant_1_room_given_name: "Jan-Yaeger",
@@ -252,7 +252,7 @@ export async function up(db) {
       },
       {
         room_id: "8c0ea510-5870-41a0-a01a-dbf5cf2b7b3b",
-        connection_id: "NULL",
+        connection_id: null,
         participant_1_email: "imightbejan@gmail.com",
         participant_2_email: "ansivana@gmail.com",
         participant_1_room_given_name: "Jan-Yaeger",
@@ -264,7 +264,7 @@ export async function up(db) {
       },
       {
         room_id: "bd240dd9-5ff4-46df-9273-d216685b3683",
-        connection_id: "NULL",
+        connection_id: null,
         participant_1_email: "imightbejan@gmail.com",
         participant_2_email: "bakar.a.muhammad@gmail.com",
         participant_1_room_given_name: "Jan-Yaeger",
@@ -276,13 +276,13 @@ export async function up(db) {
       },
       {
         room_id: "dac6ccb4-d0a2-43cc-a2a5-d0d04205ab99",
-        connection_id: "NULL",
+        connection_id: null,
         participant_1_email: "ansivana@gmail.com",
         participant_2_email: "bob@gamil.com",
         participant_1_room_given_name: "Baz",
         participant_1_room_family_name: "Sivakua",
-        participant_2_room_given_name: "NULL",
-        participant_2_room_family_name: "NULL",
+        participant_2_room_given_name: null,
+        participant_2_room_family_name: null,
         is_active: false,
       },
     ])

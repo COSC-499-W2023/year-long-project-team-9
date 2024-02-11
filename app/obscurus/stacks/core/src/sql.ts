@@ -5,19 +5,19 @@ import { DataApiDialect } from "kysely-data-api";
 import type { Database } from "./sql.generated";
 
 export const DB = new Kysely<Database>({
-    dialect: new DataApiDialect({
-      mode: "postgres",
-      driver: {
-        secretArn: RDS.Database.secretArn,
-        resourceArn: RDS.Database.clusterArn,
-        database: RDS.Database.defaultDatabaseName,
-        client: new RDSData({}),
-      },
-    }),
+  dialect: new DataApiDialect({
+    mode: "postgres",
+    driver: {
+      secretArn: RDS.Database.secretArn,
+      resourceArn: RDS.Database.clusterArn,
+      database: RDS.Database.defaultDatabaseName,
+      client: new RDSData({}),
+    },
+  }),
 });
 
 export type Row = {
-    [Key in keyof Database]: Selectable<Database[Key]>;
-  };
-  
-  export * as SQL from "./sql";
+  [Key in keyof Database]: Selectable<Database[Key]>;
+};
+
+export * as SQL from "./sql";

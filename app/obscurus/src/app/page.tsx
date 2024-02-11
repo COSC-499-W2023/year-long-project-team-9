@@ -8,8 +8,6 @@ function Page() {
   return (
  
       <Submit/>
-      
-
   );
 }
 

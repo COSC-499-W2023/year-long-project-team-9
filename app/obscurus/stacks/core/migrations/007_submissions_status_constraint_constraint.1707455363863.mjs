@@ -8,7 +8,7 @@ export async function up(db) {
     .alterTable("submissions")
     .addCheckConstraint(
       "status_constraint",
-      sql`(status = 'backlog' OR status = 'todo' OR status = 'in progress' OR status = 'done' OR status = 'canceled')`
+      sql`(status = null OR status = 'todo' OR status = 'in progress' OR status = 'done' OR status = 'canceled')`,
     )
     .execute();
 }
