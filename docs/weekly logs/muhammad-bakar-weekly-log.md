@@ -221,22 +221,11 @@ HashMap:
 
 - I worked on Milestone #5: Peer Testing 2.
 - I worked on RDS, UI, and User Experience Infrastructure
-- I attend group meetings
 
-- User Experience Infrastructure, I determined the data structure which we will use for data from RDS:
+### Picture of Project Board Week 5
 
-```TS
-// Don’t worry about the syntax, I’m just trying to get the idea across
-HashMap:
-“request_id”: { request, // the row in the request table
-                 submissions: {submission 1, submission 2, …} // all the rows associated with “request_id” in the submissions table. The value will be a json object
-}
-```
+![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-5-board.png)
 
-### Picture of Project Board Week 4
+### Picture of Week 5's Survey
 
-![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-4-T-2-board.png)
-
-### Picture of Week 4's Survey
-
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-4-T-2-survey.png)
+![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-5-T-2-survey.png)
