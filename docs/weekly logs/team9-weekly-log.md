@@ -1611,7 +1611,5 @@ The tasks identified for this week were:
 
 ![test report](img/team-weekly-log-img/week-18/testreport-week18.png)
 
-End to end testing
-
-![test report](img/team-weekly-log-img/week-18/e2etests-week18.png)
+End to end testing needs to be updated for new UI
 ___
