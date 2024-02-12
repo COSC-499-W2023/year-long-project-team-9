@@ -384,6 +384,39 @@ Screenshot from peer eval for Week 4:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-16.png)
 
+## Week 5 ##
+
+### Applicable Date Range ###
+February 4 - February 11, 2024
+
+### Tasks Worked On ###
+
+- This week I mainly focused on setting a very malleable and agnostic layout for the project. I had to revamp how we were fetching data as it was causing a waterfall effect and I figured it's best to let the individual components fetch their own data. 
+- I gave my team presentations on how to navigate the new structure as well as how to test better with Playwright. 
+- This week I hope to finish working on the UI. 
+
+Screenshot from peer eval for Week 5:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-17.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-17.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-17.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-17.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-17.png)
+
+
+
 
 
 
