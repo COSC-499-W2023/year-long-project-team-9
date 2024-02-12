@@ -22,7 +22,7 @@ export function RequestSummary({
   id,
 }: RequestSummaryProps) {
   {
-    /* code was taken shadcn ui */
+    /* code was inspired by shadcn ui */
   }
   return (
     <button
