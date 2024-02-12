@@ -21,6 +21,9 @@ export function RequestSummary({
   display,
   id,
 }: RequestSummaryProps) {
+  {
+    /* code was taken shadcn ui */
+  }
   return (
     <button
       onClick={() => display(id)}
