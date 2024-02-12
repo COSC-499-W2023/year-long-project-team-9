@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "@/components/NavBar";
+import { cookies } from "next/headers";
+import Wrapper from "./wrapper";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,20 +19,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const layout = cookies().get("react-resizable-panels:layout");
+  const collapsed = cookies().get("react-resizable-panels:collapsed");
+
+  console.log("Layout", layout);
+  console.log("Collapsed", collapsed);
+
+  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  const defaultCollapsed =
+    collapsed && collapsed.value !== "undefined"
+      ? JSON.parse(collapsed.value)
+      : undefined;
+
   return (
     <html lang="en">
-      <body
-        className={`flex flex-col h-screen w-full ${inter.className}`}
-      >
-        {" "}
+      <body className={`${inter.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
-          {children}
+          <div className="relative flex min-h-screen flex-col bg-background h-screen ">
+            <NavBar />
+            <Wrapper
+              defaultLayout={defaultLayout}
+              defaultCollapsed={defaultCollapsed}
+              navCollapsedSize={10}
+            >
+              {children}
+            </Wrapper>
+          </div>
         </ThemeProvider>
       </body>
     </html>

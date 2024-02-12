@@ -47,7 +47,7 @@ export interface submissions {
   is_starred: boolean;
   grouping: string | null;
   is_read: boolean;
-  submitted_date: Date;
+  submitted_date: Date | null;
   request_id: string;
 }
 {
