@@ -144,3 +144,14 @@
 ![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week17.png)
 ---
 
+## Term 2 Week 5
+### Febuary 4 - Febuary 11, 2024
+- This week I worked on Milestone 5: Peer Testing 2
+- This week's goals were to finish initializing websockets for serverless messaging and start implementing it to the site.
+
+### Picture of Project Board
+![Screenshot of week 15 project board tasks](img/baz-sivakua/baz-tasks-week18.png)
+
+### Picture of week 15's survey
+![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week18.png)
+---
