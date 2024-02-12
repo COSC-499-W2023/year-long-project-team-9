@@ -94,7 +94,8 @@ export function RequestDisplay({
             <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
               {description}
             </div>
-          ) : null}
+          ) : null}{" "}
+          {/* TODO: null is to be completed */}
         </div>
       </div>
     </>
