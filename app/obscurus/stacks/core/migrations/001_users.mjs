@@ -10,12 +10,10 @@ export async function up(db) {
     .addColumn("given_name", "varchar", (col) => col.notNull())
     .addColumn("family_name", "varchar", (col) => col.notNull())
     .addColumn("is_logged_in_with_social_identity_provider", "boolean", (col) =>
-      col.notNull().defaultTo("false")
+      col.notNull().defaultTo("false"),
     )
     .addColumn("is_admin", "boolean", (col) => col.notNull().defaultTo("false"))
-    .addColumn("profile_image", "varchar", (col) =>
-      col.notNull().defaultTo("NULL")
-    )
+    .addColumn("profile_image", "varchar")
     .addColumn("preference", "varchar", (col) => col.notNull().defaultTo("{}"))
     .execute();
 }
