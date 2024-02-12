@@ -224,7 +224,7 @@ HashMap:
 
 ### Picture of Project Board Week 5
 
-![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-5-board.png)
+![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-5-T-2-board.png)
 
 ### Picture of Week 5's Survey
 
