@@ -9,7 +9,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { GetServerSideProps } from "next";
 
 // export const getServerSideProps: GetServerSideProps = async () => {
 //   return {

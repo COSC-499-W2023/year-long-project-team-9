@@ -7,8 +7,8 @@ export async function up(db) {
   await db.schema
     .alterTable("submissions")
     .addCheckConstraint(
-      "submissions_grouping_constraint",
-      sql`(grouping = null OR grouping = 'in trash' OR grouping = 'trashed' OR grouping = 'archived')`,
+      "status_constraint",
+      sql`(status = null OR status = 'todo' OR status = 'in progress' OR status = 'done' OR status = 'canceled')`,
     )
     .execute();
 }
@@ -19,6 +19,6 @@ export async function up(db) {
 export async function down(db) {
   await db.schema
     .alterTable("submissions")
-    .dropConstraint("submissions_grouping_constraint")
+    .dropConstraint("status_constraint")
     .execute();
 }

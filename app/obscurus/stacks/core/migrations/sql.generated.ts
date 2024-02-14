@@ -1,3 +1,5 @@
+import { GroupingState } from "@tanstack/react-table";
+
 {
   /*Database interace*/
 }
@@ -28,7 +30,7 @@ export interface requests {
   request_title: string;
   requester_email: string;
   is_starred: boolean;
-  grouping: string;
+  grouping: string | null;
   description: string;
   blurred: boolean;
   creation_date: Date;
@@ -40,13 +42,12 @@ export interface requests {
 export interface submissions {
   submission_id: string;
   requestee_email: string;
-  status: string;
-  priorities: string;
+  status: string | null;
   title: string;
   is_starred: boolean;
-  grouping: string;
+  grouping: string | null;
   is_read: boolean;
-  submitted_date: Date;
+  submitted_date: Date | null;
   request_id: string;
 }
 {
@@ -54,13 +55,13 @@ export interface submissions {
 }
 export interface rooms {
   room_id: string;
-  connection_id: string;
-  participant_1_email: string;
-  participant_2_email: string;
-  participant_1_room_given_name: string;
-  participant_1_room_family_name: string;
-  participant_2_room_given_name: string;
-  participant_2_room_family_name: string;
+  connection_id: string | null;
+  participant_1_email: string | null;
+  participant_2_email: string | null;
+  participant_1_room_given_name: string | null;
+  participant_1_room_family_name: string | null;
+  participant_2_room_given_name: string | null;
+  participant_2_room_family_name: string | null;
   is_active: boolean;
   creation_date: Date;
 }

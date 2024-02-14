@@ -22,7 +22,6 @@ import {
 
 import { AccountSwitcher } from "./account-switcher";
 import { MailDisplay } from "./mail-display";
-import { MailList } from "./mail-list";
 import { Nav } from "./nav";
 import { Mail } from "../data";
 import { useMail } from "../use-mail";
@@ -168,18 +167,18 @@ export function Mail({
               </form>
             </div>
             <TabsContent value="all" className="m-0">
-              <MailList items={mails} />
+              {/* <MailList items={mails} /> */}
             </TabsContent>
             <TabsContent value="unread" className="m-0">
-              <MailList items={mails.filter((item) => !item.read)} />
+              {/* <MailList items={mails.filter((item) => !item.read)} /> */}
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]}>
-          <MailDisplay
+          {/* <MailDisplay
             mail={mails.find((item) => item.id === mail.selected) || null}
-          />
+          /> */}
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

@@ -1,18 +1,28 @@
-"use client"
-import MailList from "@/components/request-list"
+"use server"
+import MailList from "@/app/submit/components/submissions-list"
 import Nav from "@/components/nav"
 import { Input } from "@/components/ui/input"
 
 import { Separator } from "@radix-ui/react-dropdown-menu"
-import { Tabs, TabsContent } from "@radix-ui/react-tabs"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { Send, Search } from "lucide-react"
 import router, { useRouter } from "next/navigation"
 import { Requests } from "stacks/core/src/sql.generated"
+import { Api } from "sst/node/api"
+
+async function getRequests() {
+  const res = await fetch(Api.Api.url + "/getRequests");
+  if (res.ok) {
+    return res.json()
+  }
+
+  return []
+}
 
 
 
-export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
-  const router = useRouter();
+export const  ListRequests = async () => {
+  const requests: Requests[] = await getRequests();
     return (
         <Tabs defaultValue="all">
               {/* <div className="flex items-center px-4">
@@ -43,7 +53,7 @@ export const  ListRequests = ({ requests }: {requests: Requests[]}) => {
                 </form>
               </div> */}
               <TabsContent value="all" className="m-0">
-                <MailList items={requests} />
+                {/* {requests? (<MailList items={requests} />):(<div>Requests</div>)} */}
               </TabsContent>
               <TabsContent value="unread" className="m-0">
                 {/* <MailList items={requests.filter((item) => !item.read)} /> */}

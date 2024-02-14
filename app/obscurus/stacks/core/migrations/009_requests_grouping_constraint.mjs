@@ -8,7 +8,7 @@ export async function up(db) {
     .alterTable("requests")
     .addCheckConstraint(
       "requests_grouping_constraint",
-      sql`(grouping = 'NULL' OR grouping = 'IN-TRASH' OR grouping = 'TRASHED' OR grouping = 'ARCHIVED')`
+      sql`(grouping = null OR grouping = 'in trash' OR grouping = 'trashed' OR grouping = 'archived')`,
     )
     .execute();
 }

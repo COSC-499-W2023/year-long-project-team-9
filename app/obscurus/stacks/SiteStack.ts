@@ -53,7 +53,7 @@ export default function SiteStack({ stack }: StackContext) {
   //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
-    "USER_POOL_WEB_CLIENT_ID_KEY"
+    "USER_POOL_WEB_CLIENT_ID_KEY",
   );
 
   // Create secret keys
@@ -91,6 +91,7 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
+        },
         },
       },
       "POST /secrets": {
@@ -138,6 +139,34 @@ export default function SiteStack({ stack }: StackContext) {
       "GET /getSubmissions": {
         function: {
           handler: "./stacks/lambdas/listSubmissions.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+        },
+      },
+      "POST /getRequestsViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getRequestsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "POST /getSubmissionsViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getSubmissionsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "POST /getUserViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getUserViaEmail.handler",
           timeout: 20,
           permissions: [rds],
           bind: [rds],

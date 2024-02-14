@@ -5,10 +5,10 @@ import { Kysely, sql } from "kysely";
  */
 export async function up(db) {
   await db.schema
-    .alterTable("submissions")
+    .alterTable("notifications")
     .addCheckConstraint(
-      "submissions_grouping_constraint",
-      sql`(grouping = null OR grouping = 'in trash' OR grouping = 'trashed' OR grouping = 'archived')`,
+      "notifications_severity_constraint",
+      sql`(severity = 'requests' OR severity = 'submissions' OR severity = 'messages')`,
     )
     .execute();
 }
@@ -18,7 +18,7 @@ export async function up(db) {
  */
 export async function down(db) {
   await db.schema
-    .alterTable("submissions")
-    .dropConstraint("submissions_grouping_constraint")
+    .alterTable("notifications")
+    .dropConstraint("notifications_severity_constraint")
     .execute();
 }
