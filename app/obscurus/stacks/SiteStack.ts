@@ -53,7 +53,7 @@ export default function SiteStack({ stack }: StackContext) {
   //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
-    "USER_POOL_WEB_CLIENT_ID_KEY",
+    "USER_POOL_WEB_CLIENT_ID_KEY"
   );
 
   // Create secret keys
@@ -91,7 +91,6 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        },
         },
       },
       "POST /secrets": {
@@ -143,7 +142,6 @@ export default function SiteStack({ stack }: StackContext) {
           permissions: [rds],
           bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
-        },
         },
       },
       "POST /getRequestsViaEmail": {
