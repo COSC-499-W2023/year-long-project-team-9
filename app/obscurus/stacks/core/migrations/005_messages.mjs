@@ -6,16 +6,16 @@ import { Kysely } from "kysely";
 export async function up(db) {
   await db.schema
     .createTable("messages")
-    .addColumn("message_id", "varchar", (col) => col.primaryKey())
-    .addColumn("room_id", "varchar", (col) =>
-      col.notNull().references("rooms.room_id")
+    .addColumn("messageId", "varchar", (col) => col.primaryKey())
+    .addColumn("roomId", "varchar", (col) =>
+      col.notNull().references("rooms.roomId")
     )
-    .addColumn("sender_email", "varchar", (col) =>
+    .addColumn("senderEmail", "varchar", (col) =>
       col.notNull().references("users.email")
     )
-    .addColumn("creation_date", "timestamp", (col) => col.notNull())
-    .addColumn("message_content", "varchar", (col) => col.notNull())
-    .addColumn("is_read", "boolean", (col) => col.notNull().defaultTo("false"))
+    .addColumn("creationDate", "timestamp", (col) => col.notNull())
+    .addColumn("messageContent", "varchar", (col) => col.notNull())
+    .addColumn("isRead", "boolean", (col) => col.notNull().defaultTo(false))
     .execute();
 }
 

@@ -29,7 +29,7 @@ export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const task = videoSchema.parse(row.original)
-  console.log("task", task.submission_id)
+  console.log("task", task.submissionId)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,7 +49,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.submission_id}>
+            <DropdownMenuRadioGroup value={task.submissionId}>
               {labels.map((label) => (
                 <DropdownMenuRadioItem key={label.value} value={label.value}>
                   {label.label}

@@ -59,36 +59,36 @@ export default function SubmissionsList({ items }: Submissions) {
         <ScrollArea>
           {items.map((item) => (
             <button
-              key={item.request_id}
+              key={item.requestId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                mail.selected === item.request_id && "bg-muted"
+                mail.selected === item.requestId && "bg-muted"
               )}
               onClick={() =>
                 setMail({
                   ...mail,
-                  selected: item.request_id,
+                  selected: item.requestId,
                 })
               }
             >
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center">
                   <div className="flex items-center gap-2">
-                    <div className="font-semibold">{item.requester_sub}</div>
-                    {!item.video_processing && (
+                    <div className="font-semibold">{item.requestTitle}</div>
+                    {!item.blurred && (
                       <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                     )}
                   </div>
                   <div
                     className={cn(
                       "ml-auto text-xs",
-                      mail.selected === item.request_id
+                      mail.selected === item.requestId
                         ? "text-foreground"
                         : "text-muted-foreground"
                     )}
                   ></div>
                 </div>
-                <div className="text-xs font-medium">{item.request_title}</div>
+                <div className="text-xs font-medium">{item.requestTitle}</div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
                 {item.description?.substring(0, 300)}
