@@ -23,9 +23,9 @@ import { Separator } from "@/components/ui/separator";
 import { useMail } from "../components/ui/mail/use-mail";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import SubmissionsList from "@/app/submit/components/submissions-list";
+import SubmissionsList from "@/app/Submit/components/submissions-list";
 import { Input } from "@/components/ui/input";
-
+import { usePathname } from "next/navigation";
 
 export function Wrapper({
   defaultLayout = [50, 440, 655],
@@ -38,16 +38,24 @@ export function Wrapper({
   navCollapsedSize: number;
   children: ReactNode | ReactNode[];
 }) {
-
-
   const [activeComponent, setActiveComponent] = useState("mainContent");
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [mail] = useMail();
   const router = useRouter();
+  const pathname = usePathname();
 
-  console.log(children);
+  const routeToLinkVariant: any = {
+    "/": "Request",
+    "/CreateRequest": "Request",
+    "/Submit": "Submit",
+    "/Home": "Chat",
+  };
 
+  const getLinkVariant = (title: string) => {
+    const currentRoute = pathname;
+    return routeToLinkVariant[currentRoute] === title ? "default" : "ghost";
+  };
   return (
     <ResizablePanelGroup
       direction="horizontal"
@@ -56,55 +64,50 @@ export function Wrapper({
           sizes
         )}`;
       }}
-      className="h-full max-h-[800px] items-stretch"
+      className="h-full max-h-[800px] items-stretch "
     >
       <ResizablePanel
-        defaultSize={5}
+        defaultSize={10}
         collapsedSize={navCollapsedSize}
         collapsible={true}
-          // onCollapse={(collapsed:any) => {
-          //   setIsCollapsed(collapsed)
-          //   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-          //     collapsed
-          //   )}`
-          // }}
+        // onCollapse={(collapsed:any) => {
+        //   setIsCollapsed(collapsed)
+        //   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+        //     collapsed
+        //   )}`
+        // }}
         className={cn(
           isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out"
         )}
       >
-          <Separator />
+        <Separator />
         <Nav
           isCollapsed={isCollapsed}
           links={[
             {
-              title: "Requests",
+              title: "Request",
               icon: Inbox,
-              variant: "default",
+              variant: getLinkVariant("Request"),
+              href: "/CreateRequest",
             },
             {
-              title: "Submissions",
+              title: "Submit",
               icon: FileUp,
-              variant: "ghost",
-            },
-            {
-              title: "My Videos",
-              icon: Youtube,
-              variant: "ghost",
+              variant: getLinkVariant("Submit"),
+              href: "/Submit",
             },
             {
               title: "Chat",
               icon: MessageCircle,
-              variant: "ghost",
+              variant: getLinkVariant("Chat"),
+              href: "/Home",
             },
           ]}
         />
-    
       </ResizablePanel>
-     
+
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={20} minSize={20}>
       {children}
-      </ResizablePanel>
     </ResizablePanelGroup>
   );
 }

@@ -77,7 +77,7 @@ export function RequestDisplay({
                     To:
                     <ul>
                       {emails.map((item, index) => (
-                        <li className="pl-1">• {item}</li>
+                        <li className="pl-1" key={index}>• {item}</li>
                       ))}
                     </ul>
                   </HoverCardContent>

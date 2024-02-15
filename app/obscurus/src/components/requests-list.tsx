@@ -39,6 +39,7 @@ export default function SubmissionsList({ items }: Submissions) {
                 title: "Create Request",
                 icon: Send,
                 variant: "ghost",
+                href: "/CreateRequest"
               },
             ]}
           />
