@@ -100,7 +100,7 @@ export function Wrapper({
               title: "Chat",
               icon: MessageCircle,
               variant: getLinkVariant("Chat"),
-              href: "/Home",
+              href: "/Chat",
             },
           ]}
         />
