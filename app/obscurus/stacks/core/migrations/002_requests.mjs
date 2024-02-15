@@ -6,19 +6,19 @@ import { Kysely } from "kysely";
 export async function up(db) {
   await db.schema
     .createTable("requests")
-    .addColumn("request_id", "varchar", (col) => col.primaryKey())
-    .addColumn("request_title", "varchar", (col) => col.notNull())
-    .addColumn("requester_email", "varchar", (col) =>
+    .addColumn("requestId", "varchar", (col) => col.primaryKey())
+    .addColumn("requestTitle", "varchar", (col) => col.notNull())
+    .addColumn("requesterEmail", "varchar", (col) =>
       col.references("users.email"),
     )
-    .addColumn("is_starred", "boolean", (col) =>
-      col.notNull().defaultTo("false"),
+    .addColumn("isStarred", "boolean", (col) =>
+      col.notNull().defaultTo(false),
     )
     .addColumn("grouping", "varchar")
     .addColumn("description", "varchar")
     .addColumn("blurred", "boolean", (col) => col.notNull())
-    .addColumn("due_date", "date", (col) => col.notNull())
-    .addColumn("creation_date", "timestamp", (col) =>
+    .addColumn("dueDate", "date", (col) => col.notNull())
+    .addColumn("creationDate", "timestamp", (col) =>
       col.notNull().defaultTo("now()"),
     )
     .execute();

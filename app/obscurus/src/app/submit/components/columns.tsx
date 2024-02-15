@@ -50,7 +50,7 @@ export const columns: ColumnDef<Video>[] = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.submission_id)
+      const label = labels.find((label) => label.value === row.original.submissionId)
 
       return (
         <div className="flex space-x-2">

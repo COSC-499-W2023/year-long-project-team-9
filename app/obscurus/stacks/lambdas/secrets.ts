@@ -4,7 +4,7 @@ import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event:any) => {
   const userPoolId = Config.USER_POOL_ID_KEY;
-  const userPoolWebClientId = Config.USER_POOL_ID_KEY;
+  const userPoolWebClientId = Config.USER_POOL_WEB_CLIENT_ID_KEY;
 
   return {
     statusCode: 200,

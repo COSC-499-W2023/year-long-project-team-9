@@ -1,8 +1,8 @@
-import SubmissionsList from "@/app/submit/components/submissions-list"
+import SubmissionsList from "@/app/Submit/components/submissions-list"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { submissions } from "stacks/core/migrations/sql.generated"
+import { Submissions } from "stacks/core/src/sql.generated"
 
-export const Display = ({submissions}:{submissions:submissions[]}) => {
+export const Display = ({submissions}:{submissions:Submissions[]}) => {
     return (
         <Tabs defaultValue="all">
         {/* <div className="flex items-center px-4">
