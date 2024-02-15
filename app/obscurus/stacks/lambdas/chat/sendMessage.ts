@@ -18,16 +18,16 @@ export const main: APIGatewayProxyHandler = async (event) => {
     });
 
     // Helper method
-    const postToConnection = async function ({ connection_id }) {
+    const postToConnection = async function ({ connectionId }) {
       try {
         await apiG
-          .postToConnection({ ConnectionId: connection_id, Data: messageData })
+          .postToConnection({ ConnectionId: connectionId, Data: messageData })
           .promise();
       } catch (e) {
         if (e.statusCode === 410) {
           // Remove stale connections
           const staleConnection: ConnectionsType = {
-            connection_id: connection_id,
+            connectionId: connectionId,
           };
           const delConnection = await Connections.removeConnection(
             staleConnection

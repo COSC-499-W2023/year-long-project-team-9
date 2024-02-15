@@ -6,7 +6,7 @@ export const main: APIGatewayProxyHandler = async (event) => {
   if (event.requestContext != undefined) {
     if (event.requestContext.connectionId != undefined) {
       const newConnection: ConnectionsType = {
-        connection_id: event.requestContext.connectionId,
+        connectionId: event.requestContext.connectionId,
       };
       const connection = await Connections.addConnection(newConnection);
       return { statusCode: 200, body: "Connected" };

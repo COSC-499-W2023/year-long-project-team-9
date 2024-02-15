@@ -74,5 +74,5 @@ export interface Messages {
 
 // Connections table interface
 export interface Connections {
-  connection_id: string;
+  connectionId: string;
 }
