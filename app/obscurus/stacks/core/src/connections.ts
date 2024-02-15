@@ -10,13 +10,13 @@ export function list() {
 export function addConnection(newConnection: Connections) {
   return SQL.DB.insertInto("connections")
     .values({
-      connection_id: newConnection.connection_id,
+      connectionId: newConnection.connectionId,
     })
     .execute();
 }
 
 export function removeConnection(newConnection: Connections) {
   return SQL.DB.deleteFrom("connections")
-    .where("connections.connection_id", "=", newConnection.connection_id)
+    .where("connections.connectionId", "=", newConnection.connectionId)
     .execute();
 }
