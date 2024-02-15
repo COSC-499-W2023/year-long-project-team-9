@@ -14,7 +14,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
       },
     });
 
-    const updateStatus = async (status: string) => {
+    const updateStatus = async (status: string, submissionId: string) => {
       try {
         const response = await fetch(Api.Api.url + "/updateStatus", {
           method: "POST",
@@ -22,9 +22,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            jobId: jobId,
-            requestId: event.requestId,
-            submissionId: event.submissionId,
+            submissionId: submissionId,
             status: status
           }),
         });
@@ -45,7 +43,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
     };
 
 
-    updateStatus("PROCESSING")
+    updateStatus("PROCESSING", event.submissionId)
 
     
   } catch {

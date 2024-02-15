@@ -14,11 +14,13 @@ import { PulseLoader } from "react-spinners";
 async function getSubmissions() {
   const res = await fetch(Api.Api.url + "/getSubmissions");
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+  console.log(res);
+
+  if (res.ok) {
+    return res.json();
   }
 
-  return res.json();
+
 }
 
 export default async function Submit() {

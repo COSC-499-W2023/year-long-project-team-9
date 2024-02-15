@@ -39,7 +39,7 @@ export interface Submissions {
   submissionId: string;
   requesteeEmail: string;
   status: Status;
-  title: string;
+  title: string | null;
   isStarred: boolean;
   grouping: GroupingState | null;
   isRead: boolean;

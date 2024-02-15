@@ -36,3 +36,9 @@ export function setStatus(
     .executeTakeFirst();
 }
 
+export function getStatus(
+  submissionId: string,
+) {
+  return SQL.DB.selectFrom("submissions").select("status").where("submissionId", "=", submissionId).executeTakeFirst();
+}
+
