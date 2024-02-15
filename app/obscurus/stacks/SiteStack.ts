@@ -175,6 +175,22 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /updateStatus": {
+        function: {
+          handler: "./stacks/lambdas/updateStatus.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "GET /getStatus": {
+        function: {
+          handler: "./stacks/lambdas/getStatus.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
     },
   });
 

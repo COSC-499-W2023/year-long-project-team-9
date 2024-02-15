@@ -3,6 +3,7 @@ export * as Requests from "./requests";
 import { formSchema } from "@/components/CreateRequest";
 import { SQL } from "./sql";
 import { Requests } from "./sql.generated";
+import { GroupingState } from "@tanstack/react-table";
 
 export function list() {
     return SQL.DB.selectFrom("requests")
@@ -10,17 +11,16 @@ export function list() {
     .execute();
 }
 export function insert(request: Requests) {
-    console.log(request.requester_sub)
     return SQL.DB.insertInto("requests").values({
-      request_id: request.request_id,
+      requestId: request.requestId,
+      requestTitle: request.requestTitle,
+      requesterEmail: request.requesterEmail,
+      isStarred: request.isStarred,
+      grouping: request.grouping,
       description: request.description,
-      request_title: request.request_title,
-      requester_sub: request.requester_sub,
-      video_processing: request.video_processing,
-      due_date: request.due_date, 
-      video_language: request.video_language,
-      creation_date: request.creation_date,
-      read: false, // Add this line
+      blurred: request.blurred,
+      creationDate: request.creationDate,
+      dueDate: request.dueDate,
     })
     .execute();
   }

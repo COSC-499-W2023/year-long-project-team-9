@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Mail } from "../../../data/data";
 import { useMail } from "../../../components/hooks/use-mail";
-import { submissions } from "stacks/core/migrations/sql.generated";
+import { Submissions } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Search, Send } from "lucide-react";
 import Nav from "../../../components/nav";
@@ -19,7 +19,7 @@ import { Tooltip } from "@radix-ui/react-tooltip";
 import { Input } from "../../../components/ui/input";
 
 interface SubmissionsListProps {
-  items: submissions[];
+  items: Submissions[];
   isCollapsed?: boolean;
 }
 
@@ -62,15 +62,15 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
           <div className="flex flex-col gap-2 p-4 pt-0 h-full">
             {items.map((item) => (
               <button
-                key={item.request_id}
+                key={item.requestId}
                 className={cn(
                   "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                  mail.selected === item.request_id && "bg-muted"
+                  mail.selected === item.requestId && "bg-muted"
                 )}
                 onClick={() =>
                   setMail({
                     ...mail,
-                    selected: item.request_id,
+                    selected: item.requestId,
                   })
                 }
               >
@@ -78,14 +78,14 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
                   <div className="flex items-center">
                     <div className="flex items-center gap-2">
                       <div className="font-semibold">{item.title}</div>
-                      {!item.is_read && (
+                      {!item.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div>
                     <div
                       className={cn(
                         "ml-auto text-xs",
-                        mail.selected === item.request_id
+                        mail.selected === item.requestId
                           ? "text-foreground"
                           : "text-muted-foreground"
                       )}

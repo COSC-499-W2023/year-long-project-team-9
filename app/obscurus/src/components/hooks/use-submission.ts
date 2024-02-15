@@ -1,12 +1,12 @@
 import { atom, useAtom } from "jotai"
 
 import { Mail, requests } from "../../data/data"
-import { submissions } from "stacks/core/migrations/sql.generated"
+import { Submissions } from "stacks/core/src/sql.generated"
 
 
 
 type Config = {
-  selected: submissions["submission_id"] | null
+  selected: Submissions["submissionId"] | null
 }
 
 const configAtom = atom<Config>({
