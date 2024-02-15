@@ -55,12 +55,12 @@ const NavBar = () => {
   // });
 
   return (
-    <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2">
+    <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2 bg-background">
       <div className="p-1">
         <NavigationMenu>
           <Link href="/" className="p-5">
             <Image
-              className="min-h-full"
+              className="min-h-full min-w-full"
               src="/logo.svg"
               alt="obscurus"
               width={50}

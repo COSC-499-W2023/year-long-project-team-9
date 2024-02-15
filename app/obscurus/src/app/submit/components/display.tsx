@@ -1,4 +1,4 @@
-import SubmissionsList from "@/app/submit/components/submissions-list"
+import SubmissionsList from "@/app/Submit/components/submissions-list"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { submissions } from "stacks/core/migrations/sql.generated"
 
