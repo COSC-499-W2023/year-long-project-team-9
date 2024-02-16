@@ -1,12 +1,17 @@
 "use client";
 // IMPORTS
+// import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 
 // CONSTRUCTS
 
 // FUNCTIONS
-const Chat = () => {
+export default function ChatPage() {
+  //   const layout = cookies().get("react-resizable-panels:layout");
+  //   const collapsed = cookies().get("react-resizable-panels:collapsed");
+  //   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  //   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
     <>
       <ResizablePanel defaultSize={50}>
@@ -21,12 +26,19 @@ const Chat = () => {
           </Suspense>
         </div>
       </ResizablePanel>
+      <ResizableHandle withHandle />
       <ResizablePanel defaultSize={50}>
-        <div></div>
+        <div className=" h-full flex-1 flex-col space-y-8 p-8 md:flex">
+          <div className="flex items-center justify-between space-y-2">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight">Messages</h2>
+            </div>
+          </div>
+          <Suspense>
+            {/* <DataTable data={submissions} columns={columns} /> */}
+          </Suspense>
+        </div>
       </ResizablePanel>
     </>
   );
-};
-
-// EXPORT
-export default Chat;
+}
