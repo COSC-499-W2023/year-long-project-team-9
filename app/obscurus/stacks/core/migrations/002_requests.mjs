@@ -9,17 +9,14 @@ export async function up(db) {
     .addColumn("requestId", "varchar", (col) => col.primaryKey())
     .addColumn("requestTitle", "varchar", (col) => col.notNull())
     .addColumn("requesterEmail", "varchar", (col) =>
-      col.references("users.email"),
-    )
-    .addColumn("isStarred", "boolean", (col) =>
-      col.notNull().defaultTo(false),
+      col.references("users.email")
     )
     .addColumn("grouping", "varchar")
     .addColumn("description", "varchar")
     .addColumn("blurred", "boolean", (col) => col.notNull())
     .addColumn("dueDate", "date", (col) => col.notNull())
     .addColumn("creationDate", "timestamp", (col) =>
-      col.notNull().defaultTo("now()"),
+      col.notNull().defaultTo("now()")
     )
     .execute();
 }
