@@ -42,6 +42,7 @@ export default async function Submit() {
           </Suspense>
         </div>
       </ResizablePanel>
+      <ResizableHandle withHandle />
       <ResizablePanel defaultSize={50}>
         <div className="max-h-[800px] h-full flex-1 flex-col space-y-8 p-8 md:flex overflow-y-scroll">
           <div className="flex items-center justify-between space-y-2">

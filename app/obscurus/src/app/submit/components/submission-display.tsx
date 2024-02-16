@@ -40,7 +40,7 @@ export default function SubmissionDisplay({submissions} : {submissions: Submissi
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm">
-  
+                {selected?.title}
               <div className="grid gap-1">
                 <div className="font-semibold">{selected?.requesteeEmail}</div>
                 <div className="line-clamp-1 text-xs">{selected?.status}</div>
@@ -63,10 +63,10 @@ export default function SubmissionDisplay({submissions} : {submissions: Submissi
           <div className="p-4">
             <form>
               <div className="grid gap-4">
-                {/* <Textarea
+                <Textarea
                   className="p-4"
-                  placeholder={`Reply ${mail.name}...`}
-                /> */}
+                  placeholder={`Reply to ${selected?.requesteeEmail}...`}
+                />
                 <div className="flex items-center">
                   <Label
                     htmlFor="mute"
