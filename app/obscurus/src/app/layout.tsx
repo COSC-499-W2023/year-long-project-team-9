@@ -42,7 +42,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavBar />
-          <div className=" flex min-h-screen flex-col bg-background flex-1 fixed w-full ">
+          <div className=" flex flex-col bg-background flex-1 w-full h-full">
             <Wrapper
               defaultLayout={defaultLayout}
               defaultCollapsed={defaultCollapsed}

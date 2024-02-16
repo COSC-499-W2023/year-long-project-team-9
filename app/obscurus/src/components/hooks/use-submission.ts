@@ -13,6 +13,6 @@ const configAtom = atom<Config>({
   selected: requests[0].id,
 })
 
-export function useMail() {
+export function useSubmission() {
   return useAtom(configAtom)
 }

@@ -6,8 +6,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Mail } from "../../../data/data";
-import { useMail } from "../../../components/hooks/use-mail";
+import { useSubmission } from "@/components/hooks/use-submission";
 import { Submissions } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Search, Send } from "lucide-react";
@@ -25,7 +24,7 @@ interface SubmissionsListProps {
 
 export default function SubmissionsList({ items }: SubmissionsListProps) {
   const router = useRouter();
-  const [mail, setMail] = useMail();
+  const [submission, setSubmission] = useSubmission();
 
   return (
     <div className="overflow-y-scroll">
@@ -62,22 +61,22 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
           <div className="flex flex-col gap-2 p-4 pt-0 h-full">
             {items.map((item) => (
               <button
-                key={item.requestId}
+                key={item.submissionId}
                 className={cn(
                   "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                  mail.selected === item.requestId && "bg-muted"
+                  submission.selected === item.submissionId && "bg-muted"
                 )}
                 onClick={() =>
-                  setMail({
-                    ...mail,
-                    selected: item.requestId,
+                  setSubmission({
+                    ...submission,
+                    selected: item.submissionId,
                   })
                 }
               >
                 <div className="flex w-full flex-col gap-1">
                   <div className="flex items-center">
                     <div className="flex items-center gap-2">
-                      <div className="font-semibold">{item.title}</div>
+                      <div className="font-semibold">{item.title || item.requesteeEmail}</div>
                       {!item.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
@@ -85,7 +84,7 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
                     <div
                       className={cn(
                         "ml-auto text-xs",
-                        mail.selected === item.requestId
+                        submission.selected === item.submissionId
                           ? "text-foreground"
                           : "text-muted-foreground"
                       )}

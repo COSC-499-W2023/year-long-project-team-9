@@ -26,6 +26,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import SubmissionsList from "@/app/Submit/components/submissions-list";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
+import { useSubmission } from "@/components/hooks/use-submission";
 
 export function Wrapper({
   defaultLayout = [50, 440, 655],
@@ -38,10 +39,9 @@ export function Wrapper({
   navCollapsedSize: number;
   children: ReactNode | ReactNode[];
 }) {
-  const [activeComponent, setActiveComponent] = useState("mainContent");
 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [mail] = useMail();
+  const [submissionId] = useSubmission();
   const router = useRouter();
   const pathname = usePathname();
 
