@@ -1,34 +1,27 @@
 import { Auth, Amplify } from "aws-amplify";
 
-export async function isSignedIn() {
-  try {
-    await Auth.currentAuthenticatedUser();
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export async function signOutUser() {
-  try {
-    await Auth.signOut();
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-// export async function getSub() {
+// export async function isSignedIn() {
 //   try {
-//     const session = await Auth.currentSession();
-//     const accessToken = session.getAccessToken();
-//     const payload = accessToken.payload;
-//     return payload.sub;
+//     await Auth.currentAuthenticatedUser();
+//     return true;
 //   } catch {
-//     return "";
+//     return false;
 //   }
-//   return "";
 // }
+
+// export async function signOutUser() {
+//   try {
+//     await Auth.signOut();
+//     return true;
+//   } catch {
+//     return false;
+//   }
+// }
+
+// Please update "" to the email for the particular user
+export async function getEmail() {
+  return "";
+}
 
 // export async function getIDToken() {
 //   try {
