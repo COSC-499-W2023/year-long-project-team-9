@@ -16,7 +16,8 @@ async function getRooms(email: string) {
   }
 }
 export default async function ChatPage() {
-  const rooms = await getRooms(userEmail);
+  const roomMessageData = await getRooms(userEmail);
+  console.log(roomMessageData);
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
