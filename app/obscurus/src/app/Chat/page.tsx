@@ -1,13 +1,22 @@
 "use server";
 // IMPORTS
+import { Api } from "sst/node/api";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 
 // CONSTRUCTS
+const userEmail = "imightbejan@gmail.com";
 
 // FUNCTIONS
+async function getRooms(email: string) {
+  const res = await fetch(`${Api.Api.url}/getRoomsViaEmail?email=${email}`);
+  if (res.ok) {
+    return res.json();
+  }
+}
 export default async function ChatPage() {
+  const rooms = await getRooms(userEmail);
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;

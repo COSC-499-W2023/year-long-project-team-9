@@ -187,6 +187,15 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "GET /getRoomsViaEmail": {
+        function: {
+          handler: "./stacks/lambdas/getRoomsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
 
