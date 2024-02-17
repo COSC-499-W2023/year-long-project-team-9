@@ -17,6 +17,7 @@ export async function up(db) {
         isAdmin: true,
         profileImage: null,
         preference: "{}",
+        connectionId: null,
       },
       {
         email: "soren.is@hotmail.ca",
@@ -26,6 +27,7 @@ export async function up(db) {
         isAdmin: true,
         profileImage: null,
         preference: "{}",
+        connectionId: null,
       },
       {
         email: "ansivana@gmail.com",
@@ -35,6 +37,7 @@ export async function up(db) {
         isAdmin: true,
         profileImage: null,
         preference: "{}",
+        connectionId: null,
       },
       {
         email: "bakar.a.muhammad@gmail.com",
@@ -44,6 +47,7 @@ export async function up(db) {
         isAdmin: false,
         profileImage: null,
         preference: "{}",
+        connectionId: null,
       },
     ])
     .execute();

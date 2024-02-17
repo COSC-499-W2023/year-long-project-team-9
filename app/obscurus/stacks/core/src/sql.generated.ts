@@ -20,6 +20,7 @@ export interface Users {
   isAdmin: boolean;
   profileImage: string;
   preference: string;
+  connectionId: string;
 }
 
 // Requests table interface
@@ -51,7 +52,6 @@ export interface Submissions {
 // Rooms table interface
 export interface Rooms {
   roomId: string;
-  connectionId: string | null;
   participant1Email: string | null;
   participant2Email: string | null;
   participant1RoomGivenName: string | null;
