@@ -1,17 +1,17 @@
-"use client";
+"use server";
 // IMPORTS
-// import { cookies } from "next/headers";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 
 // CONSTRUCTS
 
 // FUNCTIONS
-export default function ChatPage() {
-  //   const layout = cookies().get("react-resizable-panels:layout");
-  //   const collapsed = cookies().get("react-resizable-panels:collapsed");
-  //   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
-  //   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
+export default async function ChatPage() {
+  const layout = cookies().get("react-resizable-panels:layout");
+  const collapsed = cookies().get("react-resizable-panels:collapsed");
+  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
     <>
       <ResizablePanel defaultSize={50}>
