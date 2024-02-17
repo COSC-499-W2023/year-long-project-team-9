@@ -7,8 +7,6 @@ export async function up(db) {
   await db.schema
     .createTable("rooms")
     .addColumn("roomId", "varchar", (col) => col.primaryKey())
-    .addColumn("participant1ConnectionId", "varchar")
-    .addColumn("participant2ConnectionId", "varchar")
     .addColumn("participant1Email", "varchar")
     .addColumn("participant2Email", "varchar")
     .addColumn("participant1RoomGivenName", "varchar")
