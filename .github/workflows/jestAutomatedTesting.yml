@@ -34,6 +34,6 @@ jobs:
     - name: setting up
       run: npm install
     - name: building...
-      run: npm run build
+      run: npm run build --stage runner
     - name: Running tests
       run: npm test
