@@ -230,6 +230,8 @@ HashMap:
 
 ![Week 5 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-5-T-2-survey.png)
 
+## Week 6
+
 ### February 12 2024 - February 18 2024
 
 - I worked on Milestone #5: Peer Testing 2.
