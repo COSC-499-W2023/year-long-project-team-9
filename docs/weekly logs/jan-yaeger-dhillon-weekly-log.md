@@ -423,6 +423,7 @@ February 11 - February 18, 2024
 ### Tasks Worked On ###
 
 - This week included a lot of testing, fixes, and careful planning. I wrote some tests for some of the Lambdas and set up the routing based around dynamic routes. 
+- I worked on making the databse use camelCase instead of snake_case and created some Lambda routes to update and retrieve the status of the video processing.
 - I have been learning a lot about Next.js so I can use it optimally. My team and I have been discussing using the URL for more state management.
 - I am working on getting the dynamic routes with a proper default working for submissions and requests. 
 - I have also been working on a function to convert .webm to .mp4 but it is looking to be a more involved process then I thought.
