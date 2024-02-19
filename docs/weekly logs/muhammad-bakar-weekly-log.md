@@ -167,11 +167,11 @@
 
 ### Picture of Project Board Week 2
 
-![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-2-T-2-board.png)
+![Week 2 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-2-T-2-board.png)
 
 ### Picture of Week 2's Survey
 
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-2-T-2-survey.png)
+![Week 2 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-2-T-2-survey.png)
 
 ## Week 3
 
@@ -183,11 +183,11 @@
 
 ### Picture of Project Board Week 3
 
-![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
+![Week 3 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-3-T-2-survey.png)
 
 ### Picture of Week 3's Survey
 
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-board.png)
+![Week 3 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-3-T-2-board.png)
 
 ## Week 4
 
@@ -209,11 +209,11 @@ HashMap:
 
 ### Picture of Project Board Week 4
 
-![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-4-T-2-board.png)
+![Week 4 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-4-T-2-board.png)
 
 ### Picture of Week 4's Survey
 
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-4-T-2-survey.png)
+![Week 4 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-4-T-2-survey.png)
 
 ## Week 5
 
@@ -224,8 +224,24 @@ HashMap:
 
 ### Picture of Project Board Week 5
 
-![Week 1 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-5-T-2-board.png)
+![Week 5 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-5-T-2-board.png)
 
 ### Picture of Week 5's Survey
 
-![Week 1 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-5-T-2-survey.png)
+![Week 5 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-5-T-2-survey.png)
+
+## Week 6
+
+### February 12 2024 - February 18 2024
+
+- I worked on Milestone #5: Peer Testing 2.
+- I worked on RDS, UI, and Chat
+- I created these Figma designs with the help of html.to.design (the design was taken from shadcn): ![Figma Designs Week 6 T 2](img/muhammad-bakar/Other/figma-designs-week-6-t-2.png)
+
+### Picture of Project Board Week 6
+
+![Week 6 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-6-T-2-board.png)
+
+### Picture of Week 6's Survey
+
+![Week 6 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-6-T-2-survey.png)
