@@ -102,10 +102,10 @@
 - The goal for this week was to ensure that the team was on the same page for term 2/task assignment and to fix the issues with Playwrite testing
 
 ### Picture of Project Board
-![Screenshot of week 14 project board tasks](img/baz-sivakua/baz-tasks-week14.png)
+![Screenshot of term 2 week 1 project board tasks](img/baz-sivakua/baz-tasks-week14.png)
 
-### Picture of week 14's survey
-![Screenshot of week 14 team evaluation](img/baz-sivakua/baz-survey-week14.png)
+### Picture of week 1's survey
+![Screenshot of term 2 week 1 team evaluation](img/baz-sivakua/baz-survey-week14.png)
 ---
 
 ## Term 2 Week 2
@@ -114,22 +114,22 @@
 - The goal for this week was to finish the playwright testing, and start completing front end coding by creating the messages page and fixing layout issues found on previous pages. 
 
 ### Picture of Project Board
-![Screenshot of week 15 project board tasks](img/baz-sivakua/baz-tasks-week15.png)
+![Screenshot of term 2 week 2 project board tasks](img/baz-sivakua/baz-tasks-week15.png)
 
-### Picture of week 15's survey
-![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week15.png)
+### Picture of week 2's survey
+![Screenshot of term 2 week 2 team evaluation](img/baz-sivakua/baz-survey-week15.png)
 ---
 
 ## Term 2 Week 3
 ### January 15 - January 28, 2024
 - This week I worked on Milestone 4: Peer Testing 1
-- The goal for this week was to finish messages page and fixing layout issues found on previous pages. Additionally I went back to bug fix the myrequests page from the previous milestone, as well as updating documentation and preparting for the peer testing session in class. 
+- The goal for this week was to finish messages page and fixing layout issues found on previous pages. Additionally I went back to bug fix the myrequests page ![alt text](image.png)from the previous milestone, as well as updating documentation and preparting for the peer testing session in class. 
 
 ### Picture of Project Board
-![Screenshot of week 15 project board tasks](img/baz-sivakua/baz-tasks-week16.png)
+![Screenshot of term 2 week 3 project board tasks](img/baz-sivakua/baz-tasks-week16.png)
 
-### Picture of week 15's survey
-![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week16.png)
+### Picture of week 3's survey
+![Screenshot of term 2 week 3 team evaluation](img/baz-sivakua/baz-survey-week16.png)
 ---
 
 ## Term 2 Week 4
@@ -138,10 +138,10 @@
 - This week's goals were to start researching and initializing websockets for serverless messaging. Additonally, we went over the feedback from the peer testing session and discussed how to best implement them.
 
 ### Picture of Project Board
-![Screenshot of week 15 project board tasks](img/baz-sivakua/baz-tasks-week17.png)
+![Screenshot of term 2 week 4 project board tasks](img/baz-sivakua/baz-tasks-week17.png)
 
-### Picture of week 15's survey
-![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week17.png)
+### Picture of week 4's survey
+![Screenshot of term 2 week 4 team evaluation](img/baz-sivakua/baz-survey-week17.png)
 ---
 
 ## Term 2 Week 5
@@ -150,8 +150,20 @@
 - This week's goals were to finish initializing websockets for serverless messaging and start implementing it to the site.
 
 ### Picture of Project Board
-![Screenshot of week 15 project board tasks](img/baz-sivakua/baz-tasks-week18.png)
+![Screenshot of term 2 week 5 project board tasks](img/baz-sivakua/baz-tasks-week18.png)
 
-### Picture of week 15's survey
-![Screenshot of week 15 team evaluation](img/baz-sivakua/baz-survey-week18.png)
+### Picture of week 5's survey
+![Screenshot of term 2 week 5 team evaluation](img/baz-sivakua/baz-survey-week18.png)
+---
+
+## Term 2 Week 6
+### Febuary 12 - Febuary 18, 2024
+- This week I worked on Milestone 5: Peer Testing 2
+- This week's goals were to start implementing the chat functionality by creating a function that finds all the chat rooms a user is a part of by searching for their email. 
+
+### Picture of Project Board
+![Screenshot of term 2 week 6 project board tasks](img/baz-sivakua/baz-tasks-week19.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 6 team evaluation](img/baz-sivakua/baz-survey-week19.png)
 ---
