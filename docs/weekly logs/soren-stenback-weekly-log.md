@@ -235,3 +235,20 @@
 ### Picture of T2 Week 5's Survey
 
 ![T2 Week 5 Survey](img/soren-stenback/T2Week5-Survey-ID4.png)
+
+---
+
+## T2 Week 6
+
+### February 12 - February 18, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to begin implementing a chat page and collect chat rooms dynamically based on the user's email.
+
+### Picture of Project Board
+
+![T2 Week 6 Project Board](img/soren-stenback/T2Week6-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 6's Survey
+
+![T2 Week 6 Survey](img/soren-stenback/T2Week6-Survey-ID4.png)
