@@ -1,67 +1,82 @@
-{
-  /*Database interace*/
-}
+import { GroupingState } from "@tanstack/react-table";
+import { Status } from "./types/status";
+
+// Database interface
 export interface Database {
   users: Users;
   requests: Requests;
   submissions: Submissions;
   rooms: Rooms;
   messages: Messages;
+  notifications: Notifications;
 }
-{
-  /*Users table interace*/
-}
+
+// Users table interface
 export interface Users {
-  sub: string;
   email: string;
-  given_name: string;
-  family_name: string;
-  timezone: string;
-  language: string;
-  is_logged_in_with_social_identity_provider: boolean;
-  is_admin: boolean;
-  profile_image: string;
+  givenName: string;
+  familyName: string;
+  isLoggedInWithSocialIdentityProvider: boolean;
+  isAdmin: boolean;
+  profileImage: string;
+  preference: string;
 }
-{
-  /*Requests table interace*/
-}
+
+// Requests table interface
 export interface Requests {
-  request_id: string;
-  request_title: string;
-  requester_sub: string;
+  requestId: string;
+  requestTitle: string;
+  requesterEmail: string;
+  grouping: GroupingState | null;
   description: string;
-  video_processing: boolean;
-  due_date: Date;
-  video_language: string;
-  creation_date: Date;
-  read: boolean;
+  blurred: boolean;
+  creationDate: Date;
+  dueDate: Date;
 }
-{
-  /*Submissions table interace*/
-}
+
+// Submissions table interface
 export interface Submissions {
-  submission_id: number;
-  requestee_email: string;
-  is_completed: string;
-  submitted_date: Date;
-  request_id: number;
+  submissionId: string;
+  requesteeEmail: string;
+  status: Status;
+  title: string | null;
+  grouping: GroupingState | null;
+  isRead: boolean;
+  submittedDate: Date | null;
+  requestId: string;
 }
-{
-  /*Rooms table interace*/
-}
+
+// Rooms table interface
 export interface Rooms {
-  room_id: number;
-  connection_id: number;
-  participant1_email: string;
-  participant1_sub: string;
-  participant2_email: string;
-  participant2_sub: string;
-  participant1_room_name: string;
-  participant2_room_name: string;
-  is_active: boolean;
-  creation_date: Date;
+  roomId: string;
+  connectionId: string | null;
+  participant1Email: string | null;
+  participant2Email: string | null;
+  participant1RoomGivenName: string | null;
+  participant1RoomFamilyName: string | null;
+  participant2RoomGivenName: string | null;
+  participant2RoomFamilyName: string | null;
+  isActive: boolean;
+  creationDate: Date;
 }
-{
-  /*Messages table interace*/
+
+// Messages table interface
+export interface Messages {
+  messageId: string;
+  roomId: string;
+  senderEmail: string;
+  creationDate: Date;
+  messageContent: string;
+  isRead: boolean;
 }
-export interface Messages {}
+
+// Notifications table interface
+export interface Notifications {
+  notificationId: string;
+  userEmail: string;
+  type: string;
+  creationDate: Date;
+  content: string;
+  isRead: boolean;
+  isTrashed: boolean;
+}

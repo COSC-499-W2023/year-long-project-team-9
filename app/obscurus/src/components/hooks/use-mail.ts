@@ -6,7 +6,7 @@ import { Requests } from "stacks/core/src/sql.generated"
 
 
 type Config = {
-  selected: Requests["request_id"] | null
+  selected: Requests["requestId"] | null
 }
 
 const configAtom = atom<Config>({

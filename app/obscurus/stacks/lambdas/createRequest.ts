@@ -1,19 +1,19 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { Requests } from "../core/src/requests";
 import { Requests as r } from "stacks/core/src/sql.generated";
+import { GroupingState } from "@tanstack/react-table";
 
 export const handler: APIGatewayProxyHandlerV2 = async () => {
 
 const newRequest: r = {
-  request_id: '22222',
-  description: 'Some description',
-  request_title: 'Some title',
-  requester_sub: 'sub',
-  video_processing: false,
-  due_date: new Date(),
-  video_language: 'English',
-  creation_date: new Date(),
-  read: false
+  requestId: "11111",
+  requestTitle: "hello",
+  requesterEmail: "x@gmail.com",
+  grouping: null,
+  description: "h",
+  blurred: false,
+  creationDate: new Date(),
+  dueDate: new Date(),
 };
   const requests = await Requests.insert(newRequest);
 

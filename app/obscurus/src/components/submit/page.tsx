@@ -7,15 +7,9 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useRouter } from "next/router";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
-import NestedLayout from "@/components/nested-layout";
 import {
-  CalendarIcon,
   Circle,
-  CheckIcon,
   Pause,
   Check,
   Square,
@@ -33,26 +27,10 @@ import {
 import Webcam from "react-webcam";
 import { Accept } from "@/components/accept";
 import { Progress } from "@/components/ui/progress";
-import { Job } from "sst/node/job";
-import useSWR from "swr";
 
-// export async function getData() {
-//   const s3Key = crypto.randomUUID() + ".mp4";
-//   const command = new PutObjectCommand({
-//     ACL: "public-read",
-//     Key: s3Key,
-//     Bucket: Bucket.inputBucket.bucketName,
-//   });
-//   const url = await getSignedUrl(new S3Client({}), command);
-//   console.log("s3Key: ", s3Key);
-//   return { url, s3Key };
-// }
-
-const fetcher = (url: string, init?: RequestInit) =>
-  fetch(url, init).then((res) => res.json());
 
 const Index = async () => {
-  // const { url, s3Key } = await getData();
+
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
