@@ -15,7 +15,6 @@ export function insert(request: Requests) {
       requestId: request.requestId,
       requestTitle: request.requestTitle,
       requesterEmail: request.requesterEmail,
-      isStarred: request.isStarred,
       grouping: request.grouping,
       description: request.description,
       blurred: request.blurred,
