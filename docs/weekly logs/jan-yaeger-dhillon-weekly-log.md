@@ -415,6 +415,40 @@ Screenshot from peer eval for Week 5:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-17.png)
 
+## Week 6 ##
+
+### Applicable Date Range ###
+February 11 - February 18, 2024
+
+### Tasks Worked On ###
+
+- This week included a lot of testing, fixes, and careful planning. I wrote some tests for some of the Lambdas and set up the routing based around dynamic routes. 
+- I worked on making the database use camelCase instead of snake_case and created some Lambda routes to update and retrieve the status of the video processing.
+- I have been learning a lot about Next.js so I can use it optimally. My team and I have been discussing using the URL for more state management.
+- I am working on getting the dynamic routes with a proper default working for submissions and requests. 
+- I have also been working on a function to convert .webm to .mp4 but it is looking to be a more involved process then I thought.
+- This week will be a lot of cleaning up and I hope to finish the foundation.
+
+Screenshot from peer eval for Week 6:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-18.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-18.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-18.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-18.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-18.png)
+
 
 
 
