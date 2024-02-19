@@ -191,6 +191,14 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "POST /getRequest": {
+        function: {
+          handler: "./stacks/lambdas/getRequest.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
     },
   });
 

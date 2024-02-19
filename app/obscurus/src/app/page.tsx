@@ -1,10 +1,15 @@
 import { ReactNode, Suspense } from "react";
-import Home from "./Home/page";
-import Submit from "./Submit/page";
-import Wrapper from "./wrapper";
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { redirect } from "next/navigation";
+import Submit from "./[email]/Submit/page";
+import GenerateDashboard from "./[email]/page";
 
-function Page() {
+async function getUserEmail() {
+  //...
+}
+
+async function Page() {
+  const userEmail = "imightbejan@gmail.com"; //getUserEmail();
+
   return (
     <>
       <Suspense
@@ -14,7 +19,9 @@ function Page() {
           </div>
         }
       />
-      <Submit />
+      <GenerateDashboard params={{
+        slug: userEmail
+      }} />
       <Suspense />
     </>
   );

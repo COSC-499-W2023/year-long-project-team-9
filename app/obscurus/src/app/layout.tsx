@@ -32,6 +32,8 @@ export default function RootLayout({
       ? JSON.parse(collapsed.value)
       : [50, 440, 655];
 
+      const signedIn = true;
+
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
@@ -43,13 +45,14 @@ export default function RootLayout({
         >
           <NavBar />
           <div className=" flex flex-col bg-background flex-1 w-full h-full">
-            <Wrapper
+
+        { signedIn ?    <Wrapper
               defaultLayout={defaultLayout}
               defaultCollapsed={defaultCollapsed}
               navCollapsedSize={10}
             >
               {children}
-            </Wrapper>
+            </Wrapper> : <Home/>}
           </div>
 
           {/*If not signed in*/}

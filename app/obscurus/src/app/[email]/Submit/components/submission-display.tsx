@@ -1,35 +1,48 @@
+"use client";
+import format from "date-fns/format";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Tooltip } from "@/components/ui/tooltip";
+import { useSubmission } from "@/components/hooks/use-submission";
+import { Submissions } from "stacks/core/src/sql.generated";
+import { useQueryState, parseAsString } from "nuqs";
 
-"use client"
-import format from "date-fns/format"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Tooltip,
-} from "@/components/ui/tooltip"
-import { useSubmission } from "@/components/hooks/use-submission"
-import { Submissions } from "stacks/core/src/sql.generated"
-
-export default function SubmissionDisplay({submissions} : {submissions: Submissions[]}) {
+export default function SubmissionDisplay({
+  submissions,
+  searchParams
+}: {
+  submissions: Submissions[];
+  searchParams?: {
+    counter?: string | null []
+  }
+}) {
   const [submissionId] = useSubmission();
+  const [name, setName] = useQueryState("name");
+  console.log("SubmissionId", submissionId);
+  const selected = submissions.find(
+    (item) => item.submissionId === submissionId.selected
+  );
 
-  console.log("SubmissionId", submissionId)
-  const selected = submissions.find((item) => item.submissionId === submissionId.selected);
+  const counterParser = parseAsString.withDefault(submissions[0].requestId)
 
-  console.log("Selected ID", selected)
+  console.log("Selected ID", selected);
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
-            {/* <Tooltip></Tooltip> */}
+          <>
+            <h1>Hello, {name || "anonymous visitor"}!</h1>
+            <input
+              value={name || ""}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <button onClick={() => setName(null)}>Clear</button>
+          </>
         </div>
         <div className="ml-auto flex items-center gap-2">
           <div className="h-9"></div>
@@ -40,12 +53,13 @@ export default function SubmissionDisplay({submissions} : {submissions: Submissi
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm">
-                {selected?.title}
+              {selected?.title}
               <div className="grid gap-1">
                 <div className="font-semibold">{selected?.requesteeEmail}</div>
                 <div className="line-clamp-1 text-xs">{selected?.status}</div>
                 <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Reply-To:</span> {selected?.requesteeEmail}
+                  <span className="font-medium">Reply-To:</span>{" "}
+                  {selected?.requesteeEmail}
                 </div>
               </div>
             </div>
@@ -57,7 +71,7 @@ export default function SubmissionDisplay({submissions} : {submissions: Submissi
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
-           {selected?.submissionId}
+            {selected?.submissionId}
           </div>
           <Separator className="mt-auto" />
           <div className="p-4">
@@ -93,5 +107,5 @@ export default function SubmissionDisplay({submissions} : {submissions: Submissi
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -10,12 +10,13 @@ import { useSubmission } from "@/components/hooks/use-submission";
 import { Submissions } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Search, Send } from "lucide-react";
-import Nav from "../../../components/nav";
+import Nav from "../../../../components/nav";
 import { request } from "@playwright/test";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { Input } from "../../../components/ui/input";
+import { Input } from "../../../../components/ui/input";
+import { useQueryState } from "nuqs";
 
 interface SubmissionsListProps {
   items: Submissions[];
@@ -25,6 +26,15 @@ interface SubmissionsListProps {
 export default function SubmissionsList({ items }: SubmissionsListProps) {
   const router = useRouter();
   const [submission, setSubmission] = useSubmission();
+  const [requestId, setRequestId] = useQueryState('submissionId')
+
+  const handleClick = (item: Submissions) => {
+    setSubmission({
+      ...submission,
+      selected: item.submissionId,
+    })
+   setRequestId(item.submissionId)
+  };
 
   return (
     <div className="overflow-y-scroll">
@@ -66,17 +76,14 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
                   "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
                   submission.selected === item.submissionId && "bg-muted"
                 )}
-                onClick={() =>
-                  setSubmission({
-                    ...submission,
-                    selected: item.submissionId,
-                  })
-                }
+                onClick={() => handleClick(item)}
               >
                 <div className="flex w-full flex-col gap-1">
                   <div className="flex items-center">
                     <div className="flex items-center gap-2">
-                      <div className="font-semibold">{item.title || item.requesteeEmail}</div>
+                      <div className="font-semibold">
+                        {item.title || item.requesteeEmail}
+                      </div>
                       {!item.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
