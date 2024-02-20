@@ -10,7 +10,7 @@ export default async function RequestSummaries() {
         <div className="py-2">
           <Input placeholder="Search" />
         </div>
-        <Tabs defaultValue="account">
+        <Tabs defaultValue="newest">
           <TabsList className="w-full">
             <TabsTrigger value="newest">Newest</TabsTrigger>
             <TabsTrigger value="oldest">Oldest</TabsTrigger>
