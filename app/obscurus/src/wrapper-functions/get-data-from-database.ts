@@ -1,9 +1,13 @@
 import { Api } from "sst/node/api";
 
+/**
+ * @deprecated The method should not be used
+ */
+
 // Do not touch
 export async function getRequestsViaEmail(
   email: string,
-  grouping: string | null,
+  grouping: string | null
 ) {
   const res = await fetch(Api.Api.url + "/getRequestsViaEmail", {
     method: "post",
@@ -22,9 +26,13 @@ export async function getRequestsViaEmail(
   return data;
 }
 
+/**
+ * @deprecated The method should not be used
+ */
+
 export async function getSubmissionsViaEmail(
   email: string,
-  grouping: string | null,
+  grouping: string | null
 ) {
   const res = await fetch(Api.Api.url + "/getSubmissionsViaEmail", {
     method: "post",
@@ -39,6 +47,10 @@ export async function getSubmissionsViaEmail(
   // where {"sub_id": a returned submission,...}
   return res;
 }
+
+/**
+ * @deprecated The method should not be used
+ */
 
 export async function getUserEmail(email: string) {
   const res = await fetch(Api.Api.url + "/getUserViaEmail", {

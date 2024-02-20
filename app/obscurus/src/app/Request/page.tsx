@@ -8,7 +8,8 @@ import RequestSummaries from "@/components/request-summaries";
 import { getEmail } from "@/components/auth/authenticationMethods";
 import { Api } from "sst/node/api";
 
-async function getRequestsViaEmail(email: string) {
+// Getting data from database
+async function getRequestData(email: string) {
   // const res = await fetch(Api.Api.url + "/getSubmissions");
 
   console.log(email);
@@ -19,7 +20,7 @@ export default async function Request({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
-  let requests = getRequestsViaEmail(await getEmail());
+  let requests = getRequestData(await getEmail());
 
   return (
     <>
