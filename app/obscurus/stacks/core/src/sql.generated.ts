@@ -8,6 +8,7 @@ export interface Database {
   submissions: Submissions;
   rooms: Rooms;
   messages: Messages;
+  connections: Connections;
   notifications: Notifications;
 }
 
@@ -20,6 +21,7 @@ export interface Users {
   isAdmin: boolean;
   profileImage: string;
   preference: string;
+  connectionId: string;
 }
 
 // Requests table interface
@@ -49,7 +51,6 @@ export interface Submissions {
 // Rooms table interface
 export interface Rooms {
   roomId: string;
-  connectionId: string | null;
   participant1Email: string | null;
   participant2Email: string | null;
   participant1RoomGivenName: string | null;
@@ -70,6 +71,11 @@ export interface Messages {
   isRead: boolean;
 }
 
+// Connections table interface
+export interface Connections {
+  connectionId: string;
+}
+
 // Notifications table interface
 export interface Notifications {
   notificationId: string;
@@ -79,4 +85,4 @@ export interface Notifications {
   content: string;
   isRead: boolean;
   isTrashed: boolean;
-}
+  
