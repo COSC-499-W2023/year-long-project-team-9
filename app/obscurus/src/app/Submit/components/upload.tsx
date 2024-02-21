@@ -198,29 +198,29 @@ export function Upload({ uploadVideo }: any) {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
 
-  const determineNextButtonDisabled = () => {
-    if (current === count) return true;
+  // const determineNextButtonDisabled = () => {
+  //   if (current === count) return true;
 
-    if (current === 2 && !file) return true;
+  //   if (current === 2 && !file) return true;
 
-    return false;
-  };
+  //   return false;
+  // };
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!api) {
+  //     return;
+  //   }
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+  //   setCount(api.scrollSnapList().length);
+  //   setCurrent(api.selectedScrollSnap() + 1);
 
-    api.on("select", () => {
-      console.log("current");
-      if (!determineNextButtonDisabled()) {
-        setCurrent(api.selectedScrollSnap() + 1);
-      }
-    });
-  }, [api, current]);
+  //   api.on("select", () => {
+  //     console.log("current");
+  //     if (!determineNextButtonDisabled()) {
+  //       setCurrent(api.selectedScrollSnap() + 1);
+  //     }
+  //   });
+  // }, [api, current]);
 
   const [processing, setProcessing] = useState(true);
 

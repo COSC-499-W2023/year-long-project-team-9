@@ -161,7 +161,7 @@ export default function SubmitList({
                       <div className="font-semibold">
                         {item.requestTitle || item.requesterEmail}
                       </div>
-                      {!item.isStarred && (
+                      {getAssociatedSubmission(item.requestId)?.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div>
@@ -228,7 +228,7 @@ export default function SubmitList({
                       <div className="font-semibold">
                         {item.requestTitle || item.requesterEmail}
                       </div>
-                      {!item.isStarred && (
+                      {getAssociatedSubmission(item.requestId)?.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div>
@@ -295,7 +295,7 @@ export default function SubmitList({
                       <div className="font-semibold">
                         {item.requestTitle || item.requesterEmail}
                       </div>
-                      {!item.isStarred && (
+                      {getAssociatedSubmission(item.requestId)?.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div>
@@ -362,7 +362,7 @@ export default function SubmitList({
                       <div className="font-semibold">
                         {item.requestTitle || item.requesterEmail}
                       </div>
-                      {!item.isStarred && (
+                      {getAssociatedSubmission(item.requestId)?.isRead && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div>

@@ -29,7 +29,7 @@ import { Accept } from "@/components/accept";
 import { Progress } from "@/components/ui/progress";
 
 
-const Index = async () => {
+const Index = () => {
 
 
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -214,21 +214,21 @@ const Index = async () => {
     return false;
   };
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!api) {
+  //     return;
+  //   }
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+  //   setCount(api.scrollSnapList().length);
+  //   setCurrent(api.selectedScrollSnap() + 1);
 
-    api.on("select", () => {
-      console.log("current");
-      if (!determineNextButtonDisabled()) {
-        setCurrent(api.selectedScrollSnap() + 1);
-      }
-    });
-  }, [api, current]);
+  //   api.on("select", () => {
+  //     console.log("current");
+  //     if (!determineNextButtonDisabled()) {
+  //       setCurrent(api.selectedScrollSnap() + 1);
+  //     }
+  //   });
+  // }, [api, current]);
 
   const [processing, setProcessing] = useState(true);
 
