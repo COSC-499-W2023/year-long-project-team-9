@@ -11,6 +11,7 @@ import SubmitDisplay from "../Submit/components/submit-display";
 import Wrapper from "../wrapper";
 import SubmitList from "../Submit/components/submit-list";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
+import { getMessages } from "../functions/getMessages";
 
 // CONSTRUCTS
 const userEmail = "imightbejan@gmail.com";
@@ -30,7 +31,9 @@ async function Chat() {
 
   // Getting room and message data
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
+  const messages: Messages[] = await getMessages();
 
+  // Return function
   return (
     <Wrapper
       defaultLayout={defaultLayout}
