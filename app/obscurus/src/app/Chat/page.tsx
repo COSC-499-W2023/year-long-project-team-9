@@ -30,7 +30,6 @@ async function Chat() {
 
   // Getting room and message data
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
-  console.log(rooms);
 
   return (
     <Wrapper

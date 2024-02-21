@@ -1,7 +1,7 @@
 export * as Rooms from "./rooms";
 
 import { SQL } from "./sql";
-import type { Submissions } from "./sql.generated";
+import type { Rooms } from "./sql.generated";
 import { request } from "http";
 import { Status } from "./types/status";
 
