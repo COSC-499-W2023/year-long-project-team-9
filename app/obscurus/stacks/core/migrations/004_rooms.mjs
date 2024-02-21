@@ -17,6 +17,7 @@ export async function up(db) {
     .addColumn("creationDate", "date", (col) =>
       col.notNull().defaultTo("now()")
     )
+    .addColumn("lastMessageDate", "date")
     .execute();
 }
 
