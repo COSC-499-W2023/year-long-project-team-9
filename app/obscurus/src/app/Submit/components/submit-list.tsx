@@ -32,6 +32,7 @@ export default function SubmitList({
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useQueryState("search");
+  const [upload] = useQueryState("upload");
 
   const getAssociatedSubmission = (requestId: string) => {
     return submissions.find((item) => requestId === item.requestId);
@@ -49,14 +50,16 @@ export default function SubmitList({
     [];
 
   const handleClick = (item: Requests) => {
-    setRequestId(item.requestId);
-    const submission = getAssociatedSubmission(item.requestId);
-    console.log("Assoc. submission", submission);
-    if (submission) {
-      setSubmissionId(submission?.submissionId);
-    }
+    if (!upload) {
+      setRequestId(item.requestId);
+      const submission = getAssociatedSubmission(item.requestId);
+      console.log("Assoc. submission", submission);
+      if (submission) {
+        setSubmissionId(submission?.submissionId);
+      }
 
-    console.log("Selected RequestID to list", requestId);
+      console.log("Selected RequestID to list", requestId);
+    }
   };
 
   return (
@@ -65,22 +68,6 @@ export default function SubmitList({
         <ScrollArea className="w-full h-full">
           <div className="flex items-center px-4">
             <h1 className="text-xl font-bold">Submit</h1>
-            <div
-              className="ml-auto"
-              onClick={() => router.push("/CreateRequests")}
-            >
-              {/* <Nav
-                isCollapsed={false}
-                links={[
-                  {
-                    title: "Create Requests",
-                    icon: Send,
-                    variant: "ghost",
-
-                  },
-                ]}
-              /> */}
-            </div>
           </div>
           <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <form>

@@ -285,12 +285,12 @@ export function Upload({ uploadVideo }: any) {
               </div>
             </>
           ) : (
-            <div className=" flex flex-col w-full h-full">
+            <div className=" flex flex-col w-full h-full rounded-lg">
               <Suspense fallback={<div>Loading...</div>}>
                 <Webcam audio={false} ref={webcamRef} className="" />
               </Suspense>
 
-              <div className="flex flex-row  items-center justify-between align-middle bg-accent p-3 px-5">
+              <div className="flex flex-row  items-center justify-between align-middle bg-accent p-3 px-5 rounded-lg">
                 {capturing ? (
                   <>
                     <div>

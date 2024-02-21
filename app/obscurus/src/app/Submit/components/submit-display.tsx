@@ -30,9 +30,9 @@ export default function SubmiDisplay({
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
-
+  const [upload, setUpload] = useQueryState("upload");
   const [showVideos, setShowVideos] = useQueryState("showVideos");
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useQueryState("upload");
 
   if (!requestId) {
     setRequestId(requests[0].requestId);
@@ -48,7 +48,7 @@ export default function SubmiDisplay({
     setShowVideos(showVideos ? null : "true");
   };
 
-  return uploading ? (
+  return upload ? (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2"></div>
@@ -57,7 +57,7 @@ export default function SubmiDisplay({
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setUploading(false)}
+              onClick={() => setUploading(null)}
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="sr-only">Back to display</span>
@@ -147,7 +147,7 @@ export default function SubmiDisplay({
           </div>
           <Separator className="mt-auto" />
           <div className="p-4 flex justify-end w-full">
-            <form onSubmit={() => setUploading(true)}>
+            <form onSubmit={() => setUploading("true")}>
               <Button type="submit" size="lg" className="mx-auto">
                 Upload
               </Button>
