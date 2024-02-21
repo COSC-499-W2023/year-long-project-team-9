@@ -11,11 +11,10 @@ export function list() {
 export function insert(newValues: Submissions) {
   return SQL.DB.insertInto("submissions")
     .values({
-        title: newValues.title,
+      title: newValues.title,
       submissionId: newValues.submissionId,
       requesteeEmail: newValues.requesteeEmail,
       status: newValues.status,
-      isStarred: newValues.isStarred,
       grouping: newValues.grouping,
       isRead: newValues.isRead,
       submittedDate: newValues.submittedDate,
@@ -24,10 +23,7 @@ export function insert(newValues: Submissions) {
     .execute();
 }
 
-export function setStatus(
-  status: Status,
-  submissionId: string,
-) {
+export function setStatus(status: Status, submissionId: string) {
   return SQL.DB.updateTable("submissions")
     .set({
       status: status,
@@ -36,9 +32,9 @@ export function setStatus(
     .executeTakeFirst();
 }
 
-export function getStatus(
-  submissionId: string,
-) {
-  return SQL.DB.selectFrom("submissions").select("status").where("submissionId", "=", submissionId).executeTakeFirst();
+export function getStatus(submissionId: string) {
+  return SQL.DB.selectFrom("submissions")
+    .select("status")
+    .where("submissionId", "=", submissionId)
+    .executeTakeFirst();
 }
-

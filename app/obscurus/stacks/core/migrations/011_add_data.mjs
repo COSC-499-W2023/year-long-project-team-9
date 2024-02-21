@@ -55,7 +55,6 @@ export async function up(db) {
         requestId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
         requestTitle: "Spanish Lesson 1",
         requesterEmail: "imightbejan@gmail.com",
-        isStarred: false,
         grouping: null,
         description: "Send video of you speaking section 1 from the textbook",
         blurred: true,
@@ -66,7 +65,6 @@ export async function up(db) {
         requestId: "092c4718-bde0-4a31-9471-7d5a459b4e22",
         requestTitle: "Math Lesson 2",
         requesterEmail: "imightbejan@gmail.com",
-        isStarred: false,
         grouping: null,
         description:
           "Send video of you reading out section 10 from the textbook",
@@ -78,7 +76,6 @@ export async function up(db) {
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
         requestTitle: "AWS Job Interview",
         requesterEmail: "ansivana@gmail.com",
-        isStarred: true,
         grouping: null,
         description:
           "Please answer the following: Tell me about yourself. Walk me through your resume. How did you hear about this position? Why do you want to work at this company? Why do you want this job? Why should we hire you? What can you bring to the company? What are your greatest strengths?",
@@ -89,7 +86,6 @@ export async function up(db) {
         requestId: "c2c762f7-80f7-4b06-a3d6-769a07df6793",
         requestTitle: "AWS Job Interview Stage 2",
         requesterEmail: "ansivana@gmail.com",
-        isStarred: true,
         grouping: null,
         description:
           "Please answer the following: Tell me about yourself. Walk me through your resume. How did you hear about this position? Why do you want to work at this company? Why do you want this job? Why should we hire you? What can you bring to the company? What are your greatest strengths?",
@@ -101,7 +97,6 @@ export async function up(db) {
         requestId: "df6a3872-7210-49fc-b4d8-fc78631d95f5",
         requestTitle: "AWS Job Interview Stage 3",
         requesterEmail: "ansivana@gmail.com",
-        isStarred: true,
         grouping: null,
         description:
           "What are you looking for from a new position? Are you considering other positions in other companies? What is the professional achievement you're most proud of? What kind of working environment do you work best in?",
@@ -112,7 +107,6 @@ export async function up(db) {
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
         requestTitle: "Test",
         requesterEmail: "bakar.a.muhammad@gmail.com",
-        isStarred: true,
         grouping: null,
         description: "This is a test",
         blurred: false,
@@ -128,7 +122,7 @@ export async function up(db) {
         submissionId: "6b82a368-dd60-49f4-93fe-c6f8c9a05e1b",
         requesteeEmail: "soren.is@hotmail.ca",
         status: "TODO",
-        isStarred: true,
+
         isRead: false,
         submittedDate: null,
         requestId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
@@ -137,7 +131,7 @@ export async function up(db) {
         submissionId: "0c49d690-a96f-445a-bcbe-a964dc0e7e21",
         requesteeEmail: "ansivana@gmail.com",
         status: "TODO",
-        isStarred: false,
+
         isRead: true,
         submittedDate: null,
         requestId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
@@ -146,7 +140,7 @@ export async function up(db) {
         submissionId: "674b2c03-210e-46e3-b71a-dccbb4d5a079",
         requesteeEmail: "ansivana@gmail.com",
         status: "TRASH",
-        isStarred: false,
+
         isRead: false,
         submittedDate: null,
         requestId: "092c4718-bde0-4a31-9471-7d5a459b4e22",
@@ -155,7 +149,7 @@ export async function up(db) {
         submissionId: "b8807202-e0b8-4e3f-aa22-d8b8264139a5",
         requesteeEmail: "bakar.a.muhammad@gmail.com",
         status: "ARCHIVED",
-        isStarred: false,
+
         isRead: false,
         submittedDate: null,
         requestId: "092c4718-bde0-4a31-9471-7d5a459b4e22",
@@ -164,7 +158,7 @@ export async function up(db) {
         submissionId: "8224741d-a388-4bf9-ba35-6a00c01a5ad8",
         requesteeEmail: "soren.is@hotmail.ca",
         status: "FAILED",
-        isStarred: true,
+
         isRead: false,
         submittedDate: null,
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
@@ -173,7 +167,7 @@ export async function up(db) {
         submissionId: "e1e25c2a-0a02-4cc6-9922-414755eb5e7f",
         requesteeEmail: "bakar.a.muhammad@gmail.com",
         status: "PROCESSING",
-        isStarred: false,
+
         isRead: true,
         submittedDate: null,
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
@@ -182,7 +176,7 @@ export async function up(db) {
         submissionId: "bc94f9bd-dd57-4a7a-a935-6c76f3113212",
         requesteeEmail: "imightbejan@gmail.com",
         status: "COMPLETED",
-        isStarred: false,
+
         isRead: true,
         submittedDate: null,
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
@@ -191,7 +185,7 @@ export async function up(db) {
         submissionId: "2c48358c-b0bf-4826-bd28-aa4e54a67b4a",
         requesteeEmail: "soren.is@hotmail.ca",
         status: "COMPLETED",
-        isStarred: true,
+
         isRead: false,
         submittedDate: null,
         requestId: "c2c762f7-80f7-4b06-a3d6-769a07df6793",
@@ -200,7 +194,7 @@ export async function up(db) {
         submissionId: "ce03c21a-a659-412e-b25a-baa4a3d1b5e8",
         requesteeEmail: "bob@gamil.com",
         status: "PROCESSING",
-        isStarred: false,
+
         isRead: false,
         submittedDate: null,
         requestId: "df6a3872-7210-49fc-b4d8-fc78631d95f5",
@@ -209,7 +203,7 @@ export async function up(db) {
         submissionId: "ac837adb-2994-4769-9d84-d34581b24ad4",
         requesteeEmail: "soren.is@hotmail.ca",
         status: "COMPLETED",
-        isStarred: false,
+
         isRead: true,
         submittedDate: null,
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
@@ -218,7 +212,7 @@ export async function up(db) {
         submissionId: "cf780978-c459-406b-b6fc-a11ab5d1500a",
         requesteeEmail: "imightbejan@gmail.com",
         status: "FAILED",
-        isStarred: false,
+
         isRead: false,
         submittedDate: null,
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
@@ -227,7 +221,7 @@ export async function up(db) {
         submissionId: "37594b67-e2da-4a87-b97b-c86f65b3c731",
         requesteeEmail: "ansivana@gmail.com",
         status: "PROCESSING",
-        isStarred: true,
+
         isRead: true,
         submittedDate: null,
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
