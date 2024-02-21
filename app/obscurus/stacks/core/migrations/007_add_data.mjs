@@ -238,7 +238,6 @@ export async function up(db) {
     .values([
       {
         roomId: "01b3f0b0-2c27-4ad7-86e5-ce04bcd9cd48",
-        connectionId: null,
         participant1Email: "imightbejan@gmail.com",
         participant2Email: "soren.is@hotmail.ca",
         participant1RoomGivenName: "Jan-Yaeger",
@@ -250,7 +249,6 @@ export async function up(db) {
       },
       {
         roomId: "8c0ea510-5870-41a0-a01a-dbf5cf2b7b3b",
-        connectionId: null,
         participant1Email: "imightbejan@gmail.com",
         participant2Email: "ansivana@gmail.com",
         participant1RoomGivenName: "Jan-Yaeger",
@@ -262,7 +260,6 @@ export async function up(db) {
       },
       {
         roomId: "bd240dd9-5ff4-46df-9273-d216685b3683",
-        connectionId: null,
         participant1Email: "imightbejan@gmail.com",
         participant2Email: "bakar.a.muhammad@gmail.com",
         participant1RoomGivenName: "Jan-Yaeger",
@@ -274,7 +271,6 @@ export async function up(db) {
       },
       {
         roomId: "dac6ccb4-d0a2-43cc-a2a5-d0d04205ab99",
-        connectionId: null,
         participant1Email: "ansivana@gmail.com",
         participant2Email: "bob@gamil.com",
         participant1RoomGivenName: "Baz",
