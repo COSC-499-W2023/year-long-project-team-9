@@ -48,17 +48,19 @@ export default function SubmitList({
   const [sort, setSort] = useQueryState("sort");
   const [tab, setTab] = useQueryState("tab");
 
- 
-
-
-  const getAssociatedSubmission = (requestId: string) => {
-    return submissions.find((item) => requestId === item.requestId);
+  const getAssociatedSubmission = (requestId: string | null) => {
+    if (requestId) {
+      return submissions.find((item) => requestId === item.requestId);
+    }
+    return null;
   };
 
   useEffect(() => {
-    !tab && setTab("todo")
+    !tab && setTab("todo");
     if (!submissionId) {
-      const submission = getAssociatedSubmission(requests[0].requestId);
+      const submission = getAssociatedSubmission(
+        requests && requests[0].requestId
+      );
       console.log("Assoc. submission", submission);
       if (submission) {
         setSubmissionId(submission?.submissionId);
@@ -124,9 +126,15 @@ export default function SubmitList({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setSort("newest")}>Newest</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSort("oldest")}>Oldest</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSort("due")}>Due</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSort("newest")}>
+                    Newest
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSort("oldest")}>
+                    Oldest
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setSort("due")}>
+                    Due
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
@@ -405,7 +413,9 @@ export default function SubmitList({
       </TabsContent>
     </Tabs>
   ) : (
-    <div>Failed to load data....</div>
+    <div className="h-full flex flex-col justify-center items-center">
+      Failed to load data :({" "}
+    </div>
   );
 }
 

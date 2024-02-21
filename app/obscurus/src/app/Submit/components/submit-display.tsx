@@ -35,11 +35,11 @@ export default function SubmiDisplay({
   const [uploading, setUploading] = useQueryState("upload");
 
   if (!requestId) {
-    setRequestId(requests[0].requestId);
+    setRequestId( requests && requests[0].requestId);
   }
 
   console.log("RequestId", requestId);
-  const selected = requests.find((item) => item.requestId === requestId);
+  const selected =  requests ? requests.find((item) => item.requestId === requestId) : null;
 
   console.log("Selected requestId to display", requestId);
   console.log("Selected requestId to display", requestId);
