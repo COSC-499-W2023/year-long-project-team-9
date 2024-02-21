@@ -1,20 +1,19 @@
 "use client";
-import format from "date-fns/format";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
-import { ResizablePanel } from "@/components/ui/resizable";
-import { Suspense } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Archive, ArchiveX, Trash2, Clock, Calendar, Reply, ReplyAll, Forward, MoreVertical } from "lucide-react";
+import { Suspense, useState } from "react";
+import { Archive, Trash2, ArrowLeft, LucideUploadCloud } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { Progress } from "@/components/ui/progress";
 
 export default function RequestDisplay({
   requests,
@@ -31,8 +30,9 @@ export default function RequestDisplay({
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
 
   const [showVideos, setShowVideos] = useQueryState("showVideos");
+  const [uploading, setUploading] = useState(false);
 
-  if (!requestId && requests[0]) {
+  if (!requestId) {
     setRequestId(requests[0].requestId);
   }
 
@@ -46,7 +46,73 @@ export default function RequestDisplay({
     setShowVideos(showVideos ? null : "true");
   };
 
-  return (
+  return uploading ? (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center p-2">
+        <div className="flex items-center gap-2"></div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setUploading(false)}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="sr-only">Back to display</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Back</TooltipContent>
+        </Tooltip>
+      </div>
+      <Separator />
+      <Suspense
+        fallback={
+          <div className="w-full h-full flex items-center justify-center">
+            Loading...
+          </div>
+        }
+      >
+        <div className="flex h-full flex-col p-10 space-y-5">
+          <Progress className="my-5" value={10} />
+          <div className="flex flex-col h-full w-full  ">
+            <div className="bg-accent w-full h-full max-h-[80%]  shadow-sm flex flex-col justify-evenly items-center space-y-3 rounded-lg border ">
+              <LucideUploadCloud className="w-48 h-48" />
+
+              <div className="flex justify-center w-full">
+                <Label htmlFor="video" className=" text-center text-lg">
+                  No file selected
+                </Label>
+              </div>
+              <input id="file-input" type="file" style={{ display: "none" }} />
+
+              <div className="grid grid-cols-2 gap-10">
+                <input
+                  id="file-input"
+                  type="file"
+                  style={{ display: "none" }}
+                />
+
+                <div className="justify-self-start">
+                  <Button>Upload</Button>
+                </div>
+                <div className="justify-self-end">
+                  <Button>Record</Button>
+                </div>
+              </div>
+              <Separator className="border bg-accent" />
+              <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
+                <div className="font-semibold text-base">
+                  Accepted filetypes:
+                </div>
+
+                <div className="text-sm text-center"> MP4, MOV</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Suspense>
+    </div>
+  ) : (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
@@ -59,15 +125,7 @@ export default function RequestDisplay({
             </TooltipTrigger>
             <TooltipContent>Archive</TooltipContent>
           </Tooltip>
-          {/* <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
-                <ArchiveX className="h-4 w-4" />
-                <span className="sr-only">Move to junk</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Move to archive</TooltipContent>
-          </Tooltip> */}
+          <Separator orientation="vertical" className="mx-2 h-6" />
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={!selected}>
@@ -77,113 +135,7 @@ export default function RequestDisplay({
             </TooltipTrigger>
             <TooltipContent>Move to trash</TooltipContent>
           </Tooltip>
-          {/*
-          <Separator orientation="vertical" className="mx-1 h-6" />
-          <Tooltip>
-            <Popover>
-              <PopoverTrigger asChild>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" disabled={!selected}>
-                    <Clock className="h-4 w-4" />
-                    <span className="sr-only">Snooze</span>
-                  </Button>
-                </TooltipTrigger>
-              </PopoverTrigger>
-              <PopoverContent className="flex w-[535px] p-0">
-                <div className="flex flex-col gap-2 border-r px-2 py-4">
-                  <div className="px-4 text-sm font-medium">Snooze until</div>
-                  <div className="grid min-w-[250px] gap-1">
-                    <Button
-                      variant="ghost"
-                      className="justify-start font-normal"
-                    >
-                      Later today{" "}
-                      <span className="ml-auto text-muted-foreground">
-                        {/* {format(addHours(today, 4), "E, h:m b")} 
-                      </span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="justify-start font-normal"
-                    >
-                      Tomorrow
-                      <span className="ml-auto text-muted-foreground">
-                        {/* {format(addDays(today, 1), "E, h:m b")} 
-                      </span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="justify-start font-normal"
-                    >
-                      This weekend
-                      <span className="ml-auto text-muted-foreground">
-                        {/* {format(nextSaturday(today), "E, h:m b")} 
-                      </span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="justify-start font-normal"
-                    >
-                      Next week
-                      <span className="ml-auto text-muted-foreground">
-                        {/* {format(addDays(today, 7), "E, h:m b")} 
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-                <div className="p-2">
-                  <Calendar />
-                </div>
-              </PopoverContent>
-            </Popover>
-            <TooltipContent>Snooze</TooltipContent>
-          </Tooltip>
-          */}
         </div>
-        {/* <div className="ml-auto flex items-center gap-2"> */}
-          {/* <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
-                <Reply className="h-4 w-4" />
-                <span className="sr-only">Reply</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Reply</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
-                <ReplyAll className="h-4 w-4" />
-                <span className="sr-only">Reply all</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Reply all</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
-                <Forward className="h-4 w-4" />
-                <span className="sr-only">Forward</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Forward</TooltipContent>
-          </Tooltip>
-        </div>
-        <Separator orientation="vertical" className="mx-2 h-6" />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" disabled={!selected}>
-              <MoreVertical className="h-4 w-4" />
-              <span className="sr-only">More</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Mark as unread</DropdownMenuItem>
-            <DropdownMenuItem>Star thread</DropdownMenuItem>
-            <DropdownMenuItem>Add label</DropdownMenuItem>
-            <DropdownMenuItem>Mute thread</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu> */}
       </div>
       <Separator />
       {selected ? (
@@ -201,12 +153,15 @@ export default function RequestDisplay({
               </Avatar>
               <div className="grid gap-1">
                 <div className="font-semibold">{selected?.requestTitle}</div>
-                <div className="line-clamp-1 text-xs">Due{" "}
-                    {formatDistanceToNow(new Date(selected.dueDate), {
-                      addSuffix: true,
-                    })}</div>
                 <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Reply-To:</span> {selected?.requesterEmail}
+                  Due{" "}
+                  {formatDistanceToNow(new Date(selected.dueDate), {
+                    addSuffix: true,
+                  })}
+                </div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Reply-To:</span>{" "}
+                  {selected?.requesterEmail}
                 </div>
               </div>
             </div>
@@ -222,29 +177,10 @@ export default function RequestDisplay({
           </div>
           <Separator className="mt-auto" />
           <div className="p-4 flex justify-end w-full">
-            <form>
-              {/* <div className="grid gap-4">
-                <Textarea
-                  className="p-4"
-                  placeholder={`Reply ${selected?.requesterEmail}...`}
-                />
-                <div className="flex items-center">
-                  <Label
-                    htmlFor="mute"
-                    className="flex items-center gap-2 text-xs font-normal"
-                  >
-                    <Switch id="mute" aria-label="Mute thread" /> Mute this
-                    thread
-                  </Label> */}
-                  <Button
-                    onClick={(e) => e.preventDefault()}
-                    size="lg"
-                    className="mx-auto"
-                  >
-                    Upload
-                  </Button>
-                {/* </div>
-              </div> */}
+            <form onSubmit={() => setUploading(true)}>
+              <Button type="submit" size="lg" className="mx-auto">
+                Upload
+              </Button>
             </form>
           </div>
         </div>
