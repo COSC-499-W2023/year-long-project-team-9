@@ -83,25 +83,22 @@ export function Upload({ uploadVideo }: any) {
     const apiUrl = "/api/upload";
 
     try {
-      // Send a POST request to the API
-      // const response = await fetch(apiUrl, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     key: s3Key,
-      //     extension: fileExt,
-      //   }),
-      // });
-      // Check if the request was successful
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
-      // const data = await response.json();
-      // console.log("Response from server:", data);
-      // Handle the successful upload (update UI, etc.)
-      // ...
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: "hello",
+          extension: fileExt,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Response from server:", data);
+
     } catch (error) {
       console.error("Error during fetch:", error);
     }

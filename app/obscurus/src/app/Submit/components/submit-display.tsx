@@ -49,7 +49,7 @@ export default function SubmiDisplay({
   };
 
   return upload ? (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col min-h-full">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2"></div>
         <Tooltip>
@@ -104,7 +104,7 @@ export default function SubmiDisplay({
       </div>
       <Separator />
       {selected ? (
-        <div className="flex flex-1 flex-col">
+        <div className="flex h-full flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm">
               <Avatar>
@@ -142,7 +142,7 @@ export default function SubmiDisplay({
             )}
           </div>
           <Separator />
-          <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
+          <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
             {selected?.description}
           </div>
           <Separator className="mt-auto" />
