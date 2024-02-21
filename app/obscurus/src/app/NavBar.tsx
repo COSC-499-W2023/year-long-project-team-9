@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/components/hooks/scroll";
-import SignIn from "@/components/SignIn";
+//import SignIn from "@/components/SignIn";
 // import { isSignedIn } from "@/auth/authenticationMethods";
 
 export async function getServerSideProps() {
@@ -58,7 +58,7 @@ const NavBar = () => {
     <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2 bg-background">
       <div className="p-1">
         <NavigationMenu>
-          <Link href="/" className="p-5">
+          <Link href="/" className="p-4">
             <Image
               className="min-h-full min-w-full"
               src="/logo.svg"
@@ -72,7 +72,7 @@ const NavBar = () => {
             <Link href="/">
               <NavigationMenuItem>
                 <span
-                  className="font-bold text-xl p-5 hover:cursor-pointer">
+                  className="font-bold text-xl hover:cursor-pointer">
                   obscurus
                 </span>
               </NavigationMenuItem>

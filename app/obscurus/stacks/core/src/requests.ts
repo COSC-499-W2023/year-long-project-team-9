@@ -15,12 +15,16 @@ export function insert(request: Requests) {
       requestId: request.requestId,
       requestTitle: request.requestTitle,
       requesterEmail: request.requesterEmail,
-      isStarred: request.isStarred,
       grouping: request.grouping,
       description: request.description,
       blurred: request.blurred,
       creationDate: request.creationDate,
       dueDate: request.dueDate,
     })
+    .execute();
+  }
+
+  export function get(request: Requests){
+    return SQL.DB.selectFrom("requests").where("requestId", "=", request.requestId)
     .execute();
   }

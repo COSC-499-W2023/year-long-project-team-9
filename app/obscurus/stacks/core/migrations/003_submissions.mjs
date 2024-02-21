@@ -8,9 +8,9 @@ export async function up(db) {
     .createTable("submissions")
     .addColumn("submissionId", "varchar", (col) => col.primaryKey())
     .addColumn("requesteeEmail", "varchar", (col) =>
-      col.notNull().defaultTo("NULL"),
+      col.notNull().defaultTo("NULL")
     )
-    .addColumn("status", "varchar", (col) => col.notNull().defaultTo("todo"))
+    .addColumn("status", "varchar", (col) => col.notNull().defaultTo("TODO"))
     .addColumn("isStarred", "boolean", (col) =>
       col.notNull().defaultTo(false),
     )
@@ -19,7 +19,7 @@ export async function up(db) {
     .addColumn("title", "varchar")
     .addColumn("submittedDate", "timestamp")
     .addColumn("requestId", "varchar", (col) =>
-      col.notNull().references("requests.requestId"),
+      col.notNull().references("requests.requestId")
     )
     .execute();
 }

@@ -4,6 +4,12 @@ import { Api } from "sst/node/api";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { Requests, Submissions } from "stacks/core/src/sql.generated";
+import { getSubmissions } from "../functions/getSubmissions";
+import { getRequests } from "../functions/getRequests";
+import SubmitDisplay from "../Submit/components/submit-display";
+import Wrapper from "../wrapper";
+import SubmitList from "../Submit/components/submit-list";
 
 // CONSTRUCTS
 const userEmail = "imightbejan@gmail.com";

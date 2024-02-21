@@ -9,7 +9,6 @@ const newRequest: r = {
   requestId: "11111",
   requestTitle: "hello",
   requesterEmail: "x@gmail.com",
-  isStarred: false,
   grouping: null,
   description: "h",
   blurred: false,

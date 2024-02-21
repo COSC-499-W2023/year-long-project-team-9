@@ -9,6 +9,7 @@ export interface Database {
   rooms: Rooms;
   messages: Messages;
   connections: Connections;
+  notifications: Notifications;
 }
 
 // Users table interface
@@ -28,7 +29,6 @@ export interface Requests {
   requestId: string;
   requestTitle: string;
   requesterEmail: string;
-  isStarred: boolean;
   grouping: GroupingState | null;
   description: string;
   blurred: boolean;
@@ -42,7 +42,6 @@ export interface Submissions {
   requesteeEmail: string;
   status: Status;
   title: string | null;
-  isStarred: boolean;
   grouping: GroupingState | null;
   isRead: boolean;
   submittedDate: Date | null;
@@ -76,3 +75,14 @@ export interface Messages {
 export interface Connections {
   connectionId: string;
 }
+
+// Notifications table interface
+export interface Notifications {
+  notificationId: string;
+  userEmail: string;
+  type: string;
+  creationDate: Date;
+  content: string;
+  isRead: boolean;
+  isTrashed: boolean;
+  

@@ -6,13 +6,13 @@ import { Submissions } from "stacks/core/src/sql.generated"
 
 
 type Config = {
-  selected: Submissions["submissionId"] | null
+  selected: Submissions["requestId"] | null
 }
 
 const configAtom = atom<Config>({
-  selected: requests[0].id,
+  selected: null,
 })
 
-export function useMail() {
+export function useSubmission() {
   return useAtom(configAtom)
 }
