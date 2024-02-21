@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const bucket = Bucket.inputBucket.bucketName;
 
   console.log(request)
-  const key = `${crypto.randomUUID()}.${fileExt}`;
+  const key = crypto.randomUUID()
   const command = new PutObjectCommand({
     ACL: "public-read",
     Key: key,

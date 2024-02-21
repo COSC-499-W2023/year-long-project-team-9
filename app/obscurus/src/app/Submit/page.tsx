@@ -22,7 +22,6 @@ async function Submit() {
   const requests: Requests[] = await getRequests();
 
   return (
-    <Suspense fallback={<div>Loading....</div>}>
       <Wrapper
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
@@ -34,7 +33,6 @@ async function Submit() {
           <SubmitDisplay requests={requests} submissions={submissions} />
         }
       />
-    </Suspense>
   );
 }
 
