@@ -22,9 +22,9 @@ async function getRequest(requestId: string) {
 
 }
 
-async function Page({ params }: { params: string } ) {
-    const data = await getRequest(params)
-    console.log(data)
+async function Page({ params }: { params: { requestId: string } }) {
+    // const data = await getRequest(params.requestId)
+    console.log("RequestId", params.requestId)
     return<></>
   }
 

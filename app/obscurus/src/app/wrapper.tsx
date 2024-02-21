@@ -23,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import { useMail } from "../components/ui/mail/use-mail";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import SubmissionsList from "@/app/[email]/Submit/components/submissions-list";
+import SubmissionsList from "@/app/Submit/components/submissions-list";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 import { useSubmission } from "@/components/hooks/use-submission";

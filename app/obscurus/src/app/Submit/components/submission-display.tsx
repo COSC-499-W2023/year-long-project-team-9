@@ -13,35 +13,45 @@ import { useQueryState, parseAsString } from "nuqs";
 
 export default function SubmissionDisplay({
   submissions,
-  searchParams
+  searchParams,
 }: {
   submissions: Submissions[];
   searchParams?: {
-    counter?: string | null []
-  }
+    counter?: string | null[];
+  };
 }) {
-  const [submissionId] = useSubmission();
-  const [name, setName] = useQueryState("name");
+  const [submissionId, setSubmissionId] = useQueryState("submissionId");
+  const [requestId, setRequestId] = useQueryState("requestId");
+  const [showVideos, setShowVideos] = useQueryState("showVideos");
+
+  if (!submissionId) {
+    setSubmissionId(submissions[0].submissionId);
+  }
+
+  if (!requestId) {
+    setRequestId(submissions[0].requestId);
+  }
+
   console.log("SubmissionId", submissionId);
   const selected = submissions.find(
-    (item) => item.submissionId === submissionId.selected
+    (item) => item.submissionId === submissionId
   );
 
-  const counterParser = parseAsString.withDefault(submissions[0].requestId)
+  console.log("Selected requestId to display", requestId);
+  console.log("Selected submissionId to display", submissionId);
 
-  console.log("Selected ID", selected);
+  const toggleVideos = () => {
+    setShowVideos(showVideos ? null : "true");
+  };
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
           <>
-            <h1>Hello, {name || "anonymous visitor"}!</h1>
-            <input
-              value={name || ""}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <button onClick={() => setName(null)}>Clear</button>
+            <h1>
+              SubmissionId is: {submissionId || submissions[0].submissionId}!
+            </h1>
           </>
         </div>
         <div className="ml-auto flex items-center gap-2">
@@ -63,15 +73,18 @@ export default function SubmissionDisplay({
                 </div>
               </div>
             </div>
-            {/* {selected?.submissionId && (
+            {selected?.submissionId && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {format(new Date(mail.date), "PPpp")}
               </div>
-            )} */}
+            )}
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
-            {selected?.submissionId}
+            requestId is {selected?.requestId || submissions[0].requestId}
+            <div>
+              <Button onClick={() => toggleVideos()}>Toggle Videos</Button>
+            </div>
+            {showVideos ? <div>videos</div> : <div>Not showing videos</div>}
           </div>
           <Separator className="mt-auto" />
           <div className="p-4">

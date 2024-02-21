@@ -1,6 +1,6 @@
 import { ReactNode, Suspense } from "react";
 import { redirect } from "next/navigation";
-import Submit from "./[email]/Submit/page";
+import Submit from "./Submit/page";
 import GenerateDashboard from "./[email]/page";
 
 async function getUserEmail() {
@@ -19,9 +19,8 @@ async function Page() {
           </div>
         }
       />
-      <GenerateDashboard params={{
-        slug: userEmail
-      }} />
+      {redirect("/Submit")}
+
       <Suspense />
     </>
   );

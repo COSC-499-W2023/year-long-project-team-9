@@ -10,30 +10,30 @@ import { useSubmission } from "@/components/hooks/use-submission";
 import { Submissions } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Search, Send } from "lucide-react";
-import Nav from "../../../../components/nav";
+import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { Input } from "../../../../components/ui/input";
+import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 
 interface SubmissionsListProps {
-  items: Submissions[];
+  submissions: Submissions[];
   isCollapsed?: boolean;
 }
 
-export default function SubmissionsList({ items }: SubmissionsListProps) {
+export default function SubmissionsList({ submissions }: SubmissionsListProps) {
   const router = useRouter();
-  const [submission, setSubmission] = useSubmission();
-  const [requestId, setRequestId] = useQueryState('submissionId')
+  const [submissionId, setSubmissionId] = useQueryState("submissionId");
+  const [requestId, setRequestId] = useQueryState("requestId");
+  const [search, setSearch] = useQueryState("search");
 
   const handleClick = (item: Submissions) => {
-    setSubmission({
-      ...submission,
-      selected: item.submissionId,
-    })
-   setRequestId(item.submissionId)
+    setSubmissionId(item.submissionId);
+    setRequestId(item.requestId);
+    console.log("Selected SubmissionID to list", submissionId);
+    console.log("Selected RequestID to list", requestId)
   };
 
   return (
@@ -63,18 +63,18 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
             <form>
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search" className="pl-8" />
+                <Input placeholder={search || "Search"} className="pl-8"  onChange={(e) => setSearch(e.target.value || null)} value={search || undefined}/>
               </div>
             </form>
           </div>
 
           <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-            {items.map((item) => (
+            {submissions.map((item) => (
               <button
                 key={item.submissionId}
                 className={cn(
                   "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                  submission.selected === item.submissionId && "bg-muted"
+                  submissionId === item.submissionId && "bg-muted"
                 )}
                 onClick={() => handleClick(item)}
               >
@@ -91,7 +91,7 @@ export default function SubmissionsList({ items }: SubmissionsListProps) {
                     <div
                       className={cn(
                         "ml-auto text-xs",
-                        submission.selected === item.submissionId
+                        requestId === item.requestId
                           ? "text-foreground"
                           : "text-muted-foreground"
                       )}
