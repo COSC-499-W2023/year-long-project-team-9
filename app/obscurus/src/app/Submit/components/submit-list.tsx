@@ -1,5 +1,5 @@
 "use client";
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 import { cn } from "@/lib/utils";
@@ -36,6 +36,17 @@ export default function RequestsList({
   const getAssociatedSubmission = (requestId: string) => {
     return submissions.find((item) => requestId === item.requestId);
   };
+
+  useEffect(() => {
+    if (!submissionId) {
+      const submission = getAssociatedSubmission(requests[0].requestId);
+      console.log("Assoc. submission", submission);
+      if (submission) {
+        setSubmissionId(submission?.submissionId);
+      }
+    }
+  }),
+    [];
 
   const handleClick = (item: Requests) => {
     setRequestId(item.requestId);
@@ -96,29 +107,29 @@ export default function RequestsList({
                 onClick={() => handleClick(item)}
               >
                 <div className="flex w-full flex-col gap-1">
-                  <div className="flex items-center">
-                    <div className="flex items-center gap-2 justify-between">
+                  <div className="flex items-center w-full justify-between">
+                    <div className="flex items-center gap-2 w-full h-full">
                       <div className="font-semibold">
                         {item.requestTitle || item.requesterEmail}
                       </div>
                       {!item.isStarred && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
-                      <div className="font-medium">
-                      {formatDistanceToNow(new Date(item.creationDate), {
-                        addSuffix: true,
-                      })}
-                      </div>
-                     
                     </div>
+
                     <div
                       className={cn(
-                        "ml-auto text-xs",
+                        "ml-auto text-xs w-full flex justify-end",
                         requestId === item.requestId
                           ? "text-foreground"
                           : "text-muted-foreground"
                       )}
-                    ></div>
+                    >
+                      {" "}
+                      {formatDistanceToNow(new Date(item.creationDate), {
+                        addSuffix: true,
+                      })}
+                    </div>
                   </div>
                   <div className="text-xs font-medium">
                     {item.requesterEmail}
