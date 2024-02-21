@@ -38,7 +38,7 @@ export interface Requests {
 export interface Submissions {
   submissionId: string;
   requesteeEmail: string;
-  status: Status;
+  status: string;
   title: string | null;
   isStarred: boolean;
   grouping: GroupingState | null;

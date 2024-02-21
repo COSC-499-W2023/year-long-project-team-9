@@ -12,9 +12,9 @@ import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
 import { Suspense, useState } from "react";
 import { Archive, Trash2, ArrowLeft, LucideUploadCloud } from "lucide-react";
-import { formatDistanceToNow, formatDistance } from "date-fns";
+import { formatDistanceToNow, formatDistance, format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
-import Upload from "./upload"
+import Upload from "./upload";
 import { upload } from "@/app/functions/upload";
 
 export default function SubmiDisplay({
@@ -74,7 +74,7 @@ export default function SubmiDisplay({
           </div>
         }
       >
-       <Upload/>
+        <Upload />
       </Suspense>
     </div>
   ) : (
@@ -119,25 +119,22 @@ export default function SubmiDisplay({
               <div className="grid gap-1">
                 <div className="font-semibold">{selected?.requestTitle}</div>
                 <div className="line-clamp-1 text-xs">
-                  Due{" "}
-                  {formatDistanceToNow(new Date(selected.dueDate), {
-                    addSuffix: true,
-                    includeSeconds: false,
-                  })}
+                  <span className="font-medium">From:</span> Jan D
                 </div>
+
                 <div className="line-clamp-1 text-xs">
                   <span className="font-medium">Reply-To:</span>{" "}
                   {selected?.requesterEmail}
+                </div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Due:</span>{" "}
+                  {format(new Date(selected.dueDate), "PPpp")}
                 </div>
               </div>
             </div>
             {selected.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {/* {formatDistanceToNow(new Date(selected.creationDate), {
-                    addSuffix: true,
-                    includeSeconds: true,
-                  })} */}
-                {selected.creationDate.toString()}
+                {format(new Date(selected.creationDate), "PPpp")}
               </div>
             )}
           </div>

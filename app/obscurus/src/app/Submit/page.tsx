@@ -6,6 +6,7 @@ import SubmitDisplay from "./components/submit-display";
 import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
 import SubmitList from "./components/submit-list";
+import { Suspense } from "react";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -21,13 +22,19 @@ async function Submit() {
   const requests: Requests[] = await getRequests();
 
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<SubmitList requests={requests} submissions={submissions} />}
-      secondPanel={<SubmitDisplay requests={requests} submissions={submissions} />}
-    />
+    <Suspense fallback={<div>Loading....</div>}>
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          <SubmitList requests={requests} submissions={submissions} />
+        }
+        secondPanel={
+          <SubmitDisplay requests={requests} submissions={submissions} />
+        }
+      />
+    </Suspense>
   );
 }
 

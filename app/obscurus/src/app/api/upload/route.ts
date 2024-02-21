@@ -12,12 +12,12 @@ export async function POST(request: Request) {
   const bucket = Bucket.inputBucket.bucketName;
 
   console.log(request)
-  // const key = `${crypto.randomUUID()}.${fileExt}`;
-  // const command = new PutObjectCommand({
-  //   ACL: "public-read",
-  //   Key: key,
-  //   Bucket: bucket,
-  // });
-  // const url = await getSignedUrl(new S3Client({}), command);
+  const key = `${crypto.randomUUID()}.${fileExt}`;
+  const command = new PutObjectCommand({
+    ACL: "public-read",
+    Key: key,
+    Bucket: bucket,
+  });
+  const url = await getSignedUrl(new S3Client({}), command);
   return new Response("Nice");
 }

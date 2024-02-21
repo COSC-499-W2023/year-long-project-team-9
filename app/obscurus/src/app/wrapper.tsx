@@ -64,7 +64,7 @@ export function Wrapper({
         className="h-full  items-stretch "
       >
         <ResizablePanel
-          defaultSize={defaultLayout&&defaultLayout[0] || 20}
+          defaultSize={(defaultLayout && defaultLayout[0]) || 20}
           collapsedSize={navCollapsedSize}
           collapsible={true}
           minSize={15}
@@ -107,14 +107,17 @@ export function Wrapper({
         </ResizablePanel>
 
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout&&defaultLayout[1] || 40} minSize={30}>
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[1]) || 40}
+          minSize={30}
+        >
           <div className="max-h-[800px] h-full flex-1 flex-col p-6  md:flex overflow-y-scroll">
             <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout&&defaultLayout[2] || 50}>
-          {secondPanel}
+        <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50}>
+          <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
