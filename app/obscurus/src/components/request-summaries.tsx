@@ -2,7 +2,14 @@ import { Input } from "./ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 
-export default async function RequestSummaries() {
+type RequestSummariesProps = {
+  data: Map<string, object>;
+};
+
+export default async function RequestSummaries({
+  data,
+}: RequestSummariesProps) {
+  console.log(data);
   return (
     <>
       <div className="flex-row px-4">

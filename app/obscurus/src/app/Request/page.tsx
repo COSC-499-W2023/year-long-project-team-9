@@ -11,7 +11,6 @@ import { Api } from "sst/node/api";
 
 // Getting data from database
 async function getRequestsViaEmail(email: string) {
-  console.log(email);
   const res = await fetch(Api.Api.url + "/getRequestsViaEmail", {
     method: "post",
     body: JSON.stringify({
@@ -37,8 +36,7 @@ async function getRequestsViaEmail(email: string) {
     const submissionID = submissions[i]["submissionId"];
     submissionLocationInMap["submissions"][submissionID] = submissions[i];
   }
-  console.log(dataMap);
-  return data;
+  return dataMap;
 }
 
 export default async function Request({
@@ -47,13 +45,12 @@ export default async function Request({
   searchParams: { [key: string]: string | undefined };
 }) {
   let requests = await getRequestsViaEmail(await getEmail());
-  // console.log(JSON.stringify(requests));
 
   return (
     <>
       <ResizablePanel defaultSize={50}>
         <RequestHeader />
-        <RequestSummaries />
+        <RequestSummaries data={requests} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={40}>Hello World 2</ResizablePanel>
