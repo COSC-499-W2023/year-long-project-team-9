@@ -99,12 +99,14 @@ export default function ChatList({ rooms, messages }: ChatsListProps) {
                         addSuffix: true,
                       }
                     )}
+                  {getLatestMessage(item) === undefined && "N/A"}
                 </div>
               </div>
             </div>
             <div className="line-clamp-2 text-xs text-muted-foreground">
               {getLatestMessage(item) != undefined &&
                 getLatestMessage(item).messageContent?.substring(0, 300)}
+              {getLatestMessage(item) === undefined && "No Message History"}
             </div>
           </button>
         ))}
