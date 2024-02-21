@@ -4,13 +4,14 @@ import type { Users as UsersType } from "../core/src/sql.generated";
 
 export const handler: APIGatewayProxyHandlerV2 = async () => {
   const newUser: UsersType = {
-    email: 'fffffffffff@example.com', 
-    givenName: 'ffffff',
-    familyName: 'Dofffe',
+    email: "fffffffffff@example.com",
+    givenName: "ffffff",
+    familyName: "Dofffe",
     isLoggedInWithSocialIdentityProvider: false,
     isAdmin: false,
-    profileImage: 'https://example.com/profile.jpg',
-    preference: "n"
+    profileImage: "https://example.com/profile.jpg",
+    preference: "n",
+    connectionId: null,
   };
 
   const users = await Users.addUser(newUser);

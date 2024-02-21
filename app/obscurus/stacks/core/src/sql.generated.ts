@@ -21,7 +21,7 @@ export interface Users {
   isAdmin: boolean;
   profileImage: string;
   preference: string;
-  connectionId: string;
+  connectionId: string | null;
 }
 
 // Requests table interface
@@ -85,4 +85,4 @@ export interface Notifications {
   content: string;
   isRead: boolean;
   isTrashed: boolean;
-  
+}

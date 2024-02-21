@@ -193,6 +193,8 @@ export default function SiteStack({ stack }: StackContext) {
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
           bind: [steveJobs, inputBucket, rds],
+        },
+      },
       "GET /getRoomsViaEmail": {
         function: {
           handler: "./stacks/lambdas/getRoomsViaEmail.handler",
