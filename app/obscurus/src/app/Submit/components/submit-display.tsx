@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Requests } from "stacks/core/src/sql.generated";
+import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
 import { ResizablePanel } from "@/components/ui/resizable";
 import { Suspense } from "react";
@@ -18,13 +18,17 @@ import { Archive, ArchiveX, Trash2, Clock, Calendar, Reply, ReplyAll, Forward, M
 export default function RequestDisplay({
   requests,
   searchParams,
+  submissions,
 }: {
   requests: Requests[];
   searchParams?: {
     counter?: string | null[];
   };
+  submissions: Submissions[];
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
+  const [submissionId, setSubmissionId] = useQueryState("submissionId");
+
   const [showVideos, setShowVideos] = useQueryState("showVideos");
 
   if (!requestId && requests[0]) {

@@ -2,8 +2,8 @@
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
-import RequestDisplay from "./components/request-display";
-import RequestsList from "./components/request-list";
+import RequestDisplay from "./components/submit-display";
+import RequestsList from "./components/submit-list";
 import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
 
@@ -25,8 +25,8 @@ async function Submit() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RequestsList requests={requests} />}
-      secondPanel={<RequestDisplay requests={requests} />}
+      firstPanel={<RequestsList requests={requests} submissions={submissions} />}
+      secondPanel={<RequestDisplay requests={requests} submissions={submissions} />}
     />
   );
 }
