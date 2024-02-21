@@ -10,20 +10,15 @@ import { getRequests } from "../functions/getRequests";
 import SubmitDisplay from "../Submit/components/submit-display";
 import Wrapper from "../wrapper";
 import SubmitList from "../Submit/components/submit-list";
+import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 
 // CONSTRUCTS
 const userEmail = "imightbejan@gmail.com";
 
 // FUNCTIONS
-async function getRooms(email: string) {
-  const res = await fetch(`${Api.Api.url}/getRoomsViaEmail?email=${email}`);
-  if (res.ok) {
-    return res.json();
-  }
-}
-export default async function ChatPage() {
+async function Chat() {
   // Getting room and message data
-  const roomMessageData = await getRooms(userEmail);
+  const roomMessageData = await getRoomsViaEmail(userEmail);
   // console.log(roomMessageData);
 
   // Saving layout from cookies
@@ -41,3 +36,6 @@ export default async function ChatPage() {
     />
   );
 }
+
+// EXPORT
+export default Chat;
