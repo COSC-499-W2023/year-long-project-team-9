@@ -1,73 +1,41 @@
 "use client";
 // IMPORTS
-import { ComponentProps, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { useSubmission } from "@/components/hooks/use-submission";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Filter, Search, Send, SortAscIcon, SortDescIcon } from "lucide-react";
 import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
-import { TabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
+// CONSTRUCTS
+const userEmail = "imightbejan@gmail.com";
 interface ChatsListProps {
   rooms: Rooms[];
   messages: Messages[];
   isCollapsed?: boolean;
 }
 
+// FUNCTIONS
 export default function ChatList({ rooms, messages }: ChatsListProps) {
   const router = useRouter();
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useQueryState("search");
-  const [upload] = useQueryState("upload");
-  const [sort, setSort] = useQueryState("sort");
-  const [tab, setTab] = useQueryState("tab");
+  const [roomId, setRoomId] = useQueryState("roomId");
 
-  useEffect(() => {
-    !tab && setTab("todo");
-    if (!submissionId) {
-      const submission = getAssociatedSubmission(requests[0].requestId);
-      console.log("Assoc. submission", submission);
-      if (submission) {
-        setSubmissionId(submission?.submissionId);
-      }
-    }
-  }),
-    [];
+  const handleClick = (item: Rooms) => {
+    setRoomId(item.roomId);
+    console.log("Selected RoomID to list", roomId);
+  };
 
-  const handleClick = (item: Requests) => {
-    if (!upload) {
-      setRequestId(item.requestId);
-      const submission = getAssociatedSubmission(item.requestId);
-      console.log("Assoc. submission", submission);
-      if (submission) {
-        setSubmissionId(submission?.submissionId);
-      }
-
-      console.log("Selected RequestID to list", requestId);
-    }
+  const getLatestMessage = (item: Rooms): Messages => {
+    const currRoomId = item.roomId;
+    const roomMessages = messages.filter(
+      (messageItem) => messageItem.roomId === currRoomId
+    );
+    return roomMessages[roomMessages.length - 1];
   };
 
   return rooms ? (
@@ -90,84 +58,59 @@ export default function ChatList({ rooms, messages }: ChatsListProps) {
       </div>
 
       <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-        {rooms
-          .filter((item) => {
-            const submission = getAssociatedSubmission(item.requestId);
-            const hasTodoStatus = submission?.status === "TODO";
-            console.log(
-              `Request ID: ${item.requestId}, Has TODO status: ${hasTodoStatus}`
-            );
-            return hasTodoStatus;
-          })
-          .map((item) => (
-            <button
-              key={item.requestId}
-              className={cn(
-                "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                requestId === item.requestId && "bg-muted"
-              )}
-              onClick={() => handleClick(item)}
-            >
-              <div className="flex w-full flex-col gap-1">
-                <div className="flex items-center w-full justify-between">
-                  <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold">
-                      {item.requestTitle || item.requesterEmail}
-                    </div>
-                    {getAssociatedSubmission(item.requestId)?.isRead && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600" />
-                    )}
-                  </div>
-
-                  <div
-                    className={cn(
-                      "ml-auto text-xs w-full flex justify-end",
-                      requestId === item.requestId
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    {" "}
-                    {formatDistanceToNow(new Date(item.creationDate), {
-                      addSuffix: true,
-                    })}
+        {rooms.map((item) => (
+          <button
+            key={item.roomId}
+            className={cn(
+              "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
+              roomId === item.roomId && "bg-muted"
+            )}
+            onClick={() => handleClick(item)}
+          >
+            <div className="flex w-full flex-col gap-1">
+              <div className="flex items-center w-full justify-between">
+                <div className="flex items-center gap-2 w-full h-full">
+                  <div className="font-semibold">
+                    {item.participant1Email === userEmail
+                      ? item.participant1RoomGivenName +
+                          " " +
+                          item.participant1RoomFamilyName ||
+                        item.participant1Email
+                      : item.participant2RoomGivenName +
+                          " " +
+                          item.participant2RoomFamilyName ||
+                        item.participant2Email}
                   </div>
                 </div>
-                <div className="text-xs font-medium">{item.requesterEmail}</div>
+
+                <div
+                  className={cn(
+                    "ml-auto text-xs w-full flex justify-end",
+                    roomId === item.roomId
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {" "}
+                  {getLatestMessage(item) != undefined &&
+                    formatDistanceToNow(
+                      new Date(getLatestMessage(item)?.creationDate),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
+                </div>
               </div>
-              <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.description?.substring(0, 300)}
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant={getBadgeVariantFromLabel("due-date")}>
-                  Due{" "}
-                  {formatDistanceToNow(new Date(item.dueDate), {
-                    addSuffix: true,
-                  })}
-                </Badge>
-                <Badge variant={getBadgeVariantFromLabel("status")}>
-                  {getAssociatedSubmission(item.requestId)?.status}
-                </Badge>
-              </div>
-            </button>
-          ))}
+            </div>
+            <div className="line-clamp-2 text-xs text-muted-foreground">
+              {getLatestMessage(item) != undefined &&
+                getLatestMessage(item).messageContent?.substring(0, 300)}
+            </div>
+          </button>
+        ))}
       </div>
     </div>
   ) : (
     <div>Failed to load data....</div>
   );
-}
-
-function getBadgeVariantFromLabel(
-  label: string
-): ComponentProps<typeof Badge>["variant"] {
-  if (["status"].includes(label.toLowerCase())) {
-    return "default";
-  }
-
-  if (["due-date"].includes(label.toLowerCase())) {
-    return "outline";
-  }
-
-  return "secondary";
 }
