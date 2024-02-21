@@ -245,7 +245,6 @@ export async function up(db) {
         participant2RoomGivenName: "Soren",
         participant2RoomFamilyName: "Stenback",
         creationDate: new Date("2023-12-12"),
-        lastMessageDate: new Date("2024.01.30 00:40:01"),
         isActive: true,
       },
       {
@@ -257,7 +256,6 @@ export async function up(db) {
         participant2RoomGivenName: "Baz",
         participant2RoomFamilyName: "Sivakua",
         creationDate: new Date("2023-12-12"),
-        lastMessageDate: new Date("2024.02.3 00:44:01"),
         isActive: true,
       },
       {

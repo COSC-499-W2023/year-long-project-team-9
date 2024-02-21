@@ -32,6 +32,10 @@ async function Chat() {
   // Getting room and message data
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const messages: Messages[] = await getMessages();
+  const messTest = messages.filter(
+    (item) => item.roomId === "01b3f0b0-2c27-4ad7-86e5-ce04bcd9cd48"
+  );
+  console.log(messTest[messTest.length - 1]);
 
   // Return function
   return (
