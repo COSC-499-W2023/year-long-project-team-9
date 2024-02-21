@@ -1,15 +1,23 @@
-// import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-// import { getRequestsViaEmail } from "../core/src/getRequestsViaEmail";
+import { APIGatewayProxyHandlerV2 } from "aws-lambda";
+import { selectRequestsUsingEmail } from "stacks/core/src/requests";
 
-// export const handler: APIGatewayProxyHandlerV2 = async (event) => {
-//   // the data passed in the wrapper function
-//   const requests = await getRequestsViaEmail(event.body);
+export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+  // returning if event is invalid
+  if (event === undefined || event.body === undefined) {
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify("{}"),
+    };
+  }
+  // Getting email from event
+  const email = JSON.parse(event.body)["email"];
+  console.log(email);
+  const data = await selectRequestsUsingEmail(email);
 
-//   console.log(requests);
-
-//   return {
-//     statusCode: 200,
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(requests),
-//   };
-// };
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+};
