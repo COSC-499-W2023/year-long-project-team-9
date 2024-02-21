@@ -119,8 +119,8 @@ export default function SiteStack({ stack }: StackContext) {
         function: {
           handler: "./stacks/lambdas/process.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket],
-          bind: [steveJobs, inputBucket],
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
         },
       },
       "POST /createRequest": {
@@ -186,6 +186,14 @@ export default function SiteStack({ stack }: StackContext) {
       "GET /getStatus": {
         function: {
           handler: "./stacks/lambdas/getStatus.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "POST /getRequest": {
+        function: {
+          handler: "./stacks/lambdas/getRequest.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
           bind: [steveJobs, inputBucket, rds],

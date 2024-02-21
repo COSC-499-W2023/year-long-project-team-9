@@ -1,10 +1,14 @@
-import { ReactNode, Suspense } from "react";
-import Home from "./Home/page";
-import Submit from "./Submit/page";
-import Wrapper from "./wrapper";
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
-function Page() {
+async function getUserEmail() {
+  //...
+}
+
+async function Page() {
+  const userEmail = "imightbejan@gmail.com"; //getUserEmail();
+
+
   return (
     <>
       <Suspense
@@ -14,7 +18,8 @@ function Page() {
           </div>
         }
       />
-      <Submit />
+     {redirect("/Submit")}
+
       <Suspense />
     </>
   );

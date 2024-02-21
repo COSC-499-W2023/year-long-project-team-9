@@ -20,33 +20,26 @@ import {
 import Nav from "@/components/nav";
 import { Children, ReactNode, Suspense, useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import { useMail } from "../components/ui/mail/use-mail";
-import { useRouter } from "next/navigation";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import SubmissionsList from "@/app/Submit/components/submissions-list";
-import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 
 export function Wrapper({
-  defaultLayout = [50, 440, 655],
-  defaultCollapsed = false,
+  defaultLayout,
+  defaultCollapsed,
   navCollapsedSize,
-  children,
+  firstPanel,
+  secondPanel,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   navCollapsedSize: number;
-  children: ReactNode | ReactNode[];
+  firstPanel: ReactNode;
+  secondPanel: ReactNode;
 }) {
-  const [activeComponent, setActiveComponent] = useState("mainContent");
-
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [mail] = useMail();
-  const router = useRouter();
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const pathname = usePathname();
 
   const routeToLinkVariant: any = {
-    "/": "Request",
+    "/": "Submit",
     "/CreateRequest": "Request",
     "/Submit": "Submit",
     "/Home": "Chat",
@@ -57,58 +50,71 @@ export function Wrapper({
     return routeToLinkVariant[currentRoute] === title ? "default" : "ghost";
   };
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      onLayout={(sizes: number[]) => {
-        document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-          sizes
-        )}`;
-      }}
-      className="h-full max-h-[800px] items-stretch "
-    >
-      <ResizablePanel
-        defaultSize={10}
-        collapsedSize={navCollapsedSize}
-        collapsible={true}
-        // onCollapse={(collapsed:any) => {
-        //   setIsCollapsed(collapsed)
-        //   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-        //     collapsed
-        //   )}`
-        // }}
-        className={cn(
-          isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out"
-        )}
+    <TooltipProvider delayDuration={0}>
+      <ResizablePanelGroup
+        direction="horizontal"
+        onLayout={(sizes: number[]) => {
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+            sizes
+          )}`;
+        }}
+        className="h-full  items-stretch "
       >
-        <Separator />
-        <Nav
-          isCollapsed={isCollapsed}
-          links={[
-            {
-              title: "Request",
-              icon: Inbox,
-              variant: getLinkVariant("Request"),
-              href: "/CreateRequest",
-            },
-            {
-              title: "Submit",
-              icon: FileUp,
-              variant: getLinkVariant("Submit"),
-              href: "/Submit",
-            },
-            {
-              title: "Chat",
-              icon: MessageCircle,
-              variant: getLinkVariant("Chat"),
-              href: "/Home",
-            },
-          ]}
-        />
-      </ResizablePanel>
+        <ResizablePanel
+          defaultSize={defaultLayout[0]}
+          collapsedSize={navCollapsedSize}
+          collapsible={true}
+          minSize={15}
+          maxSize={20}
+          onCollapse={(collapsed) => {
+            setIsCollapsed(collapsed);
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+              collapsed
+            )}`;
+          }}
+          className={cn(
+            isCollapsed &&
+              "min-w-[50px] transition-all duration-300 ease-in-out"
+          )}
+        >
+          <Separator />
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Request",
+                icon: Inbox,
+                variant: getLinkVariant("Request"),
+                href: "/CreateRequest",
+              },
+              {
+                title: "Submit",
+                icon: FileUp,
+                variant: getLinkVariant("Submit"),
+                href: "/Submit",
+              },
+              {
+                title: "Chat",
+                icon: MessageCircle,
+                variant: getLinkVariant("Chat"),
+                href: "/Home",
+              },
+            ]}
+          />
+        </ResizablePanel>
 
-      <ResizableHandle withHandle />
-      {children}
-    </ResizablePanelGroup>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+          <div className="max-h-[800px] h-full flex-1 flex-col p-6  md:flex overflow-y-scroll">
+            <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
+          </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={defaultLayout[2]}>
+          {secondPanel}
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </TooltipProvider>
   );
 }
 

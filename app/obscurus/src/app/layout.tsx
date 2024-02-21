@@ -20,17 +20,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const layout = cookies().get("react-resizable-panels:layout");
-  const collapsed = cookies().get("react-resizable-panels:collapsed");
-
-  // console.log("Layout", layout);
-  // console.log("Collapsed", collapsed);
-
-  const defaultLayout = layout ? JSON.parse(layout.value) : [];
-  const defaultCollapsed =
-    collapsed && collapsed.value !== "undefined"
-      ? JSON.parse(collapsed.value)
-      : [50, 440, 655];
+  const signedIn = true;
 
   return (
     <html lang="en">
@@ -41,23 +31,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
-          <div className=" flex min-h-screen flex-col bg-background flex-1 fixed w-full ">
-            <Wrapper
-              defaultLayout={defaultLayout}
-              defaultCollapsed={defaultCollapsed}
-              navCollapsedSize={10}
-            >
-              {children}
-            </Wrapper>
-          </div>
-
-          {/*If not signed in*/}
           
-          {/* <div className="h-screen w-full flex flex-col items-center justify-center">
+          <div className="hidden flex-col md:flex min-h-screen">
+          <NavBar />
+            {children}
+
+            {/*If not signed in*/}
+
+            {/* <div className="h-screen w-full flex flex-col items-center justify-center">
             <div className="absolute z-100 top-36 left-56">Top</div>
             <Home />
           </div> */}
+          </div>
         </ThemeProvider>
       </body>
     </html>

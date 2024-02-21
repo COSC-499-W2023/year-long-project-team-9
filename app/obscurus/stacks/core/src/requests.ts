@@ -23,3 +23,8 @@ export function insert(request: Requests) {
     })
     .execute();
   }
+
+  export function get(request: Requests){
+    return SQL.DB.selectFrom("requests").where("requestId", "=", request.requestId)
+    .execute();
+  }
