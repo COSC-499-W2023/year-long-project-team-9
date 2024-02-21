@@ -204,6 +204,15 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "GET /getMessages": {
+        function: {
+          handler: "./stacks/lambdas/listMessages.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
 
