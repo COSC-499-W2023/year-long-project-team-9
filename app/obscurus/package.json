@@ -71,7 +71,7 @@
     "react-hook-form": "^7.48.2",
     "react-microsoft-login": "^2.0.1",
     "react-player": "^2.14.1",
-    "react-resizable-panels": "^1.0.10",
+    "react-resizable-panels": "0.0.55",
     "react-spinners": "^0.13.8",
     "react-webcam": "^7.2.0",
     "resize-observer-polyfill": "^1.5.1",
