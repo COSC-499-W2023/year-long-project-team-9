@@ -9,7 +9,7 @@ import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
 import SubmitDisplay from "../Submit/components/submit-display";
 import Wrapper from "../wrapper";
-import SubmitList from "../Submit/components/submit-list";
+import ChatList from "../Chat/components/chat-list";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 
