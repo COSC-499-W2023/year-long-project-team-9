@@ -2,13 +2,12 @@
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
-import SubmitDisplay from "./components/submit-display";
+import SubmitDisplay from "../Submit/components/submit-display";
 import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
-import SubmitList from "./components/submit-list";
-import { Suspense } from "react";
+import SubmitList from "../Submit/components/submit-list";
 
-async function Submit() {
+async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);
@@ -22,18 +21,14 @@ async function Submit() {
   const requests: Requests[] = await getRequests();
 
   return (
-      <Wrapper
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-        firstPanel={
-          <SubmitList requests={requests} submissions={submissions} />
-        }
-        secondPanel={
-          <SubmitDisplay requests={requests} submissions={submissions} />
-        }
-      />
+    <Wrapper
+      defaultLayout={defaultLayout}
+      defaultCollapsed={defaultCollapsed}
+      navCollapsedSize={4}
+      firstPanel={<SubmitList requests={requests} submissions={submissions} />}
+      secondPanel={<SubmitDisplay requests={requests} submissions={submissions} />}
+    />
   );
 }
 
-export default Submit;
+export default Chat;

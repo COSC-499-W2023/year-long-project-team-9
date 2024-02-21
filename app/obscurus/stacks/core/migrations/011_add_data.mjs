@@ -121,7 +121,8 @@ export async function up(db) {
       {
         submissionId: "6b82a368-dd60-49f4-93fe-c6f8c9a05e1b",
         requesteeEmail: "soren.is@hotmail.ca",
-        status: "NOT STARTED",
+        status: "TODO",
+
         isRead: false,
         submittedDate: null,
         requestId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
@@ -129,7 +130,8 @@ export async function up(db) {
       {
         submissionId: "0c49d690-a96f-445a-bcbe-a964dc0e7e21",
         requesteeEmail: "ansivana@gmail.com",
-        status: "NOT STARTED",
+        status: "TODO",
+
         isRead: true,
         submittedDate: null,
         requestId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
@@ -137,7 +139,8 @@ export async function up(db) {
       {
         submissionId: "674b2c03-210e-46e3-b71a-dccbb4d5a079",
         requesteeEmail: "ansivana@gmail.com",
-        status: "NOT STARTED",
+        status: "TRASH",
+
         isRead: false,
         submittedDate: null,
         requestId: "092c4718-bde0-4a31-9471-7d5a459b4e22",
@@ -145,7 +148,8 @@ export async function up(db) {
       {
         submissionId: "b8807202-e0b8-4e3f-aa22-d8b8264139a5",
         requesteeEmail: "bakar.a.muhammad@gmail.com",
-        status: "NOT STARTED",
+        status: "ARCHIVED",
+
         isRead: false,
         submittedDate: null,
         requestId: "092c4718-bde0-4a31-9471-7d5a459b4e22",
@@ -153,7 +157,8 @@ export async function up(db) {
       {
         submissionId: "8224741d-a388-4bf9-ba35-6a00c01a5ad8",
         requesteeEmail: "soren.is@hotmail.ca",
-        status: "NOT STARTED",
+        status: "FAILED",
+
         isRead: false,
         submittedDate: null,
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
@@ -161,7 +166,8 @@ export async function up(db) {
       {
         submissionId: "e1e25c2a-0a02-4cc6-9922-414755eb5e7f",
         requesteeEmail: "bakar.a.muhammad@gmail.com",
-        status: "NOT STARTED",
+        status: "PROCESSING",
+
         isRead: true,
         submittedDate: null,
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
@@ -169,7 +175,8 @@ export async function up(db) {
       {
         submissionId: "bc94f9bd-dd57-4a7a-a935-6c76f3113212",
         requesteeEmail: "imightbejan@gmail.com",
-        status: "NOT STARTED",
+        status: "COMPLETED",
+
         isRead: true,
         submittedDate: null,
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
@@ -177,7 +184,8 @@ export async function up(db) {
       {
         submissionId: "2c48358c-b0bf-4826-bd28-aa4e54a67b4a",
         requesteeEmail: "soren.is@hotmail.ca",
-        status: "NOT STARTED",
+        status: "COMPLETED",
+
         isRead: false,
         submittedDate: null,
         requestId: "c2c762f7-80f7-4b06-a3d6-769a07df6793",
@@ -185,7 +193,8 @@ export async function up(db) {
       {
         submissionId: "ce03c21a-a659-412e-b25a-baa4a3d1b5e8",
         requesteeEmail: "bob@gamil.com",
-        status: "NOT STARTED",
+        status: "PROCESSING",
+
         isRead: false,
         submittedDate: null,
         requestId: "df6a3872-7210-49fc-b4d8-fc78631d95f5",
@@ -193,7 +202,8 @@ export async function up(db) {
       {
         submissionId: "ac837adb-2994-4769-9d84-d34581b24ad4",
         requesteeEmail: "soren.is@hotmail.ca",
-        status: "NOT STARTED",
+        status: "COMPLETED",
+
         isRead: true,
         submittedDate: null,
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
@@ -201,7 +211,8 @@ export async function up(db) {
       {
         submissionId: "cf780978-c459-406b-b6fc-a11ab5d1500a",
         requesteeEmail: "imightbejan@gmail.com",
-        status: "NOT STARTED",
+        status: "FAILED",
+
         isRead: false,
         submittedDate: null,
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
@@ -209,7 +220,8 @@ export async function up(db) {
       {
         submissionId: "37594b67-e2da-4a87-b97b-c86f65b3c731",
         requesteeEmail: "ansivana@gmail.com",
-        status: "NOT STARTED",
+        status: "PROCESSING",
+
         isRead: true,
         submittedDate: null,
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",

@@ -16,11 +16,13 @@ import {
   LogOut,
   Send,
   Search,
+  UploadCloudIcon,
 } from "lucide-react";
 import Nav from "@/components/nav";
 import { Children, ReactNode, Suspense, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
+import { useQueryState } from "nuqs";
 
 export function Wrapper({
   defaultLayout,
@@ -36,13 +38,14 @@ export function Wrapper({
   secondPanel: ReactNode;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const [upload] = useQueryState("upload");
   const pathname = usePathname();
 
   const routeToLinkVariant: any = {
     "/": "Submit",
     "/CreateRequest": "Request",
     "/Submit": "Submit",
-    "/Home": "Chat",
+    "/Chat": "Chat",
   };
 
   const getLinkVariant = (title: string) => {
@@ -61,7 +64,7 @@ export function Wrapper({
         className="h-full  items-stretch "
       >
         <ResizablePanel
-          defaultSize={defaultLayout[0]}
+          defaultSize={(defaultLayout && defaultLayout[0]) || 20}
           collapsedSize={navCollapsedSize}
           collapsible={true}
           minSize={15}
@@ -89,7 +92,7 @@ export function Wrapper({
               },
               {
                 title: "Submit",
-                icon: FileUp,
+                icon: UploadCloudIcon,
                 variant: getLinkVariant("Submit"),
                 href: "/Submit",
               },
@@ -97,21 +100,24 @@ export function Wrapper({
                 title: "Chat",
                 icon: MessageCircle,
                 variant: getLinkVariant("Chat"),
-                href: "/Home",
+                href: "/Chat",
               },
             ]}
           />
         </ResizablePanel>
 
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[1]) || 40}
+          minSize={30}
+        >
           <div className="max-h-[800px] h-full flex-1 flex-col p-6  md:flex overflow-y-scroll">
             <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[2]}>
-          {secondPanel}
+        <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50}>
+          <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
