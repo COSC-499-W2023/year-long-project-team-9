@@ -12,10 +12,12 @@ import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
 import { Suspense, useState } from "react";
 import { Archive, Trash2, ArrowLeft, LucideUploadCloud } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, formatDistance } from "date-fns";
 import { Progress } from "@/components/ui/progress";
+import Upload from "./upload"
+import { upload } from "@/app/functions/upload";
 
-export default function RequestDisplay({
+export default function SubmiDisplay({
   requests,
   searchParams,
   submissions,
@@ -72,44 +74,7 @@ export default function RequestDisplay({
           </div>
         }
       >
-        <div className="flex h-full flex-col p-10 space-y-5">
-          <Progress className="my-5" value={10} />
-          <div className="flex flex-col h-full w-full  ">
-            <div className="bg-accent w-full h-full max-h-[80%]  shadow-sm flex flex-col justify-evenly items-center space-y-3 rounded-lg border ">
-              <LucideUploadCloud className="w-48 h-48" />
-
-              <div className="flex justify-center w-full">
-                <Label htmlFor="video" className=" text-center text-lg">
-                  No file selected
-                </Label>
-              </div>
-              <input id="file-input" type="file" style={{ display: "none" }} />
-
-              <div className="grid grid-cols-2 gap-10">
-                <input
-                  id="file-input"
-                  type="file"
-                  style={{ display: "none" }}
-                />
-
-                <div className="justify-self-start">
-                  <Button>Upload</Button>
-                </div>
-                <div className="justify-self-end">
-                  <Button>Record</Button>
-                </div>
-              </div>
-              <Separator className="border bg-accent" />
-              <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
-                <div className="font-semibold text-base">
-                  Accepted filetypes:
-                </div>
-
-                <div className="text-sm text-center"> MP4, MOV</div>
-              </div>
-            </div>
-          </div>
-        </div>
+       <Upload/>
       </Suspense>
     </div>
   ) : (
@@ -157,6 +122,7 @@ export default function RequestDisplay({
                   Due{" "}
                   {formatDistanceToNow(new Date(selected.dueDate), {
                     addSuffix: true,
+                    includeSeconds: false,
                   })}
                 </div>
                 <div className="line-clamp-1 text-xs">
@@ -167,7 +133,11 @@ export default function RequestDisplay({
             </div>
             {selected.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {selected?.creationDate.toString()}
+                {/* {formatDistanceToNow(new Date(selected.creationDate), {
+                    addSuffix: true,
+                    includeSeconds: true,
+                  })} */}
+                {selected.creationDate.toString()}
               </div>
             )}
           </div>

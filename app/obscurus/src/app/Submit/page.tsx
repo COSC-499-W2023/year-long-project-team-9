@@ -2,10 +2,10 @@
 import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
-import RequestDisplay from "./components/submit-display";
-import RequestsList from "./components/submit-list";
+import SubmitDisplay from "./components/submit-display";
 import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
+import SubmitList from "./components/submit-list";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -25,8 +25,8 @@ async function Submit() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RequestsList requests={requests} submissions={submissions} />}
-      secondPanel={<RequestDisplay requests={requests} submissions={submissions} />}
+      firstPanel={<SubmitList requests={requests} submissions={submissions} />}
+      secondPanel={<SubmitDisplay requests={requests} submissions={submissions} />}
     />
   );
 }

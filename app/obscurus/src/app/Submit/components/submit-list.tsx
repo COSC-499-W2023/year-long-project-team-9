@@ -24,7 +24,7 @@ interface RequestsListProps {
   isCollapsed?: boolean;
 }
 
-export default function RequestsList({
+export default function SubmitList({
   requests,
   submissions,
 }: RequestsListProps) {
@@ -32,7 +32,6 @@ export default function RequestsList({
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useQueryState("search");
-  const [uploading, setUploading] = useQueryState("upload");
 
   const getAssociatedSubmission = (requestId: string) => {
     return submissions.find((item) => requestId === item.requestId);
