@@ -14,6 +14,7 @@ import { Suspense } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Archive, ArchiveX, Trash2, Clock, Calendar, Reply, ReplyAll, Forward, MoreVertical } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 export default function RequestDisplay({
   requests,
@@ -58,15 +59,15 @@ export default function RequestDisplay({
             </TooltipTrigger>
             <TooltipContent>Archive</TooltipContent>
           </Tooltip>
-          <Tooltip>
+          {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={!selected}>
                 <ArchiveX className="h-4 w-4" />
                 <span className="sr-only">Move to junk</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Move to junk</TooltipContent>
-          </Tooltip>
+            <TooltipContent>Move to archive</TooltipContent>
+          </Tooltip> */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={!selected}>
@@ -76,6 +77,7 @@ export default function RequestDisplay({
             </TooltipTrigger>
             <TooltipContent>Move to trash</TooltipContent>
           </Tooltip>
+          {/*
           <Separator orientation="vertical" className="mx-1 h-6" />
           <Tooltip>
             <Popover>
@@ -97,7 +99,7 @@ export default function RequestDisplay({
                     >
                       Later today{" "}
                       <span className="ml-auto text-muted-foreground">
-                        {/* {format(addHours(today, 4), "E, h:m b")} */}
+                        {/* {format(addHours(today, 4), "E, h:m b")} 
                       </span>
                     </Button>
                     <Button
@@ -106,7 +108,7 @@ export default function RequestDisplay({
                     >
                       Tomorrow
                       <span className="ml-auto text-muted-foreground">
-                        {/* {format(addDays(today, 1), "E, h:m b")} */}
+                        {/* {format(addDays(today, 1), "E, h:m b")} 
                       </span>
                     </Button>
                     <Button
@@ -115,7 +117,7 @@ export default function RequestDisplay({
                     >
                       This weekend
                       <span className="ml-auto text-muted-foreground">
-                        {/* {format(nextSaturday(today), "E, h:m b")} */}
+                        {/* {format(nextSaturday(today), "E, h:m b")} 
                       </span>
                     </Button>
                     <Button
@@ -124,7 +126,7 @@ export default function RequestDisplay({
                     >
                       Next week
                       <span className="ml-auto text-muted-foreground">
-                        {/* {format(addDays(today, 7), "E, h:m b")} */}
+                        {/* {format(addDays(today, 7), "E, h:m b")} 
                       </span>
                     </Button>
                   </div>
@@ -136,9 +138,10 @@ export default function RequestDisplay({
             </Popover>
             <TooltipContent>Snooze</TooltipContent>
           </Tooltip>
+          */}
         </div>
-        <div className="ml-auto flex items-center gap-2">
-          <Tooltip>
+        {/* <div className="ml-auto flex items-center gap-2"> */}
+          {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={!selected}>
                 <Reply className="h-4 w-4" />
@@ -180,7 +183,7 @@ export default function RequestDisplay({
             <DropdownMenuItem>Add label</DropdownMenuItem>
             <DropdownMenuItem>Mute thread</DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
       <Separator />
       {selected ? (
@@ -198,15 +201,18 @@ export default function RequestDisplay({
               </Avatar>
               <div className="grid gap-1">
                 <div className="font-semibold">{selected?.requestTitle}</div>
-                <div className="line-clamp-1 text-xs">{selected?.dueDate.toString()}</div>
+                <div className="line-clamp-1 text-xs">Due{" "}
+                    {formatDistanceToNow(new Date(selected.dueDate), {
+                      addSuffix: true,
+                    })}</div>
                 <div className="line-clamp-1 text-xs">
                   <span className="font-medium">Reply-To:</span> {selected?.requesterEmail}
                 </div>
               </div>
             </div>
-            {selected.dueDate && (
+            {selected.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {selected?.dueDate.toString()}
+                {selected?.creationDate.toString()}
               </div>
             )}
           </div>
@@ -215,9 +221,9 @@ export default function RequestDisplay({
             {selected?.description}
           </div>
           <Separator className="mt-auto" />
-          <div className="p-4">
+          <div className="p-4 flex justify-end w-full">
             <form>
-              <div className="grid gap-4">
+              {/* <div className="grid gap-4">
                 <Textarea
                   className="p-4"
                   placeholder={`Reply ${selected?.requesterEmail}...`}
@@ -229,16 +235,16 @@ export default function RequestDisplay({
                   >
                     <Switch id="mute" aria-label="Mute thread" /> Mute this
                     thread
-                  </Label>
+                  </Label> */}
                   <Button
                     onClick={(e) => e.preventDefault()}
-                    size="sm"
-                    className="ml-auto"
+                    size="lg"
+                    className="mx-auto"
                   >
-                    Send
+                    Upload
                   </Button>
-                </div>
-              </div>
+                {/* </div>
+              </div> */}
             </form>
           </div>
         </div>
