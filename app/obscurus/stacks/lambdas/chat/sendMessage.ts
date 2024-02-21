@@ -18,13 +18,17 @@ export const main: APIGatewayProxyHandler = async (event) => {
     });
 
     // Helper method
-    const postToConnection = async function ({ connectionId }) {
+    const postToConnection = async function ({
+      connectionId,
+    }: {
+      connectionId: string;
+    }) {
       try {
         await apiG
           .postToConnection({ ConnectionId: connectionId, Data: messageData })
           .promise();
       } catch (e) {
-        if (e.statusCode === 410) {
+        if ((e as AWS.AWSError).statusCode === 410) {
           // Remove stale connections
           const staleConnection: ConnectionsType = {
             connectionId: connectionId,

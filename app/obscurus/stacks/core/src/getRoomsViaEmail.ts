@@ -9,8 +9,8 @@ export async function getRoomsViaEmail(payload: any) {
 
   let messages = SQL.DB.selectFrom("messages").selectAll().execute();
 
-  let jsonRooms = {};
-  let jsonMessages = {};
+  let jsonRooms: Record<string, any> = {};
+  let jsonMessages: Record<string, any> = {};
 
   // Adding rooms to the JSON object
   const returnedRooms = await rooms;

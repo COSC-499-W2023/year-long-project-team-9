@@ -23,21 +23,21 @@ async function getRooms(email: string) {
 }
 function createRoomsMap(roomMessageData: {}) {
   const roomsMap = new Map();
-  const roomsLength = Object.keys(roomMessageData.rooms).length;
-  const messagesLength = Object.keys(roomMessageData.messages).length;
-  for (let i = 0; i < roomsLength; i++) {
-    const roomId = roomMessageData.rooms[i].roomId;
-    const roomData = roomMessageData.rooms[i];
-    const roomMessages = {};
-    for (let j = 0; j < messagesLength; j++) {
-      const messageRoomId = roomMessageData.messages[j].roomId;
-      if (messageRoomId === roomId) {
-        roomMessages[roomMessageData.messages[j].messageId] =
-          roomMessageData.messages[j];
-      }
-    }
-    const mapData = {};
-  }
+  // const roomsLength = Object.keys(roomMessageData.rooms).length;
+  // const messagesLength = Object.keys(roomMessageData.messages).length;
+  // for (let i = 0; i < roomsLength; i++) {
+  //   const roomId = roomMessageData.rooms[i].roomId;
+  //   const roomData = roomMessageData.rooms[i];
+  //   const roomMessages = {};
+  //   for (let j = 0; j < messagesLength; j++) {
+  //     const messageRoomId = roomMessageData.messages[j].roomId;
+  //     if (messageRoomId === roomId) {
+  //       roomMessages[roomMessageData.messages[j].messageId] =
+  //         roomMessageData.messages[j];
+  //     }
+  //   }
+  //   const mapData = {};
+  // }
   return roomsMap;
 }
 export default async function ChatPage() {
