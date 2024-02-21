@@ -20,15 +20,7 @@ import {
 import Nav from "@/components/nav";
 import { Children, ReactNode, Suspense, useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import { useMail } from "../components/ui/mail/use-mail";
-import { useRouter } from "next/navigation";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import SubmissionsList from "@/app/Submit/components/submissions-list";
-import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
-import { useSubmission } from "@/components/hooks/use-submission";
-import RequestsList from "./Submit/components/request-list";
-import RequestDisplay from "./Submit/components/request-display";
 
 export function Wrapper({
   defaultLayout,
