@@ -6,7 +6,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/app/functions/utils";
+import { cn } from "@/app/[(email)]/functions/utils";
 import {
   Inbox,
   FileUp,

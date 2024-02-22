@@ -1,4 +1,4 @@
-import { cn } from "@/app/functions/utils"
+import { cn } from "@/app/[(email)]/functions/utils"
 
 function Skeleton({
   className,

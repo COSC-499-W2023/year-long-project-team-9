@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { LucideIcon } from "lucide-react"
 
-import { cn } from "@/app/functions/utils"
+import { cn } from "@/app/[(email)]/functions/utils"
 import { buttonVariants } from "@/components/ui/button"
 import {
   Tooltip,

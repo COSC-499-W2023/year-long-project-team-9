@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "@/app/functions/utils"
+import { cn } from "@/app/[(email)]/functions/utils"
 import {
   Select,
   SelectContent,

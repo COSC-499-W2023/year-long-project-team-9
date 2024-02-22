@@ -2,7 +2,6 @@ export * as Users from "./users";
 
 import { SQL } from "./sql";
 
-
 export function addUser({
   email,
   givenName,
@@ -10,7 +9,8 @@ export function addUser({
   isLoggedInWithSocialIdentityProvider,
   isAdmin,
   profileImage,
-  preference
+  preference,
+  connectionId,
 }: {
   email: string;
   givenName: string;
@@ -19,20 +19,22 @@ export function addUser({
   isAdmin: boolean;
   profileImage: string;
   preference: string;
+  connectionId: string | null;
 }) {
   return SQL.DB.insertInto("users")
     .values({
       email: email,
       givenName: givenName,
       familyName: familyName,
-      isLoggedInWithSocialIdentityProvider: isLoggedInWithSocialIdentityProvider,
+      isLoggedInWithSocialIdentityProvider:
+        isLoggedInWithSocialIdentityProvider,
       isAdmin: isAdmin,
       profileImage: profileImage,
-      preference: preference
+      preference: preference,
+      connectionId: connectionId,
     })
     .execute();
 }
-
 
 export interface Users {
   email: string;

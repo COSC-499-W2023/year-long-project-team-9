@@ -11,6 +11,8 @@ import {
   Cognito,
   Config,
   Queue,
+  Table,
+  WebSocketApi,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 
@@ -38,7 +40,6 @@ export default function SiteStack({ stack }: StackContext) {
       cmd: ["python3", "/var/task/app.py"],
     },
     bind: [inputBucket, outputBucket],
-    permissions: ["s3", rekognitionPolicyStatement],
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
@@ -52,7 +53,7 @@ export default function SiteStack({ stack }: StackContext) {
   //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
-    "USER_POOL_WEB_CLIENT_ID_KEY",
+    "USER_POOL_WEB_CLIENT_ID_KEY"
   );
 
   // Create secret keys
@@ -199,6 +200,15 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "GET /getRoomsViaEmail": {
+        function: {
+          handler: "./stack/lambdas/getRoomsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
 
@@ -226,12 +236,31 @@ export default function SiteStack({ stack }: StackContext) {
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs],
-    permissions: [rekognitionPolicyStatement],
+  // const table = new Table(stack, "Connections", {
+  //   fields: {
+  //     id: "string",
+  //   },
+  //   primaryIndex: { partitionKey: "id" },
+  // });
+
+  const wsApi = new WebSocketApi(stack, "WSApi", {
+    defaults: {
+      function: {
+        bind: [rds],
+      },
+    },
+    routes: {
+      $connect: "./stack/lambdas/chat/connect.main",
+      $disconnect: "./stack/lambdas/chat/disconnect.main",
+      sendmessage: "./stack/lambdas/chat/sendMessage.main",
+    },
   });
 
-  site.attachPermissions([rekognitionPolicyStatement]);
+  api.bind([wsApi]);
+
+  const site = new NextjsSite(stack, "site", {
+    bind: [inputBucket, outputBucket, rds, api, steveJobs, wsApi],
+  });
 
   steveJobs.bind([site]);
 
@@ -241,5 +270,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
+    WebSocketApiEndpoint: wsApi.url,
   });
 }

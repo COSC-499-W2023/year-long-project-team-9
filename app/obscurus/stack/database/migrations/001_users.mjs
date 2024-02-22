@@ -10,11 +10,14 @@ export async function up(db) {
     .addColumn("givenName", "varchar", (col) => col.notNull())
     .addColumn("familyName", "varchar", (col) => col.notNull())
     .addColumn("isLoggedInWithSocialIdentityProvider", "boolean", (col) =>
-      col.notNull().defaultTo(false),
+      col.notNull().defaultTo(false)
     )
     .addColumn("isAdmin", "boolean", (col) => col.notNull().defaultTo(false))
     .addColumn("profileImage", "varchar")
     .addColumn("preference", "varchar", (col) => col.notNull().defaultTo("{}"))
+    .addColumn("connectionId", "varchar", (col) =>
+      col.references("connections.connectionId").defaultTo(null)
+    )
     .execute();
 }
 

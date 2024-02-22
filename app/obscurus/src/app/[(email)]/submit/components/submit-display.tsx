@@ -15,9 +15,9 @@ import { Archive, Trash2, ArrowLeft, LucideUploadCloud } from "lucide-react";
 import { formatDistanceToNow, formatDistance, format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
 import Upload from "./upload";
-import { upload } from "@/app/functions/upload";
-import hello from "@/app/functions/hello";
-import { getRequests } from "@/app/functions/getRequests";
+import { upload } from "@/app/[(email)]/functions/upload";
+import hello from "@/app/[(email)]/functions/hello";
+import { getRequests } from "@/app/[(email)]/functions/getRequests";
 
 export default function SubmiDisplay({
   requests,

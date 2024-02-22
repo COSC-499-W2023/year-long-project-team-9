@@ -1,5 +1,5 @@
 "use client";
-import { upload } from "@/app/functions/upload";
+import { upload } from "@/app/[(email)]/functions/upload";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
