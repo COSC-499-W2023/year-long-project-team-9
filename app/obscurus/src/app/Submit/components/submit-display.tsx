@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Requests, Submissions } from "stacks/core/src/sql.generated";
+import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
 import { Suspense, useState } from "react";
 import { Archive, Trash2, ArrowLeft, LucideUploadCloud } from "lucide-react";
@@ -16,17 +16,21 @@ import { formatDistanceToNow, formatDistance, format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
 import Upload from "./upload";
 import { upload } from "@/app/functions/upload";
+import hello from "@/app/functions/hello";
+import { getRequests } from "@/app/functions/getRequests";
 
 export default function SubmiDisplay({
   requests,
   searchParams,
   submissions,
+  action,
 }: {
   requests: Requests[];
   searchParams?: {
     counter?: string | null[];
   };
   submissions: Submissions[];
+  action: any
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
@@ -144,8 +148,8 @@ export default function SubmiDisplay({
           </div>
           <Separator className="mt-auto" />
           <div className="p-4 flex justify-end w-full">
-            <form onSubmit={() => setUploading("true")}>
-              <Button type="submit" size="lg" className="mx-auto">
+            <form action={action}>
+              <Button type="submit" size="lg" className="mx-auto" value="world">
                 Upload
               </Button>
             </form>

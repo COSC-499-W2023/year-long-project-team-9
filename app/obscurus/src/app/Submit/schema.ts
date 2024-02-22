@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { Status } from "stacks/core/src/types/status";
+import { Status } from "stack/database/src/types/status";
 import { GroupingState } from "@tanstack/react-table";
 
 // We're keeping a simple non-relational schema here.

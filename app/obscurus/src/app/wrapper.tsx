@@ -6,7 +6,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/functions/utils";
 import {
   Inbox,
   FileUp,
@@ -23,6 +23,7 @@ import { Children, ReactNode, Suspense, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
 import { useQueryState } from "nuqs";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function Wrapper({
   defaultLayout,
@@ -43,9 +44,9 @@ export function Wrapper({
 
   const routeToLinkVariant: any = {
     "/": "Submit",
-    "/CreateRequest": "Request",
-    "/Submit": "Submit",
-    "/Chat": "Chat",
+    "/request": "Request",
+    "/submit": "Submit",
+    "/chat": "Chat",
   };
 
   const getLinkVariant = (title: string) => {
@@ -53,7 +54,8 @@ export function Wrapper({
     return routeToLinkVariant[currentRoute] === title ? "default" : "ghost";
   };
   return (
-    <TooltipProvider delayDuration={0}>
+    <Suspense fallback={<Skeleton className="w-full h-full p-24" />}>
+        <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
@@ -112,15 +114,17 @@ export function Wrapper({
           minSize={30}
         >
           <div className="max-h-[800px] h-full flex-1 flex-col p-6  md:flex overflow-y-scroll">
-            <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
+            <Suspense fallback={<Skeleton className="flex h-full flex-col min-h-full"/>}>{firstPanel}</Suspense>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50}>
-          <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
+          <Suspense fallback={<Skeleton className="flex h-full flex-col min-h-full"/>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
+    </Suspense>
+    
   );
 }
 

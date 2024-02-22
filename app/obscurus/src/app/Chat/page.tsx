@@ -1,11 +1,11 @@
 "use server";
-import { Requests, Submissions } from "stacks/core/src/sql.generated";
+import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
-import SubmitDisplay from "../Submit/components/submit-display";
+import SubmitDisplay from "../submit/components/submit-display";
 import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
-import SubmitList from "../Submit/components/submit-list";
+import SubmitList from "../submit/components/submit-list";
 
 async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -26,7 +26,7 @@ async function Chat() {
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={<SubmitList requests={requests} submissions={submissions} />}
-      secondPanel={<SubmitDisplay requests={requests} submissions={submissions} />}
+      secondPanel={<SubmitDisplay requests={requests} submissions={submissions} action={null}/>}
     />
   );
 }

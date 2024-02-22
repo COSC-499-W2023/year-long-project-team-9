@@ -1,5 +1,5 @@
 "use server";
-import { Requests, Submissions } from "stacks/core/src/sql.generated";
+import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
 import SubmitDisplay from "./components/submit-display";
@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
 import SubmitList from "./components/submit-list";
 import { Suspense } from "react";
+import hello from "../functions/hello";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -30,7 +31,7 @@ async function Submit() {
           <SubmitList requests={requests} submissions={submissions} />
         }
         secondPanel={
-          <SubmitDisplay requests={requests} submissions={submissions} />
+          <SubmitDisplay requests={requests} submissions={submissions} action={hello} />
         }
       />
   );
