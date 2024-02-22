@@ -1,5 +1,4 @@
 "use server";
-// IMPORTS
 import { cookies } from "next/headers";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import Wrapper from "../wrapper";
@@ -8,23 +7,17 @@ import ChatDisplay from "./components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 
-// CONSTRUCTS
 const userEmail = "imightbejan@gmail.com";
 
-// FUNCTIONS
 async function Chat() {
-  // Saving layout from cookies
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
-  // console.log("Layout", layout);
-  // console.log("Collapsed", collapsed?.value);
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  // Getting room and message data
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const messages: Messages[] = await getMessages();
 
@@ -48,7 +41,6 @@ async function Chat() {
     });
   }
 
-  // Return function
   return (
     <Wrapper
       defaultLayout={defaultLayout}
@@ -60,5 +52,4 @@ async function Chat() {
   );
 }
 
-// EXPORT
 export default Chat;

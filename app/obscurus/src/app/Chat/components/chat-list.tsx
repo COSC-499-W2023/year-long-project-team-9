@@ -1,18 +1,13 @@
 "use client";
-// IMPORTS
 import { useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/lib/utils";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
-import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
-import Nav from "../../../components/nav";
-import { request } from "@playwright/test";
 import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 
-// CONSTRUCTS
 const userEmail = "imightbejan@gmail.com";
 interface ChatsListProps {
   rooms: Rooms[];
@@ -20,7 +15,6 @@ interface ChatsListProps {
   isCollapsed?: boolean;
 }
 
-// FUNCTIONS
 export default function ChatList({ rooms, messages }: ChatsListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
