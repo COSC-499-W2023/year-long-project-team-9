@@ -93,14 +93,14 @@ export default function ChatList({ rooms, messages }: ChatsListProps) {
                 <div className="flex items-center gap-2 w-full h-full">
                   <div className="font-semibold">
                     {item.participant1Email === userEmail
-                      ? item.participant1RoomGivenName +
-                          " " +
-                          item.participant1RoomFamilyName ||
-                        item.participant1Email
-                      : item.participant2RoomGivenName +
+                      ? item.participant2RoomGivenName +
                           " " +
                           item.participant2RoomFamilyName ||
-                        item.participant2Email}
+                        item.participant2Email
+                      : item.participant1RoomGivenName +
+                          " " +
+                          item.participant1RoomFamilyName ||
+                        item.participant1Email}
                   </div>
                 </div>
 
