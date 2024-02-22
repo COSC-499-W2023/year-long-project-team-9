@@ -1,10 +1,11 @@
 "use client";
 // IMPORTS
+import { useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/lib/utils";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useRouter } from "next/navigation";
-import { Filter, Search, Send, SortAscIcon, SortDescIcon } from "lucide-react";
+import { Search } from "lucide-react";
 import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
 import {} from "@radix-ui/react-tabs";
@@ -37,6 +38,26 @@ export default function ChatList({ rooms, messages }: ChatsListProps) {
     );
     return roomMessages[roomMessages.length - 1];
   };
+
+  const sortRooms = () => {
+    if (rooms != undefined) {
+      rooms.sort((a, b) => {
+        const dateA = getLatestMessage(a)
+          ? new Date(getLatestMessage(a).creationDate)
+          : new Date(0);
+        const dateB = getLatestMessage(b)
+          ? new Date(getLatestMessage(b).creationDate)
+          : new Date(0);
+        return dateB.getTime() - dateA.getTime();
+      });
+    }
+  };
+
+  useEffect(() => {
+    sortRooms();
+    !roomId && setRoomId(rooms[0].roomId);
+  }),
+    [];
 
   return rooms ? (
     <div>
