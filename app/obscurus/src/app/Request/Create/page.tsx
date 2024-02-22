@@ -3,6 +3,7 @@ import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import Wrapper from "@/app/wrapper";
+import CreateForm from "./components/create-form";
 
 async function Create() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -20,7 +21,7 @@ async function Create() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<p>Hello world</p>}
+      firstPanel={<CreateForm />}
       secondPanel={<p>Hello world</p>}
     />
   );

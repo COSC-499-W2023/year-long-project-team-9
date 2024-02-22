@@ -3,6 +3,7 @@ import { Requests, Submissions } from "stacks/core/src/sql.generated";
 import { cookies } from "next/headers";
 import Wrapper from "../wrapper";
 import { Suspense } from "react";
+import RequestList from "./components/request-list";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -20,7 +21,7 @@ async function Request() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<p>Hello world</p>}
+      firstPanel={<RequestList />}
       secondPanel={<p>Hello world</p>}
     />
   );

@@ -3,7 +3,7 @@ import { Inbox } from "lucide-react";
 
 export default function CreateHeader() {
   return (
-    <div className="flex items-center px-4 py-2">
+    <div className="flex items-center">
       <div className="font-semibold text-xl">Request</div>
       <div className="ml-auto">
         <a href="/Request">
