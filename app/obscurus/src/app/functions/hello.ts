@@ -1,8 +1,9 @@
 "use server"
+import { Api } from "sst/node/api"
 const hello = async(e: any) => {
-    e ? console.log(e) : console.log("No e")
-    console.log("hello")
-    return "hello"
+    const url = Api.Api.url
+    console.log(url)
+    return url
 }
 
 
