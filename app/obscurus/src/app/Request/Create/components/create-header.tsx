@@ -8,7 +8,7 @@ export default function CreateHeader() {
       <div className="flex items-center">
         <div className="font-semibold text-xl">Create Request</div>
         <div className="ml-auto">
-          <a href="/Request">
+          <a href="/request">
             <Button variant="ghost">
               <Inbox className="mr-2 h-4 w-4" />
               Request
