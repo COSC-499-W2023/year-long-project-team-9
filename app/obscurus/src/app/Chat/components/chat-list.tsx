@@ -71,61 +71,62 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
           </div>
         </form>
       </div>
+      <ScrollArea>
+        <div className="flex flex-col gap-2 p-4 pt-0 h-full">
+          {rooms.map((item) => (
+            <button
+              key={item.roomId}
+              className={cn(
+                "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
+                roomId === item.roomId && "bg-muted"
+              )}
+              onClick={() => handleClick(item)}
+            >
+              <div className="flex w-full flex-col gap-1">
+                <div className="flex items-center w-full justify-between">
+                  <div className="flex items-center gap-2 w-full h-full">
+                    <div className="font-semibold">
+                      {item.participant1Email === userEmail
+                        ? item.participant2RoomGivenName +
+                            " " +
+                            item.participant2RoomFamilyName ||
+                          item.participant2Email
+                        : item.participant1RoomGivenName +
+                            " " +
+                            item.participant1RoomFamilyName ||
+                          item.participant1Email}
+                    </div>
+                  </div>
 
-      <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-        {rooms.map((item) => (
-          <button
-            key={item.roomId}
-            className={cn(
-              "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              roomId === item.roomId && "bg-muted"
-            )}
-            onClick={() => handleClick(item)}
-          >
-            <div className="flex w-full flex-col gap-1">
-              <div className="flex items-center w-full justify-between">
-                <div className="flex items-center gap-2 w-full h-full">
-                  <div className="font-semibold">
-                    {item.participant1Email === userEmail
-                      ? item.participant2RoomGivenName +
-                          " " +
-                          item.participant2RoomFamilyName ||
-                        item.participant2Email
-                      : item.participant1RoomGivenName +
-                          " " +
-                          item.participant1RoomFamilyName ||
-                        item.participant1Email}
+                  <div
+                    className={cn(
+                      "ml-auto text-xs w-full flex justify-end",
+                      roomId === item.roomId
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {" "}
+                    {getLatestMessage(item) != undefined &&
+                      formatDistanceToNow(
+                        new Date(getLatestMessage(item)?.creationDate),
+                        {
+                          addSuffix: true,
+                        }
+                      )}
+                    {getLatestMessage(item) === undefined && "N/A"}
                   </div>
                 </div>
-
-                <div
-                  className={cn(
-                    "ml-auto text-xs w-full flex justify-end",
-                    roomId === item.roomId
-                      ? "text-foreground"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  {" "}
-                  {getLatestMessage(item) != undefined &&
-                    formatDistanceToNow(
-                      new Date(getLatestMessage(item)?.creationDate),
-                      {
-                        addSuffix: true,
-                      }
-                    )}
-                  {getLatestMessage(item) === undefined && "N/A"}
-                </div>
               </div>
-            </div>
-            <div className="line-clamp-2 text-xs text-muted-foreground">
-              {getLatestMessage(item) != undefined &&
-                getLatestMessage(item).messageContent?.substring(0, 300)}
-              {getLatestMessage(item) === undefined && "No Message History"}
-            </div>
-          </button>
-        ))}
-      </div>
+              <div className="line-clamp-2 text-xs text-muted-foreground">
+                {getLatestMessage(item) != undefined &&
+                  getLatestMessage(item).messageContent?.substring(0, 300)}
+                {getLatestMessage(item) === undefined && "No Message History"}
+              </div>
+            </button>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   ) : (
     <div>Failed to load data....</div>

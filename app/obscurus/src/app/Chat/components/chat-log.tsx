@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -38,6 +39,9 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
       </ScrollArea>
       <div className="flex mr-3 ml-3">
         <Input placeholder="Type Your Message" className=""></Input>
+        <Button>
+          <Send></Send>
+        </Button>
       </div>
     </div>
   ) : (

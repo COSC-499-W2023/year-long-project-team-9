@@ -6,6 +6,7 @@ import ChatList from "./components/chat-list";
 import ChatDisplay from "./components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
+import MessagesChat from "@/components/messages";
 
 const userEmail = "imightbejan@gmail.com";
 
@@ -47,7 +48,7 @@ async function Chat() {
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={<ChatList rooms={rooms} messages={messages} />}
-      secondPanel={<ChatDisplay rooms={rooms} messages={messages} />}
+      secondPanel={<MessagesChat />}
     />
   );
 }
