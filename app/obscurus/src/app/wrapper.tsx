@@ -43,9 +43,15 @@ export function Wrapper({
 
   const routeToLinkVariant: any = {
     "/": "Submit",
+<<<<<<< Updated upstream
     "/CreateRequest": "Request",
     "/Submit": "Submit",
     "/Chat": "Chat",
+=======
+    "/my-request": "Request",
+    "/submit": "Submit",
+    "/chat": "Chat",
+>>>>>>> Stashed changes
   };
 
   const getLinkVariant = (title: string) => {

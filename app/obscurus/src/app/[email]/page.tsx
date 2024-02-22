@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { redirect } from "next/navigation"
 
 async function GenerateDashboard({ params }: { params: { email: string } }) {
@@ -7,3 +8,14 @@ async function GenerateDashboard({ params }: { params: { email: string } }) {
 }
 
 export default GenerateDashboard
+=======
+import { redirect } from "next/navigation";
+import Submit from "../submit/page";
+
+async function GenerateDashboard({ params }: { params: { email: string } }) {
+  console.log("Email", params.email);
+  return <Submit />;
+}
+
+export default GenerateDashboard;
+>>>>>>> Stashed changes
