@@ -1,5 +1,5 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { getRoomsViaEmail } from "../core/src/getRoomsViaEmail";
+import { getRoomsViaEmail } from "@obscurus/database/src/getRoomsViaEmail";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   // the data passed in the wrapper function

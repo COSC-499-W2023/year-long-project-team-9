@@ -2,18 +2,18 @@
 import { ComponentProps, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
-import { cn } from "@/app/[(email)]/functions/utils";
+import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useRouter } from "next/navigation";
 import { Filter, Search, Send, SortAscIcon, SortDescIcon } from "lucide-react";
-import Nav from "../../../../components/nav";
+import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import {} from "@radix-ui/react-tabs";
-import { Input } from "../../../../components/ui/input";
+import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { TabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {

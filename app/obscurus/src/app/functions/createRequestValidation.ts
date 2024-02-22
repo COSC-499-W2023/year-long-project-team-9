@@ -1,5 +1,5 @@
 import { isEmailValid } from "./regular-expression/emailRegularExpression";
-import { formSchema } from "../../../components/CreateRequest";
+import { formSchema } from "../../components/CreateRequest";
 
 export function createRequestValidation(data: formSchema): boolean {
   // checking if data is a valid formSchema type

@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { Connections } from "../../core/src/connections";
-import { Connections as ConnectionsType } from "../../core/src/sql.generated";
+import { Connections } from "@obscurus/database/src/connections";
+import { Connections as ConnectionsType } from "@obscurus/database/src/sql.generated";
 
 export const main: APIGatewayProxyHandler = async (event) => {
   if (event.requestContext != undefined) {

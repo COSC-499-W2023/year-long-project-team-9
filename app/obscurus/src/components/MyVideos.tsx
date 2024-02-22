@@ -1,4 +1,4 @@
-import VideoPlayer from "../app/[(email)]/submit/components/VideoPlayer";
+import VideoPlayer from "../app/submit/components/VideoPlayer";
 
 
 

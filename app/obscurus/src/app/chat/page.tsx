@@ -1,22 +1,14 @@
 "use server";
-<<<<<<< HEAD
-import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { getSubmissions } from "../functions/getSubmissions";
-import { getRequests } from "../functions/getRequests";
-import SubmitDisplay from "../submit/components/submit-display";
-import { cookies } from "next/headers";
-=======
 // IMPORTS
 import { Api } from "sst/node/api";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
-import { Requests, Submissions } from "stacks/core/src/sql.generated";
+import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
-import SubmitDisplay from "../Submit/components/submit-display";
->>>>>>> develop
-import Wrapper from "../../wrapper";
+import SubmitDisplay from "../submit/components/submit-display";
+import Wrapper from "../wrapper";
 import SubmitList from "../submit/components/submit-list";
 
 // CONSTRUCTS
@@ -62,15 +54,6 @@ export default async function ChatPage() {
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
-<<<<<<< HEAD
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<SubmitList requests={requests} submissions={submissions} />}
-      secondPanel={<SubmitDisplay requests={requests} submissions={submissions} action={null}/>}
-    />
-=======
     <>
       <ResizablePanel defaultSize={50}>
         <div className=" h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -98,6 +81,5 @@ export default async function ChatPage() {
         </div>
       </ResizablePanel>
     </>
->>>>>>> develop
   );
 }

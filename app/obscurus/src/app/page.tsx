@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import Submit from "./[(email)]/submit/page";
+import Submit from "./submit/page";
 
 async function getUserEmail() {
   //...

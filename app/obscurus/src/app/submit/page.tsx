@@ -4,7 +4,7 @@ import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
 import SubmitDisplay from "./components/submit-display";
 import { cookies } from "next/headers";
-import Wrapper from "../../wrapper";
+import Wrapper from "../wrapper";
 import SubmitList from "./components/submit-list";
 import { Suspense } from "react";
 import hello from "../functions/hello";
