@@ -36,8 +36,8 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
           ))}
         </div>
       </ScrollArea>
-      <div className="align-bottom">
-        <Input></Input>
+      <div className="flex mr-3 ml-3">
+        <Input placeholder="Type Your Message" className=""></Input>
       </div>
     </div>
   ) : (
