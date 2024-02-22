@@ -25,7 +25,7 @@ import { MailDisplay } from "./mail-display";
 import { Nav } from "./nav";
 import { Mail } from "../data";
 import { useMail } from "../use-mail";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/functions/utils";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

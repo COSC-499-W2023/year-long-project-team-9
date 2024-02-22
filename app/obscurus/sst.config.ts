@@ -1,5 +1,5 @@
 import { SSTConfig } from "sst";
-import SiteStack from "./stacks/SiteStack";
+import SiteStack from "./stack/SiteStack";
 
 export default {
   config(_input) {

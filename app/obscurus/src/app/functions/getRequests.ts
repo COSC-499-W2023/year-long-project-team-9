@@ -1,3 +1,4 @@
+"use server"
 import { Api } from "sst/node/api";
 
 export async function getRequests() {
