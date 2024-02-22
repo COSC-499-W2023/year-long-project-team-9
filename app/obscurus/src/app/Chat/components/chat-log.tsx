@@ -1,11 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { ArrowUpCircle } from "lucide-react";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
@@ -40,14 +39,13 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
           </div>
         ))}
       </ScrollArea>
-      <div className="flex mr-3 ml-3">
-        <Textarea
-          id="textbox"
+      <div className="flex mr-3 ml-3 mb-6 mt-4">
+        <Input
           className="items-end resize-none "
           placeholder="Send Message"
-        ></Textarea>{" "}
-        <Button>
-          <Send></Send>
+        ></Input>
+        <Button variant="ghost">
+          <ArrowUpCircle></ArrowUpCircle>
         </Button>
       </div>
     </div>

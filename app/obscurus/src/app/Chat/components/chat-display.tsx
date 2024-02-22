@@ -47,7 +47,7 @@ export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">
-      <div className="flex flex-row items-center justify-center p-2">
+      <div className="flex flex-row items-center justify-left p-4">
         <Avatar>
           <AvatarImage alt={otherUserName} />
           <AvatarFallback>
@@ -59,7 +59,7 @@ export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
         </Avatar>
         <div className="pl-2 flex flex-col">
           <div className="text-2x1 font-semibold">{otherUserName}</div>
-          <div>{otherEmail}</div>
+          <div className="text-xs text-muted-foreground">{otherEmail}</div>
         </div>
       </div>
       <Separator />
