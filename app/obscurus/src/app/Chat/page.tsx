@@ -1,15 +1,10 @@
 "use server";
 // IMPORTS
-import { Api } from "sst/node/api";
 import { cookies } from "next/headers";
-import { Suspense } from "react";
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
-import { getSubmissions } from "../functions/getSubmissions";
-import { getRequests } from "../functions/getRequests";
-import SubmitDisplay from "../Submit/components/submit-display";
 import Wrapper from "../wrapper";
-import ChatList from "../Chat/components/chat-list";
+import ChatList from "./components/chat-list";
+import ChatDisplay from "./components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 
@@ -60,7 +55,7 @@ async function Chat() {
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={<ChatList rooms={rooms} messages={messages} />}
-      secondPanel={""}
+      secondPanel={<ChatDisplay rooms={rooms} messages={messages} />}
     />
   );
 }

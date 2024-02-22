@@ -22,7 +22,6 @@ interface ChatsListProps {
 
 // FUNCTIONS
 export default function ChatList({ rooms, messages }: ChatsListProps) {
-  const router = useRouter();
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
