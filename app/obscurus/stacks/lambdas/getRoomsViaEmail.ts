@@ -3,8 +3,6 @@ import { getRoomsViaEmail } from "../core/src/rooms";
 import { Rooms as RoomsType } from "../core/src/sql.generated";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
-  // the data passed in the wrapper function
-  console.log(event);
   if (event.queryStringParameters != undefined) {
     const rooms: RoomsType[] = await getRoomsViaEmail(
       event.queryStringParameters.email

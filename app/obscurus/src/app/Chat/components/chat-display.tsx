@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { Suspense } from "react";
+import ChatLog from "./chat-log";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatDisplayProps {
@@ -53,7 +54,9 @@ export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
             Loading...
           </div>
         }
-      ></Suspense>
+      >
+        <ChatLog room={selected} messages={messages} />
+      </Suspense>
     </div>
   ) : (
     <div>Failed to load data....</div>

@@ -1,10 +1,7 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useQueryState } from "nuqs";
-import { Suspense } from "react";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
@@ -12,7 +9,7 @@ interface ChatLogProps {
   messages: Messages[];
 }
 
-export default function ChatDisplay({ room, messages }: ChatLogProps) {
+export default function ChatLog({ room, messages }: ChatLogProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
   if (!roomId) {
