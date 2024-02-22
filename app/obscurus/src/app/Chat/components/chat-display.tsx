@@ -32,10 +32,22 @@ export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
       " " +
       selected.participant1RoomFamilyName;
   }
+  var otherEmail = "";
+  if (
+    selected?.participant1Email === userEmail &&
+    selected?.participant2Email != null
+  ) {
+    otherEmail = selected.participant2Email;
+  } else if (
+    selected?.participant2Email === userEmail &&
+    selected?.participant1Email != null
+  ) {
+    otherUserName = selected.participant1Email;
+  }
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">
-      <div className="flex flex-col items-center justify-center p-2">
+      <div className="flex flex-row items-center justify-center p-2">
         <Avatar>
           <AvatarImage alt={otherUserName} />
           <AvatarFallback>
@@ -45,7 +57,10 @@ export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
               .join("")}
           </AvatarFallback>
         </Avatar>
-        <div className="font-semibold">{otherUserName}</div>
+        <div className="pl-2 flex flex-col">
+          <div className="text-2x1 font-semibold">{otherUserName}</div>
+          <div>{otherEmail}</div>
+        </div>
       </div>
       <Separator />
       <Suspense

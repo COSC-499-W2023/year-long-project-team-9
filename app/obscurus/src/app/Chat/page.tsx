@@ -48,7 +48,8 @@ async function Chat() {
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={<ChatList rooms={rooms} messages={messages} />}
-      secondPanel={<MessagesChat />}
+      secondPanel={<ChatDisplay rooms={rooms} messages={messages} />}
+      // secondPanel={<MessagesChat />}
     />
   );
 }
