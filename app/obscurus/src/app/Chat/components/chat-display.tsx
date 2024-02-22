@@ -47,7 +47,7 @@ export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
         </Avatar>
         <div className="font-semibold">{otherUserName}</div>
       </div>
-      <Separator />
+      <Separator className="mb-5" />
       <Suspense
         fallback={
           <div className="w-full h-full flex items-center justify-center">
