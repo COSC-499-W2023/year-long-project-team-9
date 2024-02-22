@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
@@ -17,7 +18,7 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
   const roomMessages = getRoomMessages();
   return room ? (
     <div className="flex h-full flex-col min-h-full">
-      <ScrollArea>
+      <ScrollArea className="mb-4 mt-4">
         <div className="flex flex-col">
           {roomMessages.map((message) => (
             <div>
@@ -35,6 +36,9 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
           ))}
         </div>
       </ScrollArea>
+      <div className="align-bottom">
+        <Input></Input>
+      </div>
     </div>
   ) : (
     <div>Failed to load data....</div>
