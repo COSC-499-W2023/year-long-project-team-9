@@ -1,15 +1,16 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import Submit from "./Submit/page";
+import Submit from "./submit/page";
 
 async function getUserEmail() {
   //...
 }
 
-async function Page() {
+async function Index() {
   const userEmail = "imightbejan@gmail.com"; //getUserEmail();
 
-  redirect("/Submit")
+  redirect(`/submit`)
 }
 
-export default Page;
+
+export default Index;
