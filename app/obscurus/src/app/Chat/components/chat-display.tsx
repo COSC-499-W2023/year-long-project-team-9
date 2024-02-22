@@ -1,24 +1,18 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Rooms, Messages } from "stacks/core/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { Suspense } from "react";
-import { formatDistanceToNow, formatDistance, format } from "date-fns";
 
 const userEmail = "imightbejan@gmail.com";
-interface ChatsDisplayProps {
+interface ChatDisplayProps {
   rooms: Rooms[];
   messages: Messages[];
 }
 
-export default function ChatDisplay({ rooms, messages }: ChatsDisplayProps) {
+export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [upload, setUpload] = useQueryState("upload");
-  const [showVideos, setShowVideos] = useQueryState("showVideos");
-  const [uploading, setUploading] = useQueryState("upload");
 
   if (!roomId) {
     setRoomId(rooms[0].roomId);

@@ -9,13 +9,13 @@ import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 
 const userEmail = "imightbejan@gmail.com";
-interface ChatsListProps {
+interface ChatListProps {
   rooms: Rooms[];
   messages: Messages[];
   isCollapsed?: boolean;
 }
 
-export default function ChatList({ rooms, messages }: ChatsListProps) {
+export default function ChatList({ rooms, messages }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
