@@ -23,7 +23,6 @@ export default function ChatDisplay({ rooms, messages }: ChatsDisplayProps) {
   if (!roomId) {
     setRoomId(rooms[0].roomId);
   }
-  console.log("RoomId", roomId);
 
   const selected = rooms.find((item) => item.roomId === roomId);
   var otherUserName = "";
@@ -38,7 +37,6 @@ export default function ChatDisplay({ rooms, messages }: ChatsDisplayProps) {
       " " +
       selected.participant1RoomFamilyName;
   }
-  console.log("Selected room to display", selected);
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">
