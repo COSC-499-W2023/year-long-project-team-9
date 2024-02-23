@@ -6,7 +6,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/functions/utils";
 import {
   Inbox,
   FileUp,
@@ -43,9 +43,9 @@ export function Wrapper({
 
   const routeToLinkVariant: any = {
     "/": "Submit",
-    "/CreateRequest": "Request",
-    "/Submit": "Submit",
-    "/Chat": "Chat",
+    "/my-request": "Request",
+    "/submit": "Submit",
+    "/chat": "Chat",
   };
 
   const getLinkVariant = (title: string) => {
@@ -88,19 +88,19 @@ export function Wrapper({
                 title: "Request",
                 icon: Inbox,
                 variant: getLinkVariant("Request"),
-                href: "/CreateRequest",
+                href: "/my-request",
               },
               {
                 title: "Submit",
                 icon: UploadCloudIcon,
                 variant: getLinkVariant("Submit"),
-                href: "/Submit",
+                href: "/submit",
               },
               {
                 title: "Chat",
                 icon: MessageCircle,
                 variant: getLinkVariant("Chat"),
-                href: "/Chat",
+                href: "/chat",
               },
             ]}
           />
