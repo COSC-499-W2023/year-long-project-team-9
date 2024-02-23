@@ -8,6 +8,7 @@ import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
@@ -47,6 +48,18 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
     }
   };
 
+  const getOtherParticipantName = (item: Rooms) => {
+    if (item.participant1Email === userEmail) {
+      return (
+        item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
+      );
+    } else {
+      return (
+        item.participant1RoomGivenName + " " + item.participant1RoomFamilyName
+      );
+    }
+  };
+
   useEffect(() => {
     sortRooms();
     !roomId && setRoomId(rooms[0].roomId);
@@ -82,46 +95,52 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
               )}
               onClick={() => handleClick(item)}
             >
-              <div className="flex w-full flex-col gap-1">
-                <div className="flex items-center w-full justify-between">
-                  <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold">
-                      {item.participant1Email === userEmail
-                        ? item.participant2RoomGivenName +
-                            " " +
-                            item.participant2RoomFamilyName ||
-                          item.participant2Email
-                        : item.participant1RoomGivenName +
-                            " " +
-                            item.participant1RoomFamilyName ||
-                          item.participant1Email}
+              <div className="flex flex-row gap-2 w-full">
+                <Avatar>
+                  <AvatarImage alt={getOtherParticipantName(item)} />
+                  <AvatarFallback>
+                    {getOtherParticipantName(item)
+                      .split(" ")
+                      .map((chunk) => chunk[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col w-full">
+                  <div className="flex flex-col">
+                    <div className="flex flex-row">
+                      <div className="flex items-center gap-2 w-full h-full">
+                        <div className="font-semibold">
+                          {getOtherParticipantName(item)}
+                        </div>
+                      </div>
+
+                      <div
+                        className={cn(
+                          "ml-auto text-xs w-full flex justify-end",
+                          roomId === item.roomId
+                            ? "text-foreground"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {" "}
+                        {getLatestMessage(item) != undefined &&
+                          formatDistanceToNow(
+                            new Date(getLatestMessage(item)?.creationDate),
+                            {
+                              addSuffix: true,
+                            }
+                          )}
+                        {getLatestMessage(item) === undefined && "N/A"}
+                      </div>
                     </div>
                   </div>
-
-                  <div
-                    className={cn(
-                      "ml-auto text-xs w-full flex justify-end",
-                      roomId === item.roomId
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    {" "}
+                  <div className="line-clamp-2 text-xs text-muted-foreground">
                     {getLatestMessage(item) != undefined &&
-                      formatDistanceToNow(
-                        new Date(getLatestMessage(item)?.creationDate),
-                        {
-                          addSuffix: true,
-                        }
-                      )}
-                    {getLatestMessage(item) === undefined && "N/A"}
+                      getLatestMessage(item).messageContent?.substring(0, 300)}
+                    {getLatestMessage(item) === undefined &&
+                      "No Message History"}
                   </div>
                 </div>
-              </div>
-              <div className="line-clamp-2 text-xs text-muted-foreground">
-                {getLatestMessage(item) != undefined &&
-                  getLatestMessage(item).messageContent?.substring(0, 300)}
-                {getLatestMessage(item) === undefined && "No Message History"}
               </div>
             </button>
           ))}
