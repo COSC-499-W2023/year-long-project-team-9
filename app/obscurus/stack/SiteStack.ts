@@ -211,7 +211,7 @@ export default function SiteStack({ stack }: StackContext) {
       },
       "GET /getMessages": {
         function: {
-          handler: "./stacks/lambdas/listMessages.handler",
+          handler: "./stack/lambdas/listMessages.handler",
           timeout: 20,
           permissions: [rds],
           bind: [rds],
