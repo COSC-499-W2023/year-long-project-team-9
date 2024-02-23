@@ -9,7 +9,7 @@ async function getUserEmail() {
 async function Page() {
   const userEmail = "imightbejan@gmail.com"; //getUserEmail();
 
-  redirect(`/${userEmail}`)
+  redirect(`/submit`)
 }
 
 export default Page;
