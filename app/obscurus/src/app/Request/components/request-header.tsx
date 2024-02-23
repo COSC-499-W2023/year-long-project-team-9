@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@radix-ui/react-separator";
-import { PencilLine } from "lucide-react";
+import { Send } from "lucide-react";
 
 export default function RequestHeader() {
   return (
@@ -12,7 +12,7 @@ export default function RequestHeader() {
         <div className="ml-auto">
           <a href="/request/create">
             <Button variant="ghost">
-              <PencilLine className="mr-2 h-4 w-4" />
+              <Send className="mr-2 h-4 w-4" />
               Create
             </Button>
           </a>
