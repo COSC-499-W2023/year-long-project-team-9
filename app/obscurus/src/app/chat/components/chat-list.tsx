@@ -66,27 +66,18 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
   }),
     [];
 
-  return rooms ? (
-    <div>
-      <div className="flex items-center px-4">
-        <h1 className="text-xl font-bold">Chats</h1>
-      </div>
-      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <form>
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={search || "Search"}
-              className="pl-8"
-              onChange={(e) => setSearch(e.target.value || null)}
-              value={search || undefined}
-            />
-          </div>
-        </form>
-      </div>
+  const tabContent = () => {
+    const filteredRooms = rooms.filter((filRoom) => {
+      const searchTerm = search?.toLowerCase();
+      const matchesSearch =
+        !searchTerm ||
+        getOtherParticipantName(filRoom).toLowerCase().includes(searchTerm);
+      return matchesSearch;
+    });
+    return (
       <ScrollArea>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-          {rooms.map((item) => (
+          {filteredRooms.map((item) => (
             <button
               key={item.roomId}
               className={cn(
@@ -146,6 +137,28 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
           ))}
         </div>
       </ScrollArea>
+    );
+  };
+
+  return rooms ? (
+    <div>
+      <div className="flex items-center px-4">
+        <h1 className="text-xl font-bold">Chats</h1>
+      </div>
+      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <form>
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder={search || "Search"}
+              className="pl-8"
+              onChange={(e) => setSearch(e.target.value || null)}
+              value={search || undefined}
+            />
+          </div>
+        </form>
+      </div>
+      {tabContent()}
     </div>
   ) : (
     <div>Failed to load data....</div>
