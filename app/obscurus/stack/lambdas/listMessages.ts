@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { Messages } from "../core/src/messages";
-import { Messages as MessagesType } from "../core/src/sql.generated";
+import { Messages } from "../database/src/messages";
+import { Messages as MessagesType } from "../database/src/sql.generated";
 
 export const handler: APIGatewayProxyHandlerV2 = async () => {
   const messages: MessagesType[] = await Messages.list();

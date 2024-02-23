@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { getRoomsViaEmail } from "../core/src/rooms";
-import { Rooms as RoomsType } from "../core/src/sql.generated";
+import { getRoomsViaEmail } from "../database/src/rooms";
+import { Rooms as RoomsType } from "../database/src/sql.generated";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   if (event.queryStringParameters != undefined) {
