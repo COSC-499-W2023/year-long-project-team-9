@@ -3,9 +3,8 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "./nav-bar";
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
-
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +29,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          
           <div className=" flex-col md:flex min-h-screen h-screen">
-          <NavBar />
+            <NavBar />
             {children}
 
             {/*If not signed in*/}
@@ -45,7 +43,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  );
-}
   );
 }
