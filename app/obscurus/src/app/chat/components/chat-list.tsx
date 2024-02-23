@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import { cn } from "@/lib/utils";
-import { Rooms, Messages } from "stacks/core/src/sql.generated";
+import { cn } from "@/app/functions/utils";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { Search } from "lucide-react";
 import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";

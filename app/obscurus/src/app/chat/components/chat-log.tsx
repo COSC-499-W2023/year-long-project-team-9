@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ArrowUpCircle } from "lucide-react";
-import { Rooms, Messages } from "stacks/core/src/sql.generated";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";

@@ -1,9 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
-import { Rooms, Messages } from "stacks/core/src/sql.generated";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import Wrapper from "../wrapper";
-import ChatList from "./components/chat-list";
-import ChatDisplay from "./components/chat-display";
+import ChatList from "../chat/components/chat-list";
+import ChatDisplay from "../chat/components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import MessagesChat from "@/components/messages";

@@ -1,10 +1,10 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Rooms, Messages } from "stacks/core/src/sql.generated";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { Suspense } from "react";
-import ChatLog from "./chat-log";
+import ChatLog from "../../chat/components/chat-log";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatDisplayProps {
