@@ -30,8 +30,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className=" flex-col md:flex min-h-screen h-screen">
-            <NavBar />
           
           <div className=" flex-col md:flex min-h-screen h-screen">
           <NavBar />
@@ -47,5 +45,7 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
+  );
+}
   );
 }
