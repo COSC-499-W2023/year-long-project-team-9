@@ -9,10 +9,19 @@ import ChatLog from "../../chat/components/chat-log";
 const userEmail = "imightbejan@gmail.com";
 interface ChatDisplayProps {
   rooms: Rooms[];
+  searchParams?: {
+    counter?: string | null[];
+  };
   messages: Messages[];
+  action: any;
 }
 
-export default function ChatDisplay({ rooms, messages }: ChatDisplayProps) {
+export default function ChatDisplay({
+  rooms,
+  searchParams,
+  messages,
+  action,
+}: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
   if (!roomId) {
