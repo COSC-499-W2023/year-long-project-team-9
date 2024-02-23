@@ -1,4 +1,5 @@
 "use server";
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import Wrapper from "../wrapper";
@@ -43,14 +44,21 @@ async function Chat() {
   }
 
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<ChatList rooms={rooms} messages={messages} />}
-      secondPanel={<ChatDisplay rooms={rooms} messages={messages} />}
-      // secondPanel={<MessagesChat />}
-    />
+    <Suspense
+      fallback={
+        <div className="w-full h-full flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={<ChatList rooms={rooms} messages={messages} />}
+        secondPanel={<ChatDisplay rooms={rooms} messages={messages} />}
+      />
+    </Suspense>
   );
 }
 

@@ -21,7 +21,7 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
     <div className="flex flex-col mt-auto">
       <ScrollArea>
         {roomMessages.map((message) => (
-          <div>
+          <div key={message.messageId}>
             {message.senderEmail === userEmail && (
               <div className="flex justify-end">
                 <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
