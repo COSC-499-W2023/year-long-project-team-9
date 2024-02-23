@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Value } from "@radix-ui/react-select";
 
 // Create Request from Schema
 const formSchema = z.object({
@@ -47,7 +48,11 @@ const formSchema = z.object({
     .max(100, {
       message: "Title must no more than 100 characters.",
     }),
-  isblurred: z.boolean().default(true),
+  requestEmails: z
+    .array(z.string().trim().email().min(1).max(320))
+    .min(1)
+    .max(10),
+  isBlurred: z.boolean().default(true),
   requestDueDate: z.date().min(endOfDay(new Date()), {
     message: "Due must be no earlier than today.",
   }),
@@ -63,20 +68,22 @@ const formSchema = z.object({
 });
 
 export default function CreateForm() {
-  // 1. Define your form.
+  // Defining form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
+      isBlurred: true,
+      requestEmails: [""],
     },
   });
 
-  // 2. Define a submit handler.
+  // Submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
   return (
-    <>
+    <div className="scrollbar">
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -94,114 +101,90 @@ export default function CreateForm() {
               </FormItem>
             )}
           />
-          <div className="grid sm:grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="requestDueDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Video Processing</FormLabel>
-                  <Tabs defaultValue="blurred" className="w-full">
-                    <TabsList className="w-full">
-                      <TabsTrigger
-                        value="normal"
-                        className="w-full"
-                        onClick={() => form.setValue("isblurred", false)}
+          {/* Client Email */}
+
+          {/* Due Date */}
+          <FormField
+            control={form.control}
+            name="requestDueDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Request Due Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
                       >
-                        Normal
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="blurred"
-                        className="w-full"
-                        onClick={() => form.setValue("isblurred", false)}
-                      >
-                        Blurred
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs>
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
-            {/* Due Date */}
-            <FormField
-              control={form.control}
-              name="requestDueDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Due Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-center font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      align="start"
-                      className="flex w-auto flex-col space-y-2 p-2"
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Due Date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date <
+                        new Date(new Date().setDate(new Date().getDate() - 1))
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* form.setValue("requestDueDate", endOfDay(value)) */}
+          {/* new Date(new Date().setDate(new Date().getDate() - 1)) */}
+
+          {/* Video Processing */}
+          <FormField
+            control={form.control}
+            name="isBlurred"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Video Processing</FormLabel>
+                <Tabs defaultValue="blurred" className="w-full">
+                  <TabsList className="w-full">
+                    <TabsTrigger
+                      value="normal"
+                      className="w-full"
+                      onClick={() => {
+                        form.setValue("isBlurred", false);
+                        console.log("false");
+                      }}
                     >
-                      <Select
-                        onValueChange={(value) =>
-                          form.setValue(
-                            "requestDueDate",
-                            endOfDay(
-                              new Date(
-                                new Date().setDate(
-                                  new Date().getDate() + Number(value)
-                                )
-                              )
-                            )
-                          )
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectItem value="0">Today</SelectItem>
-                          <SelectItem value="1">Tomorrow</SelectItem>
-                          <SelectItem value="3">In 3 days</SelectItem>
-                          <SelectItem value="7">In a week</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={(value) =>
-                          value === undefined
-                            ? form.setValue(
-                                "requestDueDate",
-                                new Date("1973-02-02")
-                              )
-                            : form.setValue("requestDueDate", endOfDay(value))
-                        }
-                        disabled={(date) =>
-                          date <
-                          new Date(new Date().setDate(new Date().getDate() - 1))
-                        }
-                        initialFocus
-                        today={new Date()}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                      Normal
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="blurred"
+                      className="w-full"
+                      onClick={() => {
+                        form.setValue("isBlurred", true);
+                        console.log("true");
+                      }}
+                    >
+                      Blurred
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <FormMessage />
+              </FormItem>
+            )}
+          ></FormField>
+
           {/* Request Description */}
           <FormField
             control={form.control}
@@ -223,10 +206,17 @@ export default function CreateForm() {
             )}
           />
           <div className="text-right gap-2 py-2">
+            <Button
+              type="button"
+              variant="ghost"
+              className="justify-self-start"
+            >
+              Cancel Request
+            </Button>
             <Button type="submit">Submit</Button>
           </div>
         </form>
       </Form>
-    </>
+    </div>
   );
 }
