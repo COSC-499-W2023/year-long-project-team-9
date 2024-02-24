@@ -21,11 +21,6 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
-  const handleClick = (item: Rooms) => {
-    setRoomId(item.roomId);
-    console.log("Selected RoomID to list", roomId);
-  };
-
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
     const roomMessages = messages.filter(
@@ -48,6 +43,14 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
     }
   };
 
+  const getOtherParticipantEmail = (item: Rooms) => {
+    if (item.participant1Email === userEmail) {
+      return item.participant2Email;
+    } else {
+      return item.participant1Email;
+    }
+  };
+
   const getOtherParticipantName = (item: Rooms) => {
     if (item.participant1Email === userEmail) {
       return (
@@ -60,8 +63,32 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
     }
   };
 
+  const checkUnreadMessages = (item: Rooms) => {
+    const roomMessages = messages.filter(
+      (message) => message.roomId === item.roomId && !message.isRead
+    );
+    return roomMessages.length > 0;
+  };
+
+  const setMessagesAsRead = (item: Rooms) => {
+    messages.forEach((message) => {
+      if (message.roomId === item.roomId) {
+        message.isRead = true;
+      }
+    });
+  };
+
+  const handleClick = (item: Rooms) => {
+    setRoomId(item.roomId);
+    setMessagesAsRead(item);
+    console.log("Selected RoomID to list", roomId);
+  };
+
   useEffect(() => {
     sortRooms();
+    rooms.forEach((room) => {
+      checkUnreadMessages(room);
+    });
     !roomId && setRoomId(rooms[0].roomId);
   }),
     [];
@@ -103,6 +130,9 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
                         <div className="font-semibold">
                           {getOtherParticipantName(item)}
                         </div>
+                        {checkUnreadMessages(item) && (
+                          <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                        )}
                       </div>
 
                       <div
