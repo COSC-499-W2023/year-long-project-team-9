@@ -4,7 +4,7 @@ import CreateHeader from "./create-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Minus, Plus, X } from "lucide-react";
+import { CalendarIcon, Plus, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -33,9 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Value } from "@radix-ui/react-select";
 import { ScrollArea } from "@/components/ui/scrollarea";
-import Index from "@/app/Submit/components/old-upload";
 
 // Create Request from Schema
 const formSchema = z.object({
@@ -49,13 +47,26 @@ const formSchema = z.object({
       message: "Title must no more than 100 characters.",
     }),
   clientEmails: z
-    .array(z.object({ email: z.string().trim().min(1).max(320) }))
+    .array(
+      z.object({
+        email: z
+          .string()
+          .trim()
+          .min(1)
+          .max(320)
+          .email()
+          .refine((value) => value !== "bob@gmail.com"),
+      })
+    )
     .min(1)
-    .max(10),
+    .max(10)
+    .refine((items) => new Set(items).size === items.length),
   isBlurred: z.boolean(),
-  requestDueDate: z.date().min(endOfDay(new Date()), {
-    message: "Due must be no earlier than today.",
-  }),
+  requestDueDate: z
+    .date()
+    .min(new Date(new Date().setDate(new Date().getDate())), {
+      message: "Due must be no earlier than today.",
+    }),
   requestDescription: z
     .string()
     .trim()
@@ -75,14 +86,13 @@ export default function CreateForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       isBlurred: true,
-      clientEmails: [{ email: "1" }],
+      clientEmails: [{ email: "" }],
     },
   });
 
   // Client Email stuff
   const {
     control,
-    formState,
     register,
     formState: { errors },
   } = form;
@@ -116,80 +126,102 @@ export default function CreateForm() {
               </FormItem>
             )}
           />
-          {/* Client Email */}
-          <div>
-            {form.getValues("clientEmails").length === 1 ? (
-              <FormLabel>Client</FormLabel>
-            ) : (
-              <FormLabel>Clients</FormLabel>
-            )}
-            <div>
-              {fields.map((field, index) => {
-                return (
-                  <div className="form-control py-2" key={field.id}>
-                    <div className="flex flex-row gap-1">
-                      <Input
-                        placeholder="Email"
-                        {...register(`clientEmails.${index}.email`)}
-                      />
-                      {fields.length === 10 ? (
-                        <Button
-                          variant="outline"
-                          type="button"
-                          size="icon"
-                          onClick={() => remove(index)}
-                        >
-                          <X
-                            className="h-4 w-4"
-                            onClick={() => remove(index)}
-                          />
-                        </Button>
-                      ) : index === fields.length - 1 ? (
-                        <Button
-                          variant="outline"
-                          type="button"
-                          size="icon"
-                          onClick={() => append({ email: "" })}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outline"
-                          type="button"
-                          size="icon"
-                          onClick={() => remove(index)}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                    {/* Error Message */}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* Shared label for all email inputs */}
-          {fields.map((item, index) => (
-            <Controller
-              key={item.id}
-              control={control}
-              name={`clientEmails.${index}.email`}
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>Emails</FormLabel>
-                  <FormControl>
-                    <Input placeholder={`Email #${index + 1}`} {...field} />
-                  </FormControl>
-                  {fieldState.error && (
-                    <FormMessage>{fieldState.error.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-          ))}
+          {/* Client Emails */}
+          <div>
+            {fields.map((item, index) => (
+              <Controller
+                key={item.id}
+                control={control}
+                name={`clientEmails.${index}.email`}
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    {fields.length >= 2 &&
+                    index === 0 &&
+                    errors.clientEmails &&
+                    errors.clientEmails.length !== undefined &&
+                    errors.clientEmails.length ? (
+                      <FormLabel className="text-destructive">
+                        Clients
+                      </FormLabel>
+                    ) : fields.length >= 2 &&
+                      index === 0 &&
+                      !(
+                        errors.clientEmails &&
+                        errors.clientEmails.length !== undefined &&
+                        errors.clientEmails.length
+                      ) ? (
+                      <FormLabel>Clients</FormLabel>
+                    ) : fields.length === 1 &&
+                      index === 0 &&
+                      errors.clientEmails &&
+                      errors.clientEmails.length !== undefined &&
+                      errors.clientEmails.length ? (
+                      <FormLabel className="text-destructive">Client</FormLabel>
+                    ) : fields.length === 1 &&
+                      index === 0 &&
+                      !(
+                        errors.clientEmails &&
+                        errors.clientEmails.length !== undefined &&
+                        errors.clientEmails.length
+                      ) ? (
+                      <FormLabel>Client</FormLabel>
+                    ) : (
+                      <></>
+                    )}
+                    <FormControl>
+                      <div className="py-1">
+                        <div className="flex flex-row gap-1">
+                          {index === 0 && fields.length === 1 ? (
+                            <Input placeholder={`Email`} {...field} />
+                          ) : (
+                            <Input
+                              placeholder={`Email #${index + 1}`}
+                              {...field}
+                            />
+                          )}
+                          {fields.length === 10 ? (
+                            <Button
+                              variant="outline"
+                              type="button"
+                              size="icon"
+                              onClick={() => remove(index)}
+                            >
+                              <X
+                                className="h-4 w-4"
+                                onClick={() => remove(index)}
+                              />
+                            </Button>
+                          ) : index === fields.length - 1 ? (
+                            <Button
+                              variant="outline"
+                              type="button"
+                              size="icon"
+                              onClick={() => append({ email: "" })}
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              type="button"
+                              size="icon"
+                              onClick={() => remove(index)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                        {fieldState.error && (
+                          <FormMessage>{fieldState.error.message}</FormMessage>
+                        )}
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ))}
+          </div>
 
           {/* Due Date */}
           {/* TODO: Select and local time */}
