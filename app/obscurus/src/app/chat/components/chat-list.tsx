@@ -78,7 +78,10 @@ export default function ChatList({
   const setMessagesAsRead = (item: Rooms) => {
     messages.forEach((message) => {
       if (message.roomId === item.roomId) {
-        if (!message.isRead) {
+        if (
+          !message.isRead &&
+          message.senderEmail === getOtherParticipantEmail(item)
+        ) {
           message.isRead = true;
           updateIsRead({ isRead: true, messageId: message.messageId });
         }
