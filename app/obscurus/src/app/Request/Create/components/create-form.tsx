@@ -1,9 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import CreateHeader from "./create-header";
-import { ScrollArea } from "@/components/ui/scrollarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import React from "react";
@@ -18,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { addDays, endOfDay, format } from "date-fns";
 import {
   Popover,
@@ -27,7 +25,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Minus, Plus, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -36,6 +34,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Value } from "@radix-ui/react-select";
+import { ScrollArea } from "@/components/ui/scrollarea";
+import Index from "@/app/Submit/components/old-upload";
 
 // Create Request from Schema
 const formSchema = z.object({
@@ -48,11 +48,11 @@ const formSchema = z.object({
     .max(100, {
       message: "Title must no more than 100 characters.",
     }),
-  requestEmails: z
-    .array(z.string().trim().email().min(1).max(320))
+  clientEmails: z
+    .array(z.object({ email: z.string().trim().min(1).max(320) }))
     .min(1)
     .max(10),
-  isBlurred: z.boolean().default(true),
+  isBlurred: z.boolean(),
   requestDueDate: z.date().min(endOfDay(new Date()), {
     message: "Due must be no earlier than today.",
   }),
@@ -67,15 +67,28 @@ const formSchema = z.object({
     }),
 });
 
+// TODO: Figure out how to populate FormMessage withotu displaying
+
 export default function CreateForm() {
   // Defining form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
       isBlurred: true,
-      requestEmails: [""],
+      clientEmails: [{ email: "1" }],
     },
+  });
+
+  // Client Email stuff
+  const {
+    control,
+    formState,
+    register,
+    formState: { errors },
+  } = form;
+  const { fields, append, remove } = useFieldArray({
+    name: "clientEmails",
+    control,
   });
 
   // Submit handler.
@@ -83,7 +96,9 @@ export default function CreateForm() {
     console.log(values);
   }
   return (
-    <div className="scrollbar">
+    <div>
+      {/* Showing current value of form */}
+      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -102,8 +117,82 @@ export default function CreateForm() {
             )}
           />
           {/* Client Email */}
+          <div>
+            {form.getValues("clientEmails").length === 1 ? (
+              <FormLabel>Client</FormLabel>
+            ) : (
+              <FormLabel>Clients</FormLabel>
+            )}
+            <div>
+              {fields.map((field, index) => {
+                return (
+                  <div className="form-control py-2" key={field.id}>
+                    <div className="flex flex-row gap-1">
+                      <Input
+                        placeholder="Email"
+                        {...register(`clientEmails.${index}.email`)}
+                      />
+                      {fields.length === 10 ? (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          size="icon"
+                          onClick={() => remove(index)}
+                        >
+                          <X
+                            className="h-4 w-4"
+                            onClick={() => remove(index)}
+                          />
+                        </Button>
+                      ) : index === fields.length - 1 ? (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          size="icon"
+                          onClick={() => append({ email: "" })}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          size="icon"
+                          onClick={() => remove(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    {/* Error Message */}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Shared label for all email inputs */}
+          {fields.map((item, index) => (
+            <Controller
+              key={item.id}
+              control={control}
+              name={`clientEmails.${index}.email`}
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Emails</FormLabel>
+                  <FormControl>
+                    <Input placeholder={`Email #${index + 1}`} {...field} />
+                  </FormControl>
+                  {fieldState.error && (
+                    <FormMessage>{fieldState.error.message}</FormMessage>
+                  )}
+                </FormItem>
+              )}
+            />
+          ))}
 
           {/* Due Date */}
+          {/* TODO: Select and local time */}
           <FormField
             control={form.control}
             name="requestDueDate"
@@ -129,8 +218,9 @@ export default function CreateForm() {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-full p-0" align="center">
                     <Calendar
+                      className="w-[100%]"
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
@@ -148,7 +238,6 @@ export default function CreateForm() {
           />
           {/* form.setValue("requestDueDate", endOfDay(value)) */}
           {/* new Date(new Date().setDate(new Date().getDate() - 1)) */}
-
           {/* Video Processing */}
           <FormField
             control={form.control}
@@ -184,27 +273,28 @@ export default function CreateForm() {
               </FormItem>
             )}
           ></FormField>
-
           {/* Request Description */}
-          <FormField
-            control={form.control}
-            name="requestDescription"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Request Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Description"
-                    className="resize-none"
-                    {...field}
-                    maxLength={2001}
-                    rows={18} // TODO: Change h-full
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <ScrollArea>
+            <FormField
+              control={form.control}
+              name="requestDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Request Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Description"
+                      className="resize-none"
+                      {...field}
+                      maxLength={2001}
+                      rows={18} // TODO: Change h-full
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </ScrollArea>
           <div className="text-right gap-2 py-2">
             <Button
               type="button"
