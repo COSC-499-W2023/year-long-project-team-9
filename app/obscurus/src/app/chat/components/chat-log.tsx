@@ -19,20 +19,20 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
   const roomMessages = getRoomMessages();
   return room ? (
     <div className="flex flex-col mt-auto">
-      <ScrollArea>
+      <ScrollArea className="sm:max-h-80 md:max-h-80 2xl:max-h-max">
         {roomMessages.map((message) => (
           <div key={message.messageId}>
             {message.senderEmail === userEmail && (
               <div className="flex justify-end">
                 <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
-                  {message.messageContent}
+                  <p className="break-all max-w-xs">{message.messageContent}</p>
                 </div>
               </div>
             )}
             {message.senderEmail != userEmail && (
               <div className="flex w-3/4 m-1">
                 <div className="flex flex-col w-max max-w-[75%] rounded-md m-1 ml-4 bg-primary text-secondary p-2">
-                  {message.messageContent}
+                  <p className="break-all max-w-xs">{message.messageContent}</p>
                 </div>
               </div>
             )}

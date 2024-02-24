@@ -75,7 +75,7 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
       return matchesSearch;
     });
     return (
-      <ScrollArea>
+      <ScrollArea className="sm:max-h-96 md:max-h-96 2xl:max-h-max overflow-auto">
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRooms.map((item) => (
             <button
@@ -127,7 +127,12 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
                   </div>
                   <div className="line-clamp-2 text-xs text-muted-foreground">
                     {getLatestMessage(item) != undefined &&
-                      getLatestMessage(item).messageContent?.substring(0, 300)}
+                      getLatestMessage(item).messageContent.length > 24 &&
+                      getLatestMessage(item).messageContent?.substring(0, 24) +
+                        "..."}
+                    {getLatestMessage(item) != undefined &&
+                      getLatestMessage(item).messageContent.length <= 24 &&
+                      getLatestMessage(item).messageContent}
                     {getLatestMessage(item) === undefined &&
                       "No Message History"}
                   </div>
