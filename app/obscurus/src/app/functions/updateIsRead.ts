@@ -7,7 +7,6 @@ type updateIsReadBody = {
 };
 
 const updateIsRead = async (updateIsReadBody: updateIsReadBody) => {
-  console.log(updateIsReadBody);
   const res = await fetch(`${Api.Api.url}/updateIsRead`, {
     method: "POST",
     headers: {
