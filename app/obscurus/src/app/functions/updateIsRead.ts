@@ -15,6 +15,7 @@ const updateIsRead = async (updateIsReadBody: updateIsReadBody) => {
     body: JSON.stringify(updateIsReadBody),
   });
   if (res.ok) {
+    console.log(res);
     return res.json();
   }
 };
