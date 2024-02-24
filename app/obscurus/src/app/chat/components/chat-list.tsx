@@ -14,10 +14,15 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
   messages: Messages[];
+  updateIsRead: any;
   isCollapsed?: boolean;
 }
 
-export default function ChatList({ rooms, messages }: ChatListProps) {
+export default function ChatList({
+  rooms,
+  messages,
+  updateIsRead,
+}: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -73,7 +78,10 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
   const setMessagesAsRead = (item: Rooms) => {
     messages.forEach((message) => {
       if (message.roomId === item.roomId) {
-        message.isRead = true;
+        if (!message.isRead) {
+          message.isRead = true;
+          updateIsRead({ isRead: true, messageId: message.messageId });
+        }
       }
     });
   };
@@ -86,9 +94,6 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
 
   useEffect(() => {
     sortRooms();
-    rooms.forEach((room) => {
-      checkUnreadMessages(room);
-    });
     !roomId && setRoomId(rooms[0].roomId);
   }),
     [];
@@ -102,7 +107,7 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
       return matchesSearch;
     });
     return (
-      <ScrollArea className="sm:max-h-96 md:max-h-96 2xl:max-h-max overflow-auto">
+      <ScrollArea className="h-full">
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRooms.map((item) => (
             <button
@@ -176,7 +181,7 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
   };
 
   return rooms ? (
-    <div>
+    <div className="flex h-full flex-col min-h-full">
       <div className="flex items-center px-4">
         <h1 className="text-xl font-bold">Chats</h1>
       </div>
