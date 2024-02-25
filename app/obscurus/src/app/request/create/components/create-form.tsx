@@ -2,7 +2,11 @@
 import CreateHeader from "./create-header";
 import React, { useState } from "react";
 
-export default function CreateForm() {
+interface CreateFormProps {
+  email: string;
+}
+
+export default function CreateForm({ email }: CreateFormProps) {
   return (
     <div>
       <CreateHeader />
