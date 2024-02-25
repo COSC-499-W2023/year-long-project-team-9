@@ -100,8 +100,14 @@ export default function CreateForm() {
     control,
   });
   const [clientEmailLength, setClientEmailLength] = useState(1);
+  const [clientLabel, setClientLabel] = useState("Client");
   function changeClientEmailSize(size: number, change: number) {
     setClientEmailLength(size + change);
+    if (size + change > 1) {
+      setClientLabel("Clients");
+    } else {
+      setClientLabel("Client");
+    }
   }
 
   // Submit handler.
