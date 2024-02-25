@@ -49,18 +49,17 @@ const formSchema = z.object({
   clientEmails: z
     .array(
       z.object({
-        email: z
-          .string()
-          .trim()
-          .min(1)
-          .max(320)
-          .email()
-          .refine((value) => value !== "bob@gmail.com"),
+        email: z.string().trim().min(1).max(320).email(),
       })
     )
     .min(1)
     .max(10)
-    .refine((items) => new Set(items).size === items.length),
+    .refine((emails) => {
+      const emailSet = new Set(
+        emails.map((emailObj) => emailObj.email.toLowerCase())
+      );
+      return emailSet.size === emails.length;
+    }),
   isBlurred: z.boolean(),
   requestDueDate: z
     .date()
