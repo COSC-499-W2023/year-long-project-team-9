@@ -48,24 +48,23 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <TitleInput register={register}></TitleInput>
-          <div>
-            <DescriptionInput register={register}></DescriptionInput>
-            <div className="text-right gap-2 pt-2">
-              <Button
-                type="button"
-                variant={"ghost"}
-                className="justify-self-start"
-              >
-                Cancel Request
-              </Button>
-              <Button
-                type="submit"
-                variant={"default"}
-                className="justify-self-start"
-              >
-                Submit Request
-              </Button>
-            </div>
+
+          <DescriptionInput register={register}></DescriptionInput>
+          <div className="text-right gap-2">
+            <Button
+              type="button"
+              variant={"ghost"}
+              className="justify-self-start"
+            >
+              Cancel Request
+            </Button>
+            <Button
+              type="submit"
+              variant={"default"}
+              className="justify-self-start"
+            >
+              Submit Request
+            </Button>
           </div>
         </form>
       </Form>
