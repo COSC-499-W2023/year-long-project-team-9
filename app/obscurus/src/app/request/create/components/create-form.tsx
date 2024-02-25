@@ -14,10 +14,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import TitleInput from "./create-form-title-input";
+import { endOfDay } from "date-fns";
+import DescriptionInput from "./create-form-description-input";
 
-const formSchema = z.object({
+const createFormSchema = z.object({
   title: z.string().min(1).max(100),
+  dueDate: z.date().min(endOfDay(new Date())),
+  description: z.string().min(1).max(2000),
 });
 
 interface CreateFormProps {
@@ -25,37 +29,44 @@ interface CreateFormProps {
 }
 
 export default function CreateForm({ userEmail }: CreateFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createFormSchema>>({
+    resolver: zodResolver(createFormSchema),
     defaultValues: {
       title: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+
+  const { register } = form;
+
+  function onSubmit(values: z.infer<typeof createFormSchema>) {
     console.log(values);
   }
   return (
     <div>
+      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
+          <TitleInput register={register}></TitleInput>
+          <div>
+            <DescriptionInput register={register}></DescriptionInput>
+            <div className="text-right gap-2 pt-2">
+              <Button
+                type="button"
+                variant={"ghost"}
+                className="justify-self-start"
+              >
+                Cancel Request
+              </Button>
+              <Button
+                type="submit"
+                variant={"default"}
+                className="justify-self-start"
+              >
+                Submit Request
+              </Button>
+            </div>
+          </div>
         </form>
       </Form>
     </div>
