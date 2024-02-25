@@ -107,7 +107,7 @@ export default function CreateForm() {
   return (
     <div>
       {/* Showing current value of form */}
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
+
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
