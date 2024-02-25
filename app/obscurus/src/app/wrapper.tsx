@@ -88,7 +88,7 @@ export function Wrapper({
                 title: "Request",
                 icon: Inbox,
                 variant: getLinkVariant("Request"),
-                href: "/my-request",
+                href: "/request",
               },
               {
                 title: "Submit",
