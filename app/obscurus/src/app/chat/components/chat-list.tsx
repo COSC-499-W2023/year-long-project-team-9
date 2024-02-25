@@ -83,7 +83,7 @@ export default function ChatList({
           message.senderEmail === getOtherParticipantEmail(item)
         ) {
           message.isRead = true;
-          updateIsRead({ isRead: true, messageId: message.messageId });
+          // updateIsRead({ isRead: true, messageId: message.messageId });
         }
       }
     });
