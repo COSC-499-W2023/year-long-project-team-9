@@ -145,7 +145,7 @@ export default function CreateForm() {
                 name={`clientEmail.${index}.email`}
                 render={({ field, fieldState }) => (
                   <FormItem>
-                    {fields.length >= 2 &&
+                    {clientEmailLength >= 2 &&
                     index === 0 &&
                     errors.clientEmail &&
                     errors.clientEmail.length !== undefined &&
@@ -153,7 +153,7 @@ export default function CreateForm() {
                       <FormLabel className="text-destructive">
                         Clients
                       </FormLabel>
-                    ) : fields.length >= 2 &&
+                    ) : clientEmailLength >= 2 &&
                       index === 0 &&
                       !(
                         errors.clientEmail &&
@@ -161,13 +161,13 @@ export default function CreateForm() {
                         errors.clientEmail.length
                       ) ? (
                       <FormLabel>Clients</FormLabel>
-                    ) : fields.length === 1 &&
+                    ) : clientEmailLength === 1 &&
                       index === 0 &&
                       errors.clientEmail &&
                       errors.clientEmail.length !== undefined &&
                       errors.clientEmail.length ? (
                       <FormLabel className="text-destructive">Client</FormLabel>
-                    ) : fields.length === 1 &&
+                    ) : clientEmailLength === 1 &&
                       index === 0 &&
                       !(
                         errors.clientEmail &&
@@ -181,7 +181,7 @@ export default function CreateForm() {
                     <FormControl>
                       <div className="py-1">
                         <div className="flex flex-row gap-1">
-                          {index === 0 && fields.length === 1 ? (
+                          {index === 0 && clientEmailLength === 1 ? (
                             <Input placeholder={`Email`} {...field} />
                           ) : (
                             <Input
@@ -189,7 +189,7 @@ export default function CreateForm() {
                               {...field}
                             />
                           )}
-                          {fields.length === 10 ? (
+                          {clientEmailLength === 10 ? (
                             <Button
                               variant="outline"
                               type="button"
