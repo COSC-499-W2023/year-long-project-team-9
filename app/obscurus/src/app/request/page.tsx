@@ -4,6 +4,7 @@ import Wrapper from "../wrapper";
 import { Suspense } from "react";
 import hello from "../functions/hello";
 import { getEmail } from "../functions/authenticationMethods";
+import RequestList from "./components/request-list";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -22,8 +23,8 @@ async function Request() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<>{email}</>}
-      secondPanel={<>{email}sajdsk;</>}
+      firstPanel={<RequestList email={email}></RequestList>}
+      secondPanel={<>{email}</>}
     />
   );
 }
