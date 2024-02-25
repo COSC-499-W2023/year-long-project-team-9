@@ -2,7 +2,7 @@ import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { Messages } from "../database/src/messages";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
-  const eventBody = JSON.parse(event.body);
+  const eventBody = event.body;
   const res = await Messages.setIsRead(eventBody.isRead, eventBody.messageId);
   return {
     statusCode: 200,
