@@ -21,7 +21,7 @@ async function Create() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<CreateForm email={email}></CreateForm>}
+      firstPanel={<CreateForm userEmail={email}></CreateForm>}
       secondPanel={<>{email}</>}
     />
   );
