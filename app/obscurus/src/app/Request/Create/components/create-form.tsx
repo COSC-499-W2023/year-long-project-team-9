@@ -189,19 +189,8 @@ export default function CreateForm() {
                               {...field}
                             />
                           )}
-                          {clientEmailLength === 10 ? (
-                            <Button
-                              variant="outline"
-                              type="button"
-                              size="icon"
-                              onClick={() => remove(index)}
-                            >
-                              <X
-                                className="h-4 w-4"
-                                onClick={() => remove(index)}
-                              />
-                            </Button>
-                          ) : index === fields.length - 1 ? (
+                          {clientEmailLength !== 10 &&
+                          index === clientEmailLength - 1 ? (
                             <Button
                               variant="outline"
                               type="button"
@@ -218,7 +207,12 @@ export default function CreateForm() {
                               variant="outline"
                               type="button"
                               size="icon"
-                              onClick={() => remove(index)}
+                              onClick={() => {
+                                {
+                                  remove(index);
+                                  changeClientEmailSize(clientEmailLength, -1);
+                                }
+                              }}
                             >
                               <X className="h-4 w-4" />
                             </Button>
