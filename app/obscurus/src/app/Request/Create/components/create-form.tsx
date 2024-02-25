@@ -46,7 +46,7 @@ const formSchema = z.object({
     .max(100, {
       message: "Title must no more than 100 characters.",
     }),
-  clientEmails: z
+  clientEmail: z
     .array(
       z.object({
         email: z.string().trim().min(1).max(320).email(),
@@ -85,7 +85,7 @@ export default function CreateForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       isBlurred: true,
-      clientEmails: [{ email: "" }],
+      clientEmail: [{ email: "" }],
     },
   });
 
@@ -96,9 +96,13 @@ export default function CreateForm() {
     formState: { errors },
   } = form;
   const { fields, append, remove } = useFieldArray({
-    name: "clientEmails",
+    name: "clientEmail",
     control,
   });
+  const [clientEmailLength, setClientEmailLength] = useState(1);
+  function changeClientEmailSize(size: number, change: number) {
+    setClientEmailLength(size + change);
+  }
 
   // Submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -132,37 +136,37 @@ export default function CreateForm() {
               <Controller
                 key={item.id}
                 control={control}
-                name={`clientEmails.${index}.email`}
+                name={`clientEmail.${index}.email`}
                 render={({ field, fieldState }) => (
                   <FormItem>
                     {fields.length >= 2 &&
                     index === 0 &&
-                    errors.clientEmails &&
-                    errors.clientEmails.length !== undefined &&
-                    errors.clientEmails.length ? (
+                    errors.clientEmail &&
+                    errors.clientEmail.length !== undefined &&
+                    errors.clientEmail.length ? (
                       <FormLabel className="text-destructive">
                         Clients
                       </FormLabel>
                     ) : fields.length >= 2 &&
                       index === 0 &&
                       !(
-                        errors.clientEmails &&
-                        errors.clientEmails.length !== undefined &&
-                        errors.clientEmails.length
+                        errors.clientEmail &&
+                        errors.clientEmail.length !== undefined &&
+                        errors.clientEmail.length
                       ) ? (
                       <FormLabel>Clients</FormLabel>
                     ) : fields.length === 1 &&
                       index === 0 &&
-                      errors.clientEmails &&
-                      errors.clientEmails.length !== undefined &&
-                      errors.clientEmails.length ? (
+                      errors.clientEmail &&
+                      errors.clientEmail.length !== undefined &&
+                      errors.clientEmail.length ? (
                       <FormLabel className="text-destructive">Client</FormLabel>
                     ) : fields.length === 1 &&
                       index === 0 &&
                       !(
-                        errors.clientEmails &&
-                        errors.clientEmails.length !== undefined &&
-                        errors.clientEmails.length
+                        errors.clientEmail &&
+                        errors.clientEmail.length !== undefined &&
+                        errors.clientEmail.length
                       ) ? (
                       <FormLabel>Client</FormLabel>
                     ) : (
@@ -196,7 +200,10 @@ export default function CreateForm() {
                               variant="outline"
                               type="button"
                               size="icon"
-                              onClick={() => append({ email: "" })}
+                              onClick={() => {
+                                append({ email: "" });
+                                changeClientEmailSize(clientEmailLength, 1);
+                              }}
                             >
                               <Plus className="h-4 w-4" />
                             </Button>
@@ -221,6 +228,45 @@ export default function CreateForm() {
               />
             ))}
           </div>
+          {/* {fields.map((item, index) => (
+            <>
+              {index === 0 ? <FormLabel>{clientEmailLabel}</FormLabel> : null}
+              <div key={index} className="flex flex-row gap-1 my-2">
+                {index === 0 && clientEmailize === 1 ? (
+                  <Input placeholder={`Email`} />
+                ) : (
+                  <Input placeholder={`Email ${index + 1}`} />
+                )}
+                {clientEmailize !== 10 && index === clientEmailize - 1 ? (
+                  <Button
+                    variant="outline"
+                    type="button"
+                    size="icon"
+                    onClick={() => {
+                      append({ email: "" });
+                      changeclientEmailize(clientEmailize, 1);
+                    }}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    type="button"
+                    size="icon"
+                    onClick={() => {
+                      {
+                        remove(index);
+                        changeclientEmailize(clientEmailize, -1);
+                      }
+                    }}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </>
+          ))} */}
 
           {/* Due Date */}
           {/* TODO: Select and local time */}
