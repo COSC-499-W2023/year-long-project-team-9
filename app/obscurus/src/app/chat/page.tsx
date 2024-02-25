@@ -8,7 +8,7 @@ import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { getSubmissions } from "../functions/getSubmissions";
 import { getRequests } from "../functions/getRequests";
 import SubmitDisplay from "../submit/components/submit-display";
-import Wrapper from "../wrapper";
+import Wrapper from "@/app/wrapper";
 import SubmitList from "../submit/components/submit-list";
 
 // CONSTRUCTS

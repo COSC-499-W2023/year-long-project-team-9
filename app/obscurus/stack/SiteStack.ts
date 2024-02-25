@@ -25,6 +25,7 @@ export default function SiteStack({ stack }: StackContext) {
     effect: Effect.ALLOW,
     resources: ["*"],
   });
+  
 
   // add RDS construct
   const rds = new RDS(stack, "Database", {

@@ -30,7 +30,7 @@ export default function SubmiDisplay({
     counter?: string | null[];
   };
   submissions: Submissions[];
-  action: any
+  action?: any;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
@@ -39,11 +39,13 @@ export default function SubmiDisplay({
   const [uploading, setUploading] = useQueryState("upload");
 
   if (!requestId) {
-    setRequestId( requests && requests[0].requestId);
+    setRequestId(requests && requests[0].requestId);
   }
 
   console.log("RequestId", requestId);
-  const selected =  requests ? requests.find((item) => item.requestId === requestId) : null;
+  const selected = requests
+    ? requests.find((item) => item.requestId === requestId)
+    : null;
 
   console.log("Selected requestId to display", requestId);
   console.log("Selected requestId to display", requestId);
@@ -71,18 +73,10 @@ export default function SubmiDisplay({
         </Tooltip>
       </div>
       <Separator />
-      <Suspense
-        fallback={
-          <div className="w-full h-full flex items-center justify-center">
-            Loading...
-          </div>
-        }
-      >
-        <Upload />
-      </Suspense>
+      <Upload />
     </div>
   ) : (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col pb-10">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
           <Tooltip>
@@ -148,7 +142,7 @@ export default function SubmiDisplay({
           </div>
           <Separator className="mt-auto" />
           <div className="p-4 flex justify-end w-full">
-            <form action={action}>
+            <form onSubmit={() => setUpload("true")}>
               <Button type="submit" size="lg" className="mx-auto" value="world">
                 Upload
               </Button>

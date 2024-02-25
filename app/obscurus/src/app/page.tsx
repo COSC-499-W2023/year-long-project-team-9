@@ -6,10 +6,13 @@ async function getUserEmail() {
   //...
 }
 
+function handleSignedIn(){
+  redirect("/submit")
+}
+
 async function Page() {
   const userEmail = "imightbejan@gmail.com"; //getUserEmail();
-
-  redirect(`/submit`)
+  handleSignedIn()
 }
 
 export default Page;

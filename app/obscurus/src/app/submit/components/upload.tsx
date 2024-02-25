@@ -98,7 +98,6 @@ export function Upload({ uploadVideo }: any) {
       }
       const data = await response.json();
       console.log("Response from server:", data);
-
     } catch (error) {
       console.error("Error during fetch:", error);
     }
@@ -298,7 +297,7 @@ export function Upload({ uploadVideo }: any) {
                             size="icon"
                             onClick={handleStopCaptureClick}
                           >
-                             <Square className=" fill-primary h-6 w-6" />
+                            <Square className=" fill-primary h-6 w-6" />
                             <span className="sr-only">Stop Recording</span>
                           </Button>
                         </TooltipTrigger>
@@ -330,18 +329,18 @@ export function Upload({ uploadVideo }: any) {
                       <TooltipContent>Back</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={handleStartCaptureClick}
-                          >
-                             <Circle className="fill-red-500 h-6 w-6" />
-                            <span className="sr-only">Record</span>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Record</TooltipContent>
-                      </Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={handleStartCaptureClick}
+                        >
+                          <Circle className="fill-red-500 h-6 w-6" />
+                          <span className="sr-only">Record</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Record</TooltipContent>
+                    </Tooltip>
                   </>
                 )}
               </div>

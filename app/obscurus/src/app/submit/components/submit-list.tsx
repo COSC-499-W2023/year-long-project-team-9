@@ -8,7 +8,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useRouter } from "next/navigation";
-import { Filter, Search, Send, SortAscIcon, SortDescIcon } from "lucide-react";
+import {
+  Filter,
+  Search,
+  Send,
+  SortAscIcon,
+  SortDescIcon,
+  X,
+  XCircle,
+} from "lucide-react";
 import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
@@ -55,7 +63,7 @@ export default function SubmitList({
   };
 
   useEffect(() => {
-    !tab && setTab("todo");
+    requests && !tab && setTab("todo");
     if (!submissionId) {
       const submission = getAssociatedSubmission(
         requests && requests[0].requestId
@@ -65,12 +73,11 @@ export default function SubmitList({
         setSubmissionId(submission?.submissionId);
       }
     }
-  }),
-    [requests, submissions, submissionId, setSubmissionId, tab, setTab];
+  });
 
   const handleClick = (item: Requests) => {
     if (!upload) {
-      setRequestId(item.requestId);
+      setRequestId(item.requestId || null);
       const submission = getAssociatedSubmission(item.requestId);
       console.log("Assoc. submission", submission);
       if (submission) {
@@ -81,6 +88,31 @@ export default function SubmitList({
     }
   };
 
+  const clearSearch = () => {
+    setSearch(null);
+  };
+
+  const sortRequests = (a: Requests, b: Requests) => {
+    switch (sort) {
+      case "newest":
+        return (
+          new Date(b.creationDate).getTime() -
+          new Date(a.creationDate).getTime()
+        );
+      case "oldest":
+        return (
+          new Date(a.creationDate).getTime() -
+          new Date(b.creationDate).getTime()
+        );
+      case "due":
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      default:
+        return 0;
+    }
+  };
+
+  const sortedRequests = requests ? [...requests].sort(sortRequests): requests;
+
   const statuses = ["todo", "processing", "completed", "archived"];
 
   const tabsTriggers = statuses.map((status) => (
@@ -90,7 +122,7 @@ export default function SubmitList({
   ));
 
   const tabsContent = statuses.map((status) => {
-    const filteredRequests = requests.filter((request) => {
+    const filteredRequests = sortedRequests?.filter((request) => {
       const submission = getAssociatedSubmission(request.requestId);
       const matchesStatus =
         submission && submission.status.toUpperCase() === status.toUpperCase();
@@ -107,7 +139,7 @@ export default function SubmitList({
     return (
       <TabsContent key={status} value={status}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-          {filteredRequests.map((item) => (
+          {filteredRequests?.map((item) => (
             <button
               key={item.requestId}
               className={cn(
@@ -180,15 +212,21 @@ export default function SubmitList({
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={search || "Search"}
+              placeholder="Search"
               className="pl-8"
-              onChange={(e) => setSearch(e.target.value || null)}
-              value={search || undefined}
+              onChange={(e) => setSearch(e.target.value)}
+              value={search || ""}
             />
+            {search && (
+              <XCircle
+                className="absolute right-2 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                onClick={clearSearch}
+              />
+            )}
           </div>
         </form>
       </div>
-      <div className="flex flex-row items-center justify-between mx-4">
+      <div className="flex flex-row items-center justify-between px-4 pb-3">
         <TabsList>{tabsTriggers}</TabsList>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -196,7 +234,7 @@ export default function SubmitList({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
-                    <SortDescIcon className="size-4" />
+                    <Filter className="size-3" />
                     <span className="sr-only">Filter Results</span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -235,7 +273,7 @@ function getBadgeVariantFromLabel(
   }
 
   if (["due-date"].includes(label.toLowerCase())) {
-    return "outline";
+    return "secondary";
   }
 
   return "secondary";

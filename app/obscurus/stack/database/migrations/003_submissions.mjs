@@ -11,9 +11,6 @@ export async function up(db) {
       col.notNull().defaultTo("NULL")
     )
     .addColumn("status", "varchar", (col) => col.notNull().defaultTo("TODO"))
-    .addColumn("isStarred", "boolean", (col) =>
-      col.notNull().defaultTo(false),
-    )
     .addColumn("isRead", "boolean", (col) => col.notNull().defaultTo(false))
     .addColumn("grouping", "varchar")
     .addColumn("title", "varchar")
