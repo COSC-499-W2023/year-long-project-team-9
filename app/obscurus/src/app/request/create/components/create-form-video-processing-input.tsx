@@ -1,4 +1,4 @@
-import { FormLabel } from "@/components/ui/form";
+import { FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -25,6 +25,11 @@ export default function VideoProcessingInput({ form }: any) {
             </TabsTrigger>
           </TabsList>
         </Tabs>
+        {form.getFieldState("videoProcessing").error && (
+          <FormMessage>
+            {form.getFieldState("videoProcessing").error.message}
+          </FormMessage>
+        )}
       </div>
     </>
   );

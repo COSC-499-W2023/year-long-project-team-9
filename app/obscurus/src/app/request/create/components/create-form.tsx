@@ -20,14 +20,26 @@ import DescriptionInput from "./create-form-description-input";
 import VideoProcessingInput from "./create-form-video-processing-input";
 import ClientEmail from "./create-form-client-input";
 import CreateFormDueDateInput from "./create-form-due-date-input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { RotateCcw } from "lucide-react";
 
 const createFormSchema = z.object({
-  title: z.string().min(1).max(100),
+  title: z.string().trim().min(1).max(100),
   dueDate: z.date().min(endOfDay(new Date())),
-  description: z.string().min(1).max(2000),
-  clientEmail: z.array(z.object({ email: z.string().email() })),
-  videoProcessing: z.boolean(),
+  description: z.string().trim().min(1).max(2000),
+  clientEmail: z
+    .array(
+      z.object({
+        email: z.string().trim().toLowerCase().min(1).max(320).email(),
+      })
+    )
+    .refine((emails) => {
+      const emailSet = new Set(
+        emails.map((emailObj) => emailObj.email.toLowerCase())
+      );
+      return emailSet.size === emails.length;
+    }),
+  videoProcessing: z.boolean().default(true),
 });
 
 interface CreateFormProps {
@@ -40,16 +52,39 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
     defaultValues: {
       title: "",
       videoProcessing: true,
-      clientEmail: [{ email: "" }, { email: "" }],
+      clientEmail: [{ email: "" }],
     },
   });
+
+  // function submit(values: z.infer<typeof createFormSchema>) {
+  //   let fromValid = true;
+  //   for (let i = 0; i < values.clientEmail.length; i++) {
+  //     const isDuplicateEmail = duplicateEmail(
+  //       values.clientEmail,
+  //       values.clientEmail[i].email
+  //     );
+  //     if (isDuplicateEmail === true) {
+  //       form.setError(`clientEmail.${i}.email`, {
+  //         type: "custom",
+  //         message: "Duplicate email detected",
+  //       });
+  //       fromValid = false;
+  //     }
+  //   }
+  //   if (fromValid === false) {
+  //     form.handleSubmit;
+  //   } else {
+  //     form.handleSubmit(onSubmit);
+  //   }
+  // }
 
   function onSubmit(values: z.infer<typeof createFormSchema>) {
     console.log(values);
   }
+  // TODO: Work in progress
   return (
-    <ScrollArea>
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
+    <div className="overflow-auto">
+      {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -64,18 +99,18 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
               variant={"ghost"}
               className="justify-self-start"
             >
-              Cancel Request
+              Cancel
             </Button>
             <Button
               type="submit"
               variant={"default"}
               className="justify-self-start"
             >
-              Submit Request
+              Submit
             </Button>
           </div>
         </form>
       </Form>
-    </ScrollArea>
+    </div>
   );
 }

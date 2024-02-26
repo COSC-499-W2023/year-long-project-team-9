@@ -7,8 +7,16 @@ export default function TitleInput({ form }: any) {
       <div>
         <FormItem>
           <FormLabel>Request Title</FormLabel>
-          <Input maxLength={101} {...form.register("title")}></Input>
-          <FormMessage></FormMessage>
+          <Input
+            maxLength={101}
+            placeholder="Title"
+            {...form.register("title")}
+          ></Input>
+          {form.getFieldState("title").error && (
+            <FormMessage>
+              {form.getFieldState("title").error.message}
+            </FormMessage>
+          )}
         </FormItem>
       </div>
     </>
