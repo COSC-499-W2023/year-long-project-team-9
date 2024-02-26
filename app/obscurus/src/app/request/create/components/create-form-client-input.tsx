@@ -31,39 +31,54 @@ export default function ClientEmail({
   }
 
   return (
-    <>
-      <div>
-        <FormLabel>{clientLabel}</FormLabel>
-        {fields.map((value, index) => {
-          return <div>Hello World</div>;
-        })}
-        <div className="flex flex-col-2 gap-1">
-          <Input {...form.register(`clientEmail.${0}.email`)}></Input>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            append({ email: "" });
-            changeClientEmailLength(clientEmailLength, 1);
-          }}
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
-
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            remove(0);
-            changeClientEmailLength(clientEmailLength, -1);
-          }}
-        >
-          <Minus className="h-4 w-4" />
-        </Button>
-      </div>
-    </>
+    <div className="overflow-auto">
+      <FormLabel>{clientLabel}</FormLabel>
+      {fields.map((value, index) => {
+        return (
+          <div className="flex flex-col 2 gap-1">
+            <div className="flex flex-col-2 gap-1 mb-1">
+              {clientEmailLength > 1 ? (
+                <Input
+                  placeholder={`Email ${index + 1}`}
+                  {...form.register(`clientEmail.${index + 1}.email`)}
+                ></Input>
+              ) : (
+                <Input
+                  placeholder="Email"
+                  {...form.register(`clientEmail.${index}.email`)}
+                ></Input>
+              )}
+              {clientEmailLength !== 10 && index === clientEmailLength - 1 ? (
+                <div>+</div>
+              ) : (
+                <div>x</div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+      {/* <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        onClick={() => {
+          append({ email: "" });
+          changeClientEmailLength(clientEmailLength, 1);
+        }}
+      >
+        <Plus className="h-4 w-4" />
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        onClick={() => {
+          remove(index);
+          changeClientEmailLength(clientEmailLength, -1);
+        }}
+      >
+        <Minus className="h-4 w-4" />
+      </Button> */}
+    </div>
   );
 }

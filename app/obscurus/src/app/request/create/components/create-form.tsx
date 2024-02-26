@@ -38,7 +38,7 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
     defaultValues: {
       title: "",
       videoProcessing: true,
-      clientEmail: [{ email: "" }],
+      clientEmail: [{ email: "" }, { email: "" }],
     },
   });
 
@@ -46,8 +46,8 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
     console.log(values);
   }
   return (
-    <div>
-      {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
+    <div className="scrollbar">
+      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
