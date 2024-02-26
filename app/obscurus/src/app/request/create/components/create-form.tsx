@@ -19,6 +19,8 @@ import { endOfDay } from "date-fns";
 import DescriptionInput from "./create-form-description-input";
 import VideoProcessingInput from "./create-form-video-processing-input";
 import ClientEmail from "./create-form-client-input";
+import CreateFormDueDateInput from "./create-form-due-date-input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const createFormSchema = z.object({
   title: z.string().min(1).max(100),
@@ -46,13 +48,14 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
     console.log(values);
   }
   return (
-    <div className="scrollbar">
+    <ScrollArea>
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <TitleInput form={form}></TitleInput>
           <ClientEmail form={form} email={userEmail}></ClientEmail>
+          <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
           <div className="text-right gap-2">
@@ -73,6 +76,6 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
           </div>
         </form>
       </Form>
-    </div>
+    </ScrollArea>
   );
 }

@@ -18,8 +18,14 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/app/functions/utils";
 
-export default function CreateFormDueDateInput({ register }: any) {
+export default function CreateFormDueDateInput({ form }: any) {
   const [date, setDate] = React.useState<Date>();
+  function changeValue(date: Date | undefined) {
+    if (date !== undefined) {
+      setDate(endOfDay(new Date(date)));
+      form.setValue("dueDate", endOfDay(new Date(date)));
+    }
+  }
 
   return (
     <Popover>
@@ -44,9 +50,10 @@ export default function CreateFormDueDateInput({ register }: any) {
         className="flex w-auto flex-col space-y-2 p-2"
       >
         <Select
-          onValueChange={(value) =>
-            setDate(addDays(endOfDay(new Date()), parseInt(value)))
-          }
+          onValueChange={(value) => {
+            setDate(addDays(endOfDay(new Date()), parseInt(value)));
+            form.setValue("dueDate", endOfDay(new Date()), parseInt(value));
+          }}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select" />
@@ -62,11 +69,7 @@ export default function CreateFormDueDateInput({ register }: any) {
           <Calendar
             mode="single"
             selected={date}
-            onSelect={(value) => {
-              value === undefined
-                ? React.useState<Date>()
-                : setDate(endOfDay(value));
-            }}
+            onSelect={(value) => changeValue(value)}
           />
         </div>
       </PopoverContent>
