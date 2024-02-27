@@ -22,12 +22,55 @@ export default function ChatWrapper({
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
+
+  const getOtherParticipantEmail = (item: Rooms) => {
+    if (item.participant1Email === userEmail) {
+      return item.participant2Email;
+    } else {
+      return item.participant1Email;
+    }
+  };
+  const getOtherParticipantName = (item: Rooms) => {
+    if (item.participant1Email === userEmail) {
+      return (
+        item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
+      );
+    } else {
+      return (
+        item.participant1RoomGivenName + " " + item.participant1RoomFamilyName
+      );
+    }
+  };
+  const checkUnreadMessages = (item: Rooms) => {
+    const roomMessages = chatMessages.filter(
+      (message) =>
+        message.roomId === item.roomId &&
+        !message.isRead &&
+        message.senderEmail != userEmail
+    );
+    return roomMessages.length > 0;
+  };
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
     const roomMessages = chatMessages.filter(
       (messageItem) => messageItem.roomId === currRoomId
     );
     return roomMessages[roomMessages.length - 1];
+  };
+  const updateChatMessages = (newChatMessages: Messages[]) => {
+    setChatMessages(newChatMessages);
+  };
+  const setMessagesAsRead = (item: Rooms) => {
+    chatMessages.forEach((message) => {
+      if (message.roomId === item.roomId) {
+        if (
+          !message.isRead &&
+          message.senderEmail === getOtherParticipantEmail(item)
+        ) {
+          message.isRead = true;
+        }
+      }
+    });
   };
   const sortRooms = () => {
     if (chatRooms != undefined) {
@@ -44,9 +87,6 @@ export default function ChatWrapper({
       );
     }
   };
-  const updateChatMessages = (newChatMessages: Messages[]) => {
-    setChatMessages(newChatMessages);
-  };
 
   return (
     <Wrapper
@@ -57,7 +97,12 @@ export default function ChatWrapper({
         <ChatList
           rooms={chatRooms}
           messages={chatMessages}
+          getOtherParticipantEmail={getOtherParticipantEmail}
+          getOtherParticipantName={getOtherParticipantName}
+          checkUnreadMessages={checkUnreadMessages}
           getLatestMessage={getLatestMessage}
+          updateChatMessages={updateChatMessages}
+          setMessagesAsRead={setMessagesAsRead}
           sortRooms={sortRooms}
         />
       }

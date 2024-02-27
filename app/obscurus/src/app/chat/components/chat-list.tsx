@@ -14,7 +14,12 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
   messages: Messages[];
+  getOtherParticipantEmail: Function;
+  getOtherParticipantName: Function;
+  checkUnreadMessages: Function;
   getLatestMessage: Function;
+  updateChatMessages: Function;
+  setMessagesAsRead: Function;
   sortRooms: Function;
   isCollapsed?: boolean;
 }
@@ -22,52 +27,17 @@ interface ChatListProps {
 export default function ChatList({
   rooms,
   messages,
+  getOtherParticipantEmail,
+  getOtherParticipantName,
+  checkUnreadMessages,
   getLatestMessage,
+  updateChatMessages,
+  setMessagesAsRead,
   sortRooms,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
   const [listMessages, setListMessages] = useState(messages);
-
-  const getOtherParticipantEmail = (item: Rooms) => {
-    if (item.participant1Email === userEmail) {
-      return item.participant2Email;
-    } else {
-      return item.participant1Email;
-    }
-  };
-
-  const getOtherParticipantName = (item: Rooms) => {
-    if (item.participant1Email === userEmail) {
-      return (
-        item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
-      );
-    } else {
-      return (
-        item.participant1RoomGivenName + " " + item.participant1RoomFamilyName
-      );
-    }
-  };
-
-  const checkUnreadMessages = (item: Rooms) => {
-    const roomMessages = messages.filter(
-      (message) => message.roomId === item.roomId && !message.isRead
-    );
-    return roomMessages.length > 0;
-  };
-
-  const setMessagesAsRead = (item: Rooms) => {
-    messages.forEach((message) => {
-      if (message.roomId === item.roomId) {
-        if (
-          !message.isRead &&
-          message.senderEmail === getOtherParticipantEmail(item)
-        ) {
-          message.isRead = true;
-        }
-      }
-    });
-  };
 
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
