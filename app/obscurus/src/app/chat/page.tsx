@@ -2,12 +2,8 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
-import Wrapper from "../wrapper";
-import ChatList from "../chat/components/chat-list";
-import ChatDisplay from "../chat/components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
-import hello from "../functions/hello";
 import ChatWrapper from "./components/chat-wrapper";
 
 const userEmail = "imightbejan@gmail.com";

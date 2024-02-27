@@ -76,12 +76,12 @@ export default function ChatList({
   };
 
   useEffect(() => {
-    sortRooms();
     !roomId && setRoomId(rooms[0].roomId);
   }),
     [];
 
   const tabContent = () => {
+    sortRooms();
     const filteredRooms = rooms.filter((filRoom) => {
       const searchTerm = search?.toLowerCase();
       const matchesSearch =
