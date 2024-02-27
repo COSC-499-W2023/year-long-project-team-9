@@ -53,25 +53,23 @@ export default function SignInForm() {
             form={form}
           ></AuthenticationSignInPasswordInput>
 
-          <div className="flex flex-col-2 gap-2">
-            <a href="/sign/up">
-              {/* Button  variant="ghost" do not change*/}
-              <Button type="button" variant="ghost">
-                Sign Up
-              </Button>
-            </a>
-            <div className="ml-auto">
-              <Button
-                type="submit"
-                variant={"default"}
-                className="justify-self-start"
-              >
-                Sign In
-              </Button>
-            </div>
+          <div className="text-right">
+            <Button
+              type="submit"
+              variant={"default"}
+              className="justify-self-start"
+            >
+              Sign In
+            </Button>
           </div>
         </form>
       </Form>
+      <div className="text-center text-xs mt-2">
+        Need an account?{" "}
+        <a href="/sign/up" className="underline underline text-blue-400">
+          Sign Up
+        </a>
+      </div>
     </div>
   );
 }

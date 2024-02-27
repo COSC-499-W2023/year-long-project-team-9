@@ -44,7 +44,9 @@ export default function AuthenticationSignInPasswordInput({ form }: any) {
         )}
       </div>
       <FormDescription>
-        <a className="underline text-blue-400">Forgot password</a>
+        <a href="/sign/recover" className="underline text-blue-400">
+          Forgot password
+        </a>
       </FormDescription>
       {form.getFieldState("password").error && (
         <FormMessage>

@@ -67,20 +67,13 @@ export default function RecoverPasswordForm() {
           <AuthenticationConfirmPasswordInput
             form={form}
           ></AuthenticationConfirmPasswordInput>
-          <div className="text-right gap-2">
-            <Button
-              type="button"
-              variant={"ghost"}
-              className="justify-self-start"
-            >
-              Cancel
-            </Button>
+          <div className="text-right">
             <Button
               type="submit"
               variant={"default"}
               className="justify-self-start"
             >
-              Update
+              Recover
             </Button>
           </div>
         </form>
