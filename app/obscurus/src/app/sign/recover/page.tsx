@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import Wrapper from "@/app/wrapper";
-import RecoverPassword from "../components/recover";
+import RecoverPasswordForm from "../components/recover";
 
 async function Recover() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -19,7 +19,7 @@ async function Recover() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RecoverPassword></RecoverPassword>}
+      firstPanel={<RecoverPasswordForm></RecoverPasswordForm>}
       secondPanel={<>Hello World</>}
     />
   );

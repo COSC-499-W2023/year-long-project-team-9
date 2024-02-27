@@ -13,24 +13,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-const profileImageMaxSize = 1024 * 1024 * 10;
-const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+import AuthenticationEmailInput from "./authentication-form-email-input";
+import AuthenticationSignInPasswordInput from "./authentication-sign-in-form-password-input";
+import AuthenticationSignInEmailInput from "./authentication-sign-in-form-email-input";
 
 // TODO: better error messages, be below for an example
 
 const accountFormSchema = z.object({
-  email: z.string().trim().min(1).max(500, { message: "Email is too long." }),
-  password: z
-    .string()
-    .trim()
-    .min(1)
-    .max(100, { message: "Password is too long." }),
+  email: z.string().trim().toLowerCase().min(1).max(320).email(),
+  password: z.string().trim().min(1).max(24),
 });
 
-export default function SignIn() {
+export default function SignInForm() {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {},
@@ -49,38 +44,15 @@ export default function SignIn() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <Input
-              maxLength={500}
-              placeholder="Email"
-              {...form.register("email")}
-            ></Input>
-            {form.getFieldState("email").error && (
-              <FormMessage>
-                {/* no need to worry about error */}
-                {form.getFieldState("email").error.message}
-              </FormMessage>
-            )}
-          </FormItem>
+          <AuthenticationSignInEmailInput
+            form={form}
+          ></AuthenticationSignInEmailInput>
+
           {/* Password */}
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <Input
-              maxLength={100}
-              placeholder="Email"
-              {...form.register("password")}
-            ></Input>
-            <a href="/sign/recover" className="text-xs underline text-blue-400">
-              Recover Password
-            </a>
-            {form.getFieldState("password").error && (
-              <FormMessage>
-                {/* no need to worry about error */}
-                {form.getFieldState("password").error.message}
-              </FormMessage>
-            )}
-          </FormItem>
+          <AuthenticationSignInPasswordInput
+            form={form}
+          ></AuthenticationSignInPasswordInput>
+
           <div className="flex flex-col-2 gap-2">
             <a href="/sign/up">
               {/* Button  variant="ghost" do not change*/}

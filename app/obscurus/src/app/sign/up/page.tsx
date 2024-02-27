@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import Wrapper from "@/app/wrapper";
-import SignUp from "../components/sign-up";
+import SignUpForm from "../components/sign-up";
 
 async function Up() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -19,7 +19,7 @@ async function Up() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<SignUp></SignUp>}
+      firstPanel={<SignUpForm></SignUpForm>}
       secondPanel={<>Hello World</>}
     />
   );

@@ -15,9 +15,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import AuthenticationTermsInput from "./authentication-form-terms-input";
+import AuthenticationAgeInput from "./authentication-form-age-input";
+import AuthenticationFirstNameInput from "./authentication-form-first-name-input";
+import AuthenticationEmailInput from "./authentication-form-email-input";
+import AuthenticationLastNameInput from "./authentication-form-last-named-input";
+import AuthenticationPasswordInput from "./authentication-form-password-input";
+import AuthenticationConfirmPasswordInput from "./authentication-form-confirm-password-input";
 // TODO: Fill better error messages, be below for an example
 
-const accountFormSchema = z
+const signUpFormSchema = z
   .object({
     email: z.string().trim().toLowerCase().min(1).max(320).email(),
     password: z
@@ -38,7 +45,6 @@ const accountFormSchema = z
       .min(1, { message: "First name must be at least on character." })
       .max(100),
     lastName: z.string().trim().min(1).max(100),
-    code: z.string().trim().min(1),
     ageVerified: z.boolean(),
     agreedToTermsAndConditions: z.boolean(),
   })
@@ -47,12 +53,12 @@ const accountFormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function SignUp() {
-  const form = useForm<z.infer<typeof accountFormSchema>>({
-    resolver: zodResolver(accountFormSchema),
+export default function SignUpForm() {
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
   });
 
-  function onSubmit(values: z.infer<typeof accountFormSchema>) {
+  function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     console.log(values);
   }
   return (
@@ -63,19 +69,33 @@ export default function SignUp() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
-          <Input></Input>
+          <AuthenticationEmailInput form={form}></AuthenticationEmailInput>
 
           {/* Password */}
+          <AuthenticationPasswordInput
+            form={form}
+          ></AuthenticationPasswordInput>
 
           {/* Confirm Password */}
+          <AuthenticationConfirmPasswordInput
+            form={form}
+          ></AuthenticationConfirmPasswordInput>
 
           {/* First Name */}
+          <AuthenticationFirstNameInput
+            form={form}
+          ></AuthenticationFirstNameInput>
 
           {/* Last Name */}
+          <AuthenticationLastNameInput
+            form={form}
+          ></AuthenticationLastNameInput>
 
           {/* Age Verification */}
+          <AuthenticationAgeInput form={form}></AuthenticationAgeInput>
 
           {/* Terms and Conditions */}
+          <AuthenticationTermsInput form={form}></AuthenticationTermsInput>
 
           <div className="text-right gap-2">
             <Button
