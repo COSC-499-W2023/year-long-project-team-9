@@ -17,6 +17,17 @@ export default function PasswordInput({
   userPassword: string;
 }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
+  function modifyChangingPassword(userPassword: string, newPassword: string) {
+    if (userPassword === newPassword) {
+      setChangingPassword(false);
+      form.clearErrors("confirmPassword");
+      form.resetField("confirmPassword");
+    } else {
+      setChangingPassword(true);
+    }
+  }
   return (
     <>
       <FormItem>
@@ -27,6 +38,9 @@ export default function PasswordInput({
             maxLength={25}
             {...form.register("password")}
             type={showPassword === true ? "text" : "password"}
+            onInput={(e) => {
+              modifyChangingPassword(userPassword, e.currentTarget.value);
+            }}
           ></Input>
           {showPassword === true ? (
             <Button
@@ -57,15 +71,39 @@ export default function PasswordInput({
           </FormMessage>
         )}
       </FormItem>
-      {form.getValues("password") !== userPassword ? (
+      {changingPassword === true ? (
         <FormItem>
           <FormLabel>Confirm Password</FormLabel>
-          {form.setValue("confirmPassword", "")}
-          <Input
-            maxLength={25}
-            placeholder="Password"
-            {...form.register("confirmPassword")}
-          ></Input>
+          <div className="flex flex-col-2 gap-1 mb-1">
+            {/* TODO: Make the dots much smaller */}
+            <Input
+              maxLength={25}
+              {...form.register("confirmPassword")}
+              type={showConfirmPassword === true ? "text" : "password"}
+            ></Input>
+            {showConfirmPassword === true ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => setShowConfirmPassword(false)}
+              >
+                <EyeOff className="h-4 w-4" />
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => setShowConfirmPassword(true)}
+              >
+                <Eye className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <FormDescription>
+            Your password (Baz: come up with something better)
+          </FormDescription>
           {form.getFieldState("confirmPassword").error && (
             <FormMessage>
               {form.getFieldState("confirmPassword").error.message}
@@ -75,19 +113,6 @@ export default function PasswordInput({
       ) : (
         <></>
       )}
-      {/* <FormItem>
-        <FormLabel>Confirm Password</FormLabel>
-        <Input
-          maxLength={25}
-          placeholder="Password"
-          {...form.register("confirmPassword")}
-        ></Input>
-        {form.getFieldState("confirmPassword").error && (
-          <FormMessage>
-            {form.getFieldState("confirmPassword").error.message}
-          </FormMessage>
-        )}
-      </FormItem> */}
     </>
   );
 }

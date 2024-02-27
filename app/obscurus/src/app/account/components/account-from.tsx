@@ -49,10 +49,14 @@ const accountFormSchema = z
     confirmPassword: z.string(),
     // profileImage: z.instanceof(File),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password does not match with the password above.",
-    path: ["confirmPassword"],
-  });
+  .refine(
+    (data) =>
+      data.password === data.confirmPassword || data.confirmPassword === "",
+    {
+      message: "Password does not match with the password above.",
+      path: ["confirmPassword"],
+    }
+  );
 
 interface CreateFormProps {
   userEmail: string;
@@ -65,7 +69,7 @@ export default function AccountForm({
 }: CreateFormProps) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues: { password: userPassword, confirmPassword: userPassword },
+    defaultValues: { password: userPassword, confirmPassword: "" },
   });
 
   function onSubmit(values: z.infer<typeof accountFormSchema>) {
