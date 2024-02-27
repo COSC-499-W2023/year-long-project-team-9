@@ -77,7 +77,7 @@ export default function ChatList({
                   <AvatarFallback>
                     {getOtherParticipantName(item)
                       .split(" ")
-                      .map((chunk) => chunk[0])
+                      .map((chunk: string[]) => chunk[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>

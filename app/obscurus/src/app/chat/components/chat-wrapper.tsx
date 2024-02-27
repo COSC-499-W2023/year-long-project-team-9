@@ -110,6 +110,8 @@ export default function ChatWrapper({
         <ChatDisplay
           rooms={chatRooms}
           messages={chatMessages}
+          getOtherParticipantEmail={getOtherParticipantEmail}
+          getOtherParticipantName={getOtherParticipantName}
           updateChatMessages={updateChatMessages}
         />
       }

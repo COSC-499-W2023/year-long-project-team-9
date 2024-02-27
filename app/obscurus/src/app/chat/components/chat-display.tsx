@@ -10,12 +10,16 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatDisplayProps {
   rooms: Rooms[];
   messages: Messages[];
+  getOtherParticipantEmail: Function;
+  getOtherParticipantName: Function;
   updateChatMessages: Function;
 }
 
 export default function ChatDisplay({
   rooms,
   messages,
+  getOtherParticipantEmail,
+  getOtherParticipantName,
   updateChatMessages,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
@@ -25,30 +29,8 @@ export default function ChatDisplay({
   }
 
   const selected = rooms.find((item) => item.roomId === roomId);
-  var otherUserName = "";
-  if (selected?.participant1Email === userEmail) {
-    otherUserName =
-      selected.participant2RoomGivenName +
-      " " +
-      selected.participant2RoomFamilyName;
-  } else if (selected?.participant2Email === userEmail) {
-    otherUserName =
-      selected.participant1RoomGivenName +
-      " " +
-      selected.participant1RoomFamilyName;
-  }
-  var otherEmail = "";
-  if (
-    selected?.participant1Email === userEmail &&
-    selected?.participant2Email != null
-  ) {
-    otherEmail = selected.participant2Email;
-  } else if (
-    selected?.participant2Email === userEmail &&
-    selected?.participant1Email != null
-  ) {
-    otherUserName = selected.participant1Email;
-  }
+  const otherUserName = getOtherParticipantName(selected);
+  const otherEmail = getOtherParticipantEmail(selected);
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">
@@ -58,7 +40,7 @@ export default function ChatDisplay({
           <AvatarFallback>
             {otherUserName
               .split(" ")
-              .map((chunk) => chunk[0])
+              .map((chunk: string[]) => chunk[0])
               .join("")}
           </AvatarFallback>
         </Avatar>
