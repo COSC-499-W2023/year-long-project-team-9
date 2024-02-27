@@ -20,7 +20,7 @@ import { Auth, Amplify } from "aws-amplify";
 
 // Please update "" to the email for the particular user
 export async function getEmail() {
-  return "";
+  return "bakar.a.muhammad@gmail.com";
 }
 
 // export async function getIDToken() {
