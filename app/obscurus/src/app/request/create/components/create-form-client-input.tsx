@@ -31,37 +31,6 @@ export default function ClientEmail({
       setClientEmailLabel("Client");
     }
   }
-  function duplicateEmail(emailArray: any, emailToCheck: string) {
-    const numberOfDuplicates = emailArray.filter(
-      (email: any) => email.email.toLowerCase() === emailToCheck.toLowerCase()
-    ).length;
-    return numberOfDuplicates > 1;
-  }
-
-  function clientEmailError(form: any, index: number, email: string) {
-    if (email.trim() === "") {
-      return "";
-    }
-    const isDuplicateEmail = duplicateEmail(
-      form.getValues("clientEmail"),
-      email
-    );
-    if (form.getFieldState(`clientEmail.${index}.email`).error !== undefined) {
-      return JSON.stringify(
-        form.getFieldState(`clientEmail.${index}.email`).error.message
-      );
-    } else if (
-      isDuplicateEmail === true &&
-      form.getFieldState("clientEmail").error !== undefined
-    ) {
-      form.setError(`clientEmail.${index}.email`, {
-        type: "manual",
-        message: "This email is already in use.",
-      });
-    } else {
-      return "";
-    }
-  }
 
   return (
     <div>
@@ -102,13 +71,12 @@ export default function ClientEmail({
                 </Button>
               )}
             </div>
-            <FormMessage>
-              {clientEmailError(
-                form,
-                index,
-                form.getValues(`clientEmail.${index}.email`)
-              )?.toString()}
-            </FormMessage>
+
+            {form.getFieldState(`clientEmail.${index}.email`).error && (
+              <FormMessage>
+                {form.getFieldState(`clientEmail.${index}.email`).error.message}
+              </FormMessage>
+            )}
           </div>
         );
       })}

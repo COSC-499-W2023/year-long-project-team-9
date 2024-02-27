@@ -20,8 +20,18 @@ import DescriptionInput from "./create-form-description-input";
 import VideoProcessingInput from "./create-form-video-processing-input";
 import ClientEmail from "./create-form-client-input";
 import CreateFormDueDateInput from "./create-form-due-date-input";
-import { Input } from "@/components/ui/input";
-import { RotateCcw } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/alert-dialog";
+import CreateCancel from "./create-from-cancel";
 
 const createFormSchema = z.object({
   title: z.string().trim().min(1).max(100),
@@ -33,11 +43,22 @@ const createFormSchema = z.object({
         email: z.string().trim().toLowerCase().min(1).max(320).email(),
       })
     )
-    .refine((emails) => {
-      const emailSet = new Set(
-        emails.map((emailObj) => emailObj.email.toLowerCase())
-      );
-      return emailSet.size === emails.length;
+    .superRefine((clientEmail, ctx) => {
+      for (let i = 0; i < clientEmail.length; i++) {
+        for (let j = 0; j < clientEmail.length; j++) {
+          if (
+            clientEmail[i].email === clientEmail[j].email &&
+            i !== j &&
+            j < i
+          ) {
+            ctx.addIssue({
+              path: [i, "email"],
+              message: "One cannot have duplicate email",
+              code: z.ZodIssueCode.custom,
+            });
+          }
+        }
+      }
     }),
   videoProcessing: z.boolean().default(true),
 });
@@ -84,7 +105,7 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
   // TODO: Work in progress
   return (
     <div className="overflow-auto">
-      {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
+      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -93,14 +114,9 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
           <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
-          <div className="text-right gap-2">
-            <Button
-              type="button"
-              variant={"ghost"}
-              className="justify-self-start"
-            >
-              Cancel
-            </Button>
+
+          <div className="text-right">
+            <CreateCancel></CreateCancel>
             <Button
               type="submit"
               variant={"default"}
