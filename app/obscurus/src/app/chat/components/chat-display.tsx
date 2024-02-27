@@ -9,18 +9,14 @@ import ChatLog from "../../chat/components/chat-log";
 const userEmail = "imightbejan@gmail.com";
 interface ChatDisplayProps {
   rooms: Rooms[];
-  searchParams?: {
-    counter?: string | null[];
-  };
   messages: Messages[];
-  action: any;
+  updateChatMessages: Function;
 }
 
 export default function ChatDisplay({
   rooms,
-  searchParams,
   messages,
-  action,
+  updateChatMessages,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -79,7 +75,11 @@ export default function ChatDisplay({
           </div>
         }
       >
-        <ChatLog room={selected} messages={messages} />
+        <ChatLog
+          room={selected}
+          messages={messages}
+          updateChatMessages={updateChatMessages}
+        />
       </Suspense>
     </div>
   ) : (

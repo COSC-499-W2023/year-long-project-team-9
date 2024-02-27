@@ -8,6 +8,7 @@ import ChatDisplay from "../chat/components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import hello from "../functions/hello";
+import ChatWrapper from "./components/chat-wrapper";
 
 const userEmail = "imightbejan@gmail.com";
 
@@ -51,14 +52,11 @@ async function Chat() {
         </div>
       }
     >
-      <Wrapper
+      <ChatWrapper
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-        firstPanel={<ChatList rooms={rooms} messages={messages} />}
-        secondPanel={
-          <ChatDisplay rooms={rooms} messages={messages} action={hello} />
-        }
+        rooms={rooms}
+        messages={messages}
       />
     </Suspense>
   );

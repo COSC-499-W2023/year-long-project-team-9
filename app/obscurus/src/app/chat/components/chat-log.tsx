@@ -12,9 +12,16 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
   room: Rooms;
   messages: Messages[];
+  sortRooms: Function;
+  updateChatMessages: Function;
 }
 
-export default function ChatLog({ room, messages }: ChatLogProps) {
+export default function ChatLog({
+  room,
+  messages,
+  sortRooms,
+  updateChatMessages,
+}: ChatLogProps) {
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
   };
@@ -24,6 +31,11 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
     setChatMessage(value);
   };
   const roomMessages = getRoomMessages();
+  const addNewChatMessage = (newChatMessage: Messages) => {
+    const newChatMessages = [...messages, newChatMessage];
+    updateChatMessages(newChatMessages);
+    // sortRooms();
+  };
   const handleClick = () => {
     let newMessageUUID = uuidv4();
     let newMessageUUIDUnique = false;
@@ -46,8 +58,7 @@ export default function ChatLog({ room, messages }: ChatLogProps) {
       isRead: false,
     };
     setChatMessage("");
-    messages.push(newMessage);
-    console.log(messages);
+    addNewChatMessage(newMessage);
   };
   return room ? (
     <div className="flex flex-col mt-auto">

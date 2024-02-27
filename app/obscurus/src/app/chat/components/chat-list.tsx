@@ -14,35 +14,20 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
   messages: Messages[];
+  getLatestMessage: Function;
+  sortRooms: Function;
   isCollapsed?: boolean;
 }
 
-export default function ChatList({ rooms, messages }: ChatListProps) {
+export default function ChatList({
+  rooms,
+  messages,
+  getLatestMessage,
+  sortRooms,
+}: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
   const [listMessages, setListMessages] = useState(messages);
-
-  const getLatestMessage = (item: Rooms): Messages => {
-    const currRoomId = item.roomId;
-    const roomMessages = messages.filter(
-      (messageItem) => messageItem.roomId === currRoomId
-    );
-    return roomMessages[roomMessages.length - 1];
-  };
-
-  const sortRooms = () => {
-    if (rooms != undefined) {
-      rooms.sort((a, b) => {
-        const dateA = getLatestMessage(a)
-          ? new Date(getLatestMessage(a).creationDate)
-          : new Date(0);
-        const dateB = getLatestMessage(b)
-          ? new Date(getLatestMessage(b).creationDate)
-          : new Date(0);
-        return dateB.getTime() - dateA.getTime();
-      });
-    }
-  };
 
   const getOtherParticipantEmail = (item: Rooms) => {
     if (item.participant1Email === userEmail) {
