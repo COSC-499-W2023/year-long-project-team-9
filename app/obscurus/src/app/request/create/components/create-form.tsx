@@ -77,28 +77,6 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
     },
   });
 
-  // function submit(values: z.infer<typeof createFormSchema>) {
-  //   let fromValid = true;
-  //   for (let i = 0; i < values.clientEmail.length; i++) {
-  //     const isDuplicateEmail = duplicateEmail(
-  //       values.clientEmail,
-  //       values.clientEmail[i].email
-  //     );
-  //     if (isDuplicateEmail === true) {
-  //       form.setError(`clientEmail.${i}.email`, {
-  //         type: "custom",
-  //         message: "Duplicate email detected",
-  //       });
-  //       fromValid = false;
-  //     }
-  //   }
-  //   if (fromValid === false) {
-  //     form.handleSubmit;
-  //   } else {
-  //     form.handleSubmit(onSubmit);
-  //   }
-  // }
-
   function onSubmit(values: z.infer<typeof createFormSchema>) {
     console.log(values);
   }

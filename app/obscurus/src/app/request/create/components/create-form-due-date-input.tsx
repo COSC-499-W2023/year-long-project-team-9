@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/app/functions/utils";
-import { FormMessage } from "@/components/ui/form";
+import { FormLabel, FormMessage } from "@/components/ui/form";
 
 export default function CreateFormDueDateInput({ form }: any) {
   const [date, setDate] = React.useState<Date>();
@@ -31,7 +31,7 @@ export default function CreateFormDueDateInput({ form }: any) {
 
   return (
     <div>
-      {" "}
+      <FormLabel>Request Due Date</FormLabel>
       <Popover>
         <PopoverTrigger asChild>
           <div>
@@ -44,7 +44,7 @@ export default function CreateFormDueDateInput({ form }: any) {
               )}
             >
               <div className="">
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                {date ? format(date, "PPP") : <span>Due Date</span>}
               </div>
               <div className="ml-auto">
                 <CalendarIcon className="mr-2 h-4 w-4" />
