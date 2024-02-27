@@ -14,15 +14,10 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
   messages: Messages[];
-  updateIsRead: any;
   isCollapsed?: boolean;
 }
 
-export default function ChatList({
-  rooms,
-  messages,
-  updateIsRead,
-}: ChatListProps) {
+export default function ChatList({ rooms, messages }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -83,7 +78,6 @@ export default function ChatList({
           message.senderEmail === getOtherParticipantEmail(item)
         ) {
           message.isRead = true;
-          // updateIsRead({ isRead: true, messageId: message.messageId });
         }
       }
     });
