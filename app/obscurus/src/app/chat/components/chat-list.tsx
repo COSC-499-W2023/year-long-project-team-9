@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
@@ -20,6 +20,7 @@ interface ChatListProps {
 export default function ChatList({ rooms, messages }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
+  const [listMessages, setListMessages] = useState(messages);
 
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
