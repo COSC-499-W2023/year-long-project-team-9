@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
@@ -13,80 +13,48 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
-  messages: Messages[];
+  getOtherParticipantName: Function;
+  checkUnreadMessages: Function;
+  getLatestMessage: Function;
+  setMessagesAsRead: Function;
+  sortRooms: Function;
   isCollapsed?: boolean;
 }
 
-export default function ChatList({ rooms, messages }: ChatListProps) {
+export default function ChatList({
+  rooms,
+  getOtherParticipantName,
+  checkUnreadMessages,
+  getLatestMessage,
+  setMessagesAsRead,
+  sortRooms,
+}: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
-    console.log("Selected RoomID to list", roomId);
-  };
-
-  const getLatestMessage = (item: Rooms): Messages => {
-    const currRoomId = item.roomId;
-    const roomMessages = messages.filter(
-      (messageItem) => messageItem.roomId === currRoomId
-    );
-    return roomMessages[roomMessages.length - 1];
-  };
-
-  const sortRooms = () => {
-    if (rooms != undefined) {
-      rooms.sort((a, b) => {
-        const dateA = getLatestMessage(a)
-          ? new Date(getLatestMessage(a).creationDate)
-          : new Date(0);
-        const dateB = getLatestMessage(b)
-          ? new Date(getLatestMessage(b).creationDate)
-          : new Date(0);
-        return dateB.getTime() - dateA.getTime();
-      });
-    }
-  };
-
-  const getOtherParticipantName = (item: Rooms) => {
-    if (item.participant1Email === userEmail) {
-      return (
-        item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
-      );
-    } else {
-      return (
-        item.participant1RoomGivenName + " " + item.participant1RoomFamilyName
-      );
-    }
+    setMessagesAsRead(item);
   };
 
   useEffect(() => {
-    sortRooms();
     !roomId && setRoomId(rooms[0].roomId);
   }),
     [];
 
-  return rooms ? (
-    <div>
-      <div className="flex items-center px-4">
-        <h1 className="text-xl font-bold">Chats</h1>
-      </div>
-      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <form>
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={search || "Search"}
-              className="pl-8"
-              onChange={(e) => setSearch(e.target.value || null)}
-              value={search || undefined}
-            />
-          </div>
-        </form>
-      </div>
-      <ScrollArea>
+  const tabContent = () => {
+    sortRooms();
+    const filteredRooms = rooms.filter((filRoom) => {
+      const searchTerm = search?.toLowerCase();
+      const matchesSearch =
+        !searchTerm ||
+        getOtherParticipantName(filRoom).toLowerCase().includes(searchTerm);
+      return matchesSearch;
+    });
+    return (
+      <ScrollArea className="h-full">
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-          {rooms.map((item) => (
+          {filteredRooms.map((item) => (
             <button
               key={item.roomId}
               className={cn(
@@ -101,7 +69,7 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
                   <AvatarFallback>
                     {getOtherParticipantName(item)
                       .split(" ")
-                      .map((chunk) => chunk[0])
+                      .map((chunk: string[]) => chunk[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
@@ -112,6 +80,9 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
                         <div className="font-semibold">
                           {getOtherParticipantName(item)}
                         </div>
+                        {checkUnreadMessages(item) && (
+                          <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                        )}
                       </div>
 
                       <div
@@ -136,7 +107,12 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
                   </div>
                   <div className="line-clamp-2 text-xs text-muted-foreground">
                     {getLatestMessage(item) != undefined &&
-                      getLatestMessage(item).messageContent?.substring(0, 300)}
+                      getLatestMessage(item).messageContent.length > 24 &&
+                      getLatestMessage(item).messageContent?.substring(0, 24) +
+                        "..."}
+                    {getLatestMessage(item) != undefined &&
+                      getLatestMessage(item).messageContent.length <= 24 &&
+                      getLatestMessage(item).messageContent}
                     {getLatestMessage(item) === undefined &&
                       "No Message History"}
                   </div>
@@ -146,6 +122,28 @@ export default function ChatList({ rooms, messages }: ChatListProps) {
           ))}
         </div>
       </ScrollArea>
+    );
+  };
+
+  return rooms ? (
+    <div className="flex h-full flex-col min-h-full">
+      <div className="flex items-center px-4">
+        <h1 className="text-xl font-bold">Chats</h1>
+      </div>
+      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <form>
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder={search || "Search"}
+              className="pl-8"
+              onChange={(e) => setSearch(e.target.value || null)}
+              value={search || undefined}
+            />
+          </div>
+        </form>
+      </div>
+      {tabContent()}
     </div>
   ) : (
     <div>Failed to load data....</div>
