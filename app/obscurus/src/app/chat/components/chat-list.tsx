@@ -37,7 +37,6 @@ export default function ChatList({
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
-  const [listMessages, setListMessages] = useState(messages);
 
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
