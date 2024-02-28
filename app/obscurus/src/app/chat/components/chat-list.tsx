@@ -41,7 +41,6 @@ export default function ChatList({
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
     setMessagesAsRead(item);
-    console.log("Selected RoomID to list", roomId);
   };
 
   useEffect(() => {

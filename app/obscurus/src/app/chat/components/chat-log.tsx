@@ -12,14 +12,12 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
   room: Rooms;
   messages: Messages[];
-  sortRooms: Function;
   updateChatMessages: Function;
 }
 
 export default function ChatLog({
   room,
   messages,
-  sortRooms,
   updateChatMessages,
 }: ChatLogProps) {
   const getRoomMessages = () => {
@@ -34,7 +32,6 @@ export default function ChatLog({
   const addNewChatMessage = (newChatMessage: Messages) => {
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
-    // sortRooms();
   };
   const handleClick = () => {
     let newMessageUUID = uuidv4();
