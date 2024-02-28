@@ -5,6 +5,7 @@ import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
+import createMessage from "../functions/createMessage";
 
 const userEmail = "imightbejan@gmail.com";
 
@@ -53,6 +54,7 @@ async function Chat() {
         defaultCollapsed={defaultCollapsed}
         rooms={rooms}
         messages={messages}
+        createMessage={createMessage}
       />
     </Suspense>
   );

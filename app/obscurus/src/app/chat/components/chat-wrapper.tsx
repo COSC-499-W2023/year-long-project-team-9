@@ -12,6 +12,7 @@ interface ChatWrapperProps {
   defaultCollapsed: boolean;
   rooms: Rooms[];
   messages: Messages[];
+  createMessage: Function;
 }
 
 export default function ChatWrapper({
@@ -19,19 +20,24 @@ export default function ChatWrapper({
   defaultCollapsed,
   rooms,
   messages,
+  createMessage,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
 
-  const getOtherParticipantEmail = (item: Rooms) => {
-    if (item.participant1Email === userEmail) {
+  const getOtherParticipantEmail = (item: Rooms | undefined) => {
+    if (item === undefined) {
+      return "";
+    } else if (item.participant1Email === userEmail) {
       return item.participant2Email;
     } else {
       return item.participant1Email;
     }
   };
-  const getOtherParticipantName = (item: Rooms) => {
-    if (item?.participant1Email === userEmail) {
+  const getOtherParticipantName = (item: Rooms | undefined) => {
+    if (item === undefined) {
+      return "";
+    } else if (item.participant1Email === userEmail) {
       return (
         item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
       );
