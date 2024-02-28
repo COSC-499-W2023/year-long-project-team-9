@@ -1,5 +1,5 @@
 "use client";
-import { upload } from "@/app/functions/upload";
+import upload  from "@/app/functions/upload";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,7 @@ import {
   Pause,
   Square,
 } from "lucide-react";
-import crypto from "crypto";
+import crypto, { randomUUID } from "crypto";
 import { Bucket } from "sst/node/bucket";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
@@ -27,6 +27,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import getPresignedUrl from "@/app/functions/upload";
 
 export function Upload({ uploadVideo }: any) {
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -79,28 +80,28 @@ export function Upload({ uploadVideo }: any) {
       return;
     }
 
-    const fileExt = file.name.split(".").pop();
-    const apiUrl = "/api/upload";
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: "hello",
-          extension: fileExt,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("Response from server:", data);
-    } catch (error) {
-      console.error("Error during fetch:", error);
-    }
+    const fileExt = file.name.split(".").pop() || "mp4";
+    const submissionId = Math.round(Math.random() * 1000).toString()
+    const url = getPresignedUrl(submissionId, fileExt)
+    // try {
+    //   const response = await fetch(apiUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       key: "hello",
+    //       extension: fileExt,
+    //     }),
+    //   });
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! status: ${response.status}`);
+    //   }
+    //   const data = await response.json();
+    //   console.log("Response from server:", data);
+    // } catch (error) {
+    //   console.error("Error during fetch:", error);
+    // }
     // const response = await fetch(url, {
     //   method: "PUT",
     //   headers: {
@@ -235,7 +236,7 @@ export function Upload({ uploadVideo }: any) {
 
       <div className="flex flex-col h-full w-full justify-content-center  ">
         <form
-          onSubmit={handleSubmit}
+          method="POST"
           className="bg-accent w-full h-full   shadow-sm flex flex-col justify-center items-center space-y-3 border "
         >
           {!record ? (
@@ -259,8 +260,8 @@ export function Upload({ uploadVideo }: any) {
                   id="file-input"
                   type="file"
                   ref={fileInputRef}
-                  style={{ display: "none" }}
                   onChange={handleSubmit}
+                  style={{ display: "none" }}
                   accept="video/*,.mp4"
                 />
 
