@@ -233,10 +233,10 @@ export function Upload({ uploadVideo }: any) {
     <div className="flex h-full flex-col p-10 space-y-5">
       <Progress className="my-5" value={10} />
 
-      <div className="flex flex-col h-full w-full  ">
+      <div className="flex flex-col h-full w-full justify-content-center  ">
         <form
           onSubmit={handleSubmit}
-          className="bg-accent w-full h-full max-h-[80%]  shadow-sm flex flex-col justify-evenly items-center space-y-3 border "
+          className="bg-accent w-full h-full   shadow-sm flex flex-col justify-center items-center space-y-3 border "
         >
           {!record ? (
             <>
@@ -277,19 +277,30 @@ export function Upload({ uploadVideo }: any) {
                   Accepted filetypes:
                 </div>
 
-                <div className="text-sm text-center"> MP4, MOV</div>
+                <div className="text-sm text-center text-muted-foreground">
+                  {" "}
+                  MP4, MOV
+                </div>
               </div>
             </>
           ) : (
-            <div className=" flex flex-col w-full h-full rounded-lg">
-              <Suspense fallback={<div>Loading...</div>}>
-                <Webcam audio={false} ref={webcamRef} className="" />
-              </Suspense>
+            <div className="grid grid-rows-[90%__10%] w-full rounded-lg h-full items-center  ">
+              <div className=" flex items-center justify-center rounded-md">
+                <Suspense fallback={<div>Failed to load webcam</div>}>
+                  <div className="container">
+                    <Webcam
+                      audio={false}
+                      ref={webcamRef}
+                      className=" w-full h-full rounded-md"
+                    />
+                  </div>
+                </Suspense>
+              </div>
 
-              <div className="flex flex-row  items-center justify-between align-middle bg-accent p-3 px-5 rounded-lg">
+              <div className="flex flex-row items-center  justify-between align-middle p-3 px-5 rounded-lg mx-5 pb-6 h-full">
                 {capturing ? (
                   <>
-                    <div>
+                    <div className="flex justify-center w-full mr-10">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
@@ -297,14 +308,14 @@ export function Upload({ uploadVideo }: any) {
                             size="icon"
                             onClick={handleStopCaptureClick}
                           >
-                            <Square className=" fill-primary h-6 w-6" />
+                            <Square className=" fill-primary h-6 w-6 " />
                             <span className="sr-only">Stop Recording</span>
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent>Stop Record</TooltipContent>
+                        <TooltipContent>Stop Recording</TooltipContent>
                       </Tooltip>
                     </div>
-                    {/* 
+                    {/*
                     <Button
                       onClick={handleSaveAndUpload}
                       disabled={!recordedChunks.length}
@@ -335,12 +346,15 @@ export function Upload({ uploadVideo }: any) {
                           size="icon"
                           onClick={handleStartCaptureClick}
                         >
-                          <Circle className="fill-red-500 h-6 w-6" />
+                          <Circle className="fill-primary h-6 w-6" />
                           <span className="sr-only">Record</span>
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>Record</TooltipContent>
                     </Tooltip>
+                    <Button type="submit" disabled={!file}>
+                      Upload
+                    </Button>
                   </>
                 )}
               </div>

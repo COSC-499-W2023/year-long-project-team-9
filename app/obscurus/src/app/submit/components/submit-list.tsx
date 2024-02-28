@@ -234,7 +234,7 @@ export default function SubmitList({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
-                    <Filter className="size-3" />
+                    <Filter className="size-3 text-muted-foreground" />
                     <span className="sr-only">Filter Results</span>
                   </Button>
                 </DropdownMenuTrigger>
