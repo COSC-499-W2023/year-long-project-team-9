@@ -34,7 +34,7 @@ async function Chat() {
     return new Date(messageDateTime + userTimezoneOffset);
   };
 
-  if (rooms != undefined) {
+  if (rooms) {
     rooms.sort((a, b) => {
       const dateA = getLatestMessage(a)
         ? new Date(getLatestMessage(a).creationDate)
@@ -45,7 +45,7 @@ async function Chat() {
       return dateB.getTime() - dateA.getTime();
     });
   }
-  if (messages != undefined) {
+  if (messages) {
     messages.forEach((message) => {
       message.creationDate = handleTimezoneOffset(message);
     });

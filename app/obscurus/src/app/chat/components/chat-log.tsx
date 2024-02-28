@@ -6,7 +6,8 @@ import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
+import { uuidv7 } from "uuidv7";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
@@ -46,6 +47,7 @@ export default function ChatLog({
         newMessageUUID = uuidv4();
       }
     }
+    console.log(uuidv7());
     const newMessage: Messages = {
       messageId: newMessageUUID,
       roomId: room.roomId,
@@ -56,7 +58,7 @@ export default function ChatLog({
     };
     setChatMessage("");
     addNewChatMessage(newMessage);
-    createMessage(newMessage);
+    // createMessage(newMessage);
   };
 
   const roomMessages = getRoomMessages();
