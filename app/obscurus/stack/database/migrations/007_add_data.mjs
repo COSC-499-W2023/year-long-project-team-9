@@ -59,7 +59,6 @@ export async function up(db) {
         requestId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
         requestTitle: "Spanish Lesson 1",
         requesterEmail: "imightbejan@gmail.com",
-
         grouping: null,
         description: "Send video of you speaking section 1 from the textbook",
         blurred: true,
@@ -70,7 +69,6 @@ export async function up(db) {
         requestId: "092c4718-bde0-4a31-9471-7d5a459b4e22",
         requestTitle: "Math Lesson 2",
         requesterEmail: "imightbejan@gmail.com",
-
         grouping: null,
         description:
           "Send video of you reading out section 10 from the textbook",
@@ -82,7 +80,6 @@ export async function up(db) {
         requestId: "7eca082e-7286-4e49-a5f0-0d2cf4264326",
         requestTitle: "AWS Job Interview",
         requesterEmail: "ansivana@gmail.com",
-
         grouping: null,
         description:
           "Please answer the following: Tell me about yourself. Walk me through your resume. How did you hear about this position? Why do you want to work at this company? Why do you want this job? Why should we hire you? What can you bring to the company? What are your greatest strengths?",
@@ -93,7 +90,6 @@ export async function up(db) {
         requestId: "c2c762f7-80f7-4b06-a3d6-769a07df6793",
         requestTitle: "AWS Job Interview Stage 2",
         requesterEmail: "ansivana@gmail.com",
-
         grouping: null,
         description:
           "Please answer the following: Tell me about yourself. Walk me through your resume. How did you hear about this position? Why do you want to work at this company? Why do you want this job? Why should we hire you? What can you bring to the company? What are your greatest strengths?",
@@ -105,7 +101,6 @@ export async function up(db) {
         requestId: "df6a3872-7210-49fc-b4d8-fc78631d95f5",
         requestTitle: "AWS Job Interview Stage 3",
         requesterEmail: "ansivana@gmail.com",
-
         grouping: null,
         description:
           "What are you looking for from a new position? Are you considering other positions in other companies? What is the professional achievement you're most proud of? What kind of working environment do you work best in?",
@@ -116,7 +111,6 @@ export async function up(db) {
         requestId: "be4b5ba1-777d-4a7e-a54a-8fc5f2f14c92",
         requestTitle: "Test",
         requesterEmail: "bakar.a.muhammad@gmail.com",
-
         grouping: null,
         description: "This is a test",
         blurred: false,
