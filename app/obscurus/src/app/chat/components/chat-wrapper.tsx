@@ -102,12 +102,9 @@ export default function ChatWrapper({
       firstPanel={
         <ChatList
           rooms={chatRooms}
-          messages={chatMessages}
-          getOtherParticipantEmail={getOtherParticipantEmail}
           getOtherParticipantName={getOtherParticipantName}
           checkUnreadMessages={checkUnreadMessages}
           getLatestMessage={getLatestMessage}
-          updateChatMessages={updateChatMessages}
           setMessagesAsRead={setMessagesAsRead}
           sortRooms={sortRooms}
         />

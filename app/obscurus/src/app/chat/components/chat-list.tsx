@@ -13,12 +13,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
-  messages: Messages[];
-  getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
   checkUnreadMessages: Function;
   getLatestMessage: Function;
-  updateChatMessages: Function;
   setMessagesAsRead: Function;
   sortRooms: Function;
   isCollapsed?: boolean;
@@ -26,12 +23,9 @@ interface ChatListProps {
 
 export default function ChatList({
   rooms,
-  messages,
-  getOtherParticipantEmail,
   getOtherParticipantName,
   checkUnreadMessages,
   getLatestMessage,
-  updateChatMessages,
   setMessagesAsRead,
   sortRooms,
 }: ChatListProps) {
