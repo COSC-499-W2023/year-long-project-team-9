@@ -31,7 +31,7 @@ export default function ChatWrapper({
     }
   };
   const getOtherParticipantName = (item: Rooms) => {
-    if (item.participant1Email === userEmail) {
+    if (item?.participant1Email === userEmail) {
       return (
         item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
       );

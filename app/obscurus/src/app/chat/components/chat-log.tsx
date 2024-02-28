@@ -23,12 +23,10 @@ export default function ChatLog({
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
   };
-  const [chatMessage, setChatMessage] = useState("");
   const handleChatMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setChatMessage(value);
   };
-  const roomMessages = getRoomMessages();
   const addNewChatMessage = (newChatMessage: Messages) => {
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
@@ -57,6 +55,10 @@ export default function ChatLog({
     setChatMessage("");
     addNewChatMessage(newMessage);
   };
+
+  const roomMessages = getRoomMessages();
+  const [chatMessage, setChatMessage] = useState("");
+
   return room ? (
     <div className="flex flex-col mt-auto">
       <ScrollArea className="sm:max-h-80 md:max-h-80 2xl:max-h-max">
