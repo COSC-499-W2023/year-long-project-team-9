@@ -15,7 +15,7 @@ export function insert(message: Messages) {
       messageId: message.messageId,
       roomId: message.roomId,
       senderEmail: message.senderEmail,
-      creationDate: message.creationDate,
+      creationDate: new Date(message.creationDate),
       messageContent: message.messageContent,
       isRead: message.isRead,
     })

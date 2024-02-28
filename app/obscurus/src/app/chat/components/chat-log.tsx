@@ -33,19 +33,6 @@ export default function ChatLog({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
-  const getDateTime = (): Date => {
-    const currDate = new Date();
-    const year = currDate.getFullYear();
-    const month = padZero(currDate.getMonth() + 1);
-    const day = padZero(currDate.getDate());
-    const hour = padZero(currDate.getHours());
-    const minute = padZero(currDate.getMinutes());
-    const second = padZero(currDate.getSeconds());
-    return new Date(`${year}.${month}.${day} ${hour}:${minute}:${second}`);
-  };
-  function padZero(num: number): string {
-    return num < 10 ? `0${num}` : `${num}`;
-  }
   const handleClick = () => {
     let newMessageUUID = uuidv4();
     let newMessageUUIDUnique = false;
@@ -69,7 +56,7 @@ export default function ChatLog({
     };
     setChatMessage("");
     addNewChatMessage(newMessage);
-    // createMessage(newMessage);
+    createMessage(newMessage);
   };
 
   const roomMessages = getRoomMessages();
