@@ -226,6 +226,14 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "POST /updateIsRead": {
+        function: {
+          handler: "./stack/lambdas/updateIsRead.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
     },
   });
 

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import Wrapper from "../../wrapper";
-import hello from "../../functions/hello";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
+import { isReadUpdateType } from "@obscurus/database/src/messages";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatWrapperProps {
@@ -13,6 +13,7 @@ interface ChatWrapperProps {
   rooms: Rooms[];
   messages: Messages[];
   createMessage: Function;
+  updateIsRead: Function;
 }
 
 export default function ChatWrapper({
@@ -21,6 +22,7 @@ export default function ChatWrapper({
   rooms,
   messages,
   createMessage,
+  updateIsRead,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
@@ -74,6 +76,11 @@ export default function ChatWrapper({
           message.senderEmail === getOtherParticipantEmail(item)
         ) {
           message.isRead = true;
+          const isReadUpdate: isReadUpdateType = {
+            isRead: true,
+            messageId: message.messageId,
+          };
+          updateIsRead(isReadUpdate);
         }
       }
     });

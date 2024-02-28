@@ -6,6 +6,7 @@ import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
+import updateIsRead from "../functions/updateIsRead";
 
 const userEmail = "imightbejan@gmail.com";
 
@@ -65,6 +66,7 @@ async function Chat() {
         rooms={rooms}
         messages={messages}
         createMessage={createMessage}
+        updateIsRead={updateIsRead}
       />
     </Suspense>
   );
