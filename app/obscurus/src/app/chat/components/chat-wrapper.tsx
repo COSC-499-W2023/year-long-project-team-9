@@ -116,6 +116,7 @@ export default function ChatWrapper({
           getOtherParticipantEmail={getOtherParticipantEmail}
           getOtherParticipantName={getOtherParticipantName}
           updateChatMessages={updateChatMessages}
+          createMessage={createMessage}
         />
       }
     />

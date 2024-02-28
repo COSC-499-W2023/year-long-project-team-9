@@ -13,12 +13,14 @@ interface ChatLogProps {
   room: Rooms;
   messages: Messages[];
   updateChatMessages: Function;
+  createMessage: Function;
 }
 
 export default function ChatLog({
   room,
   messages,
   updateChatMessages,
+  createMessage,
 }: ChatLogProps) {
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
