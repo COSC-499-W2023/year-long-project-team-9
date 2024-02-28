@@ -218,6 +218,14 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /createMessage": {
+        function: {
+          handler: "./stack/lambdas/createMessage.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
     },
   });
 
