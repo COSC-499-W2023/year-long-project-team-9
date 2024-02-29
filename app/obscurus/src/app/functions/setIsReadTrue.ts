@@ -1,6 +1,5 @@
 "use server";
 import { Api } from "sst/node/api";
-import { Messages as MessagesType } from "stack/database/src/sql.generated";
 
 const setIsReadTrue = async (messageId: string) => {
   const res = await fetch(Api.Api.url + "/setIsReadTrue", {
@@ -10,7 +9,6 @@ const setIsReadTrue = async (messageId: string) => {
     },
     body: messageId,
   });
-  console.log(res.ok);
   if (res.ok) {
     return res.json();
   } else {

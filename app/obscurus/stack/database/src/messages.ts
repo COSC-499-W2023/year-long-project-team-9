@@ -4,7 +4,10 @@ import { SQL } from "./sql";
 import type { Messages } from "./sql.generated";
 
 export function list() {
-  return SQL.DB.selectFrom("messages").selectAll().execute();
+  return SQL.DB.selectFrom("messages")
+    .selectAll()
+    .orderBy("creationDate", "desc")
+    .execute();
 }
 
 export function insert(message: Messages) {
