@@ -21,6 +21,7 @@ import FirstNameInput from "./account-form-first-name-input";
 import LastNameInput from "./account-form-last-name-input";
 import PasswordInput from "./account-form-password-input";
 import ProfileImageInput from "./account-form-profile-image-input";
+import AccountCancel from "./account-form-cancel";
 
 const profileImageMaxSize = 1024 * 1024 * 10;
 const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -92,13 +93,7 @@ export default function AccountForm({
           {/* TODO: ProfileImageInput */}
           <ProfileImageInput form={form}></ProfileImageInput>
           <div className="text-right gap-2">
-            <Button
-              type="button"
-              variant={"ghost"}
-              className="justify-self-start"
-            >
-              Cancel
-            </Button>
+            <AccountCancel></AccountCancel>
             <Button
               type="submit"
               variant={"default"}

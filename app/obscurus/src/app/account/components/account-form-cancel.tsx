@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 import { Button } from "@/components/ui/button";
-export default function CreateCancel() {
+export default function AccountCancel() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -26,13 +26,13 @@ export default function CreateCancel() {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
+            This action cannot be undone. This will permanently delete your new
             inputs.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <a href="/request/create">
+          <a href="/account">
             <Button>Continue</Button>
           </a>
         </AlertDialogFooter>
