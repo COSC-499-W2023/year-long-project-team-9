@@ -3,11 +3,6 @@ export * as Messages from "./messages";
 import { SQL } from "./sql";
 import type { Messages } from "./sql.generated";
 
-export type isReadUpdateType = {
-  isRead: boolean;
-  messageId: string;
-};
-
 export function list() {
   return SQL.DB.selectFrom("messages").selectAll().execute();
 }
@@ -25,11 +20,11 @@ export function insert(message: Messages) {
     .execute();
 }
 
-export function updateIsRead(isReadUpdate: isReadUpdateType) {
+export function setIsReadTrue(messageId: string) {
   return SQL.DB.updateTable("messages")
     .set({
-      isRead: isReadUpdate.isRead,
+      isRead: true,
     })
-    .where("messageId", "=", isReadUpdate.messageId)
+    .where("messageId", "=", messageId)
     .executeTakeFirst();
 }

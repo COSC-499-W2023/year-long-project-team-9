@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
-import { isReadUpdateType } from "stack/database/src/messages";
 import { Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
@@ -19,7 +18,7 @@ interface ChatListProps {
   checkUnreadMessages: Function;
   getLatestMessage: Function;
   sortRooms: Function;
-  updateIsRead: Function;
+  setIsReadTrue: Function;
   isCollapsed?: boolean;
 }
 
@@ -31,7 +30,7 @@ export default function ChatList({
   checkUnreadMessages,
   getLatestMessage,
   sortRooms,
-  updateIsRead,
+  setIsReadTrue,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
@@ -48,8 +47,8 @@ export default function ChatList({
     });
   };
   const setMessageAsRead = (message: Messages) => {
-    updateIsRead(message);
-    message.isRead = true;
+    setIsReadTrue(message.messageId);
+    // message.isRead = true;
   };
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
