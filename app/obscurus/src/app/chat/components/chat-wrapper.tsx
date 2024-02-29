@@ -4,7 +4,6 @@ import Wrapper from "../../wrapper";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
-import { isReadUpdateType } from "@obscurus/database/src/messages";
 
 const userEmail = "imightbejan@gmail.com";
 interface ChatWrapperProps {
@@ -68,23 +67,6 @@ export default function ChatWrapper({
   const updateChatMessages = (newChatMessages: Messages[]) => {
     setChatMessages(newChatMessages);
   };
-  const setMessagesAsRead = (item: Rooms) => {
-    chatMessages.forEach((message) => {
-      if (message.roomId === item.roomId) {
-        if (
-          !message.isRead &&
-          message.senderEmail === getOtherParticipantEmail(item)
-        ) {
-          message.isRead = true;
-          const isReadUpdate: isReadUpdateType = {
-            isRead: true,
-            messageId: message.messageId,
-          };
-          updateIsRead(isReadUpdate);
-        }
-      }
-    });
-  };
   const sortRooms = () => {
     if (chatRooms != undefined) {
       setChatRooms(
@@ -109,11 +91,13 @@ export default function ChatWrapper({
       firstPanel={
         <ChatList
           rooms={chatRooms}
+          messages={chatMessages}
+          getOtherParticipantEmail={getOtherParticipantEmail}
           getOtherParticipantName={getOtherParticipantName}
           checkUnreadMessages={checkUnreadMessages}
           getLatestMessage={getLatestMessage}
-          setMessagesAsRead={setMessagesAsRead}
           sortRooms={sortRooms}
+          updateIsRead={updateIsRead}
         />
       }
       secondPanel={

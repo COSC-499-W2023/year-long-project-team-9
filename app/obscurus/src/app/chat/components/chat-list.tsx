@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
+import { isReadUpdateType } from "stack/database/src/messages";
 import { Search } from "lucide-react";
-import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,25 +13,44 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
   rooms: Rooms[];
+  messages: Messages[];
+  getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
   checkUnreadMessages: Function;
   getLatestMessage: Function;
-  setMessagesAsRead: Function;
   sortRooms: Function;
+  updateIsRead: Function;
   isCollapsed?: boolean;
 }
 
 export default function ChatList({
   rooms,
+  messages,
+  getOtherParticipantEmail,
   getOtherParticipantName,
   checkUnreadMessages,
   getLatestMessage,
-  setMessagesAsRead,
   sortRooms,
+  updateIsRead,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
+  const setMessagesAsRead = (item: Rooms) => {
+    const unreadMessages = messages.filter(
+      (message) =>
+        message.roomId === item.roomId &&
+        !message.isRead &&
+        message.senderEmail === getOtherParticipantEmail(item)
+    );
+    unreadMessages.forEach((unreadMessage) => {
+      setMessageAsRead(unreadMessage);
+    });
+  };
+  const setMessageAsRead = (message: Messages) => {
+    updateIsRead(message);
+    message.isRead = true;
+  };
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
     setMessagesAsRead(item);
