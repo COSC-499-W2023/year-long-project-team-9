@@ -1,8 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { getEmail } from "../../functions/authenticationMethods";
-import Wrapper from "@/app/wrapper";
-import CreateForm from "./components/create-form";
+import CreaterWeapper from "./components/create-weapper";
 
 async function Create() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -17,12 +16,10 @@ async function Create() {
   const email = await getEmail();
 
   return (
-    <Wrapper
+    <CreaterWeapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<CreateForm userEmail={email}></CreateForm>}
-      secondPanel={<>{email}</>}
+      email={email}
     />
   );
 }
