@@ -1,18 +1,20 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { useQueryState } from "nuqs";
-import { Suspense } from "react";
-import { Archive, Trash2, ArrowLeft, Video } from "lucide-react";
+import { Archive, Trash2, ListVideo } from "lucide-react";
 import { format } from "date-fns";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function CreateDisplay({
   form,
@@ -21,7 +23,8 @@ export default function CreateDisplay({
   form: any;
   userEmail: string;
 }) {
-  console.log(userEmail);
+  let today = new Date();
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
@@ -50,11 +53,11 @@ export default function CreateDisplay({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={true}>
-                <Video className="h-4 w-4" />
-                <span className="sr-only">Move to trash</span>
+                <ListVideo className="h-4 w-4" />
+                <span className="sr-only">Show video list</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Move to trash</TooltipContent>
+            <TooltipContent>Show video list</TooltipContent>
           </Tooltip>
         </div>
       </div>
@@ -63,50 +66,70 @@ export default function CreateDisplay({
 
       <div className="flex h-full flex-1 flex-col">
         <div className="flex items-start p-4">
-          <div className="flex items-start gap-4 text-sm">
-            <Avatar>
-              <AvatarImage />
-              <AvatarFallback>
-                {/* {userEmail
-                  .split(" ")
-                  .map((chunk) => chunk[0])
-                  .join("")} */}
-              </AvatarFallback>
-            </Avatar>
-            <div className="grid gap-1">
-              <div className="font-semibold">{"selected?.requestTitle"}</div>
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">From:</span> Jan D
-              </div>
+          {/* <Avatar>
+            <AvatarImage />
+            <AvatarFallback>
+              {userEmail
+                .split(" ")
+                .map((chunk) => chunk[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar> */}
+          <div className="flex flex-col items-start mx-1 break-all">
+            <div className="text-sm">
+              {form.getValues("title") === ""
+                ? "Tile"
+                : form.getValues("title")}
+            </div>
+            <div className="text-xs">From: {userEmail}</div>
+            <div className="text-xs">
+              <HoverCard>
+                <HoverCardTrigger className="text-xs">To:</HoverCardTrigger>
+                <HoverCardContent>
+                  To:
+                  <ul>
+                    {/* {emailList.map((item: string, index: number) => (
+                      <li className="pl-1" key={index}>
+                        • {item}
+                      </li>
+                    ))} */}
+                  </ul>
+                </HoverCardContent>
+              </HoverCard>
+            </div>
+            <div className="text-xs">
+              Processing:{" "}
+              {form.getValues("videoProcessing") === true
+                ? "Blurred"
+                : "Normal"}{" "}
+              | Due Date:{" "}
+              {form.getValues("dueDate") === undefined
+                ? "Due Date"
+                : format(form.getValues("dueDate"), "PPpp")}
+            </div>
 
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">Reply-To:</span>{" "}
-                {"selected?.requesterEmail"}
-              </div>
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">Due:</span>{" "}
-                {/* {format(new Date(selected.dueDate), "PPpp")} */}
-              </div>
-            </div>
+            {/* <div className="font-semibold">
+              {form.getValues("title") !== ""
+                ? form.getValues("title")
+                : "Title"}
+            </div> */}
+            {/* <div className="line-clamp-1 text-xs">From: Jan</div> */}
+            {/*  */}
+            {/* <div className="line-clamp-1 text-xs">
+              Processing: {form.watch("videoProcessing")} | Due:{" "}
+              {form.watch("dueDate")}
+            </div> */}
           </div>
-          {/* {selected.creationDate && (
-            <div className="ml-auto text-xs text-muted-foreground">
-              {format(new Date(selected.creationDate), "PPpp")}
-            </div>
-          )} */}
+          <div className="ml-auto text-xs text-muted-foreground">
+            {today.toLocaleDateString()}
+          </div>
         </div>
         <Separator />
-        <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
-          {/* {selected?.description} */}
-        </div>
-        <Separator className="mt-auto" />
-        <div className="p-4 flex justify-end w-full">
-          {/* <form action={action}>
-            <Button type="submit" size="lg" className="mx-auto" value="world">
-              Upload
-            </Button>
-          </form> */}
-        </div>
+        <ScrollArea>
+          <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
+            {form.watch("description")}
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );

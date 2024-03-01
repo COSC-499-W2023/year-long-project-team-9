@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import { getEmail } from "../../functions/authenticationMethods";
 import CreaterWeapper from "./components/create-weapper";
+import { format } from "date-fns";
 
 async function Create() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -13,13 +14,13 @@ async function Create() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const email = await getEmail();
+  const userEmail = await getEmail();
 
   return (
     <CreaterWeapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      email={email}
+      userEmail={userEmail}
     />
   );
 }
