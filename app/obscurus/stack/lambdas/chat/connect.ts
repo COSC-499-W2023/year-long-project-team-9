@@ -5,10 +5,11 @@ import { Connections as ConnectionsType } from "@obscurus/database/src/sql.gener
 export const main: APIGatewayProxyHandler = async (event) => {
   if (event.requestContext != undefined) {
     if (event.requestContext.connectionId != undefined) {
+      const newConnectionId = event.requestContext.connectionId;
       const newConnection: ConnectionsType = {
-        connectionId: event.requestContext.connectionId,
+        connectionId: newConnectionId,
       };
-      const connection = await Connections.addConnection(newConnection);
+      const connection = await Connections.insert(newConnection);
       return { statusCode: 200, body: "Connected" };
     } else {
       return { statusCode: 500, body: "Error, undefined" };

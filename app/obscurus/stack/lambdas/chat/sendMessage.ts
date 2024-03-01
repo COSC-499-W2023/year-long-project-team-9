@@ -33,9 +33,7 @@ export const main: APIGatewayProxyHandler = async (event) => {
           const staleConnection: ConnectionsType = {
             connectionId: connectionId,
           };
-          const delConnection = await Connections.removeConnection(
-            staleConnection
-          );
+          const delConnection = await Connections.remove(staleConnection);
         }
       }
     };

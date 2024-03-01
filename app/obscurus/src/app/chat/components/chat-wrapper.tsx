@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import ChatWebsocket from "./chat-websocket";
 import Wrapper from "../../wrapper";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
@@ -23,7 +24,11 @@ export default function ChatWrapper({
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
+  const [userConnectionId, setUserConnectionId] = useState<string | null>(null);
 
+  const updateUserConnectionId = (newUserConnectionId: string) => {
+    setUserConnectionId(newUserConnectionId);
+  };
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
     if (item === undefined) {
       return "";
@@ -82,31 +87,34 @@ export default function ChatWrapper({
   };
 
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={
-        <ChatList
-          rooms={chatRooms}
-          messages={chatMessages}
-          getOtherParticipantEmail={getOtherParticipantEmail}
-          getOtherParticipantName={getOtherParticipantName}
-          checkUnreadMessages={checkUnreadMessages}
-          getLatestMessage={getLatestMessage}
-          sortRooms={sortRooms}
-        />
-      }
-      secondPanel={
-        <ChatDisplay
-          rooms={chatRooms}
-          messages={chatMessages}
-          getOtherParticipantEmail={getOtherParticipantEmail}
-          getOtherParticipantName={getOtherParticipantName}
-          updateChatMessages={updateChatMessages}
-          createMessage={createMessage}
-        />
-      }
-    />
+    <>
+      <ChatWebsocket updateUserConnectionId={updateUserConnectionId} />
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          <ChatList
+            rooms={chatRooms}
+            messages={chatMessages}
+            getOtherParticipantEmail={getOtherParticipantEmail}
+            getOtherParticipantName={getOtherParticipantName}
+            checkUnreadMessages={checkUnreadMessages}
+            getLatestMessage={getLatestMessage}
+            sortRooms={sortRooms}
+          />
+        }
+        secondPanel={
+          <ChatDisplay
+            rooms={chatRooms}
+            messages={chatMessages}
+            getOtherParticipantEmail={getOtherParticipantEmail}
+            getOtherParticipantName={getOtherParticipantName}
+            updateChatMessages={updateChatMessages}
+            createMessage={createMessage}
+          />
+        }
+      />
+    </>
   );
 }

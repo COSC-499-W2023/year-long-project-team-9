@@ -7,7 +7,7 @@ export function list() {
   return SQL.DB.selectFrom("connections").selectAll().execute();
 }
 
-export function addConnection(newConnection: Connections) {
+export function insert(newConnection: Connections) {
   return SQL.DB.insertInto("connections")
     .values({
       connectionId: newConnection.connectionId,
@@ -15,7 +15,7 @@ export function addConnection(newConnection: Connections) {
     .execute();
 }
 
-export function removeConnection(newConnection: Connections) {
+export function remove(newConnection: Connections) {
   return SQL.DB.deleteFrom("connections")
     .where("connections.connectionId", "=", newConnection.connectionId)
     .execute();
