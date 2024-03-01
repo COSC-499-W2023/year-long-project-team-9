@@ -15,13 +15,14 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 export default function CreateDisplay({
   form,
-  userEmail,
+  userData,
 }: {
   form: any;
-  userEmail: string;
+  userData: Users[];
 }) {
   let today = new Date();
   return (
@@ -80,7 +81,10 @@ export default function CreateDisplay({
                 ? "Tile"
                 : form.getValues("title")}
             </div>
-            <div className="text-xs">From: {userEmail}</div>
+            <div className="text-xs">
+              From: {userData[0].givenName} {userData[0].familyName} (
+              {userData[0].email})
+            </div>
             <div className="text-xs">
               <HoverCard>
                 <HoverCardTrigger className="text-xs">

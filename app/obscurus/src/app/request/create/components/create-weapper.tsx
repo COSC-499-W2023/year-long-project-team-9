@@ -46,14 +46,11 @@ export default function CreaterWeapper({
         <CreateForm
           form={form}
           submit={onSubmit}
-          userEmail={userData[0].email}
+          userData={userData}
         ></CreateForm>
       }
       secondPanel={
-        <CreateDisplay
-          form={form}
-          userEmail={userData[0].email}
-        ></CreateDisplay>
+        <CreateDisplay form={form} userData={userData}></CreateDisplay>
       }
     />
   );

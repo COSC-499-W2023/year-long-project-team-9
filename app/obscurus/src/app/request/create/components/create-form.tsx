@@ -33,18 +33,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
-
-interface CreateFormProps {
-  form: any;
-  submit: Function;
-  userEmail: string;
-}
+import { Users } from "@obscurus/database/src/sql.generated";
 
 export default function CreateForm({
   form,
   submit,
-  userEmail,
-}: CreateFormProps) {
+  userData,
+}: {
+  form: any;
+  submit: Function;
+  userData: Users[];
+}) {
   return (
     <div className="overflow-auto">
       {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
@@ -52,7 +51,7 @@ export default function CreateForm({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submit)} className="space-y-8">
           <TitleInput form={form}></TitleInput>
-          <ClientEmail form={form} email={userEmail}></ClientEmail>
+          <ClientEmail form={form} email={userData[0].email}></ClientEmail>
           <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
