@@ -24,13 +24,8 @@ export default function ChatWrapper({
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
-  const [messageConnectionId, setMessageConnectionId] = useState<string | null>(
-    null
-  );
+  const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  const updateMessageConnectionId = (newMessageConnectionId: string) => {
-    setMessageConnectionId(newMessageConnectionId);
-  };
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
     if (item === undefined) {
       return "";
@@ -89,25 +84,51 @@ export default function ChatWrapper({
   };
 
   useEffect(() => {
-    const socket = new WebSocket(
+    const ws = new WebSocket(
       "wss://o4tgfyn9n6.execute-api.us-west-2.amazonaws.com/Soren"
     );
     const handleBeforeUnload = () => {
       console.log("Page reloading or closing, disconnecting WebSocket");
-      socket.close();
+      ws.close();
     };
 
-    socket.onopen = () => {
+    ws.onopen = () => {
       console.log("Connected to WebSocket");
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
+    setSocket(ws);
+
+    ws.onmessage = (event) => {
+      console.log("Here");
+      const messageData = event.data;
+      try {
+        const messageJSON = JSON.parse(messageData);
+        if (!checkIfMessageInList(messageJSON)) {
+          const newMessages = [...chatMessages, messageJSON];
+          updateChatMessages(newMessages);
+        }
+      } catch {
+        console.log("Message data is not valid JSON");
+      }
+    };
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("Disconnecting WebSocket");
-      socket.close();
+      ws.close();
     };
   }, []);
+  const sendMessage = (messageData: string) => {
+    if (socket) {
+      socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
+    }
+  };
+  const checkIfMessageInList = (newMessage: Messages) => {
+    const newMessages = chatMessages.filter(
+      (message) => message.messageId === newMessage.messageId
+    );
+    return newMessages.length > 0;
+  };
 
   return (
     <>
@@ -134,6 +155,7 @@ export default function ChatWrapper({
             getOtherParticipantName={getOtherParticipantName}
             updateChatMessages={updateChatMessages}
             createMessage={createMessage}
+            sendMessage={sendMessage}
           />
         }
       />

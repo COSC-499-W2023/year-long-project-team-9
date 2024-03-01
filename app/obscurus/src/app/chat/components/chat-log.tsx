@@ -15,6 +15,7 @@ interface ChatLogProps {
   getOtherParticipantEmail: Function;
   updateChatMessages: Function;
   createMessage: Function;
+  sendMessage: Function;
 }
 
 export default function ChatLog({
@@ -23,6 +24,7 @@ export default function ChatLog({
   getOtherParticipantEmail,
   updateChatMessages,
   createMessage,
+  sendMessage,
 }: ChatLogProps) {
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
@@ -58,7 +60,8 @@ export default function ChatLog({
     };
     setChatMessage("");
     addNewChatMessage(newMessage);
-    // createMessage(newMessage);
+    createMessage(newMessage);
+    sendMessage(JSON.stringify(newMessage));
   };
 
   const roomMessages = getRoomMessages();

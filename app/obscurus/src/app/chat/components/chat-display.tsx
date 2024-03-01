@@ -14,6 +14,7 @@ interface ChatDisplayProps {
   getOtherParticipantName: Function;
   updateChatMessages: Function;
   createMessage: Function;
+  sendMessage: Function;
 }
 
 export default function ChatDisplay({
@@ -23,6 +24,7 @@ export default function ChatDisplay({
   getOtherParticipantName,
   updateChatMessages,
   createMessage,
+  sendMessage,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -65,6 +67,7 @@ export default function ChatDisplay({
           getOtherParticipantEmail={getOtherParticipantEmail}
           updateChatMessages={updateChatMessages}
           createMessage={createMessage}
+          sendMessage={sendMessage}
         />
       </Suspense>
     </div>
