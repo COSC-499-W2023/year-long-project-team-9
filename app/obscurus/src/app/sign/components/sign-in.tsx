@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,9 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import AuthenticationEmailInput from "./authentication-form-email-input";
-import AuthenticationSignInPasswordInput from "./authentication-sign-in-form-password-input";
-import AuthenticationSignInEmailInput from "./authentication-sign-in-form-email-input";
+import { Input } from "@/components/ui/input";
 
 // TODO: better error messages, be below for an example
 
@@ -34,6 +31,7 @@ export default function SignInForm() {
   function onSubmit(values: z.infer<typeof accountFormSchema>) {
     console.log(values);
   }
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="overflow-auto">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
@@ -44,14 +42,42 @@ export default function SignInForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
-          <AuthenticationSignInEmailInput
-            form={form}
-          ></AuthenticationSignInEmailInput>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           {/* Password */}
-          <AuthenticationSignInPasswordInput
-            form={form}
-          ></AuthenticationSignInPasswordInput>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <div>
+                    <Input placeholder="Password" {...field} />
+                    <a
+                      href="/sign/recover"
+                      className="underline text-xs text-blue-400"
+                    >
+                      Forgot password
+                    </a>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <div className="text-right">
             <Button

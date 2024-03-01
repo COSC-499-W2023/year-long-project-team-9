@@ -6,19 +6,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export default function FirstNameInput({ form }: any) {
+export interface FirstNameInputProps {
+  form: any;
+}
+export default function FirstNameInput({ form }: FirstNameInputProps) {
   return (
     <FormItem>
       <FormLabel>First Name</FormLabel>
       <Input
         maxLength={101}
         placeholder="First Name"
-        //TODO: value={"Baz: Last name from database"}
         {...form.register("firstName")}
       ></Input>
 
-      <FormDescription>
-        First name will be displaced other users you decided to interact with.
+      <FormDescription className="text-justify">
+        Other users will see you first name.
       </FormDescription>
       {form.getFieldState("firstName").error && (
         <FormMessage>
