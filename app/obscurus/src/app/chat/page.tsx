@@ -6,7 +6,6 @@ import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
-import setIsReadTrue from "../functions/setIsReadTrue";
 
 const userEmail = "imightbejan@gmail.com";
 
@@ -66,7 +65,6 @@ async function Chat() {
         rooms={rooms}
         messages={messages}
         createMessage={createMessage}
-        setIsReadTrue={setIsReadTrue}
       />
     </Suspense>
   );

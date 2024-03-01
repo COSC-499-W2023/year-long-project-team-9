@@ -18,7 +18,6 @@ interface ChatListProps {
   checkUnreadMessages: Function;
   getLatestMessage: Function;
   sortRooms: Function;
-  setIsReadTrue: Function;
   isCollapsed?: boolean;
 }
 
@@ -30,29 +29,20 @@ export default function ChatList({
   checkUnreadMessages,
   getLatestMessage,
   sortRooms,
-  setIsReadTrue,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
-  const setMessagesAsRead = (item: Rooms) => {
-    const unreadMessages = messages.filter(
-      (message) =>
-        message.roomId === item.roomId &&
-        !message.isRead &&
-        message.senderEmail === getOtherParticipantEmail(item)
-    );
-    unreadMessages.forEach((unreadMessage) => {
-      setMessageAsRead(unreadMessage);
-    });
-  };
-  const setMessageAsRead = (message: Messages) => {
-    setIsReadTrue(message.messageId);
-    // message.isRead = true;
-  };
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
-    setMessagesAsRead(item);
+    messages.forEach((message) => {
+      if (
+        message.roomId === item.roomId &&
+        message.senderEmail === getOtherParticipantEmail(item)
+      ) {
+        message.isRead = true;
+      }
+    });
   };
 
   useEffect(() => {
