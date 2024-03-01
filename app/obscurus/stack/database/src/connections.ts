@@ -16,8 +16,15 @@ export function insert(newConnection: Connections) {
     .execute();
 }
 
-export function remove(newConnection: Connections) {
+export function remove(connectionId: string) {
   return SQL.DB.deleteFrom("connections")
-    .where("connections.connectionId", "=", newConnection.connectionId)
+    .where("connectionId", "=", connectionId)
     .execute();
+}
+
+export function getConnectionViaEmail(payload: any) {
+  return SQL.DB.selectFrom("connections")
+    .select("connectionId")
+    .where("email", "=", payload)
+    .executeTakeFirst();
 }

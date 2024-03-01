@@ -11,6 +11,7 @@ interface ChatWrapperProps {
   defaultCollapsed: boolean;
   rooms: Rooms[];
   messages: Messages[];
+  getConnectionViaEmail: Function;
   createMessage: Function;
 }
 
@@ -19,6 +20,7 @@ export default function ChatWrapper({
   defaultCollapsed,
   rooms,
   messages,
+  getConnectionViaEmail,
   createMessage,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
@@ -89,7 +91,6 @@ export default function ChatWrapper({
     const socket = new WebSocket(
       "wss://o4tgfyn9n6.execute-api.us-west-2.amazonaws.com/Soren"
     );
-    console.log(socket);
     const handleBeforeUnload = () => {
       console.log("Page reloading or closing, disconnecting WebSocket");
       socket.close();

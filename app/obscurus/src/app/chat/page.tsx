@@ -4,10 +4,9 @@ import { cookies } from "next/headers";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
+import { getConnectionViaEmail } from "../functions/getConnectionViaEmail";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
-
-const userEmail = "imightbejan@gmail.com";
 
 async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -18,6 +17,7 @@ async function Chat() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
+  const userEmail = "imightbejan@gmail.com";
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const messages: Messages[] = await getMessages();
 
@@ -64,6 +64,7 @@ async function Chat() {
         defaultCollapsed={defaultCollapsed}
         rooms={rooms}
         messages={messages}
+        getConnectionViaEmail={getConnectionViaEmail}
         createMessage={createMessage}
       />
     </Suspense>
