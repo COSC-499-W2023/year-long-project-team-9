@@ -66,15 +66,15 @@ export default function CreateDisplay({
 
       <div className="flex h-full flex-1 flex-col">
         <div className="flex items-start p-4">
-          {/* <Avatar>
+          <Avatar>
             <AvatarImage />
             <AvatarFallback>
-              {userEmail
+              {userData[0].email
                 .split(" ")
                 .map((chunk) => chunk[0])
                 .join("")}
             </AvatarFallback>
-          </Avatar> */}
+          </Avatar>
           <div className="flex flex-col items-start mx-1 break-all">
             <div className="text-sm">
               {form.getValues("title") === ""
