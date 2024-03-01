@@ -12,6 +12,7 @@ const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
   room: Rooms;
   messages: Messages[];
+  getOtherParticipantEmail: Function;
   updateChatMessages: Function;
   createMessage: Function;
 }
@@ -19,6 +20,7 @@ interface ChatLogProps {
 export default function ChatLog({
   room,
   messages,
+  getOtherParticipantEmail,
   updateChatMessages,
   createMessage,
 }: ChatLogProps) {
@@ -56,7 +58,7 @@ export default function ChatLog({
     };
     setChatMessage("");
     addNewChatMessage(newMessage);
-    createMessage(newMessage);
+    // createMessage(newMessage);
   };
 
   const roomMessages = getRoomMessages();

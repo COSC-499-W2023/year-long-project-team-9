@@ -5,7 +5,6 @@ import { getEmail } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
-import { getConnectionViaEmail } from "../functions/getConnectionViaEmail";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 
@@ -66,7 +65,6 @@ async function Chat() {
         userEmail={userEmail}
         rooms={rooms}
         messages={messages}
-        getConnectionViaEmail={getConnectionViaEmail}
         createMessage={createMessage}
       />
     </Suspense>

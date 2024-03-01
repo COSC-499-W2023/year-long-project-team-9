@@ -7,9 +7,6 @@ export async function up(db) {
   await db.schema
     .createTable("connections")
     .addColumn("connectionId", "varchar", (col) => col.primaryKey())
-    .addColumn("email", "varchar", (col) =>
-      col.notNull().references("users.email")
-    )
     .execute();
 }
 

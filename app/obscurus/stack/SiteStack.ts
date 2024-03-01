@@ -234,15 +234,6 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
-      "GET /getConnectionViaEmail": {
-        function: {
-          handler: "./stack/lambdas/getConnectionViaEmail.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
-        },
-      },
     },
   });
 

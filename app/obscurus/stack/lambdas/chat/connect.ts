@@ -6,11 +6,8 @@ import { getEmail } from "@/app/functions/authenticationMethods";
 export const main: APIGatewayProxyHandler = async (event) => {
   if (event.requestContext != undefined) {
     if (event.requestContext.connectionId != undefined) {
-      const newConnectionId = event.requestContext.connectionId;
-      const newConnectionEmail = (await getEmail()).toString();
       const newConnection: ConnectionsType = {
-        connectionId: newConnectionId,
-        email: newConnectionEmail,
+        connectionId: event.requestContext.connectionId,
       };
       const connection = await Connections.insert(newConnection);
       return { statusCode: 200, body: "Connected" };

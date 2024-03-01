@@ -11,7 +11,6 @@ interface ChatWrapperProps {
   userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
-  getConnectionViaEmail: Function;
   createMessage: Function;
 }
 
@@ -21,15 +20,16 @@ export default function ChatWrapper({
   userEmail,
   rooms,
   messages,
-  getConnectionViaEmail,
   createMessage,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
-  const [userConnectionId, setUserConnectionId] = useState<string | null>(null);
+  const [messageConnectionId, setMessageConnectionId] = useState<string | null>(
+    null
+  );
 
-  const updateUserConnectionId = (newUserConnectionId: string) => {
-    setUserConnectionId(newUserConnectionId);
+  const updateMessageConnectionId = (newMessageConnectionId: string) => {
+    setMessageConnectionId(newMessageConnectionId);
   };
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
     if (item === undefined) {

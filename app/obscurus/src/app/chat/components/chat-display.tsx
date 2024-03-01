@@ -62,6 +62,7 @@ export default function ChatDisplay({
         <ChatLog
           room={selected}
           messages={messages}
+          getOtherParticipantEmail={getOtherParticipantEmail}
           updateChatMessages={updateChatMessages}
           createMessage={createMessage}
         />
