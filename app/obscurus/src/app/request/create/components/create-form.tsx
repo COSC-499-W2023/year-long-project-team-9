@@ -21,6 +21,18 @@ import VideoProcessingInput from "./create-form-video-processing-input";
 import ClientEmail from "./create-form-client-input";
 import CreateFormDueDateInput from "./create-form-due-date-input";
 import CreateCancel from "./create-from-cancel";
+import CreateSubmit from "./create-form-submit";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 
 const createFormSchema = z
   .object({
@@ -80,7 +92,8 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof createFormSchema>) {
+  async function onSubmit(values: z.infer<typeof createFormSchema>) {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     console.log(values);
   }
   // TODO: Work in progress
@@ -95,16 +108,9 @@ export default function CreateForm({ userEmail }: CreateFormProps) {
           <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
-
           <div className="text-right">
             <CreateCancel></CreateCancel>
-            <Button
-              type="submit"
-              variant={"default"}
-              className="justify-self-start"
-            >
-              Submit
-            </Button>
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </Form>
