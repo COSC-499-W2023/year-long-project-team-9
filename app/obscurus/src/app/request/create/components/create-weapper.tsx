@@ -7,22 +7,23 @@ import { endOfDay, format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFormSchema } from "../form/createFormSchema";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 export default function CreaterWeapper({
   defaultLayout,
   defaultCollapsed,
   // createRequest,
-  userEmail,
+  userData,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
-  userEmail: string;
+  userData: Users[];
 }) {
   const form = useForm<z.infer<typeof createFormSchema>>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
       title: "",
-      userEmail: userEmail,
+      userEmail: userData[0].email,
       videoProcessing: true,
       clientEmail: [{ email: "" }],
     },
@@ -31,6 +32,7 @@ export default function CreaterWeapper({
   // let email = form.getValues("clientEmail").map((value) => {
   //   value.email;
   // });
+
   async function onSubmit(values: z.infer<typeof createFormSchema>) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log(values);
@@ -44,11 +46,14 @@ export default function CreaterWeapper({
         <CreateForm
           form={form}
           submit={onSubmit}
-          userEmail={userEmail}
+          userEmail={userData[0].email}
         ></CreateForm>
       }
       secondPanel={
-        <CreateDisplay form={form} userEmail={userEmail}></CreateDisplay>
+        <CreateDisplay
+          form={form}
+          userEmail={userData[0].email}
+        ></CreateDisplay>
       }
     />
   );

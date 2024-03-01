@@ -1,18 +1,9 @@
-// import { json } from "stream/consumers";
-// import { SQL } from "./sql";
+import { SQL } from "./sql";
+import { Users } from "./sql.generated";
 
-// export async function getUserViaEmail(payload: any) {
-//   const jsonPayload = JSON.parse(payload);
-//   const email = jsonPayload.email;
-//   let user = SQL.DB.selectFrom("users")
-//     .selectAll()
-//     .where("email", "=", email)
-//     .execute();
-//   let jsonUser = {};
-
-//   const returnedUser = await user;
-//   returnedUser.forEach((row, index) => {
-//     jsonUser[index.toString()] = row;
-//   });
-//   return { user: jsonUser };
-// }
+export async function getUserViaEmail(email: string) {
+  return await SQL.DB.selectFrom("users")
+    .selectAll()
+    .where("email", "=", email)
+    .execute();
+}
