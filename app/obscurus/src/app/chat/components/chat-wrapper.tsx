@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import ChatWebsocket from "./chat-websocket";
+import { useState, useEffect } from "react";
 import Wrapper from "../../wrapper";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
@@ -86,9 +85,30 @@ export default function ChatWrapper({
     }
   };
 
+  useEffect(() => {
+    const socket = new WebSocket(
+      "wss://o4tgfyn9n6.execute-api.us-west-2.amazonaws.com/Soren"
+    );
+    console.log(socket);
+    const handleBeforeUnload = () => {
+      console.log("Page reloading or closing, disconnecting WebSocket");
+      socket.close();
+    };
+
+    socket.onopen = () => {
+      console.log("Connected to WebSocket");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      console.log("Disconnecting WebSocket");
+      socket.close();
+    };
+  }, []);
+
   return (
     <>
-      <ChatWebsocket updateUserConnectionId={updateUserConnectionId} />
       <Wrapper
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
