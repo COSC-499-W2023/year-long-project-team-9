@@ -1,6 +1,6 @@
+"use client";
 import Wrapper from "@/app/wrapper";
 import CreateForm from "./create-form";
-
 interface CreaterWeapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
