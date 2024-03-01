@@ -46,7 +46,7 @@ export default function CreateForm({
 }) {
   return (
     <div className="overflow-auto">
-      {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
+      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submit)} className="space-y-8">

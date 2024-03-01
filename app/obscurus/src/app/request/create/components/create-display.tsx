@@ -53,7 +53,7 @@ export default function CreateDisplay({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={true}>
-                <ListVideo className="h-4 w-4" />
+                <ListVideo className="h-5 w-5" />
                 <span className="sr-only">Show video list</span>
               </Button>
             </TooltipTrigger>
@@ -61,9 +61,7 @@ export default function CreateDisplay({
           </Tooltip>
         </div>
       </div>
-
       <Separator />
-
       <div className="flex h-full flex-1 flex-col">
         <div className="flex items-start p-4">
           <Avatar>
@@ -77,9 +75,7 @@ export default function CreateDisplay({
           </Avatar>
           <div className="flex flex-col items-start mx-1 break-all">
             <div className="text-sm">
-              {form.getValues("title") === ""
-                ? "Tile"
-                : form.getValues("title")}
+              {form.watch("title") === "" ? "Title" : form.watch("title")}
             </div>
             <div className="text-xs">
               From: {userData[0].givenName} {userData[0].familyName} (
@@ -104,13 +100,11 @@ export default function CreateDisplay({
             </div>
             <div className="text-xs">
               Processing:{" "}
-              {form.getValues("videoProcessing") === true
-                ? "Blurred"
-                : "Normal"}{" "}
-              | Due Date:{" "}
-              {form.getValues("dueDate") === undefined
+              {form.watch("videoProcessing") === true ? "Blurred" : "Normal"} |
+              Due Date:{" "}
+              {form.watch("dueDate") === undefined
                 ? "Due Date"
-                : format(form.getValues("dueDate"), "PPpp")}
+                : format(form.watch("dueDate"), "PPpp")}
             </div>
 
             {/* <div className="font-semibold">
