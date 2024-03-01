@@ -74,6 +74,7 @@ export interface Messages {
 // Connections table interface
 export interface Connections {
   connectionId: string;
+  email: string;
 }
 
 // Notifications table interface

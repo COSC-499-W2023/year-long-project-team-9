@@ -11,6 +11,7 @@ export function insert(newConnection: Connections) {
   return SQL.DB.insertInto("connections")
     .values({
       connectionId: newConnection.connectionId,
+      email: newConnection.email,
     })
     .execute();
 }
