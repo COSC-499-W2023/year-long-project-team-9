@@ -102,7 +102,7 @@ export default function ChatWrapper({
       console.log("Here");
       const messageData = event.data;
       try {
-        const messageJSON = JSON.parse(messageData);
+        const messageJSON: Messages = JSON.parse(messageData);
         if (!checkIfMessageInList(messageJSON)) {
           const newMessages = [...chatMessages, messageJSON];
           updateChatMessages(newMessages);
