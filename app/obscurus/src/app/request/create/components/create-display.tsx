@@ -24,7 +24,6 @@ export default function CreateDisplay({
   userEmail: string;
 }) {
   let today = new Date();
-
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
@@ -84,7 +83,9 @@ export default function CreateDisplay({
             <div className="text-xs">From: {userEmail}</div>
             <div className="text-xs">
               <HoverCard>
-                <HoverCardTrigger className="text-xs">To:</HoverCardTrigger>
+                <HoverCardTrigger className="text-xs">
+                  To: <div></div>
+                </HoverCardTrigger>
                 <HoverCardContent>
                   To:
                   <ul>
