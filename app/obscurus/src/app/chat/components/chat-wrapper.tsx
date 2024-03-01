@@ -5,10 +5,10 @@ import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
+  userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
   getConnectionViaEmail: Function;
@@ -18,6 +18,7 @@ interface ChatWrapperProps {
 export default function ChatWrapper({
   defaultLayout,
   defaultCollapsed,
+  userEmail,
   rooms,
   messages,
   getConnectionViaEmail,

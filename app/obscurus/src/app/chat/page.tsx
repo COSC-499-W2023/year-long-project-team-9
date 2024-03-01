@@ -1,6 +1,7 @@
 "use server";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
+import { getEmail } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
@@ -17,7 +18,7 @@ async function Chat() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  const userEmail = "imightbejan@gmail.com";
+  const userEmail = await getEmail();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const messages: Messages[] = await getMessages();
 
@@ -62,6 +63,7 @@ async function Chat() {
       <ChatWrapper
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
+        userEmail={userEmail}
         rooms={rooms}
         messages={messages}
         getConnectionViaEmail={getConnectionViaEmail}
