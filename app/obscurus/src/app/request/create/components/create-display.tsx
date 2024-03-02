@@ -121,13 +121,6 @@ export default function CreateDisplay({
                         </div>
                       ))}
                   </div>
-                  <ul>
-                    {/* {emailList.map((item: string, index: number) => (
-                      <li className="pl-1" key={index}>
-                        • {item}
-                      </li>
-                    ))} */}
-                  </ul>
                 </HoverCardContent>
               </HoverCard>
             </div>
@@ -139,18 +132,6 @@ export default function CreateDisplay({
                 ? "Due Date"
                 : format(form.watch("dueDate"), "PPpp")}
             </div>
-
-            {/* <div className="font-semibold">
-              {form.getValues("title") !== ""
-                ? form.getValues("title")
-                : "Title"}
-            </div> */}
-            {/* <div className="line-clamp-1 text-xs">From: Jan</div> */}
-            {/*  */}
-            {/* <div className="line-clamp-1 text-xs">
-              Processing: {form.watch("videoProcessing")} | Due:{" "}
-              {form.watch("dueDate")}
-            </div> */}
           </div>
           <div className="ml-auto text-xs text-muted-foreground">
             {today.toLocaleDateString()}
@@ -159,7 +140,9 @@ export default function CreateDisplay({
         <Separator />
         <ScrollArea>
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
-            {form.watch("description")}
+            {form.watch("description") === ""
+              ? "Description"
+              : form.getValues("description")}
           </div>
         </ScrollArea>
       </div>
