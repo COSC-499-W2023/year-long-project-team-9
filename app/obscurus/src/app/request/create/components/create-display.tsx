@@ -16,6 +16,13 @@ import {
 } from "@/components/ui/hover-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Users } from "@obscurus/database/src/sql.generated";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  PromiseLikeOfReactNode,
+  Key,
+} from "react";
 
 export default function CreateDisplay({
   form,
@@ -73,21 +80,47 @@ export default function CreateDisplay({
                 .join("")}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start mx-1 break-all">
+          <div className="flex flex-col items-start mx-1 break-all gap-1">
             <div className="text-sm">
               {form.watch("title") === "" ? "Title" : form.watch("title")}
             </div>
-            <div className="text-xs">
+            <div className="text-xs line-clamp-1">
               From: {userData[0].givenName} {userData[0].familyName} (
               {userData[0].email})
             </div>
             <div className="text-xs">
               <HoverCard>
-                <HoverCardTrigger className="text-xs">
-                  To: <div></div>
+                <HoverCardTrigger className="text-xs line-clamp-1">
+                  To:{" "}
+                  {form
+                    .getValues("clientEmail")
+                    .map((item: { email: string }, index: number) =>
+                      item.email !== ""
+                        ? item.email
+                        : form.getValues("clientEmail").length === 1
+                        ? "Email"
+                        : `Email ${index + 1}`
+                    )
+                    .join(", ")}
                 </HoverCardTrigger>
                 <HoverCardContent>
-                  To:
+                  <div>To: </div>
+                  <div className="ml-1">
+                    {form
+                      .getValues("clientEmail")
+                      .map((item: { email: string }, index: number) => (
+                        <div key={index}>
+                          •{" "}
+                          {form.getValues("clientEmail").length === 1
+                            ? item.email === ""
+                              ? "Email"
+                              : item.email
+                            : item.email === ""
+                            ? `Email ${index + 1}`
+                            : item.email}
+                        </div>
+                      ))}
+                  </div>
                   <ul>
                     {/* {emailList.map((item: string, index: number) => (
                       <li className="pl-1" key={index}>
