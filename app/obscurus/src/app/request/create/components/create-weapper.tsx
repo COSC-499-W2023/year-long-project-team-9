@@ -29,10 +29,6 @@ export default function CreaterWeapper({
     },
   });
 
-  // let email = form.getValues("clientEmail").map((value) => {
-  //   value.email;
-  // });
-
   async function onSubmit(values: z.infer<typeof createFormSchema>) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log(values);

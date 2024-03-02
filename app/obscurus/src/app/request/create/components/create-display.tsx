@@ -140,9 +140,22 @@ export default function CreateDisplay({
         <Separator />
         <ScrollArea>
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
-            {form.watch("description") === ""
-              ? "Description"
-              : form.getValues("description")}
+            {/* <p>
+              {form.getValues("description") === ""
+                ? "description"
+                : form.getValues("description")}
+            </p> */}
+            <div className="text-sm">
+              {form.watch("description") ? (
+                form.getValues("description") === "" ? (
+                  "Description"
+                ) : (
+                  form.getValues("description")
+                )
+              ) : (
+                <>Description</>
+              )}
+            </div>
           </div>
         </ScrollArea>
       </div>

@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { getEmail } from "../../functions/authenticationMethods";
 import CreaterWeapper from "./components/create-weapper";
 import { format } from "date-fns";
-import { getUserViaEmail } from "./function/getUserData";
+import { getUserViaEmail } from "../../functions/getUserData";
 import { Users } from "@obscurus/database/src/sql.generated";
 
 async function Create() {
