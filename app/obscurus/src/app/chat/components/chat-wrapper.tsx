@@ -105,7 +105,7 @@ export default function ChatWrapper({
         const messageJSON: Messages = JSON.parse(messageData);
         if (!checkIfMessageInList(messageJSON)) {
           const newMessages = [...chatMessages, messageJSON];
-          updateChatMessages(newMessages);
+          setChatMessages(newMessages);
         }
       } catch {
         console.log("Message data is not valid JSON");
@@ -117,7 +117,7 @@ export default function ChatWrapper({
       console.log("Disconnecting WebSocket");
       ws.close();
     };
-  }, []);
+  }, [chatMessages]);
   const sendMessage = (messageData: string) => {
     if (socket) {
       socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
