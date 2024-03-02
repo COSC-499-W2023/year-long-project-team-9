@@ -234,6 +234,22 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "POST /createNotification": {
+        function: {
+          handler: "./stack/lambdas/createNotification.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "POST /updateNotificationDate": {
+        function: {
+          handler: "./stack/lambdas/updateNotificationDate.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
     },
   });
 
