@@ -13,6 +13,7 @@ export default function VideoProcessingInput({ form }: any) {
               value="normal"
               className="w-full"
               onClick={() => form.setValue("videoProcessing", false)}
+              disabled={form.formState.isSubmitting}
             >
               Normal
             </TabsTrigger>
@@ -20,6 +21,7 @@ export default function VideoProcessingInput({ form }: any) {
               value="blurred"
               className="w-full"
               onClick={() => form.setValue("videoProcessing", true)}
+              disabled={form.formState.isSubmitting}
             >
               Blurred
             </TabsTrigger>

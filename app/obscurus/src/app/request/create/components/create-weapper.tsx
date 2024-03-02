@@ -31,6 +31,7 @@ export default function CreaterWeapper({
 
   async function onSubmit(values: z.infer<typeof createFormSchema>) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log(form.formState.isSubmitting);
     console.log(values);
   }
   return (
@@ -41,7 +42,7 @@ export default function CreaterWeapper({
       firstPanel={
         <CreateForm
           form={form}
-          submit={onSubmit}
+          onSubmit={onSubmit}
           userData={userData}
         ></CreateForm>
       }
