@@ -234,6 +234,15 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "GET /getNotificationsViaEmail": {
+        function: {
+          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
       "POST /createNotification": {
         function: {
           handler: "./stack/lambdas/createNotification.handler",
