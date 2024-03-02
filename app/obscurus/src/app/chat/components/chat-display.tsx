@@ -33,7 +33,22 @@ export default function ChatDisplay({
     setRoomId(rooms[0].roomId);
   }
 
+  const getUserName = (item: Rooms | undefined) => {
+    if (item === undefined) {
+      return "";
+    } else if (item.participant1Email === userEmail) {
+      return (
+        item.participant1RoomGivenName + " " + item.participant1RoomFamilyName
+      );
+    } else {
+      return (
+        item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
+      );
+    }
+  };
+
   const selected = rooms.find((item) => item.roomId === roomId);
+  const userName = getUserName(selected);
   const otherUserName = getOtherParticipantName(selected);
   const otherEmail = getOtherParticipantEmail(selected);
 
@@ -66,6 +81,8 @@ export default function ChatDisplay({
           userEmail={userEmail}
           room={selected}
           messages={messages}
+          userName={userName}
+          otherEmail={otherEmail}
           updateChatMessages={updateChatMessages}
           createMessage={createMessage}
           sendMessage={sendMessage}

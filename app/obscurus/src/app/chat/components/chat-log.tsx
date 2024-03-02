@@ -2,7 +2,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUpCircle } from "lucide-react";
-import { Rooms, Messages } from "stack/database/src/sql.generated";
+import {
+  Rooms,
+  Notifications,
+  Messages,
+} from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
@@ -12,6 +16,8 @@ interface ChatLogProps {
   userEmail: string;
   room: Rooms;
   messages: Messages[];
+  userName: string;
+  otherEmail: string;
   updateChatMessages: Function;
   createMessage: Function;
   sendMessage: Function;
@@ -21,6 +27,8 @@ export default function ChatLog({
   userEmail,
   room,
   messages,
+  userName,
+  otherEmail,
   updateChatMessages,
   createMessage,
   sendMessage,
@@ -37,18 +45,7 @@ export default function ChatLog({
     updateChatMessages(newChatMessages);
   };
   const handleClick = () => {
-    let newMessageUUID = uuidv7();
-    let newMessageUUIDUnique = false;
-    while (!newMessageUUIDUnique) {
-      const sameUUIDList = messages.filter(
-        (message) => message.messageId === newMessageUUID
-      );
-      if (sameUUIDList.length === 0) {
-        newMessageUUIDUnique = true;
-      } else {
-        newMessageUUID = uuidv7();
-      }
-    }
+    const newMessageUUID = uuidv7();
     const newMessage: Messages = {
       messageId: newMessageUUID,
       roomId: room.roomId,
@@ -56,6 +53,16 @@ export default function ChatLog({
       creationDate: new Date(),
       messageContent: chatMessage,
       isRead: false,
+    };
+    const newNotificationUUID = uuidv7();
+    const newNotification: Notifications = {
+      notificationId: newNotificationUUID,
+      userEmail: otherEmail,
+      type: "messages",
+      creationDate: new Date(),
+      content: `New message from ${userName}`,
+      isRead: false,
+      isTrashed: false,
     };
     setChatMessage("");
     addNewChatMessage(newMessage);
