@@ -34,6 +34,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 import { Users } from "@obscurus/database/src/sql.generated";
+import { Alert } from "@/components/modified-shadcn-ui-components/modified-alert";
+import { Dialog } from "@/components/ui/dialog";
 
 export default function CreateForm({
   form,
@@ -46,7 +48,6 @@ export default function CreateForm({
 }) {
   return (
     <div className="overflow-auto">
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -56,8 +57,8 @@ export default function CreateForm({
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
           <div className="flex flex-col-2 float-right">
-            <Button type="submit">Submit</Button>
             <CreateCancel></CreateCancel>
+
             {/* The alert will only display when the form is valid */}
             <AlertDialog>
               <div>
@@ -77,16 +78,12 @@ export default function CreateForm({
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel disabled={form.isSubmitting}>
-                    Cancel
-                  </AlertDialogCancel>
-                  <Button
-                    type="submit"
-                    onClick={() => form.handleSubmit(onSubmit)}
-                    disabled={form.isSubmitting}
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => form.handleSubmit(onSubmit)()}
                   >
                     Submit
-                  </Button>
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
