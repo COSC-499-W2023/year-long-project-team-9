@@ -9,8 +9,8 @@ import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
+  userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
   getOtherParticipantEmail: Function;
@@ -22,6 +22,7 @@ interface ChatListProps {
 }
 
 export default function ChatList({
+  userEmail,
   rooms,
   messages,
   getOtherParticipantEmail,

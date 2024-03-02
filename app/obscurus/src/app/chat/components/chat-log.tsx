@@ -8,20 +8,19 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { uuidv7 } from "uuidv7";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
+  userEmail: string;
   room: Rooms;
   messages: Messages[];
-  getOtherParticipantEmail: Function;
   updateChatMessages: Function;
   createMessage: Function;
   sendMessage: Function;
 }
 
 export default function ChatLog({
+  userEmail,
   room,
   messages,
-  getOtherParticipantEmail,
   updateChatMessages,
   createMessage,
   sendMessage,

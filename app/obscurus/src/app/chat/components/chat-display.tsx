@@ -6,8 +6,8 @@ import { useQueryState } from "nuqs";
 import { Suspense } from "react";
 import ChatLog from "../../chat/components/chat-log";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatDisplayProps {
+  userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
   getOtherParticipantEmail: Function;
@@ -18,6 +18,7 @@ interface ChatDisplayProps {
 }
 
 export default function ChatDisplay({
+  userEmail,
   rooms,
   messages,
   getOtherParticipantEmail,
@@ -62,9 +63,9 @@ export default function ChatDisplay({
         }
       >
         <ChatLog
+          userEmail={userEmail}
           room={selected}
           messages={messages}
-          getOtherParticipantEmail={getOtherParticipantEmail}
           updateChatMessages={updateChatMessages}
           createMessage={createMessage}
           sendMessage={sendMessage}

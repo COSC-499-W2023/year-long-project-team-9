@@ -138,6 +138,7 @@ export default function ChatWrapper({
         navCollapsedSize={4}
         firstPanel={
           <ChatList
+            userEmail={userEmail}
             rooms={chatRooms}
             messages={chatMessages}
             getOtherParticipantEmail={getOtherParticipantEmail}
@@ -149,6 +150,7 @@ export default function ChatWrapper({
         }
         secondPanel={
           <ChatDisplay
+            userEmail={userEmail}
             rooms={chatRooms}
             messages={chatMessages}
             getOtherParticipantEmail={getOtherParticipantEmail}
