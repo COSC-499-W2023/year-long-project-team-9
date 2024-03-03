@@ -56,6 +56,7 @@ export default function SubmiDisplay({
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [upload, setUpload] = useQueryState("upload");
   const [showVideos, setShowVideos] = useQueryState("showVideos");
+  const [showingVideo, setShowingVideo] = useQueryState("video");
 
   console.log("getPresignedUrl", getPresignedUrl);
 

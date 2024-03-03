@@ -46,10 +46,11 @@ const Upload = ({
     }
   };
 
+  const [uploading, setUploading] = useState(false)
   const [objectURL, setObjectURL] = useState<string | null>(null);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
+    setUploading(true)
     const file = fileInputRef.current?.files?.[0];
     setFile(file);
     if (!file) {
@@ -76,7 +77,10 @@ const Upload = ({
       if (response.ok) {
         console.log("Upload successful");
         const src = URL.createObjectURL(file);
+        console.log("ObjectURL", src)
+
         setObjectURL(src);
+
       } else {
         console.error("Upload failed:", response.statusText);
       }
@@ -144,11 +148,14 @@ const Upload = ({
             },
             body: file,
           });
+          console.log("fine here")
 
           if (response.ok) {
-            console.log("Upload successful:", location);
+            console.log("Upload successful");
+            console.log("hello")
             const src = URL.createObjectURL(file);
             setObjectURL(src);
+            console.log("ObjectURL", objectURL)
             return;
           } else {
             console.error("Upload failed:", response.statusText);
@@ -179,14 +186,14 @@ const Upload = ({
         <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
           {!record ? (
             <>
-              {file && objectURL ? (
+              {uploading ? (
                 <div className="flex flex-col w-fit h-full">
                   <div className="flex p-3 flex-col">
                     <div className="flex flex-col w-full h-full">
                       <div className="">
                         <VideoPlayer
                           videoUrl={objectURL}
-                          filename={file.name}
+                          filename={file?.name || "No file selected."}
                         />
                       </div>
 

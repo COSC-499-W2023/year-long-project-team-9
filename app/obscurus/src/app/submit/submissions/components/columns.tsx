@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { statuses } from "../../statuses"
-import { Video } from "../../schema"
+import { SubmissionSchema } from "../../schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 import { Submissions } from "@obscurus/database/src/sql.generated"
@@ -37,32 +37,32 @@ export const columns: ColumnDef<Submissions>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "submissionId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Video" />
+      <DataTableColumnHeader column={column} title="Submission ID" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("submissionId")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: "title",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Title" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const label = labels.find((label) => label.value === row.original.submissionId)
+  {
+    accessorKey: "title",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Title" />
+    ),
+    cell: ({ row }) => {
+      // const label = labels.find((label) => label.value === row.original.submissionId)
 
-  //     return (
-  //       <div className="flex space-x-2">
-  //         {label && <Badge variant="outline">{label.label}</Badge>}
-  //         <span className="max-w-[500px] truncate font-medium">
-  //           {row.getValue("title")}
-  //         </span>
-  //       </div>
-  //     )
-  //   },
-  // },
+      return (
+        <div className="flex space-x-2">
+          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("title") || "No title"}
+          </span>
+        </div>
+      )
+    },
+  },
   {
     accessorKey: "status",
     header: ({ column }) => (
@@ -74,7 +74,7 @@ export const columns: ColumnDef<Submissions>[] = [
       )
 
       if (!status) {
-        return null
+        return "No status"
       }
 
       return (
