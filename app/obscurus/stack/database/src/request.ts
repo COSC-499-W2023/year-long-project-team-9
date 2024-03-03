@@ -4,15 +4,15 @@ import { SQL } from "./sql";
 import { Requests, Submissions, Rooms, Notifications } from "./sql.generated";
 import { uuidv7 } from "uuidv7";
 
-export async function insertRequest(data: any) {
-  console.log("insertRequest");
+export async function createRequest(data: any) {
   const validData = createFormSchema.safeParse(data);
   if (validData.success === false) {
+    console.log(validData.success);
     return false;
   }
-  console.log(validData.data);
   try {
     const requestID = uuidv7();
+    console.log();
     const insertRequest = await SQL.DB.insertInto("requests")
       .values({
         requestId: requestID,
@@ -22,7 +22,7 @@ export async function insertRequest(data: any) {
         description: validData.data.description,
         blurred: validData.data.videoProcessing,
         creationDate: new Date(),
-        dueDate: validData.data.dueDate,
+        dueDate: new Date(),
       })
       .execute();
     for (let i = 0; i < validData.data.clientEmail.length; i++) {

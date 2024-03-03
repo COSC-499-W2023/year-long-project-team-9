@@ -1,5 +1,5 @@
 import { createFormSchema } from "@/app/request/create/form/createFormSchema";
-import { insertRequest } from "@obscurus/database/src/request";
+import { createRequest } from "@obscurus/database/src/request";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   }
 
-  const insertSuccessful = await insertRequest(validData.data);
+  const insertSuccessful = await createRequest(validData.data);
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },

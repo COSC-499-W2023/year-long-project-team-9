@@ -5,6 +5,7 @@ import CreaterWeapper from "./components/create-weapper";
 import { format } from "date-fns";
 import { getUserViaEmail } from "../../functions/getUserData";
 import { Users } from "@obscurus/database/src/sql.generated";
+import createRequest from "./function/createRequest";
 
 async function Create() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -22,6 +23,7 @@ async function Create() {
     <CreaterWeapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
+      createRequest={createRequest}
       userData={userData}
     />
   );
