@@ -6,9 +6,8 @@ import {
 } from "@obscurus/database/src/sql.generated";
 import Wrapper from "@/app/wrapper";
 import RequestList from "./request-list";
-import SubmitList from "@/app/submit/components/submit-list";
-import SubmitDisplay from "@/app/submit/components/submit-display";
 import hello from "@/app/functions/hello";
+import RequestDisplay from "./request-display";
 
 export default function RequestWeapper({
   defaultLayout,
@@ -28,9 +27,9 @@ export default function RequestWeapper({
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<SubmitList requests={requests} submissions={submissions} />}
+      firstPanel={<RequestList requests={requests} submissions={submissions} />}
       secondPanel={
-        <SubmitDisplay
+        <RequestDisplay
           requests={requests}
           submissions={submissions}
           action={hello}

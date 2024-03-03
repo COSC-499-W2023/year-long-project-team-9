@@ -28,6 +28,8 @@ async function Request() {
   const userData: Users[] = await getUserViaEmail(userEmail);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
+  // const requests: Requests[] = requestPageData.request;
+  // const submissions: Submissions[] = requestPageData.submissions;
   const requests: Requests[] = requestPageData.request;
   const submissions: Submissions[] = requestPageData.submissions;
   console.log(requests);
