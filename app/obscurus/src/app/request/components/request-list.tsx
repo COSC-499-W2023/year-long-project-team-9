@@ -8,7 +8,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useRouter } from "next/navigation";
-import { Filter, Search, Send, SortAscIcon, SortDescIcon } from "lucide-react";
+import {
+  Filter,
+  Megaphone,
+  RocketIcon,
+  Search,
+  Send,
+  SortAscIcon,
+  SortDescIcon,
+} from "lucide-react";
 import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
@@ -29,6 +37,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import RequestHeader from "@/app/request/components/request-header";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/modified-shadcn-ui-components/modified-alert";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -171,58 +184,71 @@ export default function RequestList({
     );
   });
 
-  return requests && submissions ? (
+  return (
     <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
       <RequestHeader></RequestHeader>
-      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <form>
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={search || "Search"}
-              className="pl-8"
-              onChange={(e) => setSearch(e.target.value || null)}
-              value={search || undefined}
-            />
-          </div>
-        </form>
-      </div>
-      <div className="flex flex-row items-center justify-between mx-4">
-        <TabsList>{tabsTriggers}</TabsList>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <SortDescIcon className="size-4" />
-                    <span className="sr-only">Filter Results</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setSort("newest")}>
-                    Newest
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSort("oldest")}>
-                    Oldest
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSort("due")}>
-                    Due
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          </TooltipTrigger>
-          <TooltipContent>Filter</TooltipContent>
-        </Tooltip>
-      </div>
 
-      {tabsContent}
+      {requests.length >= 1 && submissions.length >= 1 ? (
+        <div>
+          <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <form>
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder={search || "Search"}
+                  className="pl-8"
+                  onChange={(e) => setSearch(e.target.value || null)}
+                  value={search || undefined}
+                />
+              </div>
+            </form>
+          </div>
+          <div>
+            <div className="flex flex-row items-center justify-between mx-4">
+              <TabsList>{tabsTriggers}</TabsList>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <SortDescIcon className="size-4" />
+                          <span className="sr-only">Filter Results</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setSort("newest")}>
+                          Newest
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSort("oldest")}>
+                          Oldest
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSort("due")}>
+                          Due
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
+                </TooltipTrigger>
+                <TooltipContent>Filter</TooltipContent>
+              </Tooltip>
+            </div>
+
+            {tabsContent}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center items-center mx-4 mt-2">
+          <Alert>
+            <Megaphone className="mr-2 h-4 w-4" />
+            <AlertTitle>No requests!</AlertTitle>
+            <AlertDescription>
+              You can make a request any time.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
     </Tabs>
-  ) : (
-    <div className="h-full flex flex-col justify-center items-center">
-      Failed to load data :({" "}
-    </div>
   );
 }
 
@@ -238,4 +264,10 @@ function getBadgeVariantFromLabel(
   }
 
   return "secondary";
+}
+
+{
+  /* <div className="h-full flex flex-col justify-center items-center">
+      Failed to load data :({" "}
+    </div> */
 }
