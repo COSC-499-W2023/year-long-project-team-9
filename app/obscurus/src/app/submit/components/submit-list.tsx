@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import RequestHeader from "@/app/request/components/request-header";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -172,9 +173,7 @@ export default function SubmitList({
 
   return requests && submissions ? (
     <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
-      <div className="flex items-center px-4">
-        <h1 className="text-xl font-bold">Submit</h1>
-      </div>
+      <RequestHeader></RequestHeader>
       <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <form>
           <div className="relative">

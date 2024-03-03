@@ -5,9 +5,14 @@ import { Suspense } from "react";
 import hello from "../functions/hello";
 import { getEmail } from "../functions/authenticationMethods";
 import RequestList from "./components/request-list";
-import { Users } from "@obscurus/database/src/sql.generated";
+import {
+  Users,
+  Requests,
+  Submissions,
+} from "@obscurus/database/src/sql.generated";
 import { getUserViaEmail } from "../functions/getUserData";
 import RequestWeapper from "./components/request-wrapper";
+import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -21,11 +26,19 @@ async function Request() {
       : undefined;
   const userEmail = await getEmail();
   const userData: Users[] = await getUserViaEmail(userEmail);
+  const requestPageData: { request: Requests[]; submissions: Submissions[] } =
+    await getRequestsViaEmail(userEmail);
+  const requests: Requests[] = requestPageData.request;
+  const submissions: Submissions[] = requestPageData.submissions;
+  console.log(requests);
+  console.log(submissions);
 
   return (
     <RequestWeapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
+      requests={requests}
+      submissions={submissions}
       userData={userData}
     />
   );
