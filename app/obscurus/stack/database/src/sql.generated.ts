@@ -1,5 +1,5 @@
 import { GroupingState } from "@tanstack/react-table";
-import { Status } from "./types/status";
+import { Grouping, Status } from "./types/status";
 
 // Database interface
 export interface Database {
@@ -29,7 +29,7 @@ export interface Requests {
   requestId: string;
   requestTitle: string;
   requesterEmail: string;
-  grouping: GroupingState | null;
+  grouping: Grouping | null;
   description: string;
   blurred: boolean;
   creationDate: Date;

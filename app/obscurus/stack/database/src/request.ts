@@ -80,3 +80,25 @@ export async function createRequest(data: any) {
   }
   return true;
 }
+
+export async function getRequestsViaEmail(email: string) {
+  const requests = await SQL.DB.selectFrom("requests")
+    .selectAll()
+    .where("requesterEmail", "=", email)
+    .execute();
+  const submissions = await SQL.DB.selectFrom("submissions")
+    .innerJoin("requests", "requests.requestId", "submissions.requestId")
+    .select([
+      "submissions.submissionId",
+      "submissions.requesteeEmail",
+      "submissions.status",
+      "submissions.title",
+      "submissions.grouping",
+      "submissions.isRead",
+      "submissions.submittedDate",
+      "submissions.requestId as requestId",
+    ])
+    .where("requests.requesterEmail", "=", email)
+    .execute();
+  return [requests, submissions];
+}
