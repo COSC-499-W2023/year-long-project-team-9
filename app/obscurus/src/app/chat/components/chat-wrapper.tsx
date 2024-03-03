@@ -12,6 +12,7 @@ interface ChatWrapperProps {
   rooms: Rooms[];
   messages: Messages[];
   createMessage: Function;
+  createMessageNotification: Function;
 }
 
 export default function ChatWrapper({
@@ -21,6 +22,7 @@ export default function ChatWrapper({
   rooms,
   messages,
   createMessage,
+  createMessageNotification,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
@@ -158,6 +160,7 @@ export default function ChatWrapper({
             updateChatMessages={updateChatMessages}
             createMessage={createMessage}
             sendMessage={sendMessage}
+            createMessageNotification={createMessageNotification}
           />
         }
       />

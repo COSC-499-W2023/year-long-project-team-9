@@ -21,6 +21,7 @@ interface ChatLogProps {
   updateChatMessages: Function;
   createMessage: Function;
   sendMessage: Function;
+  createMessageNotification: Function;
 }
 
 export default function ChatLog({
@@ -32,6 +33,7 @@ export default function ChatLog({
   updateChatMessages,
   createMessage,
   sendMessage,
+  createMessageNotification,
 }: ChatLogProps) {
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
@@ -66,8 +68,9 @@ export default function ChatLog({
     };
     setChatMessage("");
     addNewChatMessage(newMessage);
-    createMessage(newMessage);
+    // createMessage(newMessage);
     sendMessage(JSON.stringify(newMessage));
+    createMessageNotification(newNotification);
   };
 
   const roomMessages = getRoomMessages();

@@ -7,6 +7,7 @@ import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
+import createMessageNotification from "../functions/createMessageNotification";
 
 async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -66,6 +67,7 @@ async function Chat() {
         rooms={rooms}
         messages={messages}
         createMessage={createMessage}
+        createMessageNotification={createMessageNotification}
       />
     </Suspense>
   );

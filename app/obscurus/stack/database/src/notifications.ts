@@ -3,10 +3,9 @@ export * as Notifications from "./notifications";
 import { SQL } from "./sql";
 import type { Notifications } from "./sql.generated";
 
-export function getNotificationsViaEmail(payload: any) {
+export function list() {
   return SQL.DB.selectFrom("notifications")
     .selectAll()
-    .where("userEmail", "=", payload)
     .orderBy("creationDate", "asc")
     .execute();
 }

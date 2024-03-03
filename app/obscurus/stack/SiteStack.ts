@@ -234,9 +234,9 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
-      "GET /getNotificationsViaEmail": {
+      "GET /listNotifications": {
         function: {
-          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          handler: "./stack/lambdas/listNotifications.handler",
           timeout: 20,
           permissions: [rds],
           bind: [rds],

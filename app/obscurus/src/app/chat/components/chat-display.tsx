@@ -15,6 +15,7 @@ interface ChatDisplayProps {
   updateChatMessages: Function;
   createMessage: Function;
   sendMessage: Function;
+  createMessageNotification: Function;
 }
 
 export default function ChatDisplay({
@@ -26,6 +27,7 @@ export default function ChatDisplay({
   updateChatMessages,
   createMessage,
   sendMessage,
+  createMessageNotification,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -86,6 +88,7 @@ export default function ChatDisplay({
           updateChatMessages={updateChatMessages}
           createMessage={createMessage}
           sendMessage={sendMessage}
+          createMessageNotification={createMessageNotification}
         />
       </Suspense>
     </div>
