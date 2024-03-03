@@ -25,7 +25,7 @@ export default function SiteStack({ stack }: StackContext) {
     effect: Effect.ALLOW,
     resources: ["*"],
   });
-  
+
 
   // add RDS construct
   const rds = new RDS(stack, "Database", {
@@ -49,6 +49,7 @@ export default function SiteStack({ stack }: StackContext) {
     },
     memorySize: "15 GB",
     timeout: "8 hours",
+    permissions: [rekognitionPolicyStatement]
   });
 
   //Create secret keys

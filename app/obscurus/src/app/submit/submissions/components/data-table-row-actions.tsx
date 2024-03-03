@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { videoSchema } from "../schema"
+import { videoSchema } from "../../schema"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>

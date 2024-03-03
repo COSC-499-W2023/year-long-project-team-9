@@ -5,12 +5,13 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { statuses } from "../statuses"
-import { Video } from "../schema"
+import { statuses } from "../../statuses"
+import { Video } from "../../schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
+import { Submissions } from "@obscurus/database/src/sql.generated"
 
-export const columns: ColumnDef<Video>[] = [
+export const columns: ColumnDef<Submissions>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -95,7 +96,7 @@ export const columns: ColumnDef<Video>[] = [
   //     <DataTableColumnHeader column={column} title="Priority" />
   //   ),
   //   cell: ({ row }) => {
-      
+
   //     return (
   //       <div className="flex items-center">
   //         {priority.icon && (

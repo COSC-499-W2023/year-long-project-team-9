@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Filter,
   Search,
@@ -48,12 +48,14 @@ export default function SubmitList({
   submissions,
 }: RequestsListProps) {
   const router = useRouter();
+  const pathname = usePathname()
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useQueryState("search");
   const [upload] = useQueryState("upload");
   const [sort, setSort] = useQueryState("sort");
   const [tab, setTab] = useQueryState("tab");
+
 
   const getAssociatedSubmission = (requestId: string | null) => {
     if (requestId) {

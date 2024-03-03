@@ -1,75 +1,52 @@
 "use client";
-import upload  from "@/app/functions/upload";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import {
-  ArrowLeft,
-  Circle,
-  LucideUploadCloud,
-  Pause,
-  Square,
-} from "lucide-react";
-import crypto, { randomUUID } from "crypto";
-import { Bucket } from "sst/node/bucket";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
+import { ArrowLeft, Circle, LucideUploadCloud, Square } from "lucide-react";
+import { FormEvent, Suspense, useRef, useState } from "react";
 import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
 import { type CarouselApi } from "@/components/ui/carousel";
 import Webcam from "react-webcam";
-import { Progress } from "@/components/ui/progress";
-import { FadeLoader } from "react-spinners";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import getPresignedUrl from "@/app/functions/upload";
+import VideoPlayer from "../video-player";
+import { useQueryState } from "nuqs";
+import { Separator } from "@/components/ui/separator";
 
-export function Upload({ uploadVideo }: any) {
+const Upload = ({
+  getPresignedUrl,
+  triggerJob,
+}: {
+  getPresignedUrl: (submissionId: string, fileExt: string) => Promise<string>;
+  triggerJob: (submissionId: string) => Promise<string>;
+}) => {
+  const [requestId, setRequestId] = useQueryState("requestId");
+  const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [file, setFile] = useState<File | undefined>(undefined);
 
+  console.log("submissionId in upload", submissionId);
+
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const triggerJob = async (filename: any) => {
-    "Triggering job...";
-    console.log(filename);
-
-    const response = await fetch("/api/hello", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        requestId: filename,
-      }),
-    });
-
-    if (response.ok) {
-      const response = await fetch("/api/hello", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          requestId: filename,
-        }),
-      });
-    } else {
-      console.error("Error jobbing video:", response.statusText);
-    }
-
-    console.log("Video jobbed successfully");
-  };
 
   const handleUploadClick = (e: React.FormEvent) => {
     e.preventDefault();
     fileInputRef.current?.click();
   };
 
+  const handleProcessVideo = async (e: any) => {
+    setLoading(true);
+    if (submissionId) {
+      const res = await triggerJob(submissionId);
+      console.log(res);
+      return res;
+    } else {
+      return "Failed to run Job";
+    }
+  };
+
+  const [objectURL, setObjectURL] = useState<string | null>(null);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -79,52 +56,39 @@ export function Upload({ uploadVideo }: any) {
       console.error("No file selected");
       return;
     }
-
     const fileExt = file.name.split(".").pop() || "mp4";
-    const submissionId = Math.round(Math.random() * 1000).toString()
-    const url = getPresignedUrl(submissionId, fileExt)
-    // try {
-    //   const response = await fetch(apiUrl, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       key: "hello",
-    //       extension: fileExt,
-    //     }),
-    //   });
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! status: ${response.status}`);
-    //   }
-    //   const data = await response.json();
-    //   console.log("Response from server:", data);
-    // } catch (error) {
-    //   console.error("Error during fetch:", error);
-    // }
-    // const response = await fetch(url, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": file.type,
-    //     "Content-Disposition": `attachment; filename*=UTF-8''${s3Key}`,
-    //   },
-    //   body: file,
-    // });
 
-    // if (response.ok) {
-    //   console.log("Upload successful");
-    //   await triggerJob(s3Key);
-    // } else {
-    //   console.error("Upload failed:", response.statusText);
-    // }
+    console.log(fileExt);
+    console.log(submissionId);
 
-    // const completionStatus = await triggerJob(s3Key);
-    // console.log(completionStatus)
+    if (submissionId) {
+      const url = await getPresignedUrl(submissionId, fileExt);
+
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+          "Content-Disposition": `attachment; filename*=UTF-8''${submissionId}`,
+        },
+        body: file,
+      });
+
+      if (response.ok) {
+        console.log("Upload successful");
+        const src = URL.createObjectURL(file);
+        setObjectURL(src);
+      } else {
+        console.error("Upload failed:", response.statusText);
+      }
+    } else {
+      return 500;
+    }
   };
 
   const [record, setRecord] = useState(false);
 
   const webcamRef = useRef<Webcam>(null);
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [capturing, setCapturing] = useState<boolean>(false);
   const [recordedChunks, setRecordedChunks] = useState<BlobPart[]>([]);
@@ -141,7 +105,7 @@ export function Upload({ uploadVideo }: any) {
     mediaRecorderRef.current.start();
   };
 
-  const handleDataAvailable = (event: BlobEvent) => {
+  const handleDataAvailable: (event: BlobEvent) => void = (event) => {
     if (event.data && event.data.size > 0) {
       setRecordedChunks((prev) => prev.concat(event.data));
     }
@@ -165,135 +129,145 @@ export function Upload({ uploadVideo }: any) {
 
       try {
         console.log("File:", file);
-        // const response = await fetch(url, {
-        //   method: "PUT",
-        //   headers: {
-        //     "Content-Type": "video/mp4",
-        //     "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
-        //   },
-        //   body: file,
-        // });
+        const fileExt = file.name.split(".").pop() || "mp4";
 
-        // if (response.ok) {
-        //   // const location =
-        //   //   response.headers.get("Location") || url.split("?")[0];
-        //   // window.location.href = location;
-        //   console.log("Upload successful:", location);
-        //   setIsUploaded(true);
-        // } else {
-        //   console.error("Upload failed:", response.statusText);
-        // }
+        console.log(fileExt);
+        console.log(submissionId);
+
+        if (submissionId) {
+          const url = await getPresignedUrl(submissionId, fileExt);
+          const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "video/mp4",
+              "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
+            },
+            body: file,
+          });
+
+          if (response.ok) {
+            console.log("Upload successful:", location);
+            const src = URL.createObjectURL(file);
+            setObjectURL(src);
+            return;
+          } else {
+            console.error("Upload failed:", response.statusText);
+          }
+        } else {
+          console.log("No submissionid");
+        }
       } catch (error) {
         console.error("Upload error:", error);
       } finally {
-        await triggerJob("test3.mp4");
         console.log("Finished job");
       }
     }
   };
 
-  const primary = useCurrentTheme("primary");
-
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
-
-  // const determineNextButtonDisabled = () => {
-  //   if (current === count) return true;
-
-  //   if (current === 2 && !file) return true;
-
-  //   return false;
-  // };
-
-  // useEffect(() => {
-  //   if (!api) {
-  //     return;
-  //   }
-
-  //   setCount(api.scrollSnapList().length);
-  //   setCurrent(api.selectedScrollSnap() + 1);
-
-  //   api.on("select", () => {
-  //     console.log("current");
-  //     if (!determineNextButtonDisabled()) {
-  //       setCurrent(api.selectedScrollSnap() + 1);
-  //     }
-  //   });
-  // }, [api, current]);
-
-  const [processing, setProcessing] = useState(true);
-
-  const endProcessing = () => {
-    console.log("Processing finished!");
+  const reset = () => {
+    setFile(undefined);
+    setObjectURL(null);
   };
 
   const [isUploaded, setIsUploaded] = useState(false);
+  const [upload, setUpload] = useQueryState("upload");
 
   return (
-    <div className="flex h-full flex-col p-10 space-y-5">
-      <Progress className="my-5" value={10} />
-
-      <div className="flex flex-col h-full w-full justify-content-center  ">
-        <form
-          method="POST"
-          className="bg-accent w-full h-full   shadow-sm flex flex-col justify-center items-center space-y-3 border "
-        >
+    <>
+      <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
+        {/* <Progress value={10} /> */}
+        <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
           {!record ? (
             <>
-              <LucideUploadCloud className="w-48 h-48" />
-              <div className="flex justify-center w-full">
-                <Label htmlFor="video" className=" text-center text-lg">
-                  No file selected
-                </Label>
-              </div>
-              <input
-                id="file-input"
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleSubmit}
-                accept="video/*.mp4, *.mov"
-              />
-              <div className="grid grid-cols-2 gap-10">
-                <input
-                  id="file-input"
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleSubmit}
-                  style={{ display: "none" }}
-                  accept="video/*,.mp4"
-                />
+              {file && objectURL ? (
+                <div className="flex flex-col w-fit h-full">
+                  <div className="flex p-3 flex-col">
+                    <div className="flex flex-col w-full h-full">
+                      <div className="">
+                        <VideoPlayer
+                          videoUrl={objectURL}
+                          filename={file.name}
+                        />
+                      </div>
 
-                <div className="justify-self-start">
-                  <Button onClick={handleUploadClick}>Upload</Button>
+                      <div className="flex w-full mr-4 mt-4 justify-between">
+                        <Button onClick={reset} variant={"outline"}>
+                          Choose Another File
+                        </Button>
+                        <Button onClick={handleProcessVideo}>Upload</Button>
+                        {loading ? <div>loading</div> : ""}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="justify-self-end">
-                  <Button onClick={() => setRecord(true)}>Record</Button>
-                </div>
-              </div>
-              <Separator className="border bg-accent" />
-              <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
-                <div className="font-semibold text-base">
-                  Accepted filetypes:
-                </div>
+              ) : (
+                <div className="flex flex-col w-full h-full p-10">
+                  <div className="flex flex-col p-5 w-full h-full justify-end items-center">
+                    <div className="w-full h-[50%] flex flex-col items-center ">
+                      <LucideUploadCloud className="w-48 h-48 " />
+                    </div>
 
-                <div className="text-sm text-center text-muted-foreground">
-                  {" "}
-                  MP4, MOV
+                    <div className="flex flex-col justify-around w-full h-full p-4">
+                      <input
+                        id="file-input"
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        onChange={handleSubmit}
+                        accept="video/*.mp4, *.mov"
+                      />
+
+                      <div className="grid grid-cols-2 space-x-3 w-full">
+                        <div className=" flex justify-center">
+                          <Button onClick={handleUploadClick}>Upload</Button>
+                        </div>
+                        <div className="flex justify-center">
+                          <Button onClick={() => setRecord(true)}>
+                            Record
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
+                        <div className="font-semibold text-base">
+                          Accepted filetypes:
+                        </div>
+
+                        <div className="text-sm text-center text-muted-foreground">
+                          {" "}
+                          MP4, MOV
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}{" "}
             </>
           ) : (
             <div className="grid grid-rows-[90%__10%] w-full rounded-lg h-full items-center  ">
               <div className=" flex items-center justify-center rounded-md">
                 <Suspense fallback={<div>Failed to load webcam</div>}>
-                  <div className="container">
+                  <div className=" relative ">
                     <Webcam
                       audio={false}
                       ref={webcamRef}
                       className=" w-full h-full rounded-md"
                     />
+
+                    <div className="relative bottom-14 left-64">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleStartCaptureClick}
+                          >
+                            <Circle className="fill-red-400 h-6 w-6" />
+                            <span className="sr-only">Record</span>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Record</TooltipContent>
+                      </Tooltip>
+                    </div>
                   </div>
                 </Suspense>
               </div>
@@ -316,14 +290,6 @@ export function Upload({ uploadVideo }: any) {
                         <TooltipContent>Stop Recording</TooltipContent>
                       </Tooltip>
                     </div>
-                    {/*
-                    <Button
-                      onClick={handleSaveAndUpload}
-                      disabled={!recordedChunks.length}
-                      variant={"default"}
-                    >
-                      Upload
-                    </Button> */}
                   </>
                 ) : (
                   <>
@@ -340,20 +306,12 @@ export function Upload({ uploadVideo }: any) {
                       </TooltipTrigger>
                       <TooltipContent>Back</TooltipContent>
                     </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={handleStartCaptureClick}
-                        >
-                          <Circle className="fill-primary h-6 w-6" />
-                          <span className="sr-only">Record</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Record</TooltipContent>
-                    </Tooltip>
-                    <Button type="submit" disabled={!file}>
+
+                    <Button
+                      onClick={handleSaveAndUpload}
+                      disabled={!recordedChunks.length}
+                      variant={"default"}
+                    >
                       Upload
                     </Button>
                   </>
@@ -361,10 +319,10 @@ export function Upload({ uploadVideo }: any) {
               </div>
             </div>
           )}
-        </form>
+        </div>
       </div>
-    </div>
+    </>
   );
-}
+};
 
 export default Upload;
