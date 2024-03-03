@@ -5,6 +5,9 @@ import { Suspense } from "react";
 import hello from "../functions/hello";
 import { getEmail } from "../functions/authenticationMethods";
 import RequestList from "./components/request-list";
+import { Users } from "@obscurus/database/src/sql.generated";
+import { getUserViaEmail } from "../functions/getUserData";
+import RequestWeapper from "./components/request-wrapper";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -16,15 +19,14 @@ async function Request() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const email = await getEmail();
+  const userEmail = await getEmail();
+  const userData: Users[] = await getUserViaEmail(userEmail);
 
   return (
-    <Wrapper
+    <RequestWeapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<RequestList email={email}></RequestList>}
-      secondPanel={<>{email}</>}
+      userData={userData}
     />
   );
 }
