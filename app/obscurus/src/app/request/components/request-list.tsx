@@ -36,7 +36,7 @@ interface RequestsListProps {
   isCollapsed?: boolean;
 }
 
-export default function SubmitList({
+export default function RequestList({
   requests,
   submissions,
 }: RequestsListProps) {
