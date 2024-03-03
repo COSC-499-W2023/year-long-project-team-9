@@ -8,10 +8,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Requests, Submissions } from "stack/database/src/sql.generated";
+import { Requests, Submissions, Users } from "stack/database/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
 import { Suspense, useState } from "react";
-import { Archive, Trash2, ArrowLeft, LucideUploadCloud } from "lucide-react";
+import {
+  Archive,
+  Trash2,
+  ArrowLeft,
+  LucideUploadCloud,
+  ListVideo,
+} from "lucide-react";
 import { formatDistanceToNow, formatDistance, format } from "date-fns";
 import { Progress } from "@/components/ui/progress";
 import { upload } from "@/app/functions/upload";
@@ -22,6 +28,7 @@ export default function RequestDisplay({
   requests,
   searchParams,
   submissions,
+  userData,
   action,
 }: {
   requests: Requests[];
@@ -30,12 +37,9 @@ export default function RequestDisplay({
   };
   submissions: Submissions[];
   action: any;
+  userData: Users[];
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [upload, setUpload] = useQueryState("upload");
-  const [showVideos, setShowVideos] = useQueryState("showVideos");
-  const [uploading, setUploading] = useQueryState("upload");
 
   if (!requestId) {
     setRequestId(requests && requests[0].requestId);
@@ -47,46 +51,14 @@ export default function RequestDisplay({
     : null;
 
   console.log("Selected requestId to display", requestId);
-  console.log("Selected requestId to display", requestId);
 
-  const toggleVideos = () => {
-    setShowVideos(showVideos ? null : "true");
-  };
-
-  return upload ? (
-    <div className="flex h-full flex-col min-h-full">
-      <div className="flex items-center p-2">
-        <div className="flex items-center gap-2"></div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setUploading(null)}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Back to display</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Back</TooltipContent>
-        </Tooltip>
-      </div>
-      <Separator />
-      <Suspense
-        fallback={
-          <div className="w-full h-full flex items-center justify-center">
-            Loading...
-          </div>
-        }
-      ></Suspense>
-    </div>
-  ) : (
+  return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
+              <Button variant="ghost" size="icon">
                 <Archive className="h-4 w-4" />
                 <span className="sr-only">Archive</span>
               </Button>
@@ -96,12 +68,23 @@ export default function RequestDisplay({
           <Separator orientation="vertical" className="mx-2 h-6" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
+              <Button variant="ghost" size="icon">
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>Move to trash</TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="ml-auto">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <ListVideo className="h-5 w-5" />
+                <span className="sr-only">Show video list</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Show video list</TooltipContent>
           </Tooltip>
         </div>
       </div>
@@ -144,14 +127,6 @@ export default function RequestDisplay({
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
             {selected?.description}
-          </div>
-          <Separator className="mt-auto" />
-          <div className="p-4 flex justify-end w-full">
-            <form action={action}>
-              <Button type="submit" size="lg" className="mx-auto" value="world">
-                Upload
-              </Button>
-            </form>
           </div>
         </div>
       ) : (

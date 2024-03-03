@@ -32,6 +32,7 @@ export default function RequestWeapper({
         <RequestDisplay
           requests={requests}
           submissions={submissions}
+          userData={userData}
           action={hello}
         />
       }
