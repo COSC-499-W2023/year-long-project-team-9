@@ -14,8 +14,8 @@ export async function up(db) {
     .addColumn("grouping", "varchar")
     .addColumn("description", "varchar")
     .addColumn("blurred", "boolean", (col) => col.notNull())
-    .addColumn("dueDate", "date", (col) => col.notNull())
-    .addColumn("creationDate", "timestamp", (col) =>
+    .addColumn("dueDate", "timestamp", (col) => col.notNull())
+    .addColumn("creationDate", "date", (col) =>
       col.notNull().defaultTo("now()")
     )
     .execute();

@@ -45,6 +45,7 @@ export default function CreaterWeapper({
 
   async function onSubmit(values: z.infer<typeof createFormSchema>) {
     setIsInsertSuccessful(true);
+    console.log(JSON.stringify(values));
     const button = document.getElementById("submitAlert");
     button?.click();
   }
