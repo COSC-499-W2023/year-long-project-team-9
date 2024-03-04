@@ -27,6 +27,8 @@ async function Submit() {
   const requests: Requests[] = await getRequests();
 
   console.log("world", triggerJob);
+
+  console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
   return (
     <>
       <Wrapper
@@ -45,7 +47,6 @@ async function Submit() {
           />
         }
       />
-
     </>
   );
 }
