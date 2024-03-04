@@ -123,7 +123,7 @@ def start_face_detection(submissionId):
     response = rekognition.start_face_detection(
         Video={'S3Object': {'Bucket': input_bucket, 'Name': submissionId}}
     )
-    return response['submissionId']
+    return response['job_id']
 
 def check_submission_status(submissionId):
     print("Checking submission status...")
