@@ -67,7 +67,7 @@ export default function SubmiDisplay({
 
   const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
-  console.log(url)
+  console.log("URL", url)
 
   const [file, setFile] = useState<File | undefined>(undefined);
 

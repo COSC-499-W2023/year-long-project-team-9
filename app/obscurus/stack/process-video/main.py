@@ -116,6 +116,8 @@ print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
 output_bucket = os.environ['OUTPUT_BUCKET']
+api_url = os.environ['API_URL']
+print("api_url", api_url)
 # payload = os.environ['SST_PAYLOAD']
 
 def start_face_detection(submissionId):
@@ -123,7 +125,7 @@ def start_face_detection(submissionId):
     response = rekognition.start_face_detection(
         Video={'S3Object': {'Bucket': input_bucket, 'Name': submissionId}}
     )
-    return response['job_id']
+    return response['JobId']
 
 def check_submission_status(submissionId):
     print("Checking submission status...")
