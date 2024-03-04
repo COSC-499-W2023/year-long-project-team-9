@@ -1,29 +1,32 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Wrapper from "../../wrapper";
-import hello from "../../functions/hello";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
+  userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
   createMessage: Function;
+  createMessageNotification: Function;
 }
 
 export default function ChatWrapper({
   defaultLayout,
   defaultCollapsed,
+  userEmail,
   rooms,
   messages,
   createMessage,
+  createMessageNotification,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
     if (item === undefined) {
@@ -66,18 +69,6 @@ export default function ChatWrapper({
   const updateChatMessages = (newChatMessages: Messages[]) => {
     setChatMessages(newChatMessages);
   };
-  const setMessagesAsRead = (item: Rooms) => {
-    chatMessages.forEach((message) => {
-      if (message.roomId === item.roomId) {
-        if (
-          !message.isRead &&
-          message.senderEmail === getOtherParticipantEmail(item)
-        ) {
-          message.isRead = true;
-        }
-      }
-    });
-  };
   const sortRooms = () => {
     if (chatRooms != undefined) {
       setChatRooms(
@@ -94,31 +85,85 @@ export default function ChatWrapper({
     }
   };
 
+  useEffect(() => {
+    const ws = new WebSocket(
+      "wss://o4tgfyn9n6.execute-api.us-west-2.amazonaws.com/Soren"
+    );
+    const handleBeforeUnload = () => {
+      console.log("Page reloading or closing, disconnecting WebSocket");
+      ws.close();
+    };
+
+    ws.onopen = () => {
+      console.log("Connected to WebSocket");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    setSocket(ws);
+
+    ws.onmessage = (event) => {
+      console.log("Here");
+      const messageData = event.data;
+      try {
+        const messageJSON: Messages = JSON.parse(messageData);
+        if (!checkIfMessageInList(messageJSON)) {
+          const newMessages = [...chatMessages, messageJSON];
+          setChatMessages(newMessages);
+        }
+      } catch {
+        console.log("Message data is not valid JSON");
+      }
+    };
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      console.log("Disconnecting WebSocket");
+      ws.close();
+    };
+  }, [chatMessages]);
+  const sendMessage = (messageData: string) => {
+    if (socket) {
+      socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
+    }
+  };
+  const checkIfMessageInList = (newMessage: Messages) => {
+    const newMessages = chatMessages.filter(
+      (message) => message.messageId === newMessage.messageId
+    );
+    return newMessages.length > 0;
+  };
+
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={
-        <ChatList
-          rooms={chatRooms}
-          getOtherParticipantName={getOtherParticipantName}
-          checkUnreadMessages={checkUnreadMessages}
-          getLatestMessage={getLatestMessage}
-          setMessagesAsRead={setMessagesAsRead}
-          sortRooms={sortRooms}
-        />
-      }
-      secondPanel={
-        <ChatDisplay
-          rooms={chatRooms}
-          messages={chatMessages}
-          getOtherParticipantEmail={getOtherParticipantEmail}
-          getOtherParticipantName={getOtherParticipantName}
-          updateChatMessages={updateChatMessages}
-          createMessage={createMessage}
-        />
-      }
-    />
+    <>
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          <ChatList
+            userEmail={userEmail}
+            rooms={chatRooms}
+            messages={chatMessages}
+            getOtherParticipantEmail={getOtherParticipantEmail}
+            getOtherParticipantName={getOtherParticipantName}
+            checkUnreadMessages={checkUnreadMessages}
+            getLatestMessage={getLatestMessage}
+            sortRooms={sortRooms}
+          />
+        }
+        secondPanel={
+          <ChatDisplay
+            userEmail={userEmail}
+            rooms={chatRooms}
+            messages={chatMessages}
+            getOtherParticipantEmail={getOtherParticipantEmail}
+            getOtherParticipantName={getOtherParticipantName}
+            updateChatMessages={updateChatMessages}
+            createMessage={createMessage}
+            sendMessage={sendMessage}
+            createMessageNotification={createMessageNotification}
+          />
+        }
+      />
+    </>
   );
 }

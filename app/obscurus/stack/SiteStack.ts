@@ -228,6 +228,39 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [steveJobs, inputBucket, rds],
         },
       },
+      "POST /setIsReadTrue": {
+        function: {
+          handler: "./stack/lambdas/setIsReadTrue.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "GET /listNotifications": {
+        function: {
+          handler: "./stack/lambdas/listNotifications.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "POST /createNotification": {
+        function: {
+          handler: "./stack/lambdas/createNotification.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "POST /updateNotificationDate": {
+        function: {
+          handler: "./stack/lambdas/updateNotificationDate.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
     },
   });
 

@@ -4,29 +4,31 @@ import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { Search } from "lucide-react";
-import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatListProps {
+  userEmail: string;
   rooms: Rooms[];
+  messages: Messages[];
+  getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
   checkUnreadMessages: Function;
   getLatestMessage: Function;
-  setMessagesAsRead: Function;
   sortRooms: Function;
   isCollapsed?: boolean;
 }
 
 export default function ChatList({
+  userEmail,
   rooms,
+  messages,
+  getOtherParticipantEmail,
   getOtherParticipantName,
   checkUnreadMessages,
   getLatestMessage,
-  setMessagesAsRead,
   sortRooms,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
@@ -34,7 +36,14 @@ export default function ChatList({
 
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
-    setMessagesAsRead(item);
+    messages.forEach((message) => {
+      if (
+        message.roomId === item.roomId &&
+        message.senderEmail === getOtherParticipantEmail(item)
+      ) {
+        message.isRead = true;
+      }
+    });
   };
 
   useEffect(() => {

@@ -1,26 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUpCircle } from "lucide-react";
-import { Rooms, Messages } from "stack/database/src/sql.generated";
+import {
+  Rooms,
+  Notifications,
+  Messages,
+} from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { uuidv7 } from "uuidv7";
 
-const userEmail = "imightbejan@gmail.com";
 interface ChatLogProps {
+  userEmail: string;
   room: Rooms;
   messages: Messages[];
+  userName: string;
+  otherEmail: string;
   updateChatMessages: Function;
   createMessage: Function;
+  sendMessage: Function;
+  createMessageNotification: Function;
 }
 
 export default function ChatLog({
+  userEmail,
   room,
   messages,
+  userName,
+  otherEmail,
   updateChatMessages,
   createMessage,
+  sendMessage,
+  createMessageNotification,
 }: ChatLogProps) {
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
@@ -33,19 +46,18 @@ export default function ChatLog({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // useEffect(() => {
+  //   const scrollElement = scrollRef.current;
+  //   if (scrollElement) {
+  //     scrollElement.scrollTop = scrollElement.scrollHeight;
+  //   }
+  // }); 
+
   const handleClick = () => {
-    let newMessageUUID = uuidv7();
-    let newMessageUUIDUnique = false;
-    while (!newMessageUUIDUnique) {
-      const sameUUIDList = messages.filter(
-        (message) => message.messageId === newMessageUUID
-      );
-      if (sameUUIDList.length === 0) {
-        newMessageUUIDUnique = true;
-      } else {
-        newMessageUUID = uuidv7();
-      }
-    }
+    const newMessageUUID = uuidv7();
     const newMessage: Messages = {
       messageId: newMessageUUID,
       roomId: room.roomId,
@@ -54,17 +66,31 @@ export default function ChatLog({
       messageContent: chatMessage,
       isRead: false,
     };
+    const newNotificationUUID = uuidv7();
+    const newNotification: Notifications = {
+      notificationId: newNotificationUUID,
+      userEmail: otherEmail,
+      type: "messages",
+      creationDate: new Date(),
+      content: `New message from ${userName}`,
+      isRead: false,
+      isTrashed: false,
+    };
     setChatMessage("");
     addNewChatMessage(newMessage);
-    createMessage(newMessage);
+    // createMessage(newMessage);
+    sendMessage(JSON.stringify(newMessage));
+    createMessageNotification(newNotification);
+    //scrollToBottom();
   };
 
   const roomMessages = getRoomMessages();
   const [chatMessage, setChatMessage] = useState("");
 
   return room ? (
-    <div className="flex flex-col mt-auto">
-      <ScrollArea className="sm:max-h-80 md:max-h-80 2xl:max-h-max">
+    <div className="flex flex-col mt-auto relative" >
+      <ScrollArea ref={scrollRef} className="sm:max-h-80 md:max-h-80 2xl:max-h-max justify-end" >
+        <div id="chatScroll">
         {roomMessages.map((message) => (
           <div key={message.messageId}>
             {message.senderEmail === userEmail && (
@@ -83,6 +109,7 @@ export default function ChatLog({
             )}
           </div>
         ))}
+        </div>
       </ScrollArea>
       <div className="flex mr-3 ml-3 mb-6 mt-4 gap-2">
         <Input

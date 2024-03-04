@@ -15,9 +15,6 @@ export async function up(db) {
     .addColumn("isAdmin", "boolean", (col) => col.notNull().defaultTo(false))
     .addColumn("profileImage", "varchar")
     .addColumn("preference", "varchar", (col) => col.notNull().defaultTo("{}"))
-    .addColumn("connectionId", "varchar", (col) =>
-      col.references("connections.connectionId").defaultTo(null)
-    )
     .execute();
 }
 
