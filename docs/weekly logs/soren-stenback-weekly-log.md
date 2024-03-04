@@ -8,7 +8,7 @@
 
 - This week I completed the project plan alongside my team members.
 - The goals for this week complete the project plan, which was achieved. We completed making the project plan and transcribing it to our repo.
-- I completed `Assign and Pick roles`, `Brainstorm Minimum Viable Product`, `Come up with specific project under Option 3`, `Write Project Plan - Section 1, Minimum Viable Product`, and `Write Project Plan - Section 2, Major Milestones`. 
+- I completed `Assign and Pick roles`, `Brainstorm Minimum Viable Product`, `Come up with specific project under Option 3`, `Write Project Plan - Section 1, Minimum Viable Product`, and `Write Project Plan - Section 2, Major Milestones`.
 
 ### Picture of Project Board
 
@@ -26,7 +26,7 @@
 
 - This week I worked on the Create Request Figma design.
 - The goals for this week were to begin work on the Figma designs for our webpages to be used in the mini-presentation.
-- I worked on `Create Figma design for Create Request page #27`. 
+- I worked on `Create Figma design for Create Request page #27`.
 
 ### Picture of Project Board
 
@@ -167,3 +167,114 @@
 ### Picture of T2 Week 1's Survey
 
 ![T2 Week 1 Survey](img/soren-stenback/T2Week1-Survey-ID4.png)
+
+---
+
+## T2 Week 2
+
+### January 15 - January 21, 2023
+
+- This week I worked on Milestone #4, Peer Testing #1.
+- The goals for this week were to set up AWS Cognito and a functioning Sign Up/Sign In page, with helper methods to handle authentication.
+
+### Picture of Project Board
+
+![T2 Week 2 Project Board](img/soren-stenback/T2Week2-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 2's Survey
+
+![T2 Week 2 Survey](img/soren-stenback/T2Week2-Survey-ID4.png)
+
+---
+
+## T2 Week 3
+
+### January 22 - January 28, 2023
+
+- This week I worked on Milestone #4, Peer Testing #1.
+- The goals for this week were to implement the sign in, forgot password, and sign up functionality to the web app through Cognito and Amplify Auth.
+
+### Picture of Project Board
+
+![T2 Week 3 Project Board](img/soren-stenback/T2Week3-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 3's Survey
+
+![T2 Week 3 Survey](img/soren-stenback/T2Week3-Survey-ID4.png)
+
+---
+
+## T2 Week 4
+
+### January 29 - February 4, 2023
+
+- This week I worked on Milestone #4, Peer Testing #1.
+- The goals for this week were to perform the peer testing presentation and to examine how Cognito triggers function.
+
+### Picture of Project Board
+
+![T2 Week 4 Project Board](img/soren-stenback/T2Week4-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 4's Survey
+
+![T2 Week 4 Survey](img/soren-stenback/T2Week4-Survey-ID4.png)
+
+---
+
+## T2 Week 5
+
+### February 5 - February 11, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to set up lambda functions for messaging and create a websocket API to allow users to send messages to each other..
+
+### Picture of Project Board
+
+![T2 Week 5 Project Board](img/soren-stenback/T2Week5-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 5's Survey
+
+![T2 Week 5 Survey](img/soren-stenback/T2Week5-Survey-ID4.png)
+
+---
+
+## T2 Week 6
+
+### February 12 - February 18, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to begin implementing a chat page and collect chat rooms dynamically based on the user's email.
+
+### Picture of Project Board
+
+![T2 Week 6 Project Board](img/soren-stenback/T2Week6-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 6's Survey
+
+![T2 Week 6 Survey](img/soren-stenback/T2Week6-Survey-ID4.png)
+
+---
+
+## T2 Week 7
+
+### February 19 - February 25, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to implement server actions that would take new chat messages and send them to both the database and the user's chat log.
+
+---
+
+## T2 Week 8
+
+### February 26 - March 3, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to finish database interactions in the chat page and implement the websocket functions to send and receive messages from other users synchronously.
+
+### Picture of Project Board
+
+![T2 Week 8 Project Board](img/soren-stenback/T2Week8-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 8's Survey
+
+![T2 Week 6 Survey](img/soren-stenback/T2Week8-Survey-ID4.png)

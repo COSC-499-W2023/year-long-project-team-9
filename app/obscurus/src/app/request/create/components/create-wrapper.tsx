@@ -10,7 +10,7 @@ import { Users } from "@obscurus/database/src/sql.generated";
 import { useState } from "react";
 import SubmitStatusAlert from "./create-submit-status-alert";
 
-export default function CreaterWeapper({
+export default function CreateWrapper({
   defaultLayout,
   defaultCollapsed,
   createRequest,

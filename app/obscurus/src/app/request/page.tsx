@@ -11,7 +11,7 @@ import {
   Submissions,
 } from "@obscurus/database/src/sql.generated";
 import { getUserViaEmail } from "../functions/getUserData";
-import RequestWeapper from "./components/request-wrapper";
+import RequestWrapper from "./components/request-wrapper";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 
 async function Request() {
@@ -32,7 +32,7 @@ async function Request() {
   const submissions: Submissions[] = requestPageData.submissions;
 
   return (
-    <RequestWeapper
+    <RequestWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       requests={requests}

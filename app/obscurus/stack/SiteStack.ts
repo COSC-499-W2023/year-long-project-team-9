@@ -15,6 +15,7 @@ import {
   WebSocketApi,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 
 export default function SiteStack({ stack }: StackContext) {
   const inputBucket = new Bucket(stack, "inputBucket");
@@ -25,7 +26,6 @@ export default function SiteStack({ stack }: StackContext) {
     effect: Effect.ALLOW,
     resources: ["*"],
   });
-
 
   // add RDS construct
   const rds = new RDS(stack, "Database", {
@@ -49,7 +49,7 @@ export default function SiteStack({ stack }: StackContext) {
     },
     memorySize: "15 GB",
     timeout: "8 hours",
-    permissions: [rekognitionPolicyStatement]
+    permissions: [rekognitionPolicyStatement],
   });
 
   //Create secret keys
@@ -311,7 +311,18 @@ export default function SiteStack({ stack }: StackContext) {
   api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs, wsApi],
+    bind: [inputBucket, outputBucket, rds, api, steveJobs],
+    permissions: [rekognitionPolicyStatement],
+    customDomain: {
+      domainName: "obscurus.me",
+      domainAlias: "www.obscurus.me",
+      cdk: {
+        hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+          hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+          zoneName: "obscurus.me",
+        }),
+      },
+    },
   });
 
   steveJobs.bind([site]);

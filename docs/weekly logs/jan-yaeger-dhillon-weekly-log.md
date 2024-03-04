@@ -41,7 +41,7 @@ Screenshot from peer eval:
 ![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-5.png)
 
 - Specifically from our project board, I completed `Design logo` and worked with my team to complete `Come up with name for the web-app` and `Fix Github branching issue`.
-- Looking ahead, I intend to complete `Create Figma design for home page` in the very near future and start working on implementing the technologies such as `Set up Next.js for the project` and `Set up AWS Amplify for the project`.   
+- Looking ahead, I intend to complete `Create Figma design for home page` in the very near future and start working on implementing the technologies such as `Set up Next.js for the project` and `Set up AWS Amplify for the project`.
 - This week I focused mainly on planning out how the application is going to work in terms of UI/UX. I created a logo and got a solid draft for the landing page on Figma and contributed to creating an identity for our project. I worked on researching the AWS services such as Amplify and how we can best implement them into our app.
 
 ### In Progress ###
@@ -67,11 +67,11 @@ October 9 - October 22, 2023
 
 ### Tasks Worked On ###
 
-- My goals this week were to lay a strong foundation for the project and did a lot of work towards Milestone #2: Mini Presentation. 
-- I finialized my design for the landing page on Figma and got a strong start on implementing it in Next. 
-- Speaking of, I set up Next.js, Tailwind CSS, TypeScript, and the other front end technologies. 
-- I also set up AWS Amplify for our project and hosted out web app (https://amplify.ds4nt6byy9rfg.amplifyapp.com/). However, I still have yet to fully set up the CLI and configure Amplify. 
-- I also started looking into how I am going to implement Lambda, Step Functions, CodeBuild, and CodePipeline. 
+- My goals this week were to lay a strong foundation for the project and did a lot of work towards Milestone #2: Mini Presentation.
+- I finialized my design for the landing page on Figma and got a strong start on implementing it in Next.
+- Speaking of, I set up Next.js, Tailwind CSS, TypeScript, and the other front end technologies.
+- I also set up AWS Amplify for our project and hosted out web app (https://amplify.ds4nt6byy9rfg.amplifyapp.com/). However, I still have yet to fully set up the CLI and configure Amplify.
+- I also started looking into how I am going to implement Lambda, Step Functions, CodeBuild, and CodePipeline.
 - Behind the scenes, I have been learning a lot about Docker and containerization which will eventually come into play when we start to implement the video processing. I also attended all meetings and classes.
 - I think I did well this week and aim to continue working hard to achieve optimal results.
 
@@ -256,7 +256,7 @@ January 8 - January 14, 2024
 
 - I used the example from AWS to blur faces in videos to learn about Lambda functions and initialize integrating them into our own app
 
-- Because we are using SST, I have been researching the Function constructs to use with Lambda 
+- Because we are using SST, I have been researching the Function constructs to use with Lambda
 
 - I initialized the API (with the Api construct) that will be used to create routes for the backend (database, communicating with Next.js, etc.)
 
@@ -282,7 +282,203 @@ Screenshot from peer eval for Week 1:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-13.png)
 
+## Week 2  ##
 
+### Applicable Date Range ###
+January 15 - January 21, 2024
 
+### Tasks Worked On ###
 
+- This week I got the video processing working using Lambda and Step Functions.
+- Now we can take videos from S3 and apply the face blurring
+- My goal this week is to update the front end and make everything work together in preparation for the peer testing
+- This week I need to clean everything up and make some tests as well, however it is hard to test some of the AWS services
+- However, I have set up Vitest for testing SST
 
+Screenshot from peer eval for Week 2:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-14.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-14.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-14.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-14.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-14.png)
+
+## Week 3 ##
+
+### Applicable Date Range ###
+January 22 - January 28, 2024
+
+### Tasks Worked On ###
+
+- This week I focused on getting everything functional for the Peer Testing.
+- I was able to get the video processing working with ECS but I wasn't able to reliably send jobs from Next.js, so for now I have used the Job construct to run the container, which works well.
+- I linked the upload process to the Job and now videos uploaded will start processing!
+- I also put a lot of effort into designing the video submission page, but I realized that given the slowness of the video processing, it makes more sense to simply notify the user that the video has been updated, and then have a separate "dashboard" view to view the status.
+- To accomodate this dashboard view, I found a really good example to base on but it requires the App router for Next.js, so I also migrated our project to that.
+- This week I hope to smoothen out the video processing process and complete the video submission UI.
+- I also need to find a way to convert videos recorded in the browser (.webm) to .mp4 so they can be fed to Rekognition.
+- I put in a lot of work this week and think I deserve bonus marks.
+
+Screenshot from peer eval for Week 3:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-15.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-15.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-15.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-15.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-15.png)
+
+## Week 4 ##
+
+### Applicable Date Range ###
+January 29 - February 4, 2024
+
+### Tasks Worked On ###
+
+- This week for me was all about overhauling the user experience and evaluating the peer feedback so we set this milestone off on the right foot.
+- I also migrated the project to using React Server Components to speed things up and make the data fetching more intuitive.
+- I spent a lot of time setting up the new "dashboard" view for when the user is signed in, and integrating the database with API routes
+- This week I hope to finish the video submissions process and start finalizing the UI.
+- I put in a lot of work this week and did a lot of planning so I think I deserve bonus marks.
+
+Screenshot from peer eval for Week 4:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-16.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-16.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-16.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-16.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-16.png)
+
+## Week 5 ##
+
+### Applicable Date Range ###
+February 4 - February 11, 2024
+
+### Tasks Worked On ###
+
+- This week I mainly focused on setting a very malleable and agnostic layout for the project. I had to revamp how we were fetching data as it was causing a waterfall effect and I figured it's best to let the individual components fetch their own data.
+- I gave my team presentations on how to navigate the new structure as well as how to test better with Playwright.
+- This week I hope to finish working on the UI.
+
+Screenshot from peer eval for Week 5:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-17.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-17.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-17.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-17.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-17.png)
+
+## Week 6 ##
+
+### Applicable Date Range ###
+February 11 - February 18, 2024
+
+### Tasks Worked On ###
+
+- This week included a lot of testing, fixes, and careful planning. I wrote some tests for some of the Lambdas and set up the routing based around dynamic routes.
+- I worked on making the database use camelCase instead of snake_case and created some Lambda routes to update and retrieve the status of the video processing.
+- I have been learning a lot about Next.js so I can use it optimally. My team and I have been discussing using the URL for more state management.
+- I am working on getting the dynamic routes with a proper default working for submissions and requests.
+- I have also been working on a function to convert .webm to .mp4 but it is looking to be a more involved process then I thought.
+- This week will be a lot of cleaning up and I hope to finish the foundation.
+
+Screenshot from peer eval for Week 6:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-18.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-18.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-18.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-18.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-18.png)
+
+## Week 7 ##
+
+### Applicable Date Range ###
+February 18 - February March 3, 2024
+
+### Tasks Worked On ###
+
+- This week I mainly focused on the upload/submissions/video side of things on both the front and back ends.
+- I did a lot of work on integrating the submissions and uploading process into the new UI and integrating the new server action functions to replace the API routes.
+- I also did research and debugging for the actual video processing and plan to do even more this week.
+- I also added a new "videos" section for request/submit to show the current submissions.
+- There are some bugs I am aware of so I want to squash them this week.
+- I also want to add drag-and-drop functionality for uploads and look into making the video processing container a microservice.
+
+Screenshot from peer eval for Week 7:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-19.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-19.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-19.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-19.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-19.png)

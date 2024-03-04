@@ -899,11 +899,11 @@ All tasks for `Milestone 3 - Design Documentation` were completed
 
 ![test report](img/team-weekly-log-img/week-13/test-repoert-week13.png)
 
-# TEAM 9 - WEEK 1 TERM 2 (WEEK 14)
+# TEAM 9 - TERM 2 WEEK 1
 
 ## Work Period
 
-Week 1 ran from 00:00 on 2023/01/08 to 23:59 on 2023/12/03.
+Week 1 ran from 00:00 on 2024/01/08 to 23:59 on 2024/01/14.
 
 ## Milestone Goal Recap
 
@@ -1009,5 +1009,865 @@ The tasks identified for this week were:
 ### Test Report
 
 ![test report](img/team-weekly-log-img/week-14/test-report-week1-t-2.png)
+___
 
----
+# TEAM 9 - TERM 2 WEEK 2
+
+## Work Period
+
+Week 2 ran from 00:00 on 2024/01/15 to 23:59 on 2024/01/21.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Initialize Example Rekognition
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Translate example rekognition to work with sst framework
+
+### Task 2: Delete Old Branches
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon and Muhammad Bakar
+* **Associated Milestone Goal:** N/a
+* **Description:** Delete old GitHub branches from repository 
+
+### Task 3: Migration
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Migrate RSD scripts for database
+
+### Task 4: Fix Playwrite
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Fix issues with Playwrite automatic testing allowing the server to be started and tests to be run with one command.
+
+### Task 6: signOutBackEnd()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to allow signing out of backend
+
+### Task 7: getEmail()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to retrieve email adresses from the database
+
+### Task 8: getSub()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to retrieve submissions from the database
+
+### Task 7: isAuthenticated()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to check if authenticated
+
+### Task 7: getSub()
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete function to retrieve submissions
+
+### Task 8: Add Signup Page
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar and Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add Signup Page
+
+### Task 8: Set up Authentication
+
+* **Status:** In-Progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add authentication with Cognito to app via SST
+
+### Task 9: Link function to Service
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create containerized service that can access buckets/functions 
+
+### Task 9: Create API Route 
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create API route to communicated with Next.js 
+
+### Task 10: Create Messages Page 
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create pages for user to access messages
+
+### Task 10: Fix Layout Issues 
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix layout issues with pages from previous milestones
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-15/burnup-week15.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-15/completed-week15.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-15/inprogress-week15.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-15/testreport-week15.png)
+
+End to end testing
+![test report](img/team-weekly-log-img/week-15/e2etests.png)
+___
+
+# TEAM 9 - TERM 2 WEEK 2
+
+## Work Period
+
+Week 3 ran from 00:00 on 2024/01/22 to 23:59 on 2024/01/28.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Link function to Service
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create containerized service that can access buckets/functions 
+
+### Task 2: Migrate from Pages Router to App Router
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+- **Description:** Migrate from page router to app router in nextjs
+
+### Task 3: Create API Route
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create API route to communicate with Nextjs
+
+### Task 4: Link Front-end to Video Processing
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+- **Description:** Connect front-end page to back-end functionality for video processing
+
+### Task 5: Submission Table
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create table for submission into database
+
+### Task 6: Create Messages Page 
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create pages for user to access messages
+
+### Task 7: Fix Layout Issues 
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix layout issues with pages from previous milestones, specifically on the my request page
+
+### Task 8: Adding Email Reg Exp Method
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add email regular expression method
+
+### Task 9: Add Create Request Validation Method
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add validation process for creating a request
+
+### Task 10: Setup AWS WorkMail
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Set up AWS workmail for use in project
+
+### Task 11: Write Wrapper for Cognito Auth
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create wrapper for cognito authentication 
+
+### Task 12: Add authentication with Cognito to App via SST
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar and Soren Stenback
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add cognito authentication to web application
+
+### Task 13: Set up AWS SES
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Set up AWS Simple Email Service for use in project
+
+### Task 14: Make Template for Emails
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar 
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Create template for automatically generated emails
+
+### Task 15: Add Regular Expression for Password
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add regualr expression for the password for accounts
+
+### Task 16: Create Tests for Messages Page 
+
+* **Status:** Completed
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create automatic tests for messages page
+
+### Task 17: Add templates and documentation
+
+- **Status:** Completed
+- **Assignee(s):** Muhammad Bakar
+- **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+- **Description:** Add templates and guide on how to make and delete templates to Github
+
+### Task 18: Create Job to Process Video
+
+- **Status:** Completed
+- **Assignee(s):** Jan-Yaeger Dhillon
+- **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+- **Description:** create job using sst to process video
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-16/burnup-week16.png)
+
+### Table View of Completed Tasks
+All tasks for this milestone completed, any incomplete tasks are for next milestone.
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-16/completed-week16.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-16/testreport1-week16.png)
+![test report](img/team-weekly-log-img/week-16/testreport2-week16.png)
+
+End to end testing
+![test report](img/team-weekly-log-img/week-16/e2etests-week16.png)
+___
+
+# TEAM 9 - TERM 2 WEEK 4
+
+## Milestone Features
+- Soren Stenback: Chat & Search Bar
+- Jan-Yaeger Dhillon: UI Overhaul & Video Submission Process
+- Baz Sivakua: Chat & Account Page
+- Muhammad Bakar: Overhaul Requests & User Experience Infrastructure 
+
+## Work Period
+
+Week 4 ran from 00:00 on 2024/01/29 to 23:59 on 2024/02/03.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Milestone 5 Plan 
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** N/a
+* **Description:** Ensure all team members are on the same page and know what tasks they should complete for the next milestone. 
+
+### Task 2: Peer Evaluation Recap 
+
+* **Status:** Completed
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** N/a
+* **Description:** Discuss feedback recieved from peer evaluation session, address issues faced and how to best solve them. 
+
+### Task 3: Router 
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Migrate project to app router to use server components
+
+### Task 4: Intergrate Database
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Intergrate database via API routes
+
+### Task 5: New UI Code Template 
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create code template for UI overhaul 
+
+### Task 6: UI Overhaul 
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon & Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Implement new UI design
+
+### Task 7: Re-design RDS Schema 
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Redesign database schema
+
+### Task 8: Add RDS Data 
+
+* **Status:** Completed
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add new data to database based on redesign of schema
+
+### Task 9: Setup Cognito Backend 
+
+* **Status:** Completed
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Setup Cognito Backend such that it enables the development of background features
+
+### Task 10: Create My Videos Page 
+
+* **Status:** Completed
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create `My Videos` page, displaying uploaded videos and link to database
+
+### Task 11: Convert Videos Function
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create function to convert webm videos to mp4
+
+### Task 12: Revamp Code Base
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Code base file structure revamp
+
+### Task 13: Initialize Websockets 
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Initialize websockets to be used in chat feature
+
+### Task 14: Chat  
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create chat feature of website
+
+### Task 15: User Experience Infrastructure 
+
+* **Status:** In-progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create infrastructure to improve user experience
+
+### Task 13: Video Submission Process 
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete process allowing the video to be submitted and processed by the application
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-17/burnup-week17.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-17/completed-week17.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-17/inprogress-week17.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-17/testreport-week17.png)
+
+End to end testing
+
+![test report](img/team-weekly-log-img/week-17/e2etests-week17.png)
+___
+
+# TEAM 9 - TERM 2 WEEK 5
+
+## Milestone Features
+- Soren Stenback: Chat & Search Bar
+- Jan-Yaeger Dhillon: UI Overhaul & Video Submission Process
+- Baz Sivakua: Chat & Account Page
+- Muhammad Bakar: Overhaul Requests & User Experience Infrastructure 
+
+## Work Period
+
+Week 5 ran from 00:00 on 2024/02/04 to 23:59 on 2024/02/11.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: User Experience Infrastructure 
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create infrastructure to improve user experience
+
+### Task 2: Fixing Page Name Issue 
+
+* **Status:** Complete
+* **Assignee(s):** All Team Members
+* **Associated Milestone Goal:** N.a
+* **Description:** Select new names for request/submit naming issue
+
+### Task 3: Clean Up RDS
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Clean up database structure, allow for null and remove priorities
+
+### Task 4: Design New Taskbar
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create new taskbar based on discussion and feedback from check-in
+
+### Task 5: Add Notifications Table 
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add notifications table to database 
+
+### Task 6: Initialize Websockets 
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Initialize websockets to be used in chat feature
+
+### Task 7: Change Component Hierarchy
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Change component hierarchy/structure to front end for new UI 
+
+### Task 8: Convert Videos Function
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create function to convert webm videos to mp4
+
+### Task 9: Revamp Code Base
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Code base file structure revamp
+
+### Task 10: Redesign Request
+
+* **Status:** In-progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Redesign request page
+
+### Task 11: Create Lambda Tests
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Make tests for lambdas with vitest
+
+### Task 12: Implement Chat Functionality  
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create chat feature of website
+
+### Task 13: Video Submission Process 
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete process allowing the video to be submitted and processed by the application
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-18/burnup-week18.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-18/completed-week18.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-18/inprogress-week18.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-18/testreport-week18.png)
+
+End to end testing needs to be updated for new UI
+___
+
+# TEAM 9 - TERM 2 WEEK 6
+
+## Milestone Features
+- Soren Stenback: Chat & Search Bar
+- Jan-Yaeger Dhillon: UI Overhaul & Video Submission Process
+- Baz Sivakua: Chat & Account Page
+- Muhammad Bakar: Overhaul Requests & User Experience Infrastructure 
+
+## Work Period
+
+Week 5 ran from 00:00 on 2024/02/12 to 23:59 on 2024/02/18.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Change Navbar
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Change navbar to new design
+
+### Task 2: Request Display Component
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create display component for the request page
+
+### Task 3: Chat Design Document
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar, Soren Stenback & Baz Sivakua 
+* **Associated Milestone Goal:** N/a
+* **Description:** Create document for how plan with how to best implement chat functionality
+
+### Task 4: Clean Up RDS
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar, Soren Stenback & Jan-Yaeger Dhillon 
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Clean up database structure especially in regards to changes made
+
+### Task 5: Request Summary Component
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create summary component for the request page
+
+### Task 6: Create New Figma Designs
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create new figma designs for different pages with the new UI design
+
+### Task 8: Convert Videos Function
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create function to convert webm videos to mp4
+
+### Task 9: Revamp Code Base
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Code base file structure revamp
+
+### Task 10: Redesign Request
+
+* **Status:** In-progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Redesign request page
+
+### Task 11: Create Lambda Tests
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Make tests for lambdas with vitest
+
+### Task 12: Implement Chat Functionality  
+
+* **Status:** In-progress
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create chat feature of website
+
+### Task 13: Video Submission Process 
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete process allowing the video to be submitted and processed by the application
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-19/burnup-week19.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-19/completed-week19.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-19/inprogress-week19.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-19/testreport-week19.png)
+
+End to end testing needs to be updated for new UI
+______
+
+# TEAM 9 - TERM 2 WEEK 7 & 8
+
+## Milestone Features
+- Soren Stenback: Chat & Search Bar
+- Jan-Yaeger Dhillon: UI Overhaul & Video Submission Process
+- Baz Sivakua: Chat & Account Page
+- Muhammad Bakar: Overhaul Requests & User Experience Infrastructure 
+
+## Work Period
+
+Week 5 ran from 00:00 on 2024/02/19 to 23:59 on 2024/03/03.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Reintergrate Submission Process
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Reintergrate actual submission process into new ui
+
+### Task 2: Redesign Request
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Redesign request page
+
+### Task 3: Revamp Code Base
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Code base file structure revamp
+
+### Task 4: Video Submission Process 
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete process allowing the video to be submitted and processed by the application
+
+### Task 5: Final Project Restructuring
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** N/a
+* **Description:** Restructure project files for clarity
+
+### Task 6: Create Request Page
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create request page based on redeisng in task 1
+
+### Task 7: Create Chat Page  
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create chat interface 
+
+### Task 8: Implement Chat Functionality  
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create chat feature of website
+
+### Task 9: Create Auth Forms
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create authentication forms for various parts of the application
+
+### Task 10: Add Search Functionality
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add search functionailty to submissions page
+
+### Task 11: Prepare for Peer Testing Session
+
+* **Status:** Complete
+* **Assignee(s):** All team members
+* **Associated Milestone Goal:** N/a
+* **Description:** Make sure the entire team was prepared to present for the peer testing session 
+
+### Task 12: Convert Videos Function
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create function to convert webm videos to mp4
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-20/burnup-week20.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-20/completed-week20.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-20/inprogress-week20.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-20/testreport-week20.png)
+
+End to end testing needs to be updated for new UI
+___
