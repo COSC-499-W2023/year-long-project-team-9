@@ -313,16 +313,16 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
-    customDomain: {
-      domainName: "obscurus.me",
-      domainAlias: "www.obscurus.me",
-      cdk: {
-        hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
-          hostedZoneId: "Z09403151W7ZFKPC0YJEL",
-          zoneName: "obscurus.me",
-        }),
-      },
-    },
+    // customDomain: {
+    //   domainName: "obscurus.me",
+    //   domainAlias: "www.obscurus.me",
+    //   cdk: {
+    //     hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+    //       hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+    //       zoneName: "obscurus.me",
+    //     }),
+    //   },
+    // },
   });
 
   steveJobs.bind([site]);
