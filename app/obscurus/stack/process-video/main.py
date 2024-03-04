@@ -131,7 +131,7 @@ def check_submission_status(submissionId):
     print("Checking submission status...")
     while True:
         response = rekognition.get_face_detection(JobId=submissionId)
-        status = response['submissionStatus']
+        status = response['JobStatus']
         if status in ['SUCCEEDED', 'FAILED']:
             return response
         time.sleep(5)
