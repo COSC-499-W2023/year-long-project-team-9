@@ -8,15 +8,14 @@ export default async function handler(
   ) {
     const data = req.body.requestId
 
-  
+
     console.log("Received requestId " + data);
-  
+
     const { jobId } = await Job.SteveJobs.run ({
       payload: {
-        requestId: data,
         submissionId: "x"
       },
     });
-  
+
     res.status(200).send("Video processing started!");
   }

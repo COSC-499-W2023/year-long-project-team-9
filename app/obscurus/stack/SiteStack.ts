@@ -26,6 +26,7 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
+
   // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
@@ -48,6 +49,7 @@ export default function SiteStack({ stack }: StackContext) {
     },
     memorySize: "15 GB",
     timeout: "8 hours",
+    permissions: [rekognitionPolicyStatement]
   });
 
   //Create secret keys
