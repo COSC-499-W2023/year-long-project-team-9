@@ -164,8 +164,8 @@ export default function RequestDisplay({
                           .filter(
                             (value) => value.requestId === selected?.requestId
                           )
-                          .map((value) => (
-                            <div>• {value.requesteeEmail}</div>
+                          .map((value, index) => (
+                            <div key={index}>• {value.requesteeEmail}</div>
                           ))}
                       </div>
                     </HoverCardContent>
