@@ -30,8 +30,6 @@ async function Request() {
     await getRequestsViaEmail(userEmail);
   const requests: Requests[] = requestPageData.request;
   const submissions: Submissions[] = requestPageData.submissions;
-  console.log(requests);
-  console.log(submissions);
 
   return (
     <RequestWeapper
