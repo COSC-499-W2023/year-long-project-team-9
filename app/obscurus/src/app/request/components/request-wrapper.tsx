@@ -33,7 +33,6 @@ export default function RequestWeapper({
           requests={requests}
           submissions={submissions}
           userData={userData}
-          action={hello}
         />
       }
     />

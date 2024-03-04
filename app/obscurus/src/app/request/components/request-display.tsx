@@ -41,14 +41,12 @@ export default function RequestDisplay({
   searchParams,
   submissions,
   userData,
-  action,
 }: {
   requests: Requests[];
   searchParams?: {
     counter?: string | null[];
   };
   submissions: Submissions[];
-  action: any;
   userData: Users[];
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
