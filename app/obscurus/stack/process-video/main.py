@@ -164,7 +164,7 @@ def process_video(timestamps, response, submission, file_extension):
     headers = {"Content-Type": "application/json"}
     try:
         payload = {"status": "PROCESSING", "submissionId": submission}
-        response = requests.post(api_url, json=payload, headers=headers)
+        response = requests.post(api_url + "/updateStatus", json=payload, headers=headers)
         if response.status_code != 200:
             print("Failed to update initial submission status to PROCESSING")
 
@@ -187,7 +187,7 @@ def process_video(timestamps, response, submission, file_extension):
         print("Uploading...")
         s3.upload_file(local_filename_output, output_bucket, f"{submission}-processed.mp4")
         payload = {"status": "COMPLETED", "submissionId": submission}
-        response = requests.post(api_url, json=payload, headers=headers)
+        response = requests.post(api_url + "/updateStatus", json=payload, headers=headers)
 
         if response.status_code == 200:
             print("Updated submission status successfully!")
@@ -200,11 +200,8 @@ def process_video(timestamps, response, submission, file_extension):
         print(f"Error processing video: {e}")
         status_dict[submission] = "FAILED"
         payload = {"status": "FAILED", "submissionId": submission}
-        requests.post(api_url, json=payload, headers=headers)
+        requests.post(api_url + "updateStatus", json=payload, headers=headers)
         return "Failed processing..."
-
-
-
 
 
 
