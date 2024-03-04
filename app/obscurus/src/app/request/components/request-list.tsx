@@ -54,11 +54,8 @@ export default function RequestList({
   requests,
   submissions,
 }: RequestsListProps) {
-  const router = useRouter();
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useQueryState("search");
-  const [upload] = useQueryState("upload");
   const [sort, setSort] = useQueryState("sort");
   const [tab, setTab] = useQueryState("tab");
 
@@ -71,29 +68,12 @@ export default function RequestList({
 
   useEffect(() => {
     !tab && setTab("todo");
-    if (!submissionId) {
-      const submission = getAssociatedSubmission(
-        requests && requests[0].requestId
-      );
-      console.log("Assoc. submission", submission);
-      if (submission) {
-        setSubmissionId(submission?.submissionId);
-      }
-    }
   }),
-    [requests, submissions, submissionId, setSubmissionId, tab, setTab];
+    [requests, submissions, tab, setTab];
 
   const handleClick = (item: Requests) => {
-    if (!upload) {
-      setRequestId(item.requestId);
-      const submission = getAssociatedSubmission(item.requestId);
-      console.log("Assoc. submission", submission);
-      if (submission) {
-        setSubmissionId(submission?.submissionId);
-      }
-
-      console.log("Selected RequestID to list", requestId);
-    }
+    setRequestId(item.requestId);
+    console.log("Selected RequestID to list", requestId);
   };
 
   const statuses = ["todo", "processing", "completed", "archived"];
