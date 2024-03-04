@@ -27,8 +27,7 @@ export const statuses = [
   },
   {
     value: "FAILED",
-    label: "failed",
+    label: "Failed",
     icon: CrossCircledIcon,
   }
 ]
-

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Api } from "sst/node/api";
 
-export default async function handler(
+export default async function POST(
     req: NextApiRequest,
     res: NextApiResponse
   ) {
@@ -17,7 +17,7 @@ export default async function handler(
               requestId: null,
             }),
           });
-        
+
         const data = await response.json();
 
         return data;

@@ -16,13 +16,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
           status: status,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error(
           `Server responded with ${response.status}: ${response.statusText}`
         );
       }
-  
+
       const responseData = await response.json();
       console.log("Response Data", responseData);
       return responseData;
@@ -30,20 +30,19 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
       console.error("Error updating status:", error);
     }
   };
-  
+
   try {
     const { jobId } = await Job.SteveJobs.run({
       payload: {
-        requestId: event.requestId,
         submissionId: event.submissionId,
       },
     });
 
     updateStatus("PROCESSING", event.submissionId)
 
-    
+
   } catch {
-    console.error("Error running the job"); 
+    console.error("Error running the job");
     updateStatus("FAILED", event.submissionId)
     return {
       statusCode: 500,
@@ -51,7 +50,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
       body: `Error running the job`,
     };
   }
-  
+
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
