@@ -1741,4 +1741,133 @@ The tasks identified for this week were:
 ![test report](img/team-weekly-log-img/week-19/testreport-week19.png)
 
 End to end testing needs to be updated for new UI
+______
+
+# TEAM 9 - TERM 2 WEEK 7 & 8
+
+## Milestone Features
+- Soren Stenback: Chat & Search Bar
+- Jan-Yaeger Dhillon: UI Overhaul & Video Submission Process
+- Baz Sivakua: Chat & Account Page
+- Muhammad Bakar: Overhaul Requests & User Experience Infrastructure 
+
+## Work Period
+
+Week 5 ran from 00:00 on 2024/02/19 to 23:59 on 2024/03/03.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Reintergrate Submission Process
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Reintergrate actual submission process into new ui
+
+### Task 2: Redesign Request
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Redesign request page
+
+### Task 3: Revamp Code Base
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Code base file structure revamp
+
+### Task 4: Video Submission Process 
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Complete process allowing the video to be submitted and processed by the application
+
+### Task 5: Final Project Restructuring
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** N/a
+* **Description:** Restructure project files for clarity
+
+### Task 6: Create Request Page
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create request page based on redeisng in task 1
+
+### Task 7: Create Chat Page  
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create chat interface 
+
+### Task 8: Implement Chat Functionality  
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua & Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create chat feature of website
+
+### Task 9: Create Auth Forms
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create authentication forms for various parts of the application
+
+### Task 10: Add Search Functionality
+
+* **Status:** Complete
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add search functionailty to submissions page
+
+### Task 11: Prepare for Peer Testing Session
+
+* **Status:** Complete
+* **Assignee(s):** All team members
+* **Associated Milestone Goal:** N/a
+* **Description:** Make sure the entire team was prepared to present for the peer testing session 
+
+### Task 12: Convert Videos Function
+
+* **Status:** In-progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create function to convert webm videos to mp4
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-20/burnup-week20.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-20/completed-week20.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-20/inprogress-week20.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-20/testreport-week20.png)
+
+End to end testing needs to be updated for new UI
 ___
