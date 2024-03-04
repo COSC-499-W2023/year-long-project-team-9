@@ -252,3 +252,29 @@
 ### Picture of T2 Week 6's Survey
 
 ![T2 Week 6 Survey](img/soren-stenback/T2Week6-Survey-ID4.png)
+
+---
+
+## T2 Week 7
+
+### February 19 - February 25, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to implement server actions that would take new chat messages and send them to both the database and the user's chat log.
+
+---
+
+## T2 Week 8
+
+### February 26 - March 3, 2023
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to finish database interactions in the chat page and implement the websocket functions to send and receive messages from other users synchronously.
+
+### Picture of Project Board
+
+![T2 Week 8 Project Board](img/soren-stenback/T2Week8-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 8's Survey
+
+![T2 Week 6 Survey](img/soren-stenback/T2Week8-Survey-ID4.png)
