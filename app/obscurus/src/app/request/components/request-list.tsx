@@ -42,6 +42,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/modified-shadcn-ui-components/modified-alert";
+import { RequestListAlert } from "./request-list-alert";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -185,70 +186,66 @@ export default function RequestList({
   });
 
   return (
-    <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
-      <RequestHeader></RequestHeader>
+    <div>
+      <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
+        <RequestHeader></RequestHeader>
 
-      {requests.length >= 1 && submissions.length >= 1 ? (
-        <div>
-          <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder={search || "Search"}
-                  className="pl-8"
-                  onChange={(e) => setSearch(e.target.value || null)}
-                  value={search || undefined}
-                />
-              </div>
-            </form>
-          </div>
+        {requests.length >= 1 && submissions.length >= 1 ? (
           <div>
-            <div className="flex flex-row items-center justify-between mx-4">
-              <TabsList>{tabsTriggers}</TabsList>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <SortDescIcon className="size-4" />
-                          <span className="sr-only">Filter Results</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setSort("newest")}>
-                          Newest
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setSort("oldest")}>
-                          Oldest
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setSort("due")}>
-                          Due
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </>
-                </TooltipTrigger>
-                <TooltipContent>Filter</TooltipContent>
-              </Tooltip>
+            <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <form>
+                <div className="relative">
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder={search || "Search"}
+                    className="pl-8"
+                    onChange={(e) => setSearch(e.target.value || null)}
+                    value={search || undefined}
+                  />
+                </div>
+              </form>
             </div>
+            <div>
+              <div className="flex flex-row items-center justify-between mx-4">
+                <TabsList>{tabsTriggers}</TabsList>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <SortDescIcon className="size-4" />
+                            <span className="sr-only">Filter Results</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setSort("newest")}>
+                            Newest
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setSort("oldest")}>
+                            Oldest
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setSort("due")}>
+                            Due
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
+                  </TooltipTrigger>
+                  <TooltipContent>Filter</TooltipContent>
+                </Tooltip>
+              </div>
 
-            {tabsContent}
+              {tabsContent}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex flex-col justify-center items-center mx-4 mt-2">
-          <Alert>
-            <Megaphone className="mr-2 h-4 w-4" />
-            <AlertTitle>No requests!</AlertTitle>
-            <AlertDescription>
-              You can make a request any time.
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
-    </Tabs>
+        ) : (
+          <div className="flex justify-center items-center h-screen">
+            <RequestListAlert></RequestListAlert>
+          </div>
+        )}
+      </Tabs>
+    </div>
   );
 }
 

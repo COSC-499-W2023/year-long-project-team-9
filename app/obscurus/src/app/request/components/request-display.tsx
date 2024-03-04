@@ -29,6 +29,8 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/modified-shadcn-ui-components/modified-alert";
+import { RequestListAlert } from "./request-list-alert";
+import { RequestDisplayAlert } from "./request-display-alert";
 
 export default function RequestDisplay({
   requests,
@@ -138,14 +140,8 @@ export default function RequestDisplay({
           </div>
         </div>
       ) : (
-        <div className="flex mt-20 flex-col justify-center items-center mx-4">
-          <Alert className="mt-8.5">
-            <Megaphone className="mr-9 h-4 w-4" />
-            <AlertTitle>No requests to display!</AlertTitle>
-            <AlertDescription>
-              You can make a request any time.
-            </AlertDescription>
-          </Alert>
+        <div className="flex justify-center items-center h-screen">
+          <RequestDisplayAlert></RequestDisplayAlert>
         </div>
       )}
     </div>
