@@ -1,12 +1,10 @@
 "use server";
 import { cookies } from "next/headers";
-import Wrapper from "../wrapper";
-import { Suspense } from "react";
-import hello from "../functions/hello";
+import Wrapper from "@/app/wrapper";
 import { getEmail } from "../functions/authenticationMethods";
-import RequestList from "./components/request-list";
+import AccountForm from "./components/account-from";
 
-async function Request() {
+async function Account() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);
@@ -17,16 +15,22 @@ async function Request() {
       ? JSON.parse(collapsed.value)
       : undefined;
   const email = await getEmail();
+  // You will need to do a database call and get the info of the user
+  // TODO
+  // Will be used for current password
+  const password = "Password1@";
 
   return (
     <Wrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RequestList email={email}></RequestList>}
+      firstPanel={
+        <AccountForm userEmail={email} userPassword={password}></AccountForm>
+      }
       secondPanel={<>{email}</>}
     />
   );
 }
 
-export default Request;
+export default Account;

@@ -1,12 +1,10 @@
 "use server";
 import { cookies } from "next/headers";
-import Wrapper from "../wrapper";
-import { Suspense } from "react";
-import hello from "../functions/hello";
-import { getEmail } from "../functions/authenticationMethods";
-import RequestList from "./components/request-list";
+import { getEmail } from "../../functions/authenticationMethods";
+import Wrapper from "@/app/wrapper";
+import CreateForm from "./components/create-form";
 
-async function Request() {
+async function Create() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);
@@ -23,10 +21,10 @@ async function Request() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RequestList email={email}></RequestList>}
+      firstPanel={<CreateForm userEmail={email}></CreateForm>}
       secondPanel={<>{email}</>}
     />
   );
 }
 
-export default Request;
+export default Create;

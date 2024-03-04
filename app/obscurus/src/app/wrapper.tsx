@@ -43,9 +43,11 @@ export function Wrapper({
 
   const routeToLinkVariant: any = {
     "/": "Submit",
-    "/my-request": "Request",
+    "/request": "Request",
     "/submit": "Submit",
     "/chat": "Chat",
+    "/request/create": "Request",
+    "/account": "Account",
   };
 
   const getLinkVariant = (title: string) => {
@@ -80,7 +82,6 @@ export function Wrapper({
               "min-w-[50px] transition-all duration-300 ease-in-out"
           )}
         >
-          <Separator />
           <Nav
             isCollapsed={isCollapsed}
             links={[
@@ -88,7 +89,7 @@ export function Wrapper({
                 title: "Request",
                 icon: Inbox,
                 variant: getLinkVariant("Request"),
-                href: "/my-request",
+                href: "/request",
               },
               {
                 title: "Submit",
@@ -101,6 +102,18 @@ export function Wrapper({
                 icon: MessageCircle,
                 variant: getLinkVariant("Chat"),
                 href: "/chat",
+              },
+            ]}
+          />
+          <Separator className="container mx-auto" />
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Account",
+                icon: User,
+                variant: getLinkVariant("Account"),
+                href: "/account",
               },
             ]}
           />

@@ -1,12 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
-import Wrapper from "../wrapper";
-import { Suspense } from "react";
-import hello from "../functions/hello";
-import { getEmail } from "../functions/authenticationMethods";
-import RequestList from "./components/request-list";
+import Wrapper from "@/app/wrapper";
+import SignUpForm from "../components/sign-up";
 
-async function Request() {
+async function Up() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);
@@ -16,17 +13,16 @@ async function Request() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const email = await getEmail();
 
   return (
     <Wrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RequestList email={email}></RequestList>}
-      secondPanel={<>{email}</>}
+      firstPanel={<SignUpForm></SignUpForm>}
+      secondPanel={<>Hello World</>}
     />
   );
 }
 
-export default Request;
+export default Up;

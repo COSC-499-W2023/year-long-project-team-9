@@ -2,12 +2,10 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
-import Wrapper from "../wrapper";
-import ChatList from "../chat/components/chat-list";
-import ChatDisplay from "../chat/components/chat-display";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
-import MessagesChat from "@/components/messages";
+import ChatWrapper from "./components/chat-wrapper";
+import createMessage from "../functions/createMessage";
 
 const userEmail = "imightbejan@gmail.com";
 
@@ -30,8 +28,13 @@ async function Chat() {
     );
     return roomMessages[roomMessages.length - 1];
   };
+  const handleTimezoneOffset = (item: Messages) => {
+    const messageDateTime = new Date(item.creationDate).getTime();
+    const userTimezoneOffset = -new Date().getTimezoneOffset() * 60 * 1000;
+    return new Date(messageDateTime + userTimezoneOffset);
+  };
 
-  if (rooms != undefined) {
+  if (rooms) {
     rooms.sort((a, b) => {
       const dateA = getLatestMessage(a)
         ? new Date(getLatestMessage(a).creationDate)
@@ -40,6 +43,11 @@ async function Chat() {
         ? new Date(getLatestMessage(b).creationDate)
         : new Date(0);
       return dateB.getTime() - dateA.getTime();
+    });
+  }
+  if (messages) {
+    messages.forEach((message) => {
+      message.creationDate = handleTimezoneOffset(message);
     });
   }
 
@@ -51,12 +59,12 @@ async function Chat() {
         </div>
       }
     >
-      <Wrapper
+      <ChatWrapper
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-        firstPanel={<ChatList rooms={rooms} messages={messages} />}
-        secondPanel={<ChatDisplay rooms={rooms} messages={messages} />}
+        rooms={rooms}
+        messages={messages}
+        createMessage={createMessage}
       />
     </Suspense>
   );
