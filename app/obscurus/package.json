@@ -7,7 +7,7 @@
     "build": "sst bind next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
+    "test": "jest && sst bind vitest run --config ./vitest.config.mjs",
     "test:sst": "sst bind vitest run --config ./vitest.config.mjs",
     "gen": "hygen",
     "test:e2e": "concurrently --success first --kill-others \"npm run dev\" \"wait-on http://localhost:3000 && npx playwright test\""

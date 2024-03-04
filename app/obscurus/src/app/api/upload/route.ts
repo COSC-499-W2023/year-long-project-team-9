@@ -6,12 +6,12 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Body } from "node-fetch";
 import { Api } from "sst/node/api";
 import { Bucket } from "sst/node/bucket";
 
-export async function POST(request: NextApiRequest) {
+export async function POST(request: NextRequest) {
   const bucket = Bucket.inputBucket.bucketName;
 
   console.log(request)

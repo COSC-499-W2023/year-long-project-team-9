@@ -1,26 +1,11 @@
 "use client";
 import { ComponentProps, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-
 import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Filter,
-  ListVideo,
-  Search,
-  Send,
-  SortAscIcon,
-  SortDescIcon,
-  X,
-  XCircle,
-} from "lucide-react";
-import Nav from "../../../components/nav";
-import { request } from "@playwright/test";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { Filter, ListVideo, Search, XCircle } from "lucide-react";
 import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
@@ -37,10 +22,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { ResponsiveContainer } from "recharts";
-import { DataTable } from "../submissions/components/data-table";
-import { columns } from "../submissions/components/columns";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -216,7 +208,7 @@ export default function SubmitList({
           <span className="sr-only">View Processing</span>
           <Tooltip>
             <DrawerTrigger asChild>
-              <Button variant="ghost" size="icon" >
+              <Button variant="ghost" size="icon">
                 <TooltipTrigger asChild>
                   <ListVideo className="h-4 w-4" />
                 </TooltipTrigger>

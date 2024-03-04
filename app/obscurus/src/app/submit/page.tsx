@@ -10,8 +10,8 @@ import { Suspense } from "react";
 import hello from "../functions/hello";
 import getPresignedUrl from "../functions/getPresignedUrl";
 import { triggerJob } from "../functions/triggerJob";
-import { DataTable } from "./submissions/components/data-table";
-import { columns } from "./submissions/components/columns";
+import { DataTable } from "./components/data-table";
+import { columns } from "./components/columns";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");

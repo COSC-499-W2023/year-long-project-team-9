@@ -1,7 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -9,24 +8,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { useQueryState, parseAsString } from "nuqs";
+import { useQueryState } from "nuqs";
 import { FormEvent, Suspense, useRef, useState } from "react";
 import {
   Archive,
   Trash2,
   ArrowLeft,
   LucideUploadCloud,
-  VideoIcon,
   PlaySquare,
-  ExternalLink,
-  ListVideo,
   XSquare,
   Square,
   Circle,
 } from "lucide-react";
-import { formatDistanceToNow, formatDistance, format } from "date-fns";
-import { Progress } from "@/components/ui/progress";
-import Upload from "./upload";
+import { format } from "date-fns";
 import VideoDisplay from "./video-display";
 import Webcam from "react-webcam";
 import VideoPlayer from "../video-player";

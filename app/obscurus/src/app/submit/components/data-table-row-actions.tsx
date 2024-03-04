@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { SubmissionSchema } from "../../schema";
+import { SubmissionSchema } from "../schema";
 import { ExternalLink } from "lucide-react";
 import {
   Tooltip,
@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import VideoPlayer from "../../video-player";
+import VideoPlayer from "../video-player";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
