@@ -200,7 +200,7 @@ def process_video(timestamps, response, submission, file_extension):
         print(f"Error processing video: {e}")
         status_dict[submission] = "FAILED"
         payload = {"status": "FAILED", "submissionId": submission}
-        requests.post(api_url + "updateStatus", json=payload, headers=headers)
+        requests.post(api_url + "/updateStatus", json=payload, headers=headers)
         return "Failed processing..."
 
 

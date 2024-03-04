@@ -79,10 +79,19 @@ export default function SubmiDisplay({
     fileInputRef.current?.click();
   };
 
-  const handleProcessVideo = async (e: any) => {
+  const getAssociatedSubmission = (requestId: string) => {
+    if (requestId) {
+      return submissions.find((item) => requestId === item.requestId);
+    }
+    return null;
+  };
+
+  const handleProcessVideo = async () => {
+
     setLoading(true);
-    if (submissionId && triggerJob) {
-      const res = await triggerJob(submissionId);
+    if (triggerJob && selected) {
+      const submissionId = getAssociatedSubmission(selected.requestId)?.submissionId
+      const res = await triggerJob(submissionId+ ".mp4" || "world.mp4");
       console.log(res);
       setLoading(false);
       return res;
