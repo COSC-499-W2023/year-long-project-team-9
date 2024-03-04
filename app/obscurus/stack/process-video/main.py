@@ -6,7 +6,8 @@ import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request, BackgroundTasks
-import uuid
+import requests
+
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -160,25 +161,43 @@ def get_timestamps_and_faces(submissionId, reko_client=None):
 
 
 def process_video(timestamps, response, submissionId):
+    headers = {"Content-Type": "application/json"}
     try:
+        payload = {"status": "PROCESSING", "submissionId": submissionId}
+        response = requests.post(api_url, json=payload, headers=headers)
+        if response.status_code != 200:
+            print("Failed to update initial submission status to PROCESSING")
+
         print("Processing video...")
-        print("Key in process_video", submissionId)
-        filename=submissionId
-        local_filename = '/tmp/{}.mp4'.format(filename)
-        local_filename_output = '/tmp/{}-processed.mp4'.format(filename)
+        filename = submissionId
+        local_filename = f'/tmp/{filename}.mp4'
+        local_filename_output = f'/tmp/{filename}-processed.mp4'
         print("local_filename_output", local_filename_output)
         s3.download_file(input_bucket, submissionId, local_filename)
         print("Job response", response)
         apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
-        print("Key before integrating audio", submissionId)
         integrate_audio(local_filename, local_filename_output)
         print("Uploading...")
-        s3.upload_file(local_filename_output, output_bucket, submissionId+"-processed.mp4")
-        status_dict[submissionId] = "COMPLETED"
+        s3.upload_file(local_filename_output, output_bucket, f"{submissionId}-processed.mp4")
+        payload = {"status": "COMPLETED", "submissionId": submissionId}
+        response = requests.post(api_url, json=payload, headers=headers)
+        if response.status_code == 200:
+            print("Updated submission status successfully!")
+            status_dict[submissionId] = "COMPLETED"
+        else:
+            print("Failed to update submission status after processing!")
+            status_dict[submissionId] = "FAILED"
+
         return "Completed processing!"
-    except:
+
+    except Exception as e:
+        print(f"Error processing video: {e}")
         status_dict[submissionId] = "FAILED"
+        payload = {"status": "FAILED", "submissionId": submissionId}
+        requests.post(api_url, json=payload, headers=headers)
         return "Failed processing..."
+
+
 
 
 
@@ -211,7 +230,3 @@ def process_video_background(submissionId):
     submission_response = check_submission_status(submissionId)
     timestamps, _ = get_timestamps_and_faces(submissionId, rekognition)
     process_video(timestamps, submission_response, submissionId)
-
-@app.get("/status/{submissionId}")
-async def check_status(submissionId: str):
-    return {"submissionId": submissionId, "status": status_dict[submissionId]}
