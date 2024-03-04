@@ -130,7 +130,7 @@ def start_face_detection(submissionId):
 def check_submission_status(submissionId):
     print("Checking submission status...")
     while True:
-        response = rekognition.get_face_detection(submissionId=submissionId)
+        response = rekognition.get_face_detection(JobId=submissionId)
         status = response['submissionStatus']
         if status in ['SUCCEEDED', 'FAILED']:
             return response
@@ -145,7 +145,7 @@ def get_timestamps_and_faces(submissionId, reko_client=None):
         print('.', end='')
         first_round = False
         # Query Rekognition for face detection results
-        response = reko_client.get_face_detection(submissionId=submissionId, MaxResults=100, NextToken=next_token if next_token else "")
+        response = reko_client.get_face_detection(JobId=submissionId, MaxResults=100, NextToken=next_token if next_token else "")
         # Iterate over each face detected and organize by timestamp
         for face in response['Faces']:
             f = face["Face"]["BoundingBox"]
