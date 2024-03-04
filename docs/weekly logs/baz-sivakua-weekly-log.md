@@ -167,3 +167,15 @@
 ### Picture of week 6's survey
 ![Screenshot of term 2 week 6 team evaluation](img/baz-sivakua/baz-survey-week19.png)
 ---
+
+## Term 2 Week 7 & 8
+### Febuary 19 - March 03, 2024
+- This week I worked on Milestone 5: Peer Testing 2
+- This week's goals were to complete the chat page and chat functionailty. 
+
+### Picture of Project Board
+![Screenshot of term 2 week 7&8 project board tasks](img/baz-sivakua/baz-tasks-week20.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 7&8 team evaluation](img/baz-sivakua/baz-survey-week20.png)
+---
