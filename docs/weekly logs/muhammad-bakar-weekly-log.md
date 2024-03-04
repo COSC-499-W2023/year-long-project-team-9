@@ -245,3 +245,19 @@ HashMap:
 ### Picture of Week 6's Survey
 
 ![Week 6 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-6-T-2-survey.png)
+
+## Week 7 and 8
+
+### February 19 2024 - March 03 2024
+
+- I worked on Milestone #5: Peer Testing 2.
+- I worked on forms for request, auth and account -- the last two were to help out Soren and Baz. I completed the create request process, and the new request page (I took some of Jan's code as a good foundation)
+- I helped Soren and Baz with some Chat issues
+
+### Picture of Project Board Week 7 and 8
+
+![Week 7 and 8 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-7-and-8-T-2-board.png)
+
+### Picture of Week 7's and 8's Survey
+
+![Week 7 and 8 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-7-and-8-T-2-survey.png)
