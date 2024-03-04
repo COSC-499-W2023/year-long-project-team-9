@@ -1858,12 +1858,9 @@ The tasks identified for this week were:
 ![screenshot of burnupchart](img/team-weekly-log-img/week-20/burnup-week20.png)
 
 ### Table View of Completed Tasks
+All tasks for current milestone completed.
 
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-20/completed-week20.png)
-
-### Table View of In Progress Tasks
-
-![screenshot of in progress board tasks](img/team-weekly-log-img/week-20/inprogress-week20.png)
 
 ### Test Report
 
