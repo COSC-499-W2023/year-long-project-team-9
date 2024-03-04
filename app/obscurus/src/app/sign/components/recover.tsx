@@ -15,8 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import AuthenticationPasswordInput from "./authentication-form-password-input";
-import AuthenticationConfirmPasswordInput from "./authentication-form-confirm-password-input";
+import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
 
 const profileImageMaxSize = 1024 * 1024 * 10;
 const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -59,14 +58,7 @@ export default function RecoverPasswordForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Password */}
-          <AuthenticationPasswordInput
-            form={form}
-          ></AuthenticationPasswordInput>
-
-          {/* Confirm Password */}
-          <AuthenticationConfirmPasswordInput
-            form={form}
-          ></AuthenticationConfirmPasswordInput>
+          <PasswordInput form={form} isDisabled={false}></PasswordInput>
           <div className="text-right">
             <Button
               type="submit"

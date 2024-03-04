@@ -1,15 +1,25 @@
-// import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-// import { getRequestsViaEmail } from "../core/src/getRequestsViaEmail";
+import { getRequestsViaEmail } from "@obscurus/database/src/request";
+import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
-// export const handler: APIGatewayProxyHandlerV2 = async (event) => {
-//   // the data passed in the wrapper function
-//   const requests = await getRequestsViaEmail(event.body);
+export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+  if (event.body === undefined) {
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+    };
+  }
+  const body = JSON.parse(event.body);
+  if (body.email === undefined) {
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+    };
+  }
 
-//   console.log(requests);
-
-//   return {
-//     statusCode: 200,
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(requests),
-//   };
-// };
+  const [request, submissions] = await getRequestsViaEmail(body.email);
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ request: request, submissions: submissions }),
+  };
+};

@@ -1,27 +1,34 @@
+import { createFormSchema } from "@/app/request/create/form/createFormSchema";
+import { createRequest } from "@obscurus/database/src/request";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { Requests } from "../database/src/requests";
-import { Requests as r } from "stack/database/src/sql.generated";
-import { GroupingState } from "@tanstack/react-table";
 
-export const handler: APIGatewayProxyHandlerV2 = async () => {
+export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+  if (event.body === undefined) {
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+    };
+  }
+  if (JSON.parse(event.body)["dueDate"] === undefined) {
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+    };
+  }
+  let data = JSON.parse(event.body);
+  data["dueDate"] = new Date(data["dueDate"]);
+  const validData = createFormSchema.safeParse(data);
+  if (validData.success === false) {
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+    };
+  }
 
-const newRequest: r = {
-  requestId: "11111",
-  requestTitle: "hello",
-  requesterEmail: "x@gmail.com",
-  grouping: null,
-  description: "h",
-  blurred: false,
-  creationDate: new Date(),
-  dueDate: new Date(),
-};
-  const requests = await Requests.insert(newRequest);
-
-
-
+  const insertSuccessful = await createRequest(validData.data);
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requests),
+    body: JSON.stringify(insertSuccessful),
   };
 };

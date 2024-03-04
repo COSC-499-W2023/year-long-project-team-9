@@ -16,12 +16,13 @@ import {
 import AccountHeader from "./account-header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import EmailInput from "./account-form-email-input";
-import FirstNameInput from "./account-form-first-name-input";
-import LastNameInput from "./account-form-last-name-input";
-import PasswordInput from "./account-form-password-input";
 import ProfileImageInput from "./account-form-profile-image-input";
 import AccountCancel from "./account-form-cancel";
+import FirstNameInput from "@/components/authentication-and-profile-components/account-form-first-name-input";
+import LastNameInput from "@/components/authentication-and-profile-components/account-form-last-name-input";
+import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
+import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
+import ChangingPasswordInput from "./create-form-video-processing-input";
 
 const profileImageMaxSize = 1024 * 1024 * 10;
 const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -35,42 +36,26 @@ const accountFormSchema = z
       .trim()
       .min(1, { message: "First name must be at least on character." })
       .max(100),
+    email: z.string(),
     lastName: z.string().trim().min(1).max(100),
-    password: z
-      .string()
-      .trim()
-      .min(8)
-      .max(24)
-      .regex(/[A-Z]/, { message: "Must contain at least one uppercase letter" })
-      .regex(/[a-z]/, { message: "Must contain at least one lowercase letter" })
-      .regex(/[0-9]/, { message: "Must contain at least one number" })
-      .regex(/[\W_]/, {
-        message: "Must contain at least one special character",
-      }),
+    password: z.string(),
+    changingPassword: z.boolean(),
     confirmPassword: z.string(),
     // profileImage: z.instanceof(File),
   })
-  .refine(
-    (data) =>
-      data.password === data.confirmPassword || data.confirmPassword === "",
-    {
-      message: "Password does not match with the password above.",
-      path: ["confirmPassword"],
-    }
-  );
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password does not match with the password above.",
+    path: ["confirmPassword"],
+  });
 
 interface CreateFormProps {
   userEmail: string;
-  userPassword: string;
 }
 
-export default function AccountForm({
-  userEmail,
-  userPassword,
-}: CreateFormProps) {
+export default function AccountForm({ userEmail }: CreateFormProps) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues: { password: userPassword, confirmPassword: "" },
+    defaultValues: { email: userEmail, changingPassword: false },
   });
 
   function onSubmit(values: z.infer<typeof accountFormSchema>) {
@@ -83,13 +68,23 @@ export default function AccountForm({
       <AccountHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <EmailInput email={userEmail}></EmailInput>
+          <EmailInput
+            form={form}
+            isDisabled={true}
+            maxLength={320}
+            formDescription={
+              "One cannot change their email once an account has been set."
+            }
+          ></EmailInput>
           <FirstNameInput form={form}></FirstNameInput>
           <LastNameInput form={form}></LastNameInput>
-          <PasswordInput
-            form={form}
-            userPassword={userPassword}
-          ></PasswordInput>
+
+          <ChangingPasswordInput form={form}></ChangingPasswordInput>
+          {form.getValues("changingPassword") === true ? (
+            <PasswordInput form={form} isDisabled={false}></PasswordInput>
+          ) : (
+            <></>
+          )}
           {/* TODO: ProfileImageInput */}
           <ProfileImageInput form={form}></ProfileImageInput>
           <div className="text-right gap-2">

@@ -1,3 +1,4 @@
+import TermsAndConditions from "@/components/terms-and-conditions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   FormControl,
@@ -20,10 +21,7 @@ export default function AuthenticationTermsInput({ form }: any) {
           <div className="space-y-1 leading-none">
             <FormLabel>Accept terms and conditions</FormLabel>
             <FormDescription>
-              You agree to our{" "}
-              <a className="underline text-blue-400">
-                Terms of Service and Privacy Policy
-              </a>
+              You agree to our <TermsAndConditions></TermsAndConditions>
             </FormDescription>
           </div>
         </FormItem>

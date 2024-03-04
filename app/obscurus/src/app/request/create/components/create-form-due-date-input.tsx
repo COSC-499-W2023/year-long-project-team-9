@@ -42,6 +42,7 @@ export default function CreateFormDueDateInput({ form }: any) {
                 "w-full justify-center text-left font-normal",
                 !date && "text-muted-foreground"
               )}
+              disabled={form.formState.isSubmitting}
             >
               <div className="">
                 {date ? format(date, "PPP") : <span>Due Date</span>}

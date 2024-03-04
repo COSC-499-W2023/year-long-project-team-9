@@ -12,6 +12,7 @@ export default function DescriptionInput({ form }: any) {
           placeholder="Description"
           rows={10}
           {...form.register("description")}
+          disabled={form.formState.isSubmitting}
         ></Textarea>
         {form.getFieldState("description").error && (
           <FormMessage>

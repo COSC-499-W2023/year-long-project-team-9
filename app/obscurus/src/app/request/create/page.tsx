@@ -1,8 +1,11 @@
 "use server";
 import { cookies } from "next/headers";
 import { getEmail } from "../../functions/authenticationMethods";
-import Wrapper from "@/app/wrapper";
-import CreateForm from "./components/create-form";
+import CreaterWeapper from "./components/create-weapper";
+import { format } from "date-fns";
+import { getUserViaEmail } from "../../functions/getUserData";
+import { Users } from "@obscurus/database/src/sql.generated";
+import createRequest from "./function/createRequest";
 
 async function Create() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -14,15 +17,14 @@ async function Create() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const email = await getEmail();
-
+  const userEmail = await getEmail();
+  const userData: Users[] = await getUserViaEmail(userEmail);
   return (
-    <Wrapper
+    <CreaterWeapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<CreateForm userEmail={email}></CreateForm>}
-      secondPanel={<>{email}</>}
+      createRequest={createRequest}
+      userData={userData}
     />
   );
 }

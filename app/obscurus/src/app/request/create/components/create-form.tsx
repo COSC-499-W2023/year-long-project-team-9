@@ -21,76 +21,72 @@ import VideoProcessingInput from "./create-form-video-processing-input";
 import ClientEmail from "./create-form-client-input";
 import CreateFormDueDateInput from "./create-form-due-date-input";
 import CreateCancel from "./create-from-cancel";
+import CreateSubmit from "./create-form-submit";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
+import { Users } from "@obscurus/database/src/sql.generated";
+import { Alert } from "@/components/modified-shadcn-ui-components/modified-alert";
+import { Dialog } from "@/components/ui/dialog";
 
-const createFormSchema = z.object({
-  title: z.string().trim().min(1).max(100),
-  dueDate: z.date().min(endOfDay(new Date())),
-  description: z.string().trim().min(1).max(2000),
-  clientEmail: z
-    .array(
-      z.object({
-        email: z.string().trim().toLowerCase().min(1).max(320).email(),
-      })
-    )
-    .superRefine((clientEmail, ctx) => {
-      for (let i = 0; i < clientEmail.length; i++) {
-        for (let j = 0; j < clientEmail.length; j++) {
-          if (
-            clientEmail[i].email === clientEmail[j].email &&
-            i !== j &&
-            j < i
-          ) {
-            ctx.addIssue({
-              path: [i, "email"],
-              message: "One cannot have duplicate email",
-              code: z.ZodIssueCode.custom,
-            });
-          }
-        }
-      }
-    }),
-  videoProcessing: z.boolean().default(true),
-});
-
-interface CreateFormProps {
-  userEmail: string;
-}
-
-export default function CreateForm({ userEmail }: CreateFormProps) {
-  const form = useForm<z.infer<typeof createFormSchema>>({
-    resolver: zodResolver(createFormSchema),
-    defaultValues: {
-      title: "",
-      videoProcessing: true,
-      clientEmail: [{ email: "" }],
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof createFormSchema>) {
-    console.log(values);
-  }
-  // TODO: Work in progress
+export default function CreateForm({
+  form,
+  onSubmit,
+  userData,
+}: {
+  form: any;
+  onSubmit: Function;
+  userData: Users[];
+}) {
   return (
     <div className="overflow-auto">
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <CreateHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <TitleInput form={form}></TitleInput>
-          <ClientEmail form={form} email={userEmail}></ClientEmail>
+          <ClientEmail form={form} email={userData[0].email}></ClientEmail>
           <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
-
-          <div className="text-right">
+          <div className="flex flex-col-2 float-right">
             <CreateCancel></CreateCancel>
-            <Button
-              type="submit"
-              variant={"default"}
-              className="justify-self-start"
-            >
-              Submit
-            </Button>
+
+            {/* The alert will only display when the form is valid */}
+            <AlertDialog>
+              <div>
+                {form.formState.isValid === true ? (
+                  <AlertDialogTrigger asChild>
+                    <Button type="button">Submit</Button>
+                  </AlertDialogTrigger>
+                ) : (
+                  <Button type="submit">Submit</Button>
+                )}
+              </div>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Would you like to submit?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    By continuing, a request will be submitted to all clients.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => form.handleSubmit(onSubmit)()}
+                  >
+                    Submit
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </form>
       </Form>

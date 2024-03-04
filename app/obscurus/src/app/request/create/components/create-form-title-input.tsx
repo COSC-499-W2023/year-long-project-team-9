@@ -11,6 +11,7 @@ export default function TitleInput({ form }: any) {
             maxLength={101}
             placeholder="Title"
             {...form.register("title")}
+            disabled={form.formState.isSubmitting}
           ></Input>
           {form.getFieldState("title").error && (
             <FormMessage>

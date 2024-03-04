@@ -17,11 +17,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthenticationTermsInput from "./authentication-form-terms-input";
 import AuthenticationAgeInput from "./authentication-form-age-input";
-import AuthenticationFirstNameInput from "./authentication-form-first-name-input";
-import AuthenticationEmailInput from "./authentication-form-email-input";
-import AuthenticationLastNameInput from "./authentication-form-last-named-input";
-import AuthenticationPasswordInput from "./authentication-form-password-input";
-import AuthenticationConfirmPasswordInput from "./authentication-form-confirm-password-input";
+import FirstNameInput from "@/components/authentication-and-profile-components/account-form-first-name-input";
+import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
+import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
+import LastNameInput from "@/components/authentication-and-profile-components/account-form-last-name-input";
 // TODO: Fill better error messages, be below for an example
 
 const signUpFormSchema = z
@@ -69,27 +68,23 @@ export default function SignUpForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
-          <AuthenticationEmailInput form={form}></AuthenticationEmailInput>
+          <EmailInput
+            form={form}
+            isDisabled={false}
+            maxLength={321}
+            formDescription={
+              "Email cannot be changed once an account has been made."
+            }
+          ></EmailInput>
 
           {/* Password */}
-          <AuthenticationPasswordInput
-            form={form}
-          ></AuthenticationPasswordInput>
-
-          {/* Confirm Password */}
-          <AuthenticationConfirmPasswordInput
-            form={form}
-          ></AuthenticationConfirmPasswordInput>
+          <PasswordInput form={form} isDisabled={false}></PasswordInput>
 
           {/* First Name */}
-          <AuthenticationFirstNameInput
-            form={form}
-          ></AuthenticationFirstNameInput>
+          <FirstNameInput form={form}></FirstNameInput>
 
           {/* Last Name */}
-          <AuthenticationLastNameInput
-            form={form}
-          ></AuthenticationLastNameInput>
+          <LastNameInput form={form}></LastNameInput>
 
           {/* Age Verification */}
           <AuthenticationAgeInput form={form}></AuthenticationAgeInput>

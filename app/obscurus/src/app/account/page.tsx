@@ -25,9 +25,7 @@ async function Account() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={
-        <AccountForm userEmail={email} userPassword={password}></AccountForm>
-      }
+      firstPanel={<AccountForm userEmail={email}></AccountForm>}
       secondPanel={<>{email}</>}
     />
   );

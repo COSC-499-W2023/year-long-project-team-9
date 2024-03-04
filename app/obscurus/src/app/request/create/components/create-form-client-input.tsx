@@ -44,6 +44,7 @@ export default function ClientEmail({
                   clientEmailLength > 1 ? `Email ${index + 1}` : "Email"
                 }
                 {...form.register(`clientEmail.${index}.email`)}
+                disabled={form.formState.isSubmitting}
               ></Input>
               {clientEmailLength !== 10 && index === clientEmailLength - 1 ? (
                 <Button
