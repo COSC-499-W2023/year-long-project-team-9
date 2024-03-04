@@ -159,19 +159,28 @@ def get_timestamps_and_faces(submissionId, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, submissionId, status):
-    print("Processing video...")
-    filename = submissionId.split('/')[-1]
-    local_filename = '/tmp/{}'.format(filename)
-    local_filename_output = '/tmp/anonymized-{}'.format(filename)
-    s3.download_file(input_bucket, submissionId, local_filename)
+def process_video(timestamps, response, submissionId):
+    try:
+        print("Processing video...")
+        print("Key in process_video", submissionId)
+        filename=submissionId
+        local_filename = '/tmp/{}.mp4'.format(filename)
+        local_filename_output = '/tmp/{}-processed.mp4'.format(filename)
+        print("local_filename_output", local_filename_output)
+        s3.download_file(input_bucket, submissionId, local_filename)
+        print("Job response", response)
+        apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
+        print("Key before integrating audio", submissionId)
+        integrate_audio(local_filename, local_filename_output)
+        print("Uploading...")
+        s3.upload_file(local_filename_output, output_bucket, submissionId+"-processed.mp4")
+        status_dict[submissionId] = "COMPLETED"
+        return "Completed processing!"
+    except:
+        status_dict[submissionId] = "FAILED"
+        return "Failed processing..."
 
-    apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
-    integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, str(submissionId) + "-processed")
-    status = "Done"
-    return status
 
 
 app = FastAPI()
@@ -189,21 +198,19 @@ async def upload_video(request: Request, background_tasks: BackgroundTasks):
     submissionId = data.get('submissionId')
     if not submissionId:
         raise HTTPException(status_code=400, detail="submissionId missing")
+    print("SubmissionId", submissionId)
 
     background_tasks.add_task(process_video_background, submissionId)
 
-    status_dict[submissionId] = "processing"
+    status_dict[submissionId] = "PROCESSING"
 
     return {"message": "Video processing started"}
 
-async def process_video_background(submissionId):
-    status = "Processing..."
+def process_video_background(submissionId):
     submissionId = start_face_detection(submissionId)
     submission_response = check_submission_status(submissionId)
     timestamps, _ = get_timestamps_and_faces(submissionId, rekognition)
-    status = await process_video(timestamps, submission_response, submissionId, status)
-
-    status_dict[submissionId] = status
+    process_video(timestamps, submission_response, submissionId)
 
 @app.get("/status/{submissionId}")
 async def check_status(submissionId: str):
