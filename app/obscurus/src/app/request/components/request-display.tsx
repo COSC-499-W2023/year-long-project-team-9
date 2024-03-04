@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Requests, Submissions, Users } from "stack/database/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
-import { Archive, Trash2, ListVideo } from "lucide-react";
+import { Archive, Trash2, ListVideo, FileText } from "lucide-react";
 import { format } from "date-fns";
 import { RequestDisplayAlert } from "./request-display-alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,6 +19,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Value } from "@radix-ui/react-select";
+import { useState } from "react";
 
 export default function RequestDisplay({
   requests,
@@ -45,6 +46,8 @@ export default function RequestDisplay({
   const selected = requests
     ? requests.find((item) => item.requestId === requestId)
     : null;
+
+  const [showVideoList, setShowVideoList] = useQueryState("showVideoList");
 
   console.log("Selected requestId to display", requestId);
   console.log(
@@ -79,13 +82,35 @@ export default function RequestDisplay({
               </div>
               <div className="ml-auto">
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <ListVideo className="h-5 w-5" />
-                      <span className="sr-only">Show video list</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Show video list</TooltipContent>
+                  {showVideoList?.toLocaleLowerCase() === "true" ? (
+                    <div>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setShowVideoList("false")}
+                        >
+                          <FileText className="h-4 w-4" />
+                          <span className="sr-only">Show request</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Show request</TooltipContent>{" "}
+                    </div>
+                  ) : (
+                    <div>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setShowVideoList("true")}
+                        >
+                          <ListVideo className="h-5 w-5" />
+                          <span className="sr-only">Show video list</span>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Show video list</TooltipContent>
+                    </div>
+                  )}
                 </Tooltip>
               </div>
             </div>
@@ -143,12 +168,17 @@ export default function RequestDisplay({
               </div>
             </div>
             <Separator />
-            {/* <ScrollArea>
-              <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
-                {selected.description}
+            <ScrollArea>
+              {showVideoList?.toLocaleLowerCase() === "true" ? (
+                <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
+                  Showing Video
                 </div>
-              </div>
-            </ScrollArea> */}
+              ) : (
+                <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
+                  {selected.description}
+                </div>
+              )}
+            </ScrollArea>
           </div>
         </div>
       ) : (
