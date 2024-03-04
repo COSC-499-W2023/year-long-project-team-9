@@ -9,7 +9,13 @@ import {
 } from "@/components/ui/tooltip";
 import { Requests, Submissions, Users } from "stack/database/src/sql.generated";
 import { useQueryState, parseAsString } from "nuqs";
-import { Archive, Trash2, ListVideo, FileText } from "lucide-react";
+import {
+  Archive,
+  Trash2,
+  ListVideo,
+  FileText,
+  ChevronRightIcon,
+} from "lucide-react";
 import { format } from "date-fns";
 import { RequestDisplayAlert } from "./request-display-alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,6 +26,15 @@ import {
 } from "@/components/ui/hover-card";
 import { Value } from "@radix-ui/react-select";
 import { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 export default function RequestDisplay({
   requests,
@@ -171,7 +186,42 @@ export default function RequestDisplay({
             <ScrollArea>
               {showVideoList?.toLocaleLowerCase() === "true" ? (
                 <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
-                  Showing Video
+                  <Table className="rounded-lg border">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Video</TableHead>{" "}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {submissions
+                        .filter(
+                          (value) => value.requestId === selected?.requestId
+                        )
+                        .map((value, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Badge>{value.status}</Badge>
+                            </TableCell>
+                            <TableCell>{value.requesteeEmail}</TableCell>
+                            <TableCell>
+                              {value.status === "COMPLETED" ? (
+                                <Button>
+                                  Video
+                                  <ChevronRightIcon className="h-4 w-4" />
+                                </Button>
+                              ) : (
+                                <Button disabled>
+                                  Video
+                                  <ChevronRightIcon className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
                 </div>
               ) : (
                 <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
