@@ -22,5 +22,5 @@ export async function up(db) {
  * @param {Kysely<any>} db
  */
 export async function down(db) {
-  await db.schema.dropTable("notifications").execute();
+  //await db.schema.dropTable("notifications").execute();
 }
