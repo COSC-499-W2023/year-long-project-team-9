@@ -123,8 +123,8 @@ export default function SubmiDisplay({
         console.log("Upload successful");
         const src = URL.createObjectURL(file);
         console.log("ObjectURL", src);
-
         setObjectURL(src);
+        setLoading(false)
         return 200;
       } else {
         console.error("Upload failed:", response.statusText);
