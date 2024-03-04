@@ -20,7 +20,7 @@ def anonymize_face_pixelate(image, blocks=10):
     # divide the input image into NxN blocks
     (h, w) = image.shape[:2]
     x_coordinates, y_coordinates = np.linspace(0, w, blocks + 1, dtype="int"), np.linspace(0, h, blocks + 1, dtype="int")
-    
+
     # loop over the blocks along x and y axis
     for i in range(1, len(y_coordinates)):
         for j in range(1, len(x_coordinates)):
@@ -29,7 +29,7 @@ def anonymize_face_pixelate(image, blocks=10):
             first_y, last_y = y_coordinates[i - 1], y_coordinates[i]
             # extract the ROI
             roi = image[first_y:last_y, first_x:last_x]
-            # compute the mean of the ROI 
+            # compute the mean of the ROI
             (b, g, r) = [int(x) for x in cv2.mean(roi)[:3]]
             # draw a rectangle with the mean RGB values over the ROI in the original image
             cv2.rectangle(image, (first_x, first_y), (last_x, last_y), (b, g, r), -1)
@@ -92,12 +92,17 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
 
 
 def integrate_audio(original_video, output_video, audio_path='/tmp/audio.mp3'):
+
     # Extract audio
+    print("original_video", original_video)
     my_clip = VideoFileClip(original_video)
     my_clip.audio.write_audiofile(audio_path)
-    temp_location = '/tmp/output_video.mp4'
+    temp_location = '{}-processed.mp4'.format(original_video)
+
     # Join output video with extracted audio
-    videoclip = VideoFileClip(output_video)
+    print("output_video", output_video)
+    print("temp_location", temp_location)
+    videoclip = VideoFileClip('{}'.format(output_video))
     # new_audioclip = CompositeAudioClip([audioclip])
     # videoclip.audio = new_audioclip
     videoclip.write_videofile(temp_location, codec='libx264', audio=audio_path, audio_codec='libmp3lame')
@@ -115,16 +120,12 @@ print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
 payload = json.loads(os.getenv("SST_PAYLOAD"))
-key = payload['requestId']
+key = payload['submissionId']
 print("Key: ", key)
 output_bucket = os.environ['OUTPUT_BUCKET']
 output_name = key
 
-rawname, file_extension = os.path.splitext(output_name)
-print("File extension: ", file_extension)
-print(file_extension)
-print(rawname)
-key=rawname+file_extension
+
 # payload = os.environ['SST_PAYLOAD']
 
 def start_face_detection():
@@ -169,20 +170,23 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def process_video(timestamps, response):
     print("Processing video...")
-    filename = key.split('/')[-1]
-    local_filename = '/tmp/{}'.format(filename)
-    local_filename_output = '/tmp/anonymized-{}'.format(filename)
+    print("Key in process_video", key)
+    filename=key
+    local_filename = '/tmp/{}.mp4'.format(filename)
+    local_filename_output = '/tmp/{}-processed.mp4'.format(filename)
+    print("local_filename_output", local_filename_output)
     s3.download_file(input_bucket, key, local_filename)
-    print(response)
+    print("Job response", response)
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
+    print("Key before integrating audio", key)
     integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, rawname+"-processed"+file_extension)
+    s3.upload_file(local_filename_output, output_bucket, key+"-processed.mp4")
 
 def main():
     print("Running...")
     job_id = start_face_detection()
-    job_response = check_job_status(job_id) 
+    job_response = check_job_status(job_id)
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
     process_video(timestamps, job_response)
 

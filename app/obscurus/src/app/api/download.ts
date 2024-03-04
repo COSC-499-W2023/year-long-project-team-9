@@ -11,9 +11,8 @@ type ResponseData = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-    const bucket = Bucket.inputBucket.bucketName; 
+    const bucket = Bucket.inputBucket.bucketName;
     const { key, fileExt } = req.body;
-    console.log(key)
     try {
         const objectKey = key || `${crypto.randomUUID()}.${fileExt}`;
 

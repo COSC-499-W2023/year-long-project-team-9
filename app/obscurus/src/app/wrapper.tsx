@@ -122,14 +122,14 @@ export function Wrapper({
         <ResizableHandle withHandle />
         <ResizablePanel
           defaultSize={(defaultLayout && defaultLayout[1]) || 40}
-          minSize={30}
+          minSize={35}
         >
-          <div className="max-h-[800px] h-full flex-1 flex-col p-6  md:flex">
+          <div className="max-h-[800px] h-full flex-1 flex-col  md:flex">
             <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50}>
+        <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50} minSize={20}>
           <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>

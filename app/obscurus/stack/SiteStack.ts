@@ -26,6 +26,7 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
+
   // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
@@ -48,6 +49,7 @@ export default function SiteStack({ stack }: StackContext) {
     },
     memorySize: "15 GB",
     timeout: "8 hours",
+    permissions: [rekognitionPolicyStatement]
   });
 
   //Create secret keys
@@ -221,6 +223,39 @@ export default function SiteStack({ stack }: StackContext) {
       "POST /createMessage": {
         function: {
           handler: "./stack/lambdas/createMessage.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "POST /setIsReadTrue": {
+        function: {
+          handler: "./stack/lambdas/setIsReadTrue.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "GET /listNotifications": {
+        function: {
+          handler: "./stack/lambdas/listNotifications.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "POST /createNotification": {
+        function: {
+          handler: "./stack/lambdas/createNotification.handler",
+          timeout: 20,
+          permissions: [steveJobs, inputBucket, rds],
+          bind: [steveJobs, inputBucket, rds],
+        },
+      },
+      "POST /updateNotificationDate": {
+        function: {
+          handler: "./stack/lambdas/updateNotificationDate.handler",
           timeout: 20,
           permissions: [steveJobs, inputBucket, rds],
           bind: [steveJobs, inputBucket, rds],

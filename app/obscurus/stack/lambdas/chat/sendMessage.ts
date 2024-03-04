@@ -30,12 +30,7 @@ export const main: APIGatewayProxyHandler = async (event) => {
       } catch (e) {
         if ((e as AWS.AWSError).statusCode === 410) {
           // Remove stale connections
-          const staleConnection: ConnectionsType = {
-            connectionId: connectionId,
-          };
-          const delConnection = await Connections.removeConnection(
-            staleConnection
-          );
+          const delConnection = await Connections.remove(connectionId);
         }
       }
     };

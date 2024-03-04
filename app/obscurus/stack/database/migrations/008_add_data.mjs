@@ -17,7 +17,6 @@ export async function up(db) {
         isAdmin: true,
         profileImage: null,
         preference: "{}",
-        connectionId: null,
       },
       {
         email: "soren.is@hotmail.ca",
@@ -27,7 +26,6 @@ export async function up(db) {
         isAdmin: true,
         profileImage: null,
         preference: "{}",
-        connectionId: null,
       },
       {
         email: "ansivana@gmail.com",
@@ -37,7 +35,6 @@ export async function up(db) {
         isAdmin: true,
         profileImage: null,
         preference: "{}",
-        connectionId: null,
       },
       {
         email: "bakar.a.muhammad@gmail.com",
@@ -47,7 +44,6 @@ export async function up(db) {
         isAdmin: false,
         profileImage: null,
         preference: "{}",
-        connectionId: null,
       },
     ])
     .execute();
@@ -134,7 +130,7 @@ export async function up(db) {
       {
         submissionId: "0c49d690-a96f-445a-bcbe-a964dc0e7e21",
         requesteeEmail: "ansivana@gmail.com",
-        status: "TODO",
+        status: "PROCESSING",
 
         isRead: true,
         submittedDate: null,
@@ -143,7 +139,7 @@ export async function up(db) {
       {
         submissionId: "674b2c03-210e-46e3-b71a-dccbb4d5a079",
         requesteeEmail: "ansivana@gmail.com",
-        status: "TRASH",
+        status: "ARCHIVED",
 
         isRead: false,
         submittedDate: null,
@@ -152,7 +148,7 @@ export async function up(db) {
       {
         submissionId: "b8807202-e0b8-4e3f-aa22-d8b8264139a5",
         requesteeEmail: "bakar.a.muhammad@gmail.com",
-        status: "ARCHIVED",
+        status: "COMPLETED",
 
         isRead: false,
         submittedDate: null,
@@ -179,7 +175,7 @@ export async function up(db) {
       {
         submissionId: "bc94f9bd-dd57-4a7a-a935-6c76f3113212",
         requesteeEmail: "imightbejan@gmail.com",
-        status: "COMPLETED",
+        status: "TODO",
 
         isRead: true,
         submittedDate: null,
@@ -188,7 +184,7 @@ export async function up(db) {
       {
         submissionId: "2c48358c-b0bf-4826-bd28-aa4e54a67b4a",
         requesteeEmail: "soren.is@hotmail.ca",
-        status: "COMPLETED",
+        status: "PROCESSING",
 
         isRead: false,
         submittedDate: null,
@@ -197,7 +193,7 @@ export async function up(db) {
       {
         submissionId: "ce03c21a-a659-412e-b25a-baa4a3d1b5e8",
         requesteeEmail: "bob@gamil.com",
-        status: "PROCESSING",
+        status: "TODO",
 
         isRead: false,
         submittedDate: null,
@@ -206,7 +202,7 @@ export async function up(db) {
       {
         submissionId: "ac837adb-2994-4769-9d84-d34581b24ad4",
         requesteeEmail: "soren.is@hotmail.ca",
-        status: "COMPLETED",
+        status: "TODO",
 
         isRead: true,
         submittedDate: null,
@@ -215,7 +211,7 @@ export async function up(db) {
       {
         submissionId: "cf780978-c459-406b-b6fc-a11ab5d1500a",
         requesteeEmail: "imightbejan@gmail.com",
-        status: "FAILED",
+        status: "COMPLETED",
 
         isRead: false,
         submittedDate: null,
@@ -371,4 +367,10 @@ export async function down(db) {
   const deleteFromSubmissions = await db.deleteFrom("submissions").execute();
   const deleteFromRequests = await db.deleteFrom("requests").execute();
   const deleteFromUsers = await db.deleteFrom("users").execute();
+
+  deleteFromUsers()
+  deleteFromRequests()
+  deleteFromSubmissions()
+  deleteFromRoom()
+  deleteFromMessages()
 }

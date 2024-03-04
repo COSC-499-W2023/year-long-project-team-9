@@ -1,13 +1,13 @@
 "use server";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
+import { getEmail } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
-
-const userEmail = "imightbejan@gmail.com";
+import createMessageNotification from "../functions/createMessageNotification";
 
 async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -18,6 +18,7 @@ async function Chat() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
+  const userEmail = await getEmail();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const messages: Messages[] = await getMessages();
 
@@ -62,9 +63,11 @@ async function Chat() {
       <ChatWrapper
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
+        userEmail={userEmail}
         rooms={rooms}
         messages={messages}
         createMessage={createMessage}
+        createMessageNotification={createMessageNotification}
       />
     </Suspense>
   );
