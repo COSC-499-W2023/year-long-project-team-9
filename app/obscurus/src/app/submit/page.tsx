@@ -1,68 +1,53 @@
 "use server";
-import { Api } from "sst/node/api";
-import Image from "next/image";
-import { columns } from "./components/columns";
-import { UserNav } from "./components/user-nav";
+import { Requests, Submissions } from "stack/database/src/sql.generated";
+import { getSubmissions } from "../functions/getSubmissions";
+import { getRequests } from "../functions/getRequests";
+import SubmitDisplay from "./components/submit-display";
+import { cookies } from "next/headers";
+import Wrapper from "@/app/wrapper";
+import SubmitList from "./components/submit-list";
+import { Suspense } from "react";
+import hello from "../functions/hello";
+import getPresignedUrl from "../functions/getPresignedUrl";
+import { triggerJob } from "../functions/triggerJob";
 import { DataTable } from "./components/data-table";
-import { Video } from "./schema";
-import { ReactNode, Suspense } from "react";
-import SubmissionsList from "@/app/Submit/components/submissions-list";
-import { Submissions } from "stacks/core/src/submissions";
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
-import { PulseLoader } from "react-spinners";
+import { columns } from "./components/columns";
 
-async function getSubmissions() {
-  const res = await fetch(Api.Api.url + "/getSubmissions");
+async function Submit() {
+  const layout = cookies().get("react-resizable-panels:layout");
+  const collapsed = cookies().get("react-resizable-panels:collapsed");
+  console.log("Layout", layout);
+  console.log("Collapsed", collapsed?.value);
+  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  const defaultCollapsed =
+    collapsed && collapsed.value !== "undefined"
+      ? JSON.parse(collapsed.value)
+      : undefined;
+  const submissions: Submissions[] = await getSubmissions();
+  const requests: Requests[] = await getRequests();
 
-  console.log(res);
-
-  if (res.ok) {
-    return res.json();
-  }
-
-
-}
-
-export default async function Submit() {
-  const submissions: Video[] = await getSubmissions();
-
+  console.log("world", triggerJob);
   return (
     <>
-      <ResizablePanel defaultSize={50}>
-        <div className=" h-full flex-1 flex-col space-y-8 p-8 md:flex overflow-y-scroll">
-          <div className="flex items-center justify-between space-y-2">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight">
-                Welcome back!
-              </h2>
-              <p className="text-muted-foreground">
-                Here&apos;s a list of your tasks for this month!
-              </p>
-            </div>
-            {/* <div className="flex items-center space-x-2">
-              <UserNav />
-            </div> */}
-          </div>
-          <Suspense>
-            <DataTable data={submissions} columns={columns} />
-          </Suspense>
-        </div>
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={40}>
-        <div className=" h-full flex-1 flex-col p-6  md:flex overflow-y-scroll">
-          <Suspense
-            fallback={
-              <>
-                <PulseLoader />
-                <p>Loading...</p>
-              </>
-            }
-          >
-            <SubmissionsList items={submissions} />
-          </Suspense>
-        </div>
-      </ResizablePanel>
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          <SubmitList requests={requests} submissions={submissions} />
+        }
+        secondPanel={
+          <SubmitDisplay
+            requests={requests}
+            submissions={submissions}
+            getPresignedUrl={getPresignedUrl}
+            triggerJob={triggerJob}
+          />
+        }
+      />
+
     </>
   );
 }
+
+export default Submit;

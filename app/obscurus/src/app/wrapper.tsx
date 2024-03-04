@@ -6,7 +6,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/functions/utils";
 import {
   Inbox,
   FileUp,
@@ -16,40 +16,38 @@ import {
   LogOut,
   Send,
   Search,
+  UploadCloudIcon,
 } from "lucide-react";
 import Nav from "@/components/nav";
 import { Children, ReactNode, Suspense, useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import { useMail } from "../components/ui/mail/use-mail";
-import { useRouter } from "next/navigation";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import SubmissionsList from "@/app/Submit/components/submissions-list";
-import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
+import { useQueryState } from "nuqs";
 
 export function Wrapper({
-  defaultLayout = [50, 440, 655],
-  defaultCollapsed = false,
+  defaultLayout,
+  defaultCollapsed,
   navCollapsedSize,
-  children,
+  firstPanel,
+  secondPanel,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   navCollapsedSize: number;
-  children: ReactNode | ReactNode[];
+  firstPanel: ReactNode;
+  secondPanel: ReactNode;
 }) {
-  const [activeComponent, setActiveComponent] = useState("mainContent");
-
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [mail] = useMail();
-  const router = useRouter();
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const [upload] = useQueryState("upload");
   const pathname = usePathname();
 
   const routeToLinkVariant: any = {
-    "/": "Request",
-    "/CreateRequest": "Request",
-    "/Submit": "Submit",
-    "/Home": "Chat",
+    "/": "Submit",
+    "/request": "Request",
+    "/submit": "Submit",
+    "/chat": "Chat",
+    "/request/create": "Request",
+    "/account": "Account",
   };
 
   const getLinkVariant = (title: string) => {
@@ -57,58 +55,85 @@ export function Wrapper({
     return routeToLinkVariant[currentRoute] === title ? "default" : "ghost";
   };
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      onLayout={(sizes: number[]) => {
-        document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-          sizes
-        )}`;
-      }}
-      className="h-full max-h-[800px] items-stretch "
-    >
-      <ResizablePanel
-        defaultSize={10}
-        collapsedSize={navCollapsedSize}
-        collapsible={true}
-        // onCollapse={(collapsed:any) => {
-        //   setIsCollapsed(collapsed)
-        //   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-        //     collapsed
-        //   )}`
-        // }}
-        className={cn(
-          isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out"
-        )}
+    <TooltipProvider delayDuration={0}>
+      <ResizablePanelGroup
+        direction="horizontal"
+        onLayout={(sizes: number[]) => {
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+            sizes
+          )}`;
+        }}
+        className="h-full  items-stretch "
       >
-        <Separator />
-        <Nav
-          isCollapsed={isCollapsed}
-          links={[
-            {
-              title: "Request",
-              icon: Inbox,
-              variant: getLinkVariant("Request"),
-              href: "/CreateRequest",
-            },
-            {
-              title: "Submit",
-              icon: FileUp,
-              variant: getLinkVariant("Submit"),
-              href: "/Submit",
-            },
-            {
-              title: "Chat",
-              icon: MessageCircle,
-              variant: getLinkVariant("Chat"),
-              href: "/Home",
-            },
-          ]}
-        />
-      </ResizablePanel>
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[0]) || 20}
+          collapsedSize={navCollapsedSize}
+          collapsible={true}
+          minSize={15}
+          maxSize={20}
+          onCollapse={(collapsed) => {
+            setIsCollapsed(collapsed);
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+              collapsed
+            )}`;
+          }}
+          className={cn(
+            isCollapsed &&
+              "min-w-[50px] transition-all duration-300 ease-in-out"
+          )}
+        >
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Request",
+                icon: Inbox,
+                variant: getLinkVariant("Request"),
+                href: "/request",
+              },
+              {
+                title: "Submit",
+                icon: UploadCloudIcon,
+                variant: getLinkVariant("Submit"),
+                href: "/submit",
+              },
+              {
+                title: "Chat",
+                icon: MessageCircle,
+                variant: getLinkVariant("Chat"),
+                href: "/chat",
+              },
+            ]}
+          />
+          <Separator className="container mx-auto" />
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Account",
+                icon: User,
+                variant: getLinkVariant("Account"),
+                href: "/account",
+              },
+            ]}
+          />
+        </ResizablePanel>
 
-      <ResizableHandle withHandle />
-      {children}
-    </ResizablePanelGroup>
+        <ResizableHandle withHandle />
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[1]) || 40}
+          minSize={35}
+        >
+          <div className="max-h-[800px] h-full flex-1 flex-col  md:flex">
+            <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
+          </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50} minSize={20}>
+          <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </TooltipProvider>
   );
 }
 

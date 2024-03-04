@@ -1,23 +1,11 @@
-import { ReactNode, Suspense } from "react";
-import Home from "./Home/page";
-import Submit from "./Submit/page";
-import Wrapper from "./wrapper";
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { redirect } from "next/navigation";
+import Submit from "./submit/page";
+// async function getUserEmail() {
+//   //...
+// }
 
-function Page() {
-  return (
-    <>
-      <Suspense
-        fallback={
-          <div className="h-screen w-full flex flex-1 items-center justify-center">
-            <p className="text-lg font-semibold ">Loading...</p>
-          </div>
-        }
-      />
-      <Submit />
-      <Suspense />
-    </>
-  );
+async function Page() {
+  redirect("/submit")
 }
 
 export default Page;

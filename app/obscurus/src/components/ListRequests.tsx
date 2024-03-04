@@ -1,5 +1,4 @@
 "use server"
-import MailList from "@/app/Submit/components/submissions-list"
 import Nav from "@/components/nav"
 import { Input } from "@/components/ui/input"
 
@@ -7,7 +6,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { Send, Search } from "lucide-react"
 import router, { useRouter } from "next/navigation"
-import { Requests } from "stacks/core/src/sql.generated"
+import { Requests } from "stack/database/src/sql.generated"
 import { Api } from "sst/node/api"
 
 async function getRequests() {
