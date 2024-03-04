@@ -1,16 +1,21 @@
 "use server"
-import { Job } from "sst/node/job";
+import axios from 'axios';
 
 const triggerJob = async (submissionId: string) => {
   console.log("In job, received submissionId " + submissionId);
+  const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
-  const { jobId } = await Job.SteveJobs.run({
-    payload: {
-      submissionId: submissionId,
-    },
+  console.log("Url", url);
+  const response = await axios.post(`${url}/upload-video`, {
+    submissionId: submissionId,
   });
 
-  return("Video jobbed successfully");
+  if (response.status === 200) {
+    return "Video job started successfully";
+  } else {
+    throw new Error('Failed to start video job');
+  }
 };
+
 
 export { triggerJob };

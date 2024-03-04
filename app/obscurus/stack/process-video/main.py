@@ -118,23 +118,23 @@ input_bucket = os.environ['INPUT_BUCKET']
 output_bucket = os.environ['OUTPUT_BUCKET']
 # payload = os.environ['SST_PAYLOAD']
 
-def start_face_detection(object_key):
+def start_face_detection(submissionId):
     print("Running face detection...")
     response = rekognition.start_face_detection(
-        Video={'S3Object': {'Bucket': input_bucket, 'Name': object_key}}
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': submissionId}}
     )
-    return response['JobId']
+    return response['submissionId']
 
-def check_job_status(job_id):
-    print("Checking job status...")
+def check_submission_status(submissionId):
+    print("Checking submission status...")
     while True:
-        response = rekognition.get_face_detection(JobId=job_id)
-        status = response['JobStatus']
+        response = rekognition.get_face_detection(submissionId=submissionId)
+        status = response['submissionStatus']
         if status in ['SUCCEEDED', 'FAILED']:
             return response
         time.sleep(5)
 
-def get_timestamps_and_faces(job_id, reko_client=None):
+def get_timestamps_and_faces(submissionId, reko_client=None):
     print("Getting timestamps and faces...")
     final_timestamps = {}
     next_token = None
@@ -143,7 +143,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
         print('.', end='')
         first_round = False
         # Query Rekognition for face detection results
-        response = reko_client.get_face_detection(JobId=job_id, MaxResults=100, NextToken=next_token if next_token else "")
+        response = reko_client.get_face_detection(submissionId=submissionId, MaxResults=100, NextToken=next_token if next_token else "")
         # Iterate over each face detected and organize by timestamp
         for face in response['Faces']:
             f = face["Face"]["BoundingBox"]
@@ -157,17 +157,17 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, s3_key, status):
+def process_video(timestamps, response, submissionId, status):
     print("Processing video...")
-    filename = s3_key.split('/')[-1]
+    filename = submissionId.split('/')[-1]
     local_filename = '/tmp/{}'.format(filename)
     local_filename_output = '/tmp/anonymized-{}'.format(filename)
-    s3.download_file(input_bucket, s3_key, local_filename)
+    s3.download_file(input_bucket, submissionId, local_filename)
 
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
     integrate_audio(local_filename, local_filename_output)
 
-    s3.upload_file(local_filename_output, output_bucket, str(s3_key) + "-processed")
+    s3.upload_file(local_filename_output, output_bucket, str(submissionId) + "-processed")
     status = "Done"
     return status
 
@@ -184,26 +184,25 @@ status_dict = {}
 @app.post("/upload-video/")
 async def upload_video(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
-    s3_key = data.get('key')
-    if not s3_key:
-        raise HTTPException(status_code=400, detail="S3 key missing")
+    submissionId = data.get('submissionId')
+    if not submissionId:
+        raise HTTPException(status_code=400, detail="submissionId missing")
 
-    background_tasks.add_task(process_video_background, s3_key)
+    background_tasks.add_task(process_video_background, submissionId)
 
-    status_dict[s3_key] = "processing"
+    status_dict[submissionId] = "processing"
 
     return {"message": "Video processing started"}
 
-async def process_video_background(s3_key):
+async def process_video_background(submissionId):
     status = "Processing..."
-    job_id = start_face_detection(s3_key)
-    job_response = check_job_status(job_id)
-    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    status = await process_video(timestamps, job_response, s3_key, status)
+    submissionId = start_face_detection(submissionId)
+    submission_response = check_submission_status(submissionId)
+    timestamps, _ = get_timestamps_and_faces(submissionId, rekognition)
+    status = await process_video(timestamps, submission_response, submissionId, status)
 
-    status_dict[s3_key] = status
+    status_dict[submissionId] = status
 
-@app.get("/status/{video_key}")
-async def check_status(video_key: str):
-    # Get the status from the dictionary
-    return {"video_key": video_key, "status": status}
+@app.get("/status/{submissionId}")
+async def check_status(submissionId: str):
+    return {"submissionId": submissionId, "status": status_dict[submissionId]}

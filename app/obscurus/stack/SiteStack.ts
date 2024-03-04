@@ -339,6 +339,9 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, processVideo],
     permissions: [rekognitionPolicyStatement],
+    environment: {
+      NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
+    }
     // customDomain: {
     //   domainName: "obscurus.me",
     //   domainAlias: "www.obscurus.me",
