@@ -173,7 +173,9 @@ export default function SubmitList({
 
   return requests && submissions ? (
     <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
-      <RequestHeader></RequestHeader>
+      <div className="flex items-center px-4">
+        <h1 className="text-xl font-bold">Submit</h1>
+      </div>
       <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <form>
           <div className="relative">
