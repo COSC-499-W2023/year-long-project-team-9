@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUpCircle } from "lucide-react";
 import {
@@ -46,6 +46,24 @@ export default function ChatLog({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
+  // const scrollToBottom = () => {
+  //   const chatScroll = document.getElementById('chatScroll');
+  //   console.log(chatScroll);
+  //   if (chatScroll) {
+  //     chatScroll.scrollTop  = chatScroll.scrollHeight;
+  //     console.log("scrollHeight: " + chatScroll.scrollHeight);
+  //     console.log("scrollTop: " + chatScroll.scrollTop);
+  //   }
+  // };
+
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    }
+  }, []);
+
+
   const handleClick = () => {
     const newMessageUUID = uuidv7();
     const newMessage: Messages = {
@@ -71,14 +89,16 @@ export default function ChatLog({
     // createMessage(newMessage);
     sendMessage(JSON.stringify(newMessage));
     createMessageNotification(newNotification);
+    //scrollToBottom();
   };
 
   const roomMessages = getRoomMessages();
   const [chatMessage, setChatMessage] = useState("");
 
   return room ? (
-    <div className="flex flex-col mt-auto">
-      <ScrollArea className="sm:max-h-80 md:max-h-80 2xl:max-h-max">
+    <div className="flex flex-col mt-auto relative" >
+      <ScrollArea className="sm:max-h-80 md:max-h-80 2xl:max-h-max justify-end" >
+        <div id="chatScroll">
         {roomMessages.map((message) => (
           <div key={message.messageId}>
             {message.senderEmail === userEmail && (
@@ -97,6 +117,7 @@ export default function ChatLog({
             )}
           </div>
         ))}
+        </div>
       </ScrollArea>
       <div className="flex mr-3 ml-3 mb-6 mt-4 gap-2">
         <Input
