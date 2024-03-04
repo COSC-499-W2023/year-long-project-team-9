@@ -188,8 +188,9 @@ export default function RequestList({
   return (
     <div>
       <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
-        <RequestHeader></RequestHeader>
-
+        <div className="px-4">
+          <RequestHeader></RequestHeader>
+        </div>
         {requests.length >= 1 && submissions.length >= 1 ? (
           <div>
             <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
