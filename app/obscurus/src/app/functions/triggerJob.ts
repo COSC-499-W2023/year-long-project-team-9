@@ -6,7 +6,7 @@ const triggerJob = async (submissionId: string) => {
   const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   console.log("Url", url);
-  const response = await axios.post(`${url}/upload-video`, {
+  const response = await axios.post(`${url}/process-video`, {
     submissionId: submissionId,
   });
 

@@ -67,7 +67,7 @@ export default function SubmiDisplay({
 
   const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
-  console.log("URL", url)
+  console.log("URL", url);
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -84,55 +84,52 @@ export default function SubmiDisplay({
     if (submissionId && triggerJob) {
       const res = await triggerJob(submissionId);
       console.log(res);
-      setLoading(false)
+      setLoading(false);
       return res;
     } else {
       return "Failed to run Job";
     }
-
   };
+
+  const sendToService = async(e:any) => {
+
+  }
 
   const [uploading, setUploading] = useState(false);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
-    console.log("In handlesubmit");
+    e.preventDefault();
     setUploading(true);
     const file = fileInputRef.current?.files?.[0];
-    setFile(file);
     if (!file) {
       console.error("No file selected");
+      setUploading(false);
       return;
     }
-    const fileExt = file.name.split(".").pop() || "mp4";
 
-    console.log(fileExt);
-    console.log(submissionId);
+    const fileName = `${submissionId}.${file.name.split(".").pop()}`;
+    setFile(file);
 
     if (submissionId && getPresignedUrl) {
-      const url = await getPresignedUrl(submissionId);
+      const presignedUrl = await getPresignedUrl(fileName);
 
-      const response = await fetch(url, {
+      const response = await fetch(presignedUrl, {
         method: "PUT",
         headers: {
           "Content-Type": file.type,
-          "Content-Disposition": `attachment; filename*=UTF-8''${submissionId}`,
         },
         body: file,
       });
 
       if (response.ok) {
         console.log("Upload successful");
-        const src = URL.createObjectURL(file);
-        console.log("ObjectURL", src);
-        setObjectURL(src);
-
-        return 200;
+        setObjectURL(URL.createObjectURL(file));
+        setUploading(false);
       } else {
         console.error("Upload failed:", response.statusText);
+        setUploading(false);
       }
-    } else {
-      return 500;
     }
   };
 
@@ -169,51 +166,33 @@ export default function SubmiDisplay({
 
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, {
-        type: "video/webm",
-      });
-      const file = new File([blob], "webcam-video.webm", {
-        type: "video/webm",
-      });
+      const blob = new Blob(recordedChunks, { type: "video/webm" }); // WebM format
+      const fileName = `${submissionId}.webm`; // Assume submissionId is valid and webm for webcam
+      const file = new File([blob], fileName, { type: "video/webm" });
 
-      const encodedFilename = encodeURIComponent(file.name);
+      setFile(file); // Set the recorded file
 
-      try {
-        console.log("File:", file);
-        const fileExt = file.name.split(".").pop() || "mp4";
+      if (submissionId && getPresignedUrl) {
+        const presignedUrl = await getPresignedUrl(fileName); // Get URL for the WebM file
 
-        console.log(fileExt);
-        console.log(submissionId);
+        const response = await fetch(presignedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "video/webm",
+          },
+          body: file,
+        });
 
-        if (submissionId && getPresignedUrl) {
-          const url = await getPresignedUrl(submissionId);
-          const response = await fetch(url, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "video/mp4",
-              "Content-Disposition": `attachment; filename*=UTF-8''${encodedFilename}`,
-            },
-            body: file,
-          });
-          console.log("fine here");
-
-          if (response.ok) {
-            console.log("Upload successful");
-            console.log("hello");
-            const src = URL.createObjectURL(file);
-            setObjectURL(src);
-            console.log("ObjectURL", objectURL);
-            return;
-          } else {
-            console.error("Upload failed:", response.statusText);
-          }
+        if (response.ok) {
+          console.log("Upload successful");
+          setObjectURL(URL.createObjectURL(file));
+          setRecord(false);
+          setRecordedChunks([]);
         } else {
-          console.log("No submissionid");
+          console.error("Upload failed:", response.statusText);
+          setRecord(false);
+          setRecordedChunks([]);
         }
-      } catch (error) {
-        console.error("Upload error:", error);
-      } finally {
-        console.log("Finished job");
       }
     }
   };

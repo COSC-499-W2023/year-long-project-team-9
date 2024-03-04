@@ -160,42 +160,49 @@ def get_timestamps_and_faces(submissionId, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, submissionId):
+def process_video(timestamps, response, submission, file_extension):
     headers = {"Content-Type": "application/json"}
     try:
-        payload = {"status": "PROCESSING", "submissionId": submissionId}
+        payload = {"status": "PROCESSING", "submissionId": submission}
         response = requests.post(api_url, json=payload, headers=headers)
         if response.status_code != 200:
             print("Failed to update initial submission status to PROCESSING")
 
-        print("Processing video...")
-        filename = submissionId
-        local_filename = f'/tmp/{filename}.mp4'
+        filename = submission
+        local_filename = f'/tmp/{filename}{file_extension}'
         local_filename_output = f'/tmp/{filename}-processed.mp4'
         print("local_filename_output", local_filename_output)
-        s3.download_file(input_bucket, submissionId, local_filename)
+
+        if file_extension.lower() != '.mp4':
+            print(f"Converting {file_extension} to .mp4")
+            converted_filename = f'/tmp/{filename}.mp4'
+            conversion_command = f"ffmpeg -i {local_filename} -codec copy {converted_filename}"
+            os.system(conversion_command)
+            local_filename = converted_filename
+
+        s3.download_file(input_bucket, submission, local_filename)
         print("Job response", response)
         apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
         integrate_audio(local_filename, local_filename_output)
         print("Uploading...")
-        s3.upload_file(local_filename_output, output_bucket, f"{submissionId}-processed.mp4")
-        payload = {"status": "COMPLETED", "submissionId": submissionId}
+        s3.upload_file(local_filename_output, output_bucket, f"{submission}-processed.mp4")
+        payload = {"status": "COMPLETED", "submissionId": submission}
         response = requests.post(api_url, json=payload, headers=headers)
+
         if response.status_code == 200:
             print("Updated submission status successfully!")
-            status_dict[submissionId] = "COMPLETED"
+            status_dict[submission] = "COMPLETED"
         else:
             print("Failed to update submission status after processing!")
-            status_dict[submissionId] = "FAILED"
-
+            status_dict[submission] = "FAILED"
         return "Completed processing!"
-
     except Exception as e:
         print(f"Error processing video: {e}")
-        status_dict[submissionId] = "FAILED"
-        payload = {"status": "FAILED", "submissionId": submissionId}
+        status_dict[submission] = "FAILED"
+        payload = {"status": "FAILED", "submissionId": submission}
         requests.post(api_url, json=payload, headers=headers)
         return "Failed processing..."
+
 
 
 
@@ -211,22 +218,23 @@ async def root():
 
 status_dict = {}
 
-@app.post("/upload-video/")
+@app.post("/process-video/")
 async def upload_video(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
-    submissionId = data.get('submissionId')
-    if not submissionId:
+    submission = data.get('submissionId')
+    if not submission:
         raise HTTPException(status_code=400, detail="submissionId missing")
-    print("SubmissionId", submissionId)
 
-    background_tasks.add_task(process_video_background, submissionId)
+    submissionId, file_extension = os.path.splitext(submission)
+    print(f"SubmissionId: {submissionId}, File Extension: {file_extension}")
+
+    background_tasks.add_task(process_video_background, submission, file_extension)
 
     status_dict[submissionId] = "PROCESSING"
-
     return {"message": "Video processing started"}
 
-def process_video_background(submissionId):
-    submissionId = start_face_detection(submissionId)
+def process_video_background(submission, file_extension):
+    submissionId = start_face_detection(submission)
     submission_response = check_submission_status(submissionId)
     timestamps, _ = get_timestamps_and_faces(submissionId, rekognition)
-    process_video(timestamps, submission_response, submissionId)
+    process_video(timestamps, submission_response, submission, file_extension)
