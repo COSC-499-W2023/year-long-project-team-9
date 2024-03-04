@@ -368,9 +368,9 @@ export async function down(db) {
   const deleteFromRequests = await db.deleteFrom("requests").execute();
   const deleteFromUsers = await db.deleteFrom("users").execute();
 
-  deleteFromMessages()
-  deleteFromRoom()
-  deleteFromSubmissions()
-  deleteFromRequests()
-  deleteFromUsers()
+  // deleteFromMessages()
+  // deleteFromRoom()
+  // deleteFromSubmissions()
+  // deleteFromRequests()
+  // deleteFromUsers()
 }
