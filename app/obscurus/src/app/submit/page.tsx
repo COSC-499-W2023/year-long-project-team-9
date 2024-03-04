@@ -8,7 +8,7 @@ import Wrapper from "@/app/wrapper";
 import SubmitList from "./components/submit-list";
 import { Suspense } from "react";
 import hello from "../functions/hello";
-import getPresignedUrl from "../functions/upload";
+import getPresignedUrl from "../functions/getPresignedUrl";
 import { triggerJob } from "../functions/triggerJob";
 import { DataTable } from "./submissions/components/data-table";
 import { columns } from "./submissions/components/columns";

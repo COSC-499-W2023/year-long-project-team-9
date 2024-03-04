@@ -11,7 +11,7 @@ export default function VideoPlayer({ videoUrl, filename }: any) {
       {videoUrl ? (
         <>
           <Label htmlFor="video" className=" text-left text-base pt-3">
-            {filename || ""}
+            {filename || "video.mp4"}
           </Label>
           <Separator className="my-3 text-muted-foreground"/>
           <ReactPlayer

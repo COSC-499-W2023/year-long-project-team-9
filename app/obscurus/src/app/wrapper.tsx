@@ -111,7 +111,7 @@ export function Wrapper({
           defaultSize={(defaultLayout && defaultLayout[1]) || 40}
           minSize={35}
         >
-          <div className="max-h-[800px] h-full flex-1 flex-col p-6  md:flex">
+          <div className="max-h-[800px] h-full flex-1 flex-col  md:flex">
             <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
           </div>
         </ResizablePanel>

@@ -10,6 +10,7 @@ import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Filter,
+  ListVideo,
   Search,
   Send,
   SortAscIcon,
@@ -36,6 +37,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { ResponsiveContainer } from "recharts";
+import { DataTable } from "../submissions/components/data-table";
+import { columns } from "../submissions/components/columns";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -48,14 +53,13 @@ export default function SubmitList({
   submissions,
 }: RequestsListProps) {
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useQueryState("search");
   const [upload] = useQueryState("upload");
   const [sort, setSort] = useQueryState("sort");
   const [tab, setTab] = useQueryState("tab");
-
 
   const getAssociatedSubmission = (requestId: string | null) => {
     if (requestId) {
@@ -113,7 +117,7 @@ export default function SubmitList({
     }
   };
 
-  const sortedRequests = requests ? [...requests].sort(sortRequests): requests;
+  const sortedRequests = requests ? [...requests].sort(sortRequests) : requests;
 
   const statuses = ["todo", "processing", "completed", "archived"];
 
@@ -206,8 +210,36 @@ export default function SubmitList({
 
   return requests && submissions ? (
     <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
-      <div className="flex items-center px-4">
-        <h1 className="text-xl font-bold">Submit</h1>
+      <div className="flex justify-between items-center p-2 px-5">
+        <h1 className="text-xl font-semibold">Submit</h1>
+        <Drawer>
+          <span className="sr-only">View Processing</span>
+          <Tooltip>
+            <DrawerTrigger asChild>
+              <Button variant="ghost" size="icon" >
+                <TooltipTrigger asChild>
+                  <ListVideo className="h-4 w-4" />
+                </TooltipTrigger>
+              </Button>
+            </DrawerTrigger>
+            <TooltipContent> All Videos</TooltipContent>
+          </Tooltip>
+          <DrawerContent>
+            <div className="w-full ">
+              <DrawerHeader>
+                <DrawerTitle>All Videos</DrawerTitle>
+                <DrawerDescription>View your uploaded videos</DrawerDescription>
+              </DrawerHeader>
+              <div className="p-4 pb-5">
+                <div className="mt-3 h-[600px] overflow-y-scroll">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <DataTable columns={columns} data={submissions} />
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
       <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <form>
@@ -236,7 +268,7 @@ export default function SubmitList({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
-                    <Filter className="size-3 text-muted-foreground" />
+                    <Filter className="w-4 h-4 " />
                     <span className="sr-only">Filter Results</span>
                   </Button>
                 </DropdownMenuTrigger>
