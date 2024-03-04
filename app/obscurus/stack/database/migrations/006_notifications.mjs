@@ -7,7 +7,7 @@ export async function up(db) {
   await db.schema
     .createTable("notifications")
     .addColumn("notificationId", "varchar", (col) => col.primaryKey())
-    .addColumn("userEmail", "varchar", (col) => col.notNull().onDelete("cascade"))
+    .addColumn("userEmail", "varchar", (col) => col.notNull())
     .addColumn("type", "varchar", (col) => col.notNull())
     .addColumn("creationDate", "timestamp", (col) =>
       col.notNull().defaultTo("now()")
@@ -22,5 +22,5 @@ export async function up(db) {
  * @param {Kysely<any>} db
  */
 export async function down(db) {
-  //await db.schema.dropTable("notifications").execute();
+  await db.schema.dropTable("notifications").execute();
 }
