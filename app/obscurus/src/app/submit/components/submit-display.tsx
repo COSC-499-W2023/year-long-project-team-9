@@ -65,6 +65,10 @@ export default function SubmiDisplay({
 
   console.log("Trigger Job", triggerJob);
 
+  const url = process.env.NEXT_PUBLIC_SERVICE_URL;
+
+  console.log(url)
+
   const [file, setFile] = useState<File | undefined>(undefined);
 
   const [loading, setLoading] = useState(false);
