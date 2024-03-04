@@ -84,10 +84,12 @@ export default function SubmiDisplay({
     if (submissionId && triggerJob) {
       const res = await triggerJob(submissionId);
       console.log(res);
+      setLoading(false)
       return res;
     } else {
       return "Failed to run Job";
     }
+
   };
 
   const [uploading, setUploading] = useState(false);
@@ -124,7 +126,7 @@ export default function SubmiDisplay({
         const src = URL.createObjectURL(file);
         console.log("ObjectURL", src);
         setObjectURL(src);
-        setLoading(false)
+
         return 200;
       } else {
         console.error("Upload failed:", response.statusText);
