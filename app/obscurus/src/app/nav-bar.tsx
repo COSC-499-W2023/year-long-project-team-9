@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import useScroll from "@/components/hooks/scroll";
+import useScroll from "@/app/hooks/scroll";
 //import SignIn from "@/components/SignIn";
 // import { isSignedIn } from "@/auth/authenticationMethods";
 

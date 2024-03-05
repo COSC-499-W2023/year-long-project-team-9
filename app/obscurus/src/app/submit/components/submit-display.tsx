@@ -123,6 +123,8 @@ export default function SubmiDisplay({
     if (submissionId && getPresignedUrl) {
       const presignedUrl = await getPresignedUrl(fileName);
 
+      console.log("Fetched presigned url", presignedUrl)
+
       const response = await fetch(presignedUrl, {
         method: "PUT",
         headers: {

@@ -223,8 +223,8 @@ export default function SubmitList({
                 <DrawerDescription>View your uploaded videos</DrawerDescription>
               </DrawerHeader>
               <div className="p-4 pb-5">
-                <div className="mt-3 h-[600px] overflow-y-scroll">
-                  <ResponsiveContainer width="100%" height="100%">
+                <div className="mt-3 h-[600px] overflow-y-scroll ">
+                  <ResponsiveContainer width="100%" height="100%" >
                     <DataTable columns={columns} data={submissions} />
                   </ResponsiveContainer>
                 </div>
@@ -259,8 +259,8 @@ export default function SubmitList({
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Filter className="w-4 h-4 " />
+                  <Button variant="ghost" size="icon" className="pr-3">
+                    <Filter className="w-4 h-4  " />
                     <span className="sr-only">Filter Results</span>
                   </Button>
                 </DropdownMenuTrigger>

@@ -12,39 +12,30 @@ import { DataTableRowActions } from "./data-table-row-actions"
 import { Submissions } from "@obscurus/database/src/sql.generated"
 
 export const columns: ColumnDef<Submissions>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "submissionId",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Submission ID" />
-    ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("submissionId")}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "title",
     header: ({ column }) => (
@@ -64,17 +55,51 @@ export const columns: ColumnDef<Submissions>[] = [
     },
   },
   {
+    accessorKey: "requesteeEmail",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Requester Email" />
+    ),
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("requesteeEmail")}</div>,
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status")
-      )
+        (status) => status.value === row.getValue("status"))
 
       if (!status) {
-        return "No status"
+        return "Not Started"
+      }
+
+      return (
+        <div className="flex w-[100px] items-center">
+          {status.icon && (
+            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+          )}
+          <span>{status.label}</span>
+        </div>
+      )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: "requesterEmail",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = statuses.find(
+        (status) => status.value === row.getValue("status"))
+
+      if (!status) {
+        return "Not Started"
       }
 
       return (
@@ -112,6 +137,9 @@ export const columns: ColumnDef<Submissions>[] = [
   // },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Link" />
+    ),
     cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ]

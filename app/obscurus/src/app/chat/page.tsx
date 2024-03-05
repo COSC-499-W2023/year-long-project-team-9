@@ -53,23 +53,15 @@ async function Chat() {
   }
 
   return (
-    <Suspense
-      fallback={
-        <div className="w-full h-full flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
-      <ChatWrapper
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        userEmail={userEmail}
-        rooms={rooms}
-        messages={messages}
-        createMessage={createMessage}
-        createMessageNotification={createMessageNotification}
-      />
-    </Suspense>
+    <ChatWrapper
+      defaultLayout={defaultLayout}
+      defaultCollapsed={defaultCollapsed}
+      userEmail={userEmail}
+      rooms={rooms}
+      messages={messages}
+      createMessage={createMessage}
+      createMessageNotification={createMessageNotification}
+    />
   );
 }
 

@@ -8,12 +8,15 @@ import { ArrowBigDownIcon } from "lucide-react";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useRouter } from "next/navigation";
 
 export default function Home(){
+  const router = useRouter();
+
 
   useEffect(() => {
     AOS.init({ once: true });
-
+    router.push("/submit")
   })
 
   return (
