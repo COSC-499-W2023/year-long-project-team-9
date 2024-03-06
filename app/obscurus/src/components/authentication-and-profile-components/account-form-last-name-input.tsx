@@ -6,14 +6,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export interface LastNameInputProps {
+export default function LastNameInput({
+  form,
+  isDisabled,
+  formDescription,
+  fieldName,
+  label,
+}: {
   form: any;
-}
-
-export default function LastNameInput({ form }: LastNameInputProps) {
+  isDisabled: boolean;
+  formDescription: string;
+  fieldName: string;
+  label: string;
+}) {
   return (
     <FormItem>
-      <FormLabel>Last Name</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <Input
         maxLength={100}
         placeholder="Last Name"

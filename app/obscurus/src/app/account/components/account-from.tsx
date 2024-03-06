@@ -75,8 +75,16 @@ export default function AccountForm({ userEmail }: CreateFormProps) {
               "One cannot change their email once an account has been set."
             }
             fieldName="email"
+            label="Email"
+            placeHolder="Email"
           ></EmailInput>
-          <FirstNameInput form={form}></FirstNameInput>
+          <FirstNameInput
+            form={form}
+            isDisabled={false}
+            formDescription={"Other users will see you first name."}
+            fieldName={"firstName"}
+            label={"First Name"}
+          ></FirstNameInput>
           <LastNameInput form={form}></LastNameInput>
 
           <ChangingPasswordInput form={form}></ChangingPasswordInput>

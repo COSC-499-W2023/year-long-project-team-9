@@ -11,19 +11,23 @@ export default function EmailInput({
   isDisabled,
   formDescription,
   fieldName,
+  label,
+  placeHolder,
 }: {
   form: any;
   isDisabled: boolean;
   formDescription: string;
   fieldName: string;
+  label: string;
+  placeHolder: string;
 }) {
   return (
     <FormItem>
-      <FormLabel>Email</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <Input
         disabled={isDisabled}
         maxLength={321}
-        placeholder="Email"
+        placeholder={placeHolder}
         {...form.register(fieldName)}
       ></Input>
       <FormDescription className="text-justify">
