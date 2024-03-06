@@ -84,12 +84,41 @@ export default function AccountForm({ userEmail }: CreateFormProps) {
             formDescription={"Other users will see you first name."}
             fieldName={"firstName"}
             label={"First Name"}
+            placeHolder="First Name"
           ></FirstNameInput>
-          <LastNameInput form={form}></LastNameInput>
+          <LastNameInput
+            form={form}
+            isDisabled={false}
+            formDescription={"Other users will see you last name"}
+            fieldName={"lastName"}
+            label={"Last Name"}
+            placeHolder={"Last Name"}
+          ></LastNameInput>
 
           <ChangingPasswordInput form={form}></ChangingPasswordInput>
           {form.getValues("changingPassword") === true ? (
-            <PasswordInput form={form} isDisabled={false}></PasswordInput>
+            <>
+              <PasswordInput
+                form={form}
+                isDisabled={false}
+                formDescription={
+                  "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
+                }
+                fieldName={"password"}
+                label={"Password"}
+                placeHolder={"Password"}
+              ></PasswordInput>
+              <PasswordInput
+                form={form}
+                isDisabled={false}
+                formDescription={
+                  "Confirm password must match the password above."
+                }
+                fieldName={"confirmPassword"}
+                label={"Confirm Password"}
+                placeHolder={"Confirm Password"}
+              ></PasswordInput>
+            </>
           ) : (
             <></>
           )}

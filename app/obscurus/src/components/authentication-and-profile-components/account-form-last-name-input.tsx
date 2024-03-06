@@ -12,28 +12,28 @@ export default function LastNameInput({
   formDescription,
   fieldName,
   label,
+  placeHolder,
 }: {
   form: any;
   isDisabled: boolean;
   formDescription: string;
   fieldName: string;
   label: string;
+  placeHolder: string;
 }) {
   return (
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <Input
         maxLength={100}
-        placeholder="Last Name"
-        {...form.register("lastName")}
+        placeholder={placeHolder}
+        {...form.register(fieldName)}
       ></Input>
       <FormDescription className="text-justify">
-        Other users will see you last name.
+        {formDescription}
       </FormDescription>
-      {form.getFieldState("lastName").error && (
-        <FormMessage>
-          {form.getFieldState("lastName").error.message}
-        </FormMessage>
+      {form.getFieldState(fieldName).error && (
+        <FormMessage>{form.getFieldState(fieldName).error.message}</FormMessage>
       )}
     </FormItem>
   );

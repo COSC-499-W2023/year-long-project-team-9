@@ -12,12 +12,14 @@ export default function FirstNameInput({
   formDescription,
   fieldName,
   label,
+  placeHolder,
 }: {
   form: any;
   isDisabled: boolean;
   formDescription: string;
   fieldName: string;
   label: string;
+  placeHolder: string;
 }) {
   return (
     <FormItem>
@@ -25,7 +27,7 @@ export default function FirstNameInput({
       <Input
         disabled={isDisabled}
         maxLength={101}
-        placeholder="First Name"
+        placeholder={placeHolder}
         {...form.register(fieldName)}
       ></Input>
 
