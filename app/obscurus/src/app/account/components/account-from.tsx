@@ -71,10 +71,10 @@ export default function AccountForm({ userEmail }: CreateFormProps) {
           <EmailInput
             form={form}
             isDisabled={true}
-            maxLength={320}
             formDescription={
               "One cannot change their email once an account has been set."
             }
+            fieldName="email"
           ></EmailInput>
           <FirstNameInput form={form}></FirstNameInput>
           <LastNameInput form={form}></LastNameInput>

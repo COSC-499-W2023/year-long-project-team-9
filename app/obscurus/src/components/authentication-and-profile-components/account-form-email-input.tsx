@@ -6,19 +6,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export interface EmailInputProps {
-  form: any;
-  isDisabled: boolean;
-  maxLength: number;
-  formDescription: string;
-}
-
 export default function EmailInput({
   form,
   isDisabled,
-
   formDescription,
-}: EmailInputProps) {
+  fieldName,
+}: {
+  form: any;
+  isDisabled: boolean;
+  formDescription: string;
+  fieldName: string;
+}) {
   return (
     <FormItem>
       <FormLabel>Email</FormLabel>
@@ -26,13 +24,13 @@ export default function EmailInput({
         disabled={isDisabled}
         maxLength={321}
         placeholder="Email"
-        {...form.register("email")}
+        {...form.register(fieldName)}
       ></Input>
       <FormDescription className="text-justify">
         {formDescription}
       </FormDescription>
-      {form.getFieldState("email").error && (
-        <FormMessage>{form.getFieldState("email").error.message}</FormMessage>
+      {form.getFieldState(fieldName).error && (
+        <FormMessage>{form.getFieldState(fieldName).error.message}</FormMessage>
       )}
     </FormItem>
   );
