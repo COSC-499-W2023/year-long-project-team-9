@@ -17,10 +17,6 @@ async function Account() {
       : undefined;
   const userEmail = await getEmail();
   const userData: Users[] = await getUserViaEmail(userEmail);
-  // You will need to do a database call and get the info of the user
-  // TODO
-  // Will be used for current password
-  const password = "Password1@";
 
   return (
     <ProfileWrapper
