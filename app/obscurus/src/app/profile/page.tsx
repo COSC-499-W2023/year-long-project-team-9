@@ -1,11 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
-import Wrapper from "@/app/wrapper";
 import { getEmail } from "../functions/authenticationMethods";
-import AccountForm from "./components/profile-from";
-import ProfileForm from "./components/profile-from";
 import { Users } from "@obscurus/database/src/sql.generated";
 import { getUserViaEmail } from "../functions/getUserData";
+import ProfileWrapper from "./components/profile-wapper";
 
 async function Account() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -25,12 +23,10 @@ async function Account() {
   const password = "Password1@";
 
   return (
-    <Wrapper
+    <ProfileWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<ProfileForm userData={userData}></ProfileForm>}
-      secondPanel={<>{userData[0].email}</>}
+      userData={userData}
     />
   );
 }

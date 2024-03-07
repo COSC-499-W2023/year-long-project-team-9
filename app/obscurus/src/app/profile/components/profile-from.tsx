@@ -21,10 +21,6 @@ import LastNameInput from "@/components/authentication-and-profile-components/ac
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
 import ProfileHeader from "./profile-header";
 import { Users } from "@obscurus/database/src/sql.generated";
-
-const profileImageMaxSize = 1024 * 1024 * 10;
-const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
-
 // TODO: better error messages, be below for an example
 
 const profileFormSchema = z.object({
@@ -35,13 +31,13 @@ const profileFormSchema = z.object({
     .max(100),
   email: z.string(),
   lastName: z.string().trim().min(1).max(100),
-  // profileImage: z.instanceof(File),
+  profileImageName: z.string(),
 });
 interface CreateFormProps {
   userData: Users[];
 }
 
-export default function ProfileForm({ userData }: CreateFormProps) {
+export default function ProfileForm({ userData }: { userData: Users[] }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
