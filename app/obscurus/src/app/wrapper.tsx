@@ -47,7 +47,7 @@ export function Wrapper({
     "/submit": "Submit",
     "/chat": "Chat",
     "/request/create": "Request",
-    "/account": "Account",
+    "/profile": "Profile",
   };
 
   const getLinkVariant = (title: string) => {
@@ -110,10 +110,10 @@ export function Wrapper({
             isCollapsed={isCollapsed}
             links={[
               {
-                title: "Account",
+                title: "Profile",
                 icon: User,
-                variant: getLinkVariant("Account"),
-                href: "/account",
+                variant: getLinkVariant("profile"),
+                href: "/profile",
               },
             ]}
           />
@@ -129,7 +129,10 @@ export function Wrapper({
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={(defaultLayout && defaultLayout[2]) || 50} minSize={20}>
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[2]) || 50}
+          minSize={20}
+        >
           <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>

@@ -13,59 +13,52 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import AccountHeader from "./account-header";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ProfileImageInput from "./account-form-profile-image-input";
-import AccountCancel from "./account-form-cancel";
+import AccountCancel from "./profile-form-cancel";
 import FirstNameInput from "@/components/authentication-and-profile-components/account-form-first-name-input";
 import LastNameInput from "@/components/authentication-and-profile-components/account-form-last-name-input";
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
-import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
-import ChangingPasswordInput from "./create-form-video-processing-input";
+import ProfileHeader from "./profile-header";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 const profileImageMaxSize = 1024 * 1024 * 10;
 const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
 // TODO: better error messages, be below for an example
 
-const accountFormSchema = z
-  .object({
-    firstName: z
-      .string()
-      .trim()
-      .min(1, { message: "First name must be at least on character." })
-      .max(100),
-    email: z.string(),
-    lastName: z.string().trim().min(1).max(100),
-    password: z.string(),
-    changingPassword: z.boolean(),
-    confirmPassword: z.string(),
-    // profileImage: z.instanceof(File),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password does not match with the password above.",
-    path: ["confirmPassword"],
-  });
-
+const profileFormSchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(1, { message: "First name must be at least on character." })
+    .max(100),
+  email: z.string(),
+  lastName: z.string().trim().min(1).max(100),
+  // profileImage: z.instanceof(File),
+});
 interface CreateFormProps {
-  userEmail: string;
+  userData: Users[];
 }
 
-export default function AccountForm({ userEmail }: CreateFormProps) {
-  const form = useForm<z.infer<typeof accountFormSchema>>({
-    resolver: zodResolver(accountFormSchema),
-    defaultValues: { email: userEmail, changingPassword: false },
+export default function ProfileForm({ userData }: CreateFormProps) {
+  const form = useForm<z.infer<typeof profileFormSchema>>({
+    resolver: zodResolver(profileFormSchema),
+    defaultValues: {
+      email: userData[0].email,
+      firstName: userData[0].givenName,
+      lastName: userData[0].familyName,
+    },
   });
 
-  function onSubmit(values: z.infer<typeof accountFormSchema>) {
+  function onSubmit(values: z.infer<typeof profileFormSchema>) {
     console.log(values);
   }
   // TODO: Work in progress
   return (
     <div className="overflow-auto">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
-      <AccountHeader />
+      <ProfileHeader />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <EmailInput
@@ -89,39 +82,11 @@ export default function AccountForm({ userEmail }: CreateFormProps) {
           <LastNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you last name"}
+            formDescription={"Other users will see you last name."}
             fieldName={"lastName"}
             label={"Last Name"}
             placeHolder={"Last Name"}
           ></LastNameInput>
-
-          <ChangingPasswordInput form={form}></ChangingPasswordInput>
-          {form.getValues("changingPassword") === true ? (
-            <>
-              <PasswordInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
-                }
-                fieldName={"password"}
-                label={"Password"}
-                placeHolder={"Password"}
-              ></PasswordInput>
-              <PasswordInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Confirm password must match the password above."
-                }
-                fieldName={"confirmPassword"}
-                label={"Confirm Password"}
-                placeHolder={"Confirm Password"}
-              ></PasswordInput>
-            </>
-          ) : (
-            <></>
-          )}
           {/* TODO: ProfileImageInput */}
           <ProfileImageInput form={form}></ProfileImageInput>
           <div className="text-right gap-2">
@@ -131,7 +96,7 @@ export default function AccountForm({ userEmail }: CreateFormProps) {
               variant={"default"}
               className="justify-self-start"
             >
-              Update
+              Save
             </Button>
           </div>
         </form>

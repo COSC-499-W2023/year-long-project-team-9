@@ -14,15 +14,11 @@ export default function ProfileImageInput({ form }: any) {
     <FormItem>
       <FormLabel>Profile Image</FormLabel>
       <div className="grid w-full max-w-sm items-center gap-1.5 ">
-        <Input
-          id="picture"
-          type="file"
-          className="hover:text-accent-foreground"
-        />
+        <Input id="picture" type="file" className="w-full" />
       </div>
       <FormDescription className="text-justify">
-        Other users you decided to interact with will see you profile image.
-        Profile picture must be a .jpeg, .png, or .jpg.
+        Other users will see you profile image. Profile picture must be a .jpeg,
+        .png, or .jpg; and no larger than 10 MB.
       </FormDescription>
       {form.getFieldState("profileImage").error && (
         <FormMessage>
