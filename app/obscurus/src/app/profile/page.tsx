@@ -1,8 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
-import Wrapper from "@/app/wrapper";
 import { getEmail } from "../functions/authenticationMethods";
-import AccountForm from "./components/account-from";
+import { Users } from "@obscurus/database/src/sql.generated";
+import { getUserViaEmail } from "../functions/getUserData";
+import ProfileWrapper from "./components/profile-wapper";
 
 async function Account() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -14,19 +15,14 @@ async function Account() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const email = await getEmail();
-  // You will need to do a database call and get the info of the user
-  // TODO
-  // Will be used for current password
-  const password = "Password1@";
+  const userEmail = await getEmail();
+  const userData: Users[] = await getUserViaEmail(userEmail);
 
   return (
-    <Wrapper
+    <ProfileWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={<AccountForm userEmail={email}></AccountForm>}
-      secondPanel={<>{email}</>}
+      userData={userData}
     />
   );
 }

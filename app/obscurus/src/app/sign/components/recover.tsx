@@ -13,12 +13,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
-
-const profileImageMaxSize = 1024 * 1024 * 10;
-const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
 // TODO: better error messages, be below for an example
 
@@ -58,7 +54,24 @@ export default function RecoverPasswordForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Password */}
-          <PasswordInput form={form} isDisabled={false}></PasswordInput>
+          <PasswordInput
+            form={form}
+            isDisabled={false}
+            formDescription={
+              "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
+            }
+            fieldName={"password"}
+            label={"Password"}
+            placeHolder={"Password"}
+          ></PasswordInput>
+          <PasswordInput
+            form={form}
+            isDisabled={false}
+            formDescription={"Confirm password must match the password above."}
+            fieldName={"confirmPassword"}
+            label={"Confirm Password"}
+            placeHolder={"Confirm Password"}
+          ></PasswordInput>
           <div className="text-right">
             <Button
               type="submit"
