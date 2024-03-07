@@ -112,7 +112,7 @@ export function Wrapper({
               {
                 title: "Profile",
                 icon: User,
-                variant: getLinkVariant("profile"),
+                variant: getLinkVariant("Profile"),
                 href: "/profile",
               },
             ]}
