@@ -1,4 +1,4 @@
-"use client"
+"use client";
 {
   /*IMPORTS*/
 }
@@ -33,13 +33,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 //     props: {}, // nothing yet
 //   };
 // }
-
+// @d
 {
   /*FUNCTIONS*/
 }
-{
-  /*Create a type to determine the data of the form*/
-}
+/**
+ * @deprecated
+ */
 export interface formSchema {
   title: string;
   clients: { value: string }[];
@@ -52,6 +52,10 @@ export interface formSchema {
 {
   /*Create a function to form the CreateRequest page*/
 }
+
+/**
+ * @deprecated
+ */
 const CreateRequest = () => {
   {
     /*Create a router object to handle cancelling and submitting the form*/
