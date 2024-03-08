@@ -57,17 +57,50 @@ export default function CreateForm({
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>
           <div className="flex flex-col-2 float-right">
-            <CreateCancel></CreateCancel>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  type="button"
+                  variant={"ghost"}
+                  className="justify-self-start mr-2"
+                  disabled={form.formState?.isSubmitting}
+                >
+                  Cancel
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your inputs.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <a href="/request/create">
+                    <Button>Continue</Button>
+                  </a>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
 
             {/* The alert will only display when the form is valid */}
             <AlertDialog>
               <div>
                 {form.formState.isValid === true ? (
                   <AlertDialogTrigger asChild>
-                    <Button type="button">Submit</Button>
+                    <Button
+                      type="button"
+                      disabled={form.formState.isSubmitting}
+                    >
+                      Submit
+                    </Button>
                   </AlertDialogTrigger>
                 ) : (
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit" disabled={form.formState.isSubmitting}>
+                    Submit
+                  </Button>
                 )}
               </div>
               <AlertDialogContent>
