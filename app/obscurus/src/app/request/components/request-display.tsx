@@ -15,6 +15,7 @@ import {
   ListVideo,
   FileText,
   ChevronRightIcon,
+  XSquare,
 } from "lucide-react";
 import { format } from "date-fns";
 import { RequestDisplayAlert } from "./request-display-alert";
@@ -96,19 +97,17 @@ export default function RequestDisplay({
               <div className="ml-auto">
                 <Tooltip>
                   {showVideoList?.toLocaleLowerCase() === "true" ? (
-                    <div>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setShowVideoList("false")}
-                        >
-                          <FileText className="h-4 w-4" />
-                          <span className="sr-only">Show request</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Show request</TooltipContent>{" "}
-                    </div>
+                    <Button
+                      variant={"destructive"}
+                      onClick={() => setShowVideoList("false")}
+                    >
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <XSquare className="w-4 h-4 " />
+                        </TooltipTrigger>
+                        <TooltipContent>Hide Video List</TooltipContent>
+                      </Tooltip>
+                    </Button>
                   ) : (
                     <div>
                       <TooltipTrigger asChild>
