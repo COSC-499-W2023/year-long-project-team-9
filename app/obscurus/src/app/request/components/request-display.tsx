@@ -62,7 +62,7 @@ export default function RequestDisplay({
     : null;
 
   const [showVideoList, setShowVideoList] = useQueryState("showVideoList");
-
+  console.log(selected?.description);
   console.log("Selected requestId to display", requestId);
   console.log(
     submissions.filter((value) => value.requestId === selected?.requestId)
