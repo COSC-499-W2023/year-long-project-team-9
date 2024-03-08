@@ -37,13 +37,13 @@ interface CreateFormProps {
   userData: Users[];
 }
 
-export default function ProfileForm({ userData }: { userData: Users[] }) {
+export default function ProfileForm({ userData }: { userData: Users }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      email: userData[0].email,
-      firstName: userData[0].givenName,
-      lastName: userData[0].familyName,
+      email: userData.email,
+      firstName: userData.givenName,
+      lastName: userData.familyName,
     },
   });
 

@@ -16,7 +16,8 @@ async function Account() {
       ? JSON.parse(collapsed.value)
       : undefined;
   const userEmail = await getEmail();
-  const userData: Users[] = await getUserViaEmail(userEmail);
+  const getUserInformation: Users[] = await getUserViaEmail(userEmail);
+  const userData: Users = getUserInformation[0];
 
   return (
     <ProfileWrapper
