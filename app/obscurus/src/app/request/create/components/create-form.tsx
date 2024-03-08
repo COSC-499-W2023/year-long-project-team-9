@@ -44,7 +44,7 @@ export default function CreateForm({
 }: {
   form: any;
   onSubmit: Function;
-  userData: Users[];
+  userData: Users;
 }) {
   return (
     <div className="overflow-auto">
@@ -52,7 +52,7 @@ export default function CreateForm({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <TitleInput form={form}></TitleInput>
-          <ClientEmail form={form} email={userData[0].email}></ClientEmail>
+          <ClientEmail form={form} email={userData.email}></ClientEmail>
           <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
           <VideoProcessingInput form={form}></VideoProcessingInput>
           <DescriptionInput form={form}></DescriptionInput>

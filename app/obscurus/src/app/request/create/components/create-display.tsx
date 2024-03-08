@@ -29,7 +29,7 @@ export default function CreateDisplay({
   userData,
 }: {
   form: any;
-  userData: Users[];
+  userData: Users;
 }) {
   let today = new Date();
   return (
@@ -74,7 +74,7 @@ export default function CreateDisplay({
           <Avatar>
             <AvatarImage />
             <AvatarFallback>
-              {userData[0].email
+              {userData.email
                 .split(" ")
                 .map((chunk) => chunk[0])
                 .join("")}
@@ -85,8 +85,8 @@ export default function CreateDisplay({
               {form.watch("title") === "" ? "Title" : form.watch("title")}
             </div>
             <div className="text-xs line-clamp-1">
-              From: {userData[0].givenName} {userData[0].familyName} (
-              {userData[0].email})
+              From: {userData.givenName} {userData.familyName} ({userData.email}
+              )
             </div>
             <div className="text-xs">
               <HoverCard>
