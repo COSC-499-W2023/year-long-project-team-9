@@ -362,15 +362,19 @@ export async function up(db) {
  */
 export async function down(db) {
   // Order matters
+  const deleteFromConnections = await db.deleteFrom("connections").execute();
+  const deleteFromNotifications = await db
+    .deleteFrom("notifications")
+    .execute();
   const deleteFromMessages = await db.deleteFrom("messages").execute();
   const deleteFromRoom = await db.deleteFrom("rooms").execute();
   const deleteFromSubmissions = await db.deleteFrom("submissions").execute();
   const deleteFromRequests = await db.deleteFrom("requests").execute();
   const deleteFromUsers = await db.deleteFrom("users").execute();
 
-  deleteFromUsers()
-  deleteFromRequests()
-  deleteFromSubmissions()
-  deleteFromRoom()
-  deleteFromMessages()
+  deleteFromUsers();
+  deleteFromRequests();
+  deleteFromSubmissions();
+  deleteFromRoom();
+  deleteFromMessages();
 }

@@ -81,6 +81,7 @@ export interface Notifications {
   notificationId: string;
   userEmail: string;
   type: string;
+  referenceId: string;
   creationDate: Date;
   content: string;
   isRead: boolean;
