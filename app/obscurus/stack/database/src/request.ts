@@ -38,17 +38,17 @@ export async function createRequest(data: any) {
           requestId: requestID,
         })
         .execute();
-      const insertNotifications = await SQL.DB.insertInto("notifications")
-        .values({
-          notificationId: uuidv7(),
-          userEmail: validData.data.clientEmail[i].email,
-          type: "Request",
-          creationDate: new Date(),
-          content: `New request from ${validData.data.userEmail}`,
-          isRead: false,
-          isTrashed: false,
-        })
-        .execute();
+      // const insertNotifications = await SQL.DB.insertInto("notifications")
+      //   .values({
+      //     notificationId: uuidv7(),
+      //     userEmail: validData.data.clientEmail[i].email,
+      //     type: "Request",
+      //     creationDate: new Date(),
+      //     content: `New request from ${validData.data.userEmail}`,
+      //     isRead: false,
+      //     isTrashed: false,
+      //   })
+      //   .execute();
       const roomOne = await SQL.DB.selectFrom("rooms")
         .selectAll()
         .where("participant1Email", "=", validData.data.userEmail)
