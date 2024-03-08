@@ -22,7 +22,7 @@ export async function createRequest(data: any) {
         description: validData.data.description,
         blurred: validData.data.videoProcessing,
         creationDate: new Date(),
-        dueDate: new Date(),
+        dueDate: validData.data.dueDate,
       })
       .execute();
     for (let i = 0; i < validData.data.clientEmail.length; i++) {
