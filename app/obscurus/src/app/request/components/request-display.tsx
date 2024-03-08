@@ -47,7 +47,7 @@ export default function RequestDisplay({
     counter?: string | null[];
   };
   submissions: Submissions[];
-  userData: Users[];
+  userData: Users;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
 
@@ -134,7 +134,7 @@ export default function RequestDisplay({
               <Avatar>
                 <AvatarImage />
                 <AvatarFallback>
-                  {userData[0].email
+                  {userData.email
                     .split(" ")
                     .map((chunk) => chunk[0])
                     .join("")}
@@ -143,8 +143,8 @@ export default function RequestDisplay({
               <div className="flex flex-col items-start mx-4 break-all gap-1">
                 <div className="text-sm">{selected.requestTitle}</div>
                 <div className="text-xs line-clamp-1">
-                  From: {userData[0].givenName} {userData[0].familyName} (
-                  {userData[0].email})
+                  From: {userData.givenName} {userData.familyName} (
+                  {userData.email})
                 </div>
                 <div className="text-xs">
                   <HoverCard>
