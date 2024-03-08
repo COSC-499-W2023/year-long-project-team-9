@@ -10,6 +10,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 import { Button } from "@/components/ui/button";
+/**
+ * @deprecated
+ */
 export default function CreateCancel(form: any) {
   return (
     <AlertDialog>
