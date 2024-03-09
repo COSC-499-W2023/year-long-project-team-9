@@ -22,6 +22,8 @@ import {
   ReactNode,
   PromiseLikeOfReactNode,
   Key,
+  useEffect,
+  useState,
 } from "react";
 
 export default function CreateDisplay({
@@ -31,7 +33,14 @@ export default function CreateDisplay({
   form: any;
   userData: Users;
 }) {
-  let today = new Date();
+  const [currentDate, setCurrentDate] = useState("");
+  useEffect(() => {
+    // Capture the current date on the client side
+    const now = new Date();
+    // Format the date using date-fns with the 'PPpp' format
+    const formattedDate = format(now, "PPpp");
+    setCurrentDate(formattedDate);
+  }, []);
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
@@ -133,7 +142,9 @@ export default function CreateDisplay({
                 : format(form.watch("dueDate"), "PPpp")}
             </div>
           </div>
-          <div className="ml-auto text-xs text-muted-foreground">{"date"}</div>
+          <div className="ml-auto text-xs text-muted-foreground">
+            {currentDate}
+          </div>
         </div>
         <Separator />
         <ScrollArea>
