@@ -26,9 +26,10 @@ export async function createRequest(data: any) {
       })
       .execute();
     for (let i = 0; i < validData.data.clientEmail.length; i++) {
+      const newSubmissionID = uuidv7();
       const insertSubmission = await SQL.DB.insertInto("submissions")
         .values({
-          submissionId: uuidv7(),
+          submissionId: newSubmissionID,
           requesteeEmail: validData.data.clientEmail[i].email,
           status: "TODO",
           title: "null",
@@ -38,17 +39,18 @@ export async function createRequest(data: any) {
           requestId: requestID,
         })
         .execute();
-      // const insertNotifications = await SQL.DB.insertInto("notifications")
-      //   .values({
-      //     notificationId: uuidv7(),
-      //     userEmail: validData.data.clientEmail[i].email,
-      //     type: "Request",
-      //     creationDate: new Date(),
-      //     content: `New request from ${validData.data.userEmail}`,
-      //     isRead: false,
-      //     isTrashed: false,
-      //   })
-      //   .execute();
+      const insertNotifications = await SQL.DB.insertInto("notifications")
+        .values({
+          notificationId: uuidv7(),
+          userEmail: validData.data.clientEmail[i].email,
+          type: "REQUEST",
+          referenceId: newSubmissionID,
+          creationDate: new Date(),
+          content: `New request from ${validData.data.userEmail}`,
+          isRead: false,
+          isTrashed: false,
+        })
+        .execute();
       const roomOne = await SQL.DB.selectFrom("rooms")
         .selectAll()
         .where("participant1Email", "=", validData.data.userEmail)
@@ -65,10 +67,6 @@ export async function createRequest(data: any) {
             roomId: uuidv7(),
             participant1Email: validData.data.userEmail,
             participant2Email: validData.data.clientEmail[i].email,
-            participant1RoomGivenName: null,
-            participant1RoomFamilyName: null,
-            participant2RoomGivenName: null,
-            participant2RoomFamilyName: null,
             isActive: false,
             creationDate: new Date(),
           })

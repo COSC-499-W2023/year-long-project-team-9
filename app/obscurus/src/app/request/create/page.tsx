@@ -18,8 +18,7 @@ async function Create() {
       ? JSON.parse(collapsed.value)
       : undefined;
   const userEmail = await getEmail();
-  const getUserInformation: Users[] = await getUserViaEmail(userEmail);
-  const userData: Users = getUserInformation[0];
+  const userData: Users = await getUserViaEmail(userEmail);
   return (
     <CreaterWrapper
       defaultLayout={defaultLayout}
