@@ -5,7 +5,15 @@ import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { usePathname, useRouter } from "next/navigation";
-import { Filter, ListVideo, Search, XCircle } from "lucide-react";
+import {
+  Filter,
+  List,
+  ListVideo,
+  Search,
+  SortAscIcon,
+  SortDescIcon,
+  XCircle,
+} from "lucide-react";
 import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
@@ -61,7 +69,7 @@ export default function SubmitList({
   };
 
   useEffect(() => {
-    requests && !tab && setTab("todo");
+    requests && !tab && setTab("all");
     if (!submissionId) {
       const submission = getAssociatedSubmission(
         requests && requests[0].requestId
@@ -109,9 +117,9 @@ export default function SubmitList({
     }
   };
 
-  const sortedRequests = requests ? [...requests].sort(sortRequests) : requests;
+  const sortedRequests = requests || tab !== "all" ? [...requests].sort(sortRequests) : requests;
 
-  const statuses = ["todo", "processing", "completed", "archived"];
+  const statuses = ["all", "todo", "processing", "completed", "archived"];
 
   const tabsTriggers = statuses.map((status) => (
     <TabsTrigger key={status} value={status} className="text-xs">
@@ -131,7 +139,7 @@ export default function SubmitList({
         request.requestTitle.toLowerCase().includes(searchTerm) ||
         request.requesterEmail.toLowerCase().includes(searchTerm);
 
-      return matchesStatus && matchesSearch;
+        return tab === "all" ? matchesSearch : matchesStatus && matchesSearch;
     });
 
     return (
@@ -201,7 +209,7 @@ export default function SubmitList({
   });
 
   return requests && submissions ? (
-    <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
+    <Tabs defaultValue="all" className="h-screen overflow-scroll" onValueChange={setTab}>
       <div className="flex justify-between items-center p-2 px-5">
         <h1 className="text-xl font-semibold">Submit</h1>
         <Drawer>
@@ -224,7 +232,7 @@ export default function SubmitList({
               </DrawerHeader>
               <div className="p-4 pb-5">
                 <div className="mt-3 h-[600px] overflow-y-scroll ">
-                  <ResponsiveContainer width="100%" height="100%" >
+                  <ResponsiveContainer width="100%" height="100%">
                     <DataTable columns={columns} data={submissions} />
                   </ResponsiveContainer>
                 </div>
@@ -245,7 +253,7 @@ export default function SubmitList({
             />
             {search && (
               <XCircle
-                className="absolute right-2 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                className="absolute right-4 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
                 onClick={clearSearch}
               />
             )}
@@ -256,27 +264,25 @@ export default function SubmitList({
         <TabsList>{tabsTriggers}</TabsList>
         <Tooltip>
           <TooltipTrigger asChild>
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="pr-3">
-                    <Filter className="w-4 h-4  " />
-                    <span className="sr-only">Filter Results</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setSort("newest")}>
-                    Newest
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSort("oldest")}>
-                    Oldest
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSort("due")}>
-                    Due
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="mr-2">
+                  <SortDescIcon className="w-4 h-4  " />
+                  <span className="sr-only">Filter Results</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setSort("newest")}>
+                  Newest
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSort("oldest")}>
+                  Oldest
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSort("due")}>
+                  Due
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </TooltipTrigger>
           <TooltipContent>Filter</TooltipContent>
         </Tooltip>

@@ -24,6 +24,7 @@ import { format } from "date-fns";
 import VideoDisplay from "./video-display";
 import Webcam from "react-webcam";
 import VideoPlayer from "../video-player";
+import { useRouter } from "next/navigation";
 
 export default function SubmiDisplay({
   requests,
@@ -31,6 +32,7 @@ export default function SubmiDisplay({
   submissions,
   getPresignedUrl,
   triggerJob,
+  updateStatus,
 }: {
   requests: Requests[];
   searchParams?: {
@@ -39,6 +41,7 @@ export default function SubmiDisplay({
   submissions: Submissions[];
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   triggerJob?: (submissionId: string) => Promise<string>;
+  updateStatus?: (status: string, submissionId: string) => Promise<string>;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
@@ -87,11 +90,12 @@ export default function SubmiDisplay({
   };
 
   const handleProcessVideo = async () => {
-
     setLoading(true);
     if (triggerJob && selected) {
-      const submissionId = getAssociatedSubmission(selected.requestId)?.submissionId
-      const res = await triggerJob(submissionId+ ".mp4" || "world.mp4");
+      const submissionId = getAssociatedSubmission(
+        selected.requestId
+      )?.submissionId;
+      const res = await triggerJob(submissionId + ".mp4" || "world.mp4");
       console.log(res);
       setLoading(false);
       return res;
@@ -100,9 +104,7 @@ export default function SubmiDisplay({
     }
   };
 
-  const sendToService = async(e:any) => {
-
-  }
+  const sendToService = async (e: any) => {};
 
   const [uploading, setUploading] = useState(false);
   const [objectURL, setObjectURL] = useState<string | null>(null);
@@ -123,7 +125,7 @@ export default function SubmiDisplay({
     if (submissionId && getPresignedUrl) {
       const presignedUrl = await getPresignedUrl(fileName);
 
-      console.log("Fetched presigned url", presignedUrl)
+      console.log("Fetched presigned url", presignedUrl);
 
       const response = await fetch(presignedUrl, {
         method: "PUT",
@@ -213,6 +215,21 @@ export default function SubmiDisplay({
     setObjectURL(null);
   };
 
+  const router = useRouter()
+
+  const handleArchive = (requestId: string) => {
+    console.log("UpdateStatus", updateStatus)
+    if (updateStatus && requestId) {
+      const submission =  getAssociatedSubmission(requestId)
+      if (submission && submission.status !== "ARCHIVED") {
+        updateStatus("ARCHIVED", submission.submissionId)
+        return `Status updated to ${submission.status}`
+      }
+    }
+    return `Failed to archive submission`
+
+  };
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
@@ -232,7 +249,12 @@ export default function SubmiDisplay({
             <div className="flex">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" disabled={!selected}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={!selected}
+                    onClick={() => handleArchive(selected?.requestId || "")}
+                  >
                     <Archive className="h-4 w-4" />
                     <span className="sr-only">Archive</span>
                   </Button>
@@ -308,7 +330,7 @@ export default function SubmiDisplay({
                               />
                             </div>
 
-                            <div className="flex w-full mr-4 mt-4 justify-between">
+                            <div className="flex w-full mr-10 mt-4 justify-between">
                               <Button onClick={reset} variant={"outline"}>
                                 Choose Another File
                               </Button>
@@ -481,11 +503,10 @@ export default function SubmiDisplay({
               <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
                 {selected?.description}
               </div>
-              <Separator className="mt-auto" />
               <div className="mb-10 mr-10 flex justify-end w-full">
                 <Button
                   size="lg"
-                  className="mx-3"
+                  className="mr-16 mb-16"
                   onClick={() => setUpload("true")}
                 >
                   <p className="font-semibold">Upload</p>

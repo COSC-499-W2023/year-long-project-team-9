@@ -12,6 +12,7 @@ import getPresignedUrl from "../functions/getPresignedUrl";
 import { triggerJob } from "../functions/triggerJob";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
+import updateStatus from "../functions/updateStatus";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -26,9 +27,10 @@ async function Submit() {
   const submissions: Submissions[] = await getSubmissions();
   const requests: Requests[] = await getRequests();
 
-  console.log("world", triggerJob);
-
+  console.log("triggerJob", triggerJob);
+  console.log("updateStatus", updateStatus);
   console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
+
   return (
     <>
       <Wrapper
@@ -44,6 +46,7 @@ async function Submit() {
             submissions={submissions}
             getPresignedUrl={getPresignedUrl}
             triggerJob={triggerJob}
+            updateStatus={updateStatus}
           />
         }
       />
