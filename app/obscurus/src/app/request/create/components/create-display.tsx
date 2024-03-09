@@ -154,7 +154,7 @@ export default function CreateDisplay({
                 ? "description"
                 : form.getValues("description")}
             </p> */}
-            <div className="text-sm">
+            <div className="overflow-auto text-sm">
               {form.watch("description") ? (
                 form.getValues("description") === "" ? (
                   "Description"

@@ -158,7 +158,7 @@ export default function RequestDisplay({
                     </HoverCardTrigger>
                     <HoverCardContent>
                       <div>To: </div>
-                      <div className="ml-1">
+                      <div className="overflow-auto ml-1">
                         {submissions
                           .filter(
                             (value) => value.requestId === selected?.requestId
@@ -180,7 +180,7 @@ export default function RequestDisplay({
               </div>
             </div>
             <Separator />
-            <ScrollArea>
+            <div className="overflow-auto">
               {showVideoList?.toLocaleLowerCase() === "true" ? (
                 <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
                   <Table className="rounded-lg border">
@@ -221,11 +221,11 @@ export default function RequestDisplay({
                   </Table>
                 </div>
               ) : (
-                <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
+                <div className="overflow-y-auto h-full flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
                   {selected.description}
                 </div>
               )}
-            </ScrollArea>
+            </div>
           </div>
         </div>
       ) : (
