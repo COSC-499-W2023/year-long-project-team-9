@@ -721,7 +721,8 @@ export async function up(db) {
           "WfgmXE9IhA2vUvADnvy9RqmWaykKSLZwcc487KQA090kSiNOAiNO2japFzcfhoXfi9EFAl3jib0Jrm9O3kBrbzO7aVA69pMb9KtF8PhQFzVXTuTrs24zFAhjzHJG8zXBIMID2m6u10iZBHnPu5GfSmLhvJLPPmTd0jJg4rQMsC811VE0WzPV2F7WKrKkfBI6awIjatWZyGWCGOIOl1jWnkuTkDA480DDJtO1BTP0ffFQiGGnEWd9lzxridsISzjaCNMLhb0AMgLvafvi3eoOCvE1UpmEL8MhvjbCNyr29MBq2A3ztriZ@example.com",
         messageId: "c23767c5-2a89-4457-be62-dfa032204f23",
         creationDate: new Date("2024.02.3 00:44:12"),
-        messageContent: "email",
+        messageContent:
+          "Ì¡Í“Í…ÌžIÍÌ—Ì˜Ì¦nÍ‡Í‡Í™vÌ®Ì«okÌ²Ì«Ì™ÍˆiÌ–Í™Ì­Ì¹Ì ÌžnÌ¡Ì»Ì®Ì£ÌºgÌ²ÍˆÍ™Ì­Í™Ì¬ÍŽ Ì°tÍ”Ì¦hÌžÌ²eÌ¢Ì¤ ÍÌ¬Ì²Í–fÌ´Ì˜Í•Ì£eÍ€Í–eÌ£Ì¥Ì©lÍ–Í”ÍšiÍ Í“ÍšÌ¦nÍ–ÍÌ—Í“Ì³Ì®g ",
         isRead: false,
       },
     ])
