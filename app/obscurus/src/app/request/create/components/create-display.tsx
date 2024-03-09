@@ -133,9 +133,7 @@ export default function CreateDisplay({
                 : format(form.watch("dueDate"), "PPpp")}
             </div>
           </div>
-          <div className="ml-auto text-xs text-muted-foreground">
-            {today.toLocaleDateString()}
-          </div>
+          <div className="ml-auto text-xs text-muted-foreground">{"date"}</div>
         </div>
         <Separator />
         <ScrollArea>
