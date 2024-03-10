@@ -9,7 +9,7 @@ export default function ProfileWrapper({
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
-  userData: Users[];
+  userData: Users;
 }) {
   return (
     <Wrapper
@@ -17,7 +17,7 @@ export default function ProfileWrapper({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={<ProfileForm userData={userData}></ProfileForm>}
-      secondPanel={<>{userData[0].email}</>}
+      secondPanel={<>{userData.email}</>}
     />
   );
 }

@@ -5,5 +5,5 @@ export async function getUserViaEmail(email: string) {
   return await SQL.DB.selectFrom("users")
     .selectAll()
     .where("email", "=", email)
-    .execute();
+    .executeTakeFirst();
 }

@@ -1,5 +1,5 @@
 import { GroupingState } from "@tanstack/react-table";
-import { Grouping, Status } from "./types/status";
+import { Grouping, Status, Type } from "./types/status";
 
 // Database interface
 export interface Database {
@@ -80,7 +80,8 @@ export interface Connections {
 export interface Notifications {
   notificationId: string;
   userEmail: string;
-  type: string;
+  type: Type;
+  referenceId: string;
   creationDate: Date;
   content: string;
   isRead: boolean;

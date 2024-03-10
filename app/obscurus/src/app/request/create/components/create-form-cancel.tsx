@@ -10,7 +10,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 import { Button } from "@/components/ui/button";
-export default function CreateCancel() {
+/**
+ * @deprecated
+ */
+export default function CreateCancel(form: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -18,6 +21,7 @@ export default function CreateCancel() {
           type="button"
           variant={"ghost"}
           className="justify-self-start mr-2"
+          disabled={form.formState?.isSubmitting}
         >
           Cancel
         </Button>

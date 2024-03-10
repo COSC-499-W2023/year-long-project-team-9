@@ -1,10 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import Wrapper from "../wrapper";
-import { Suspense } from "react";
-import hello from "../functions/hello";
 import { getEmail } from "../functions/authenticationMethods";
-import RequestList from "./components/request-list";
 import {
   Users,
   Requests,
@@ -25,7 +21,7 @@ async function Request() {
       ? JSON.parse(collapsed.value)
       : undefined;
   const userEmail = await getEmail();
-  const userData: Users[] = await getUserViaEmail(userEmail);
+  const userData: Users = await getUserViaEmail(userEmail);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
   const requests: Requests[] = requestPageData.request;
