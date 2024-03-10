@@ -261,3 +261,17 @@ HashMap:
 ### Picture of Week 7's and 8's Survey
 
 ![Week 7 and 8 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-7-and-8-T-2-survey.png)
+
+## Week 9
+
+### March 04 2024 - March 10 2024
+
+- I worked on Milestone #6.
+
+### Picture of Project Board Week 9
+
+![Week 9 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-9-T-2-board.png)
+
+### Picture of Week 9
+
+![Week 9 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-9-T-2-survey.png)
