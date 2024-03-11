@@ -75,7 +75,7 @@
   }
 }
 /* Style for the scroll bar, not a biggest fan, but of well */
-@layer utilities {
+/* @layer utilities {
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -97,7 +97,7 @@
     background-color: #171717;
     border-radius: 8px;
   }
-}
+} */
 
 /* .cloud-animate-fadeIn {
   @apply animate-fadeIn;

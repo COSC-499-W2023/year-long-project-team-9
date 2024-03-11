@@ -1,4 +1,4 @@
-import VideoPlayer from "../app/submit/video-player";
+import VideoPlayer from "../app/user/[email]/submit/video-player";
 
 
 
