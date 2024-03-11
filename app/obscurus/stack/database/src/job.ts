@@ -4,6 +4,7 @@ declare module "sst/node/job" {
   export interface JobTypes {
     SteveJobs: {
       submissionId: string;
+      fileExt: string;
     };
   }
 }

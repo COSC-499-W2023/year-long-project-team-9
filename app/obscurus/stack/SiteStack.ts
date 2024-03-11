@@ -34,23 +34,25 @@ export default function SiteStack({ stack }: StackContext) {
     migrations: "./stack/database/migrations/",
   });
 
-  const steveJobs = new Job(stack, "SteveJobs", {
-    runtime: "container",
-    handler: "./stack/process-video",
-    container: {
-      cmd: ["python3", "/var/task/app.py"],
-    },
-    bind: [inputBucket, outputBucket],
-    environment: {
-      INPUT_BUCKET: inputBucket.bucketName,
-      OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mp4",
-      OUTPUT_NAME: "processed.mp4",
-    },
-    memorySize: "15 GB",
-    timeout: "8 hours",
-    permissions: [rekognitionPolicyStatement],
-  });
+  // const steveJobs = new Job(stack, "SteveJobs", {
+  //   runtime: "container",
+  //   handler: "./stack/process-video",
+  //   container: {
+  //     cmd: ["python3", "/var/task/app.py"],
+  //   },
+  //   bind: [inputBucket, outputBucket],
+  //   environment: {
+  //     INPUT_BUCKET: inputBucket.bucketName,
+  //     OUTPUT_BUCKET: outputBucket.bucketName,
+  //     INPUT_NAME: "test3.mp4",
+  //     OUTPUT_NAME: "processed.mp4",
+  //   },
+  //   memorySize: "15 GB",
+  //   timeout: "8 hours",
+  //   permissions: [rekognitionPolicyStatement],
+  // });
+
+
 
   //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
@@ -122,24 +124,24 @@ export default function SiteStack({ stack }: StackContext) {
         function: {
           handler: "./stack/lambdas/process.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "POST /createRequest": {
         function: {
           handler: "./stack/lambdas/createRequest.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "POST /createUser": {
         function: {
           handler: "./stack/lambdas/createUser.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "GET /getSubmissions": {
@@ -182,24 +184,24 @@ export default function SiteStack({ stack }: StackContext) {
         function: {
           handler: "./stack/lambdas/updateStatus.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "GET /getStatus": {
         function: {
           handler: "./stack/lambdas/getStatus.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "POST /getRequest": {
         function: {
           handler: "./stack/lambdas/getRequest.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "GET /getRoomsViaEmail": {
@@ -224,16 +226,16 @@ export default function SiteStack({ stack }: StackContext) {
         function: {
           handler: "./stack/lambdas/createMessage.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "POST /setIsReadTrue": {
         function: {
           handler: "./stack/lambdas/setIsReadTrue.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "GET /listNotifications": {
@@ -249,22 +251,64 @@ export default function SiteStack({ stack }: StackContext) {
         function: {
           handler: "./stack/lambdas/createNotification.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
       "POST /updateNotificationDate": {
         function: {
           handler: "./stack/lambdas/updateNotificationDate.handler",
           timeout: 20,
-          permissions: [steveJobs, inputBucket, rds],
-          bind: [steveJobs, inputBucket, rds],
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
         },
       },
     },
   });
 
+
+
+
+  // const processVideo = new Service(stack, "ProcessVideo", {
+  //   path: "./stack/process-video",
+  //   port: 8080,
+  //   bind: [inputBucket, outputBucket, api],
+  //   cdk: {
+  //     fargateService: {
+  //       circuitBreaker: { rollback: true },
+  //     },
+
+  //   },
+  //   environment: {
+  //     INPUT_BUCKET: inputBucket.bucketName,
+  //     OUTPUT_BUCKET: outputBucket.bucketName,
+  //     INPUT_NAME: "test3.mp4",
+  //     OUTPUT_NAME: "processed.mp4",
+  //     API_URL: api.url,
+  //   },
+  //   permissions: ["s3", rekognitionPolicyStatement],
+  //   cpu: "4 vCPU",
+  //   memory: "8 GB",
+  // });
+
+  const steveJobs = new Job(stack, "SteveJobs", {
+    runtime: "container",
+    handler: "./stack/process-video",
+    container: {
+      cmd: ["python3", "/var/task/app.py"],
+    },
+    bind: [inputBucket, outputBucket],
+    environment: {
+      INPUT_BUCKET: inputBucket.bucketName,
+      OUTPUT_BUCKET: outputBucket.bucketName,
+      API_URL: api.url,
+    },
+    memorySize: "15 GB",
+    timeout: "8 hours",
+    permissions: [rekognitionPolicyStatement]
+  });
   steveJobs.bind([api]);
+
 
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
@@ -313,6 +357,9 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
+    // environment: {
+    //   NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
+    // }
     // customDomain: {
     //   domainName: "obscurus.me",
     //   domainAlias: "www.obscurus.me",
@@ -325,7 +372,6 @@ export default function SiteStack({ stack }: StackContext) {
     // },
   });
 
-  steveJobs.bind([site]);
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
@@ -333,6 +379,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
-    WebSocketApiEndpoint: wsApi.url,
+    WebSocketApiEndpoint: wsApi.url
   });
 }

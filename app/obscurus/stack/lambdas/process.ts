@@ -35,6 +35,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
     const { jobId } = await Job.SteveJobs.run({
       payload: {
         submissionId: event.submissionId,
+        fileExt: event.fileExt,
       },
     });
 
