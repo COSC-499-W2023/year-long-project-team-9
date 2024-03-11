@@ -22,6 +22,8 @@ import {
   ReactNode,
   PromiseLikeOfReactNode,
   Key,
+  useEffect,
+  useState,
 } from "react";
 
 export default function CreateDisplay({
@@ -29,9 +31,16 @@ export default function CreateDisplay({
   userData,
 }: {
   form: any;
-  userData: Users[];
+  userData: Users;
 }) {
-  let today = new Date();
+  const [currentDate, setCurrentDate] = useState("");
+  useEffect(() => {
+    // Capture the current date on the client side
+    const now = new Date();
+    // Format the date using date-fns with the 'PPpp' format
+    const formattedDate = format(now, "PPpp");
+    setCurrentDate(formattedDate);
+  }, []);
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center p-2">
@@ -74,7 +83,7 @@ export default function CreateDisplay({
           <Avatar>
             <AvatarImage />
             <AvatarFallback>
-              {userData[0].email
+              {userData.email
                 .split(" ")
                 .map((chunk) => chunk[0])
                 .join("")}
@@ -85,8 +94,8 @@ export default function CreateDisplay({
               {form.watch("title") === "" ? "Title" : form.watch("title")}
             </div>
             <div className="text-xs line-clamp-1">
-              From: {userData[0].givenName} {userData[0].familyName} (
-              {userData[0].email})
+              From: {userData.givenName} {userData.familyName} ({userData.email}
+              )
             </div>
             <div className="text-xs">
               <HoverCard>
@@ -134,7 +143,7 @@ export default function CreateDisplay({
             </div>
           </div>
           <div className="ml-auto text-xs text-muted-foreground">
-            {today.toLocaleDateString()}
+            {currentDate}
           </div>
         </div>
         <Separator />
@@ -145,7 +154,7 @@ export default function CreateDisplay({
                 ? "description"
                 : form.getValues("description")}
             </p> */}
-            <div className="text-sm">
+            <div className="overflow-auto text-sm">
               {form.watch("description") ? (
                 form.getValues("description") === "" ? (
                   "Description"

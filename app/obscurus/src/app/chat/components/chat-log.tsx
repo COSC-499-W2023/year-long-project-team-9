@@ -54,7 +54,7 @@ export default function ChatLog({
   //   if (scrollElement) {
   //     scrollElement.scrollTop = scrollElement.scrollHeight;
   //   }
-  // }); 
+  // });
 
   const handleClick = () => {
     const newMessageUUID = uuidv7();
@@ -70,7 +70,8 @@ export default function ChatLog({
     const newNotification: Notifications = {
       notificationId: newNotificationUUID,
       userEmail: otherEmail,
-      type: "messages",
+      type: "CHAT",
+      referenceId: room.roomId,
       creationDate: new Date(),
       content: `New message from ${userName}`,
       isRead: false,
@@ -88,27 +89,34 @@ export default function ChatLog({
   const [chatMessage, setChatMessage] = useState("");
 
   return room ? (
-    <div className="flex flex-col mt-auto relative" >
-      <ScrollArea ref={scrollRef} className="sm:max-h-80 md:max-h-80 2xl:max-h-max justify-end" >
+    <div className="flex flex-col mt-auto relative">
+      <ScrollArea
+        ref={scrollRef}
+        className="sm:max-h-80 md:max-h-80 2xl:max-h-max justify-end"
+      >
         <div id="chatScroll">
-        {roomMessages.map((message) => (
-          <div key={message.messageId}>
-            {message.senderEmail === userEmail && (
-              <div className="flex justify-end">
-                <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
-                  <p className="break-all max-w-xs">{message.messageContent}</p>
+          {roomMessages.map((message) => (
+            <div key={message.messageId}>
+              {message.senderEmail === userEmail && (
+                <div className="flex justify-end">
+                  <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
+                    <p className="break-all max-w-xs">
+                      {message.messageContent}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-            {message.senderEmail != userEmail && (
-              <div className="flex w-3/4 m-1">
-                <div className="flex flex-col w-max max-w-[75%] rounded-md m-1 ml-4 bg-primary text-secondary p-2">
-                  <p className="break-all max-w-xs">{message.messageContent}</p>
+              )}
+              {message.senderEmail != userEmail && (
+                <div className="flex w-3/4 m-1">
+                  <div className="flex flex-col w-max max-w-[75%] rounded-md m-1 ml-4 bg-primary text-secondary p-2">
+                    <p className="break-all max-w-xs">
+                      {message.messageContent}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          ))}
         </div>
       </ScrollArea>
       <div className="flex mr-3 ml-3 mb-6 mt-4 gap-2">

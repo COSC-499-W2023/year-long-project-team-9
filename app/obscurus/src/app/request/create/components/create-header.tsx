@@ -16,9 +16,6 @@ export default function CreateHeader() {
           </a>
         </div>
       </div>
-      <div className="py-2">
-        <Separator />
-      </div>
     </div>
   );
 }

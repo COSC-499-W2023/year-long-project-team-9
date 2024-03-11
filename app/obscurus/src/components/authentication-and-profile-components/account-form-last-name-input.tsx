@@ -6,26 +6,34 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export interface LastNameInputProps {
+export default function LastNameInput({
+  form,
+  isDisabled,
+  formDescription,
+  fieldName,
+  label,
+  placeHolder,
+}: {
   form: any;
-}
-
-export default function LastNameInput({ form }: LastNameInputProps) {
+  isDisabled: boolean;
+  formDescription: string;
+  fieldName: string;
+  label: string;
+  placeHolder: string;
+}) {
   return (
     <FormItem>
-      <FormLabel>Last Name</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <Input
         maxLength={100}
-        placeholder="Last Name"
-        {...form.register("lastName")}
+        placeholder={placeHolder}
+        {...form.register(fieldName)}
       ></Input>
       <FormDescription className="text-justify">
-        Other users will see you last name.
+        {formDescription}
       </FormDescription>
-      {form.getFieldState("lastName").error && (
-        <FormMessage>
-          {form.getFieldState("lastName").error.message}
-        </FormMessage>
+      {form.getFieldState(fieldName).error && (
+        <FormMessage>{form.getFieldState(fieldName).error.message}</FormMessage>
       )}
     </FormItem>
   );

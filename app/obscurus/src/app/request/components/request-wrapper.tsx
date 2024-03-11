@@ -20,7 +20,7 @@ export default function RequestWeapper({
   defaultCollapsed: boolean;
   requests: Requests[];
   submissions: Submissions[];
-  userData: Users[];
+  userData: Users;
 }) {
   return (
     <Wrapper

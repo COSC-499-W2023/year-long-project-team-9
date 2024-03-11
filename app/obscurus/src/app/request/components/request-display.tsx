@@ -15,6 +15,7 @@ import {
   ListVideo,
   FileText,
   ChevronRightIcon,
+  XSquare,
 } from "lucide-react";
 import { format } from "date-fns";
 import { RequestDisplayAlert } from "./request-display-alert";
@@ -47,7 +48,7 @@ export default function RequestDisplay({
     counter?: string | null[];
   };
   submissions: Submissions[];
-  userData: Users[];
+  userData: Users;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
 
@@ -61,7 +62,7 @@ export default function RequestDisplay({
     : null;
 
   const [showVideoList, setShowVideoList] = useQueryState("showVideoList");
-
+  console.log(selected?.description);
   console.log("Selected requestId to display", requestId);
   console.log(
     submissions.filter((value) => value.requestId === selected?.requestId)
@@ -96,19 +97,17 @@ export default function RequestDisplay({
               <div className="ml-auto">
                 <Tooltip>
                   {showVideoList?.toLocaleLowerCase() === "true" ? (
-                    <div>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setShowVideoList("false")}
-                        >
-                          <FileText className="h-4 w-4" />
-                          <span className="sr-only">Show request</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Show request</TooltipContent>{" "}
-                    </div>
+                    <Button
+                      variant={"destructive"}
+                      onClick={() => setShowVideoList("false")}
+                    >
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <XSquare className="w-4 h-4 " />
+                        </TooltipTrigger>
+                        <TooltipContent>Hide Video List</TooltipContent>
+                      </Tooltip>
+                    </Button>
                   ) : (
                     <div>
                       <TooltipTrigger asChild>
@@ -134,7 +133,7 @@ export default function RequestDisplay({
               <Avatar>
                 <AvatarImage />
                 <AvatarFallback>
-                  {userData[0].email
+                  {userData.email
                     .split(" ")
                     .map((chunk) => chunk[0])
                     .join("")}
@@ -143,8 +142,8 @@ export default function RequestDisplay({
               <div className="flex flex-col items-start mx-4 break-all gap-1">
                 <div className="text-sm">{selected.requestTitle}</div>
                 <div className="text-xs line-clamp-1">
-                  From: {userData[0].givenName} {userData[0].familyName} (
-                  {userData[0].email})
+                  From: {userData.givenName} {userData.familyName} (
+                  {userData.email})
                 </div>
                 <div className="text-xs">
                   <HoverCard>
@@ -159,7 +158,7 @@ export default function RequestDisplay({
                     </HoverCardTrigger>
                     <HoverCardContent>
                       <div>To: </div>
-                      <div className="ml-1">
+                      <div className="overflow-auto ml-1">
                         {submissions
                           .filter(
                             (value) => value.requestId === selected?.requestId
@@ -181,7 +180,7 @@ export default function RequestDisplay({
               </div>
             </div>
             <Separator />
-            <ScrollArea>
+            <div className="overflow-auto">
               {showVideoList?.toLocaleLowerCase() === "true" ? (
                 <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
                   <Table className="rounded-lg border">
@@ -222,11 +221,11 @@ export default function RequestDisplay({
                   </Table>
                 </div>
               ) : (
-                <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
+                <div className="overflow-y-auto h-full flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
                   {selected.description}
                 </div>
               )}
-            </ScrollArea>
+            </div>
           </div>
         </div>
       ) : (

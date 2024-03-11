@@ -22,13 +22,14 @@ export async function createRequest(data: any) {
         description: validData.data.description,
         blurred: validData.data.videoProcessing,
         creationDate: new Date(),
-        dueDate: new Date(),
+        dueDate: validData.data.dueDate,
       })
       .execute();
     for (let i = 0; i < validData.data.clientEmail.length; i++) {
+      const newSubmissionID = uuidv7();
       const insertSubmission = await SQL.DB.insertInto("submissions")
         .values({
-          submissionId: uuidv7(),
+          submissionId: newSubmissionID,
           requesteeEmail: validData.data.clientEmail[i].email,
           status: "TODO",
           title: "null",
@@ -42,7 +43,8 @@ export async function createRequest(data: any) {
         .values({
           notificationId: uuidv7(),
           userEmail: validData.data.clientEmail[i].email,
-          type: "Request",
+          type: "REQUEST",
+          referenceId: newSubmissionID,
           creationDate: new Date(),
           content: `New request from ${validData.data.userEmail}`,
           isRead: false,
@@ -65,10 +67,6 @@ export async function createRequest(data: any) {
             roomId: uuidv7(),
             participant1Email: validData.data.userEmail,
             participant2Email: validData.data.clientEmail[i].email,
-            participant1RoomGivenName: null,
-            participant1RoomFamilyName: null,
-            participant2RoomGivenName: null,
-            participant2RoomFamilyName: null,
             isActive: false,
             creationDate: new Date(),
           })

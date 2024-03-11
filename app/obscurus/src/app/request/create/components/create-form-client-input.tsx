@@ -54,6 +54,7 @@ export default function ClientEmail({
                     append({ email: "" });
                     changeClientEmailLength(clientEmailLength, 1);
                   }}
+                  disabled={form.formState.isSubmitting}
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -66,6 +67,7 @@ export default function ClientEmail({
                     remove(index);
                     changeClientEmailLength(clientEmailLength, -1);
                   }}
+                  disabled={form.formState.isSubmitting}
                 >
                   <Minus className="h-4 w-4" />
                 </Button>

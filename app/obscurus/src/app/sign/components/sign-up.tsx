@@ -71,20 +71,54 @@ export default function SignUpForm() {
           <EmailInput
             form={form}
             isDisabled={false}
-            maxLength={321}
             formDescription={
-              "Email cannot be changed once an account has been made."
+              "One cannot change their email once an account has been set."
             }
+            fieldName="email"
+            label="Email"
+            placeHolder="Email"
           ></EmailInput>
 
           {/* Password */}
-          <PasswordInput form={form} isDisabled={false}></PasswordInput>
+          <PasswordInput
+            form={form}
+            isDisabled={false}
+            formDescription={
+              "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
+            }
+            fieldName={"password"}
+            label={"Password"}
+            placeHolder={"Password"}
+          ></PasswordInput>
+          <PasswordInput
+            form={form}
+            isDisabled={false}
+            formDescription={"Confirm password must match the password above."}
+            fieldName={"confirmPassword"}
+            label={"Confirm Password"}
+            placeHolder={"Confirm Password"}
+          ></PasswordInput>
 
           {/* First Name */}
-          <FirstNameInput form={form}></FirstNameInput>
+
+          <FirstNameInput
+            form={form}
+            isDisabled={false}
+            formDescription={"Other users will see you first name."}
+            fieldName={"firstName"}
+            label={"First Name"}
+            placeHolder="First Name"
+          ></FirstNameInput>
 
           {/* Last Name */}
-          <LastNameInput form={form}></LastNameInput>
+          <LastNameInput
+            form={form}
+            isDisabled={false}
+            formDescription={"Other users will see you last name"}
+            fieldName={"lastName"}
+            label={"Last Name"}
+            placeHolder={"Last Name"}
+          ></LastNameInput>
 
           {/* Age Verification */}
           <AuthenticationAgeInput form={form}></AuthenticationAgeInput>

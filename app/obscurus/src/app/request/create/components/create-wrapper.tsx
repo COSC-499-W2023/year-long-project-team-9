@@ -19,13 +19,13 @@ export default function CreateWrapper({
   defaultLayout: number[];
   defaultCollapsed: boolean;
   createRequest: Function;
-  userData: Users[];
+  userData: Users;
 }) {
   const form = useForm<z.infer<typeof createFormSchema>>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
       title: "",
-      userEmail: userData[0].email,
+      userEmail: userData.email,
       videoProcessing: true,
       clientEmail: [{ email: "" }],
     },
