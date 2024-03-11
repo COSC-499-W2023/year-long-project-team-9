@@ -1868,3 +1868,167 @@ All tasks for current milestone completed.
 
 End to end testing needs to be updated for new UI
 ___
+
+# TEAM 9 - TERM 2 WEEK 9
+
+## Milestone Features
+- Soren Stenback: Authentication & Refine Chat
+- Jan-Yaeger Dhillon: Video Submission Process & Home Page
+- Baz Sivakua: Account Page & Profile Image
+- Muhammad Bakar: Notification & Emails
+
+## Work Period
+
+Week 5 ran from 00:00 on 2024/03/04 to 23:59 on 2024/03/10.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Clean up Account and Auth pages
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Clean up account and auth pages
+
+### Task 2: Create Request Due Date Bug
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix bug regarding listing due dates on create request page
+
+### Task 3: Create Request Process Alert Bug
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Fix bug in process alert triggered when creating request 
+
+### Task 4: New Dummy Data
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create new dummy data for testing purposes
+
+### Task 5: Re-design Notifications Table
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Re-design notifications table in database
+
+### Task 6: Create Page Hydration error
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix hydration error on create request page
+
+### Task 7: Scrollbar
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Redesign scroll bar UI
+
+### Task 8: UserData Array Bug
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Fix userdata array bug
+
+### Task 9: Video List Request Page Color Fix
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix color error on video list request page
+
+### Task 10: Video List Request Page Color Fix
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix color error on video list request page
+
+### Task 11: Standardize Video Formats
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Standardized formats for videos after upload
+
+### Task 12: Add Dropzone
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add drag-drop upload functionality to video submission
+
+### Task 13: Video Upload Bug Fixes
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Cleanup known issues and bugs with uploads
+
+### Task 14: SES Integration
+
+* **Status:** In-Progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Intergrate simple email services
+
+### Task 15: Create User Settings Page
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create page allowing user to change their account information
+
+### Task 16: Upload Profile Picture
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix color error on video list request page
+
+### Task 16: Authentication
+
+* **Status:** In-Progress
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Finish authentication 
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-22/burnup-week22.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-22/completed-week22.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-22/inprogress-week22.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-22/testreport-week22.png)
+
+End to end testing needs to be updated for new UI
+___
