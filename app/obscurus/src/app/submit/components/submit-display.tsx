@@ -83,6 +83,11 @@ export default function SubmitDisplay({
     return null;
   };
 
+  const reset = () => {
+
+
+  };
+
   const handleProcessVideo = async (e: any) => {
     setLoading(true);
     if (submissionId && triggerJob && updateStatus) {
@@ -90,9 +95,10 @@ export default function SubmitDisplay({
 
       setLoading(false);
 
-      setUpload(null);
+
       alert("Job has been triggered");
-      return res;
+      setUpload(null);
+      router.refresh();
     } else {
       setLoading(false);
       return "Failed to run Job";
@@ -102,36 +108,51 @@ export default function SubmitDisplay({
   const [uploading, setUploading] = useState(false);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setUploading(true);
     const file = fileInputRef.current?.files?.[0];
     setFile(file);
     if (!file) {
       console.error("No file selected");
+      setUploading(false);
       return;
     }
     const fileExt = file.name.split(".").pop();
-
     setFileExt(fileExt || "mp4");
 
     const key = `${submissionId}.${fileExt}`;
 
-    if (submissionId && getPresignedUrl) {
-      const url = await getPresignedUrl(key);
+    console.log("Key", key);
 
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
-          "Content-Disposition": `attachment; filename*=UTF-8''${key}`,
-        },
-        body: file,
-      }).then((res) => { setUploading(false); return res });
-    } else {
-      return 500;
+    if (submissionId && getPresignedUrl) {
+      try {
+        const url = await getPresignedUrl(key);
+        const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
+              key
+            )}`,
+          },
+          body: file,
+        });
+
+        console.log("Data", response);
+        setObjectURL(URL.createObjectURL(file)); // This will trigger useEffect
+        console.log("Upload successful");
+      } catch (error) {
+        console.error("Upload failed:", error);
+      }
     }
   };
+
+  useEffect(() => {
+    if (objectURL) {
+      console.log("New objectURL is available", objectURL);
+    }
+  }, [objectURL]);
 
   const [record, setRecord] = useState(false);
 
@@ -363,14 +384,14 @@ export default function SubmitDisplay({
                   </div>
                 </>
               ) : (
-                <div className="flex flex-col w-full h-full justify-center items-center">
+                <div className="flex flex-col w-full h-full justify-center items-center gap-5">
+
                   <LucideLoader2
-                  className="animate-spin text-primary"
-                  size={75}
-                />
-
+                    className="animate-spin text-primary"
+                    size={75}
+                  />
+                   <p className="font-bold">Uploading...</p>
                 </div>
-
               )}
             </>
           </div>
@@ -388,7 +409,7 @@ export default function SubmitDisplay({
 
   const Upload = () => {
     return (
-      <div className="flex flex-col w-full h-full p-10">
+      <form className="flex flex-col w-full h-full p-10">
         <div className="flex flex-col w-full h-full justify-end items-center bg-accent rounded-lg p-16">
           <div className="w-full h-[50%] flex flex-col items-center ">
             <LucideUploadCloud className="w-48 h-48 " />
@@ -400,11 +421,18 @@ export default function SubmitDisplay({
               type="file"
               ref={fileInputRef}
               style={{ display: "none" }}
-              onChange={handleSubmit}
               accept="video/mp4, video/quicktime"
             />
 
             <div className="grid grid-cols-2 space-x-3 w-full">
+              <input
+                id="file-input"
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleSubmit}
+                accept="video/mp4, video/quicktime"
+              />
               <div className=" flex justify-center">
                 <Button onClick={handleUploadClick}>Upload</Button>
               </div>
@@ -422,7 +450,7 @@ export default function SubmitDisplay({
             </div>
           </div>
         </div>
-      </div>
+      </form>
     );
   };
 
