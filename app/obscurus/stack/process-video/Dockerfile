@@ -1,11 +1,13 @@
 FROM public.ecr.aws/lambda/python:3.8
 
-WORKDIR /main
+# WORKDIR /app
 
-COPY . /main
+# COPY . /app
+
+COPY requirements.txt .
 
 # Install the function's dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt --target /var/task
 
 # Install FFmpeg
 RUN yum install -y tar xz && \
@@ -15,9 +17,4 @@ RUN yum install -y tar xz && \
     cp ffmpeg-*-amd64-static/ffprobe /usr/bin/ && \
     rm -rf ffmpeg-*-amd64-static ffmpeg-release-amd64-static.tar.xz
 
-
-EXPOSE 8080
-
-ENV NAME World
-
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+COPY app.py /var/task

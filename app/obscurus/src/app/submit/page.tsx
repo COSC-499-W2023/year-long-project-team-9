@@ -13,12 +13,13 @@ import { triggerJob } from "../functions/triggerJob";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 import updateStatus from "../functions/updateStatus";
+import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
-  console.log("Layout", layout);
-  console.log("Collapsed", collapsed?.value);
+  // console.log("Layout", layout);
+  // console.log("Collapsed", collapsed?.value);
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
     collapsed && collapsed.value !== "undefined"
@@ -29,7 +30,9 @@ async function Submit() {
 
   console.log("triggerJob", triggerJob);
   console.log("updateStatus", updateStatus);
-  console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
+  console.log("getPresignedUrl", getPresignedUrl);
+  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+  // console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
 
   return (
     <>
@@ -45,6 +48,7 @@ async function Submit() {
             requests={requests}
             submissions={submissions}
             getPresignedUrl={getPresignedUrl}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
             triggerJob={triggerJob}
             updateStatus={updateStatus}
           />

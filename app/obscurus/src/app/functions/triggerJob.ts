@@ -1,21 +1,29 @@
 "use server"
-import axios from 'axios';
+import { Job } from "sst/node/job";
+import updateStatus from "./updateStatus";
+import { f } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
 
-const triggerJob = async (submissionId: string) => {
-  console.log("In job, received submissionId " + submissionId);
-  const url = process.env.NEXT_PUBLIC_SERVICE_URL;
+const triggerJob = async (submissionId: string, fileExt: string) => {
 
-  console.log("Url", url);
-  const response = await axios.post(`${url}/process-video`, {
-    submissionId: submissionId,
-  });
+  try {
+    console.log("In job, received submissionId " + submissionId);
+    console.log("In job, received fileExt " + fileExt);
 
-  if (response.status === 200) {
-    return "Video job started successfully";
-  } else {
-    throw new Error('Failed to start video job');
+    const { jobId } = await Job.SteveJobs.run({
+      payload: {
+        submissionId: submissionId,
+        fileExt: fileExt,
+      },
+    });
+
+
+    return("Video jobbed successfully");
+  } catch {
+    updateStatus("FAILED", submissionId);
+
+    return("Failed to job...");
   }
-};
 
+};
 
 export { triggerJob };

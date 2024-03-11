@@ -1,3 +1,6 @@
+import json
+import requests
+import json
 import boto3
 import os
 import time
@@ -5,9 +8,6 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request, BackgroundTasks
-import requests
-
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -94,15 +94,23 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
 
 
 def integrate_audio(original_video, output_video, audio_path='/tmp/audio.mp3'):
+
     # Extract audio
+    print("original_video", original_video)
     my_clip = VideoFileClip(original_video)
     my_clip.audio.write_audiofile(audio_path)
-    temp_location = '/tmp/output_video.mp4'
+    temp_location = '{}-processed.{}'.format(original_video, file_ext)
+
     # Join output video with extracted audio
-    videoclip = VideoFileClip(output_video)
-    # new_audioclip = CompositeAudioClip([audioclip])
-    # videoclip.audio = new_audioclip
-    videoclip.write_videofile(temp_location, codec='libx264', audio=audio_path, audio_codec='libmp3lame')
+
+    print("output_video", output_video)
+    print("temp_location", temp_location)
+    videoclip = VideoFileClip('{}'.format(output_video))
+    audioclip = AudioFileClip(audio_path)
+
+    new_audioclip = CompositeAudioClip([audioclip])
+    videoclip.audio = new_audioclip
+    videoclip.write_videofile(temp_location, codec='libx264', audio_codec='libmp3lame')
 
     os.rename(temp_location, output_video)
     # Delete audio
@@ -116,28 +124,37 @@ s3 = boto3.client('s3')
 print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
+payload = json.loads(os.getenv("SST_PAYLOAD"))
+key = payload['submissionId']
+file_ext = payload['fileExt']
+print("Key: ", key)
+print("File ext", file_ext)
 output_bucket = os.environ['OUTPUT_BUCKET']
+output_name = key.split('.')[0] + '-processed.' + file_ext
 api_url = os.environ['API_URL']
-print("api_url", api_url)
+print("API_URL", api_url)
+
+
 # payload = os.environ['SST_PAYLOAD']
 
-def start_face_detection(submissionId):
+def start_face_detection():
     print("Running face detection...")
+    print("Bucket: " + input_bucket+ ", Key: " + key)
     response = rekognition.start_face_detection(
-        Video={'S3Object': {'Bucket': input_bucket, 'Name': submissionId}}
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': key}}
     )
     return response['JobId']
 
-def check_submission_status(submissionId):
-    print("Checking submission status...")
+def check_job_status(job_id):
+    print("Checking job status...")
     while True:
-        response = rekognition.get_face_detection(JobId=submissionId)
+        response = rekognition.get_face_detection(JobId=job_id)
         status = response['JobStatus']
         if status in ['SUCCEEDED', 'FAILED']:
             return response
         time.sleep(5)
 
-def get_timestamps_and_faces(submissionId, reko_client=None):
+def get_timestamps_and_faces(job_id, reko_client=None):
     print("Getting timestamps and faces...")
     final_timestamps = {}
     next_token = None
@@ -146,7 +163,7 @@ def get_timestamps_and_faces(submissionId, reko_client=None):
         print('.', end='')
         first_round = False
         # Query Rekognition for face detection results
-        response = reko_client.get_face_detection(JobId=submissionId, MaxResults=100, NextToken=next_token if next_token else "")
+        response = reko_client.get_face_detection(JobId=job_id, MaxResults=100, NextToken=next_token if next_token else "")
         # Iterate over each face detected and organize by timestamp
         for face in response['Faces']:
             f = face["Face"]["BoundingBox"]
@@ -160,78 +177,58 @@ def get_timestamps_and_faces(submissionId, reko_client=None):
     return final_timestamps, response
 
 
-def process_video(timestamps, response, submission, file_extension):
-    headers = {"Content-Type": "application/json"}
+def update_status(status, submission_id):
+    print("In update status")
+    print("status", status)
+    print("submission_id", submission_id)
     try:
-        payload = {"status": "PROCESSING", "submissionId": submission}
-        response = requests.post(api_url + "/updateStatus", json=payload, headers=headers)
-        if response.status_code != 200:
-            print("Failed to update initial submission status to PROCESSING")
+        response = requests.post(
+            f"{api_url}/updateStatus",
+            json={
+                "submissionId": submission_id,
+                "status": status,
+            },
+        )
+        print("Response", response)
+        print("Status updated")
 
-        filename = submission
-        local_filename = f'/tmp/{filename}{file_extension}'
-        local_filename_output = f'/tmp/{filename}-processed.mp4'
-        print("local_filename_output", local_filename_output)
+    except Exception as error:
+        print("Error updating status:", error)
 
-        if file_extension.lower() != '.mp4':
-            print(f"Converting {file_extension} to .mp4")
-            converted_filename = f'/tmp/{filename}.mp4'
-            conversion_command = f"ffmpeg -i {local_filename} -codec copy {converted_filename}"
-            os.system(conversion_command)
-            local_filename = converted_filename
+def process_video(timestamps, response):
+    print("Processing video...")
+    print("Key in process_video", key)
+    filename=key
+    local_filename = '/tmp/{}.{}'.format(filename, file_ext)
+    local_filename_output = '/tmp/{}-processed.{}'.format(filename, file_ext)
+    print("local_filename_output", local_filename_output)
+    s3.download_file(input_bucket, key, local_filename)
+    print("Job response", response)
+    apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
+    print("Key before integrating audio", key)
+    integrate_audio(local_filename, local_filename_output)
+    s3.upload_file(local_filename_output, output_bucket, output_name)
+    print("Output file uploaded to S3")
 
-        s3.download_file(input_bucket, submission, local_filename)
-        print("Job response", response)
-        apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
-        integrate_audio(local_filename, local_filename_output)
-        print("Uploading...")
-        s3.upload_file(local_filename_output, output_bucket, f"{submission}-processed.mp4")
-        payload = {"status": "COMPLETED", "submissionId": submission}
-        response = requests.post(api_url + "/updateStatus", json=payload, headers=headers)
 
-        if response.status_code == 200:
-            print("Updated submission status successfully!")
-            status_dict[submission] = "COMPLETED"
-        else:
-            print("Failed to update submission status after processing!")
-            status_dict[submission] = "FAILED"
-        return "Completed processing!"
+
+def main():
+    print("Running...")
+    update_status("PROCESSING", key)
+    try:
+        job_id = start_face_detection()
+        job_response = check_job_status(job_id)
+        timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
+        process_video(timestamps, job_response)
+        print("API_URL", api_url)
+        update_status("COMPLETED", key)
+
+
+        print('Video processing completed')
     except Exception as e:
-        print(f"Error processing video: {e}")
-        status_dict[submission] = "FAILED"
-        payload = {"status": "FAILED", "submissionId": submission}
-        requests.post(api_url + "/updateStatus", json=payload, headers=headers)
-        return "Failed processing..."
+        print("Error", e)
+        update_status("FAILED", key)
+        print("Failed to process video")
 
-
-
-
-app = FastAPI()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Root path"}
-
-status_dict = {}
-
-@app.post("/process-video/")
-async def upload_video(request: Request, background_tasks: BackgroundTasks):
-    data = await request.json()
-    submission = data.get('submissionId')
-    if not submission:
-        raise HTTPException(status_code=400, detail="submissionId missing")
-
-    submissionId, file_extension = os.path.splitext(submission)
-    print(f"SubmissionId: {submissionId}, File Extension: {file_extension}")
-
-    background_tasks.add_task(process_video_background, submission, file_extension)
-
-    status_dict[submissionId] = "PROCESSING"
-    return {"message": "Video processing started"}
-
-def process_video_background(submission, file_extension):
-    submissionId = start_face_detection(submission)
-    submission_response = check_submission_status(submissionId)
-    timestamps, _ = get_timestamps_and_faces(submissionId, rekognition)
-    process_video(timestamps, submission_response, submission, file_extension)
+if __name__ == "__main__":
+    main()

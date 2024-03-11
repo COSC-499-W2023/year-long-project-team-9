@@ -266,30 +266,48 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
-  // steveJobs.bind([api]);
 
 
-  const processVideo = new Service(stack, "ProcessVideo", {
-    path: "./stack/process-video",
-    port: 8080,
-    bind: [inputBucket, outputBucket, api],
-    cdk: {
-      fargateService: {
-        circuitBreaker: { rollback: true },
-      },
 
+  // const processVideo = new Service(stack, "ProcessVideo", {
+  //   path: "./stack/process-video",
+  //   port: 8080,
+  //   bind: [inputBucket, outputBucket, api],
+  //   cdk: {
+  //     fargateService: {
+  //       circuitBreaker: { rollback: true },
+  //     },
+
+  //   },
+  //   environment: {
+  //     INPUT_BUCKET: inputBucket.bucketName,
+  //     OUTPUT_BUCKET: outputBucket.bucketName,
+  //     INPUT_NAME: "test3.mp4",
+  //     OUTPUT_NAME: "processed.mp4",
+  //     API_URL: api.url,
+  //   },
+  //   permissions: ["s3", rekognitionPolicyStatement],
+  //   cpu: "4 vCPU",
+  //   memory: "8 GB",
+  // });
+
+  const steveJobs = new Job(stack, "SteveJobs", {
+    runtime: "container",
+    handler: "./stack/process-video",
+    container: {
+      cmd: ["python3", "/var/task/app.py"],
     },
+    bind: [inputBucket, outputBucket],
     environment: {
       INPUT_BUCKET: inputBucket.bucketName,
       OUTPUT_BUCKET: outputBucket.bucketName,
-      INPUT_NAME: "test3.mp4",
-      OUTPUT_NAME: "processed.mp4",
       API_URL: api.url,
     },
-    permissions: ["s3", rekognitionPolicyStatement],
-    cpu: "4 vCPU",
-    memory: "8 GB",
+    memorySize: "15 GB",
+    timeout: "8 hours",
+    permissions: [rekognitionPolicyStatement]
   });
+  steveJobs.bind([api]);
 
 
   // Create auth provider
@@ -337,11 +355,11 @@ export default function SiteStack({ stack }: StackContext) {
   api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, processVideo],
+    bind: [inputBucket, outputBucket, rds, api, steveJobs],
     permissions: [rekognitionPolicyStatement],
-    environment: {
-      NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
-    }
+    // environment: {
+    //   NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
+    // }
     // customDomain: {
     //   domainName: "obscurus.me",
     //   domainAlias: "www.obscurus.me",
@@ -361,7 +379,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
-    WebSocketApiEndpoint: wsApi.url,
-    ServiceUrl: processVideo.url
+    WebSocketApiEndpoint: wsApi.url
   });
 }

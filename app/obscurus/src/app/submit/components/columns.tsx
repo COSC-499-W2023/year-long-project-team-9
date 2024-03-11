@@ -90,29 +90,21 @@ export const columns: ColumnDef<Submissions>[] = [
     },
   },
   {
-    accessorKey: "requesterEmail",
+    accessorKey: "submittedDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Date Submitted" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("status"))
-
-      if (!status) {
-        return "Not Started"
-      }
+      // const label = labels.find((label) => label.value === row.original.submissionId)
 
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
+        <div className="flex space-x-2">
+          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("submittedDate") || "No date submitted"}
+          </span>
         </div>
       )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
     },
   },
   // {

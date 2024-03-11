@@ -16,17 +16,16 @@ const updateStatus = async (status: string, submissionId: string) => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(
-          `Server responded with ${response.status}: ${response.statusText}`
-        );
-      }
+      console.log("Response", response)
+      return "Updated status successfully!";
 
-      const responseData = await response.json();
-      console.log("Response Data", responseData);
-      return responseData;
+
+      // const responseData = await response.json();
+      // console.log("Response Data", responseData);
+      // return responseData;
     } catch (error) {
       console.error("Error updating status:", error);
+      return "Error updating status";
     }
   };
 

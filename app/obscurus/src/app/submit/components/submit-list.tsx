@@ -69,7 +69,9 @@ export default function SubmitList({
   };
 
   useEffect(() => {
-    requests && !tab && setTab("all");
+    if (!tab) {
+      setTab("all");
+    }
     if (!submissionId) {
       const submission = getAssociatedSubmission(
         requests && requests[0].requestId
@@ -117,7 +119,7 @@ export default function SubmitList({
     }
   };
 
-  const sortedRequests = requests || tab !== "all" ? [...requests].sort(sortRequests) : requests;
+  const sortedRequests = requests ? [...requests].sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()) : []
 
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
