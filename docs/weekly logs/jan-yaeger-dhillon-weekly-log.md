@@ -482,3 +482,37 @@ Screenshot from peer eval for Week 7:
 ### Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-19.png)
+
+## Week 9 ##
+
+### Applicable Date Range ###
+March 3 -  March 10, 2024
+
+### Tasks Worked On ###
+
+- This week I did a lot of work on the uploading side of things, including working on making recording and uploading files update the statuses of the submissions.
+- I made several server-side functions to manage the uploads, downloads, and status of the submissions, as well as trigger the video processing job.
+- I have been doing a lot of research and experimenting with creating a microservice on ECS with FastAPI to handle the video processsing instead of the Job that we are currently using. The Job does work but I want to get the microservice working. But it is not working yet.
+- I have been doing a lot of UI cleaning up and debugging now that the core is done, but there is still more work to be done.
+- This week was also the peer testing but honestly there were not many surprises and I feel like our team knows what needs to be done to complete the project.
+- Note that I did fix several bugs this week but I still ahve work to do on the uploading process. However, I am makign good progress.
+
+Screenshot from peer eval for Week 9:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-21.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-21.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-21.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-21.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-21.png)
