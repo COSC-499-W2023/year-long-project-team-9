@@ -179,3 +179,15 @@
 ### Picture of week 6's survey
 ![Screenshot of term 2 week 7&8 team evaluation](img/baz-sivakua/baz-survey-week20.png)
 ---
+
+## Term 2 Week 9
+### Febuary 19 - March 03, 2024
+- This week I worked on Milestone 6: Final Milestone
+- This week's goals were to complete the peer testing session and discuss the feedback. Additionally, I started researching on how to upload images using zod
+
+### Picture of Project Board
+![Screenshot of term 2 week 7&8 project board tasks](img/baz-sivakua/baz-tasks-week22.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 7&8 team evaluation](img/baz-sivakua/baz-survey-week22.png)
+---
