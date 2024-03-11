@@ -110,7 +110,7 @@ def integrate_audio(original_video, output_video, audio_path='/tmp/audio.mp3'):
 
     new_audioclip = CompositeAudioClip([audioclip])
     videoclip.audio = new_audioclip
-    videoclip.write_videofile(temp_location, codec='libx264', audio_codec='libmp3lame')
+    videoclip.write_videofile(temp_location, codec='libx264', audio_codec='aac')
 
     os.rename(temp_location, output_video)
     # Delete audio

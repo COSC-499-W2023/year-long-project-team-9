@@ -45,7 +45,6 @@ async function Submit() {
         }
         secondPanel={
           <SubmitDisplay
-            requestId={requests[0].requestId || ""}
             requests={requests}
             submissions={submissions}
             getPresignedUrl={getPresignedUrl}

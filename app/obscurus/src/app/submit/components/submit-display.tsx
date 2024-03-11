@@ -28,6 +28,8 @@ import VideoPlayer from "../video-player";
 import { useRouter } from "next/navigation";
 import { DotLoader } from "react-spinners";
 import { el } from "date-fns/locale";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function SubmitDisplay({
   requests,
@@ -50,9 +52,9 @@ export default function SubmitDisplay({
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [upload, setUpload] = useQueryState("upload");
+  const [upload, setUpload] = useState(false);
   const [showingVideo, setShowingVideo] = useQueryState("showVideo");
-
+  const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
   if (!requestId) {
@@ -67,6 +69,7 @@ export default function SubmitDisplay({
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | "mp4">("mp4");
+  const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -83,39 +86,38 @@ export default function SubmitDisplay({
     return null;
   };
 
-  const reset = () => {
-
-
-  };
+  const reset = () => {};
 
   const handleProcessVideo = async (e: any) => {
     setLoading(true);
     if (submissionId && triggerJob && updateStatus) {
       const res = await triggerJob(submissionId, fileExt);
-
+      setUpload(false);
       setLoading(false);
+      setObjectURL(null);
+      setFile(undefined);
+      toast({
+        title: "Request submitted",
+        description: "Your video is being processed",
+      });
 
-
-      alert("Job has been triggered");
-      setUpload(null);
-      router.refresh();
+      return;
     } else {
       setLoading(false);
+      setObjectURL(null);
       return "Failed to run Job";
     }
   };
 
-  const [uploading, setUploading] = useState(false);
-  const [objectURL, setObjectURL] = useState<string | null>(null);
-
   const handleSubmit = async (e: any) => {
+    setLoading(true);
     e.preventDefault();
-    setUploading(true);
+    setUpload(true);
     const file = fileInputRef.current?.files?.[0];
     setFile(file);
     if (!file) {
       console.error("No file selected");
-      setUploading(false);
+      setUpload(false);
       return;
     }
     const fileExt = file.name.split(".").pop();
@@ -142,17 +144,20 @@ export default function SubmitDisplay({
         console.log("Data", response);
         setObjectURL(URL.createObjectURL(file)); // This will trigger useEffect
         console.log("Upload successful");
+        setLoading(false);
+        return;
       } catch (error) {
         console.error("Upload failed:", error);
+        setLoading(false);
       }
     }
   };
 
-  useEffect(() => {
-    if (objectURL) {
-      console.log("New objectURL is available", objectURL);
-    }
-  }, [objectURL]);
+  // useEffect(() => {
+  //   if (objectURL) {
+  //     console.log("New objectURL is available", objectURL);
+  //   }
+  // }, [objectURL]);
 
   const [record, setRecord] = useState(false);
 
@@ -266,7 +271,7 @@ export default function SubmitDisplay({
   };
 
   const handleChooseAnotherFile = () => {
-    setUpload(null);
+    setUpload(false);
     setFile(undefined);
     setObjectURL(null);
     setLoading(false);
@@ -275,7 +280,7 @@ export default function SubmitDisplay({
   const Back = () => {
     return (
       <div className="flex flex-row justify-between w-full items-center gap-2">
-        <Button variant={"ghost"} onClick={() => setUpload(null)}>
+        <Button variant={"ghost"} onClick={() => setUpload(false)}>
           <Tooltip>
             <TooltipTrigger asChild>
               <ArrowLeft className="w-4 h-4 " />
@@ -360,7 +365,13 @@ export default function SubmitDisplay({
 
   const DisplayUploadedVideo = () => {
     return (
-      <div className="flex flex-col w-fit h-full">
+      <div className="flex flex-col w-fit h-full pt-16">
+        {loading && (
+          <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+            <LucideLoader2 className="animate-spin text-primary" size={75} />
+            <p className="font-bold">Uploading...</p>
+          </div>
+        )}
         <div className="flex p-3 flex-col">
           <div className="flex flex-col w-full h-full">
             <>
@@ -368,7 +379,7 @@ export default function SubmitDisplay({
                   videoUrl={objectURL}
                   filename={file?.name || "No file selected."}
                 /> */}
-              {objectURL ? (
+              {objectURL && !loading && (
                 <>
                   <VideoDisplay videoUrl={objectURL} />
                   <div className="flex w-full mr-10 mt-4 justify-between">
@@ -379,19 +390,10 @@ export default function SubmitDisplay({
                       Choose Another File
                     </Button>
                     <Button onClick={handleProcessVideo} disabled={!canUpload}>
-                      Upload
+                      Submit Video
                     </Button>
                   </div>
                 </>
-              ) : (
-                <div className="flex flex-col w-full h-full justify-center items-center gap-5">
-
-                  <LucideLoader2
-                    className="animate-spin text-primary"
-                    size={75}
-                  />
-                   <p className="font-bold">Uploading...</p>
-                </div>
               )}
             </>
           </div>
@@ -409,19 +411,26 @@ export default function SubmitDisplay({
 
   const Upload = () => {
     return (
-      <form className="flex flex-col w-full h-full p-10">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full h-full p-10"
+      >
         <div className="flex flex-col w-full h-full justify-end items-center bg-accent rounded-lg p-16">
           <div className="w-full h-[50%] flex flex-col items-center ">
             <LucideUploadCloud className="w-48 h-48 " />
           </div>
 
           <div className="flex flex-col justify-around w-full h-full p-4">
+            {/* <Label htmlFor="video" className="text-xl font-bold text-center">
+              {file ? `Selected file: ${file.name}` : "No file selected."}
+            </Label> */}
             <input
               id="file-input"
               type="file"
               ref={fileInputRef}
               style={{ display: "none" }}
               accept="video/mp4, video/quicktime"
+              onChange={handleSubmit}
             />
 
             <div className="grid grid-cols-2 space-x-3 w-full">
@@ -563,7 +572,7 @@ export default function SubmitDisplay({
           <Button
             size="lg"
             className="mr-16 mb-16"
-            onClick={() => setUpload("true")}
+            onClick={() => setUpload(true)}
             disabled={!canUpload}
           >
             <p className="font-semibold">Upload</p>
@@ -607,9 +616,7 @@ export default function SubmitDisplay({
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
-                {!record ? (
-                  <>{uploading ? <DisplayUploadedVideo /> : <Upload />} </>
-                ) : (
+                {record ? (
                   <div className="flex flex-col  w-full min-w-full rounded-t-lg items-center justify-center  ">
                     <div className=" flex items-center justify-center rounded-t-md  w-full min-w-full">
                       <Suspense fallback={<div>Failed to load webcam</div>}>
@@ -627,6 +634,10 @@ export default function SubmitDisplay({
                       <InactiveRecordingToolbar />
                     )}
                   </div>
+                ) : file ? (
+                  <DisplayUploadedVideo />
+                ) : (
+                  <Upload />
                 )}
               </div>
             </div>
