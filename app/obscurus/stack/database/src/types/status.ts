@@ -13,3 +13,5 @@ export type Grouping =
   | "TODO"
   | "TRASH"
   | "ARCHIVED";
+
+export type Type = "CHAT" | "REQUEST" | "SUBMIT" | "PROFILE";

@@ -52,8 +52,8 @@ export function DataTableRowActions<TData>({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} onClick={() => setShowingVideo("true")}>
-          <Tooltip>
+        <Button variant={"ghost"} onClick={() => setShowingVideo("true")} >
+          <Tooltip >
             <TooltipTrigger asChild>
               <ExternalLink className="w-4 h-4 " />
             </TooltipTrigger>

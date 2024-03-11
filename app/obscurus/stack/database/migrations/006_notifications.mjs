@@ -7,8 +7,9 @@ export async function up(db) {
   await db.schema
     .createTable("notifications")
     .addColumn("notificationId", "varchar", (col) => col.primaryKey())
-    .addColumn("userEmail", "varchar", (col) => col.notNull().onDelete("cascade"))
+    .addColumn("userEmail", "varchar", (col) => col.notNull())
     .addColumn("type", "varchar", (col) => col.notNull())
+    .addColumn("referenceId", "varchar", (col) => col.notNull())
     .addColumn("creationDate", "timestamp", (col) =>
       col.notNull().defaultTo("now()")
     )

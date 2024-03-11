@@ -7,7 +7,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCurrentTheme } from "@/components/hooks/useCurrentTheme";
+import { useCurrentTheme } from "@/app/hooks/useCurrentTheme";
 import {
   Circle,
   Pause,

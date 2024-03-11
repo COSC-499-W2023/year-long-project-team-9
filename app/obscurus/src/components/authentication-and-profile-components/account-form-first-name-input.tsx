@@ -6,26 +6,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export interface FirstNameInputProps {
+export default function FirstNameInput({
+  form,
+  isDisabled,
+  formDescription,
+  fieldName,
+  label,
+  placeHolder,
+}: {
   form: any;
-}
-export default function FirstNameInput({ form }: FirstNameInputProps) {
+  isDisabled: boolean;
+  formDescription: string;
+  fieldName: string;
+  label: string;
+  placeHolder: string;
+}) {
   return (
     <FormItem>
-      <FormLabel>First Name</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <Input
+        disabled={isDisabled}
         maxLength={101}
-        placeholder="First Name"
-        {...form.register("firstName")}
+        placeholder={placeHolder}
+        {...form.register(fieldName)}
       ></Input>
 
       <FormDescription className="text-justify">
-        Other users will see you first name.
+        {formDescription}
       </FormDescription>
-      {form.getFieldState("firstName").error && (
-        <FormMessage>
-          {form.getFieldState("firstName").error.message}
-        </FormMessage>
+      {form.getFieldState(fieldName).error && (
+        <FormMessage>{form.getFieldState(fieldName).error.message}</FormMessage>
       )}
     </FormItem>
   );
