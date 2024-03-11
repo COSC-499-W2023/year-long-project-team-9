@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import Submit from "./user/[email]/submit/page";
+import Submit from "./submit/page";
 import Home from "./landing-page/page";
 // async function getUserEmail() {
 //   //...
