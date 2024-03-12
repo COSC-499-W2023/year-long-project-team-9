@@ -69,9 +69,9 @@ export default function SubmitList({
   };
 
   useEffect(() => {
-    if (!tab) {
-      setTab("all");
-    }
+    // if (!tab) {
+    //   setTab("all");
+    // }
     if (!submissionId) {
       const submission = getAssociatedSubmission(
         requests && requests[0].requestId
@@ -119,7 +119,7 @@ export default function SubmitList({
     }
   };
 
-  const sortedRequests = requests ? [...requests].sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()) : []
+  const sortedRequests = requests?.sort(sortRequests);
 
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
@@ -141,7 +141,7 @@ export default function SubmitList({
         request.requestTitle.toLowerCase().includes(searchTerm) ||
         request.requesterEmail.toLowerCase().includes(searchTerm);
 
-        return tab === "all" ? matchesSearch : matchesStatus && matchesSearch;
+        return tab === "all" || tab === null ? matchesSearch : matchesStatus && matchesSearch;
     });
 
     return (

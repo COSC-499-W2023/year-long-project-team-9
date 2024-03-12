@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,17 +29,16 @@ export default function RootLayout({
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <div className=" flex-col md:flex min-h-screen h-screen">
-            <NavBar />
-            {children}
+          <NavBar />
+          <Toaster />
+          <main>{children}</main>
 
-            {/*If not signed in*/}
+          {/*If not signed in*/}
 
-            {/* <div className="h-screen w-full flex flex-col items-center justify-center">
+          {/* <div className="h-screen w-full flex flex-col items-center justify-center">
             <div className="absolute z-100 top-36 left-56">Top</div>
             <Home />
           </div> */}
-          </div>
         </ThemeProvider>
       </body>
     </html>
