@@ -6,6 +6,9 @@ import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
+import deleteNotifications from "./functions/deleteNotifications";
+import notificationsRead from "./functions/notificationsRead";
+import getNotifications from "./functions/getNotifications";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const signedIn = true;
+  // Muhammad
+  // deleteNotifications;
+  // notificationsRead;
+  //
 
   return (
     <html lang="en">
@@ -29,7 +36,11 @@ export default function RootLayout({
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <NavBar />
+          <NavBar
+            notificationsRead={notificationsRead}
+            deleteNotifications={deleteNotifications}
+            getNotifications={getNotifications}
+          />
           <Toaster />
           <main>{children}</main>
 

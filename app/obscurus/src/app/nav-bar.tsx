@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
+import Notifications from "@/components/notifications";
 //import SignIn from "@/components/SignIn";
 // import { isSignedIn } from "@/auth/authenticationMethods";
 
@@ -27,7 +28,15 @@ export async function getServerSideProps() {
   };
 }
 
-const NavBar = () => {
+const NavBar = ({
+  notificationsRead,
+  deleteNotifications,
+  getNotifications,
+}: {
+  notificationsRead: Function;
+  deleteNotifications: Function;
+  getNotifications: Function;
+}) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
@@ -43,6 +52,10 @@ const NavBar = () => {
 
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
+
+  // Muhammad
+  //
+  // end
 
   // useEffect(() => {
   //   const checkAsyncUserSignIn = async () => {
@@ -71,10 +84,7 @@ const NavBar = () => {
           <NavigationMenuList>
             <Link href="/">
               <NavigationMenuItem>
-                <span
-                  className="font-bold hover:cursor-pointer">
-                  obscurus
-                </span>
+                <span className="font-bold hover:cursor-pointer">obscurus</span>
               </NavigationMenuItem>
             </Link>
             {/* <Link href="../CreateRequest">
@@ -122,6 +132,13 @@ const NavBar = () => {
       </div>
       <div className="grid grid-flow-col gap-2 justify-end items-center pr-5 ">
         <div className="flex justify-end space-x-2">
+          <div className="content-center">
+            <Notifications
+              notificationsRead={notificationsRead}
+              deleteNotifications={deleteNotifications}
+              getNotifications={getNotifications}
+            ></Notifications>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" data-testid="theme-toggle">
