@@ -30,6 +30,8 @@ import { DotLoader } from "react-spinners";
 import { el } from "date-fns/locale";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { useRequest } from "@/app/hooks/use-request";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function SubmitDisplay({
   requests,
@@ -50,18 +52,18 @@ export default function SubmitDisplay({
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
 }) {
-  const [requestId, setRequestId] = useQueryState("requestId");
+  const [request] = useRequest();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [upload, setUpload] = useState(false);
   const [showingVideo, setShowingVideo] = useQueryState("showVideo");
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
-  if (!requestId) {
-    setRequestId(requests && requests[0].requestId);
-  }
+  // if (!request) {
+  //   setRequest(requests && requests[0]);
+  // }
 
-  const selected = requests.find((item) => item.requestId === requestId);
+  const selected = requests.find((item) => item.requestId === request.selected);
 
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
@@ -142,7 +144,7 @@ export default function SubmitDisplay({
         });
 
         console.log("Data", response);
-        setObjectURL(URL.createObjectURL(file)); // This will trigger useEffect
+        setObjectURL(URL.createObjectURL(file));
         console.log("Upload successful");
         setLoading(false);
         return;
@@ -154,10 +156,10 @@ export default function SubmitDisplay({
   };
 
   // useEffect(() => {
-  //   if (objectURL) {
-  //     console.log("New objectURL is available", objectURL);
+  //   if (!requestId) {
+  //     setRequestId(requests && requests[0].requestId);
   //   }
-  // }, [objectURL]);
+  // }, []);
 
   const [record, setRecord] = useState(false);
 
@@ -253,11 +255,6 @@ export default function SubmitDisplay({
   };
 
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!tab)
-
-  // })
 
   const handleArchive = (requestId: string) => {
     if (updateStatus && requestId) {
@@ -527,51 +524,53 @@ export default function SubmitDisplay({
   const ShowRequest = ({ selected }: { selected: Requests }) => {
     return (
       <>
-        <div className="flex items-start p-4">
-          <div className="flex items-start gap-4 text-sm">
-            <Avatar>
-              <AvatarImage alt={selected?.requesterEmail} />
-              <AvatarFallback>
-                {selected?.requesterEmail
-                  .split(" ")
-                  .map((chunk) => chunk[0])
-                  .join("")}
-              </AvatarFallback>
-            </Avatar>
-            <div className="grid gap-1">
-              <div className="font-semibold">{selected?.requestTitle}</div>
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">From:</span>{" "}
-                {selected?.requestTitle}
-              </div>
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">From:</span> Jan Dhillon
-              </div>
+        <ScrollArea className="h-full">
+          <div className="flex items-start p-4">
+            <div className="flex items-start gap-4 text-sm">
+              <Avatar>
+                <AvatarImage alt={selected?.requesterEmail} />
+                <AvatarFallback>
+                  {selected?.requesterEmail
+                    .split(" ")
+                    .map((chunk) => chunk[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1">
+                <div className="font-semibold">{selected?.requestTitle}</div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">From:</span>{" "}
+                  {selected?.requestTitle}
+                </div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">From:</span> Jan Dhillon
+                </div>
 
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">Reply-To:</span>{" "}
-                {selected?.requesterEmail}
-              </div>
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">Due:</span>{" "}
-                {format(new Date(selected.dueDate), "PPpp")}
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Reply-To:</span>{" "}
+                  {selected?.requesterEmail}
+                </div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Due:</span>{" "}
+                  {format(new Date(selected.dueDate), "PPpp")}
+                </div>
               </div>
             </div>
+            {selected.creationDate && (
+              <div className="ml-auto text-xs text-muted-foreground">
+                {format(new Date(selected.creationDate), "PPpp")}
+              </div>
+            )}
           </div>
-          {selected.creationDate && (
-            <div className="ml-auto text-xs text-muted-foreground">
-              {format(new Date(selected.creationDate), "PPpp")}
-            </div>
-          )}
-        </div>
-        <Separator />
-        <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
-          {selected?.description}
-        </div>
-        <div className="mb-10 mr-10 flex justify-end w-full">
+          <Separator />
+          <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
+            {selected?.description}
+          </div>
+        </ScrollArea>
+        <div className=" flex justify-end w-full p-4">
           <Button
             size="lg"
-            className="mr-16 mb-16"
+            className=" mb-16"
             onClick={() => setUpload(true)}
             disabled={!canUpload}
           >

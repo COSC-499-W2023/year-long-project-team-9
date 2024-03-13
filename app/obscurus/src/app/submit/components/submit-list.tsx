@@ -41,6 +41,7 @@ import {
 import { ResponsiveContainer } from "recharts";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import { useRequest } from "@/app/hooks/use-request";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -55,7 +56,7 @@ export default function SubmitList({
   const router = useRouter();
   const pathname = usePathname();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [requestId, setRequestId] = useQueryState("requestId");
+  const [request, setRequest] = useRequest();
   const [search, setSearch] = useQueryState("search");
   const [upload] = useQueryState("upload");
   const [sort, setSort] = useQueryState("sort");
@@ -85,14 +86,17 @@ export default function SubmitList({
 
   const handleClick = (item: Requests) => {
     if (!upload) {
-      setRequestId(item.requestId || null);
+      setRequest({
+        ...request,
+        selected: item.requestId,
+      })
       const submission = getAssociatedSubmission(item.requestId);
       console.log("Assoc. submission", submission);
       if (submission) {
         setSubmissionId(submission?.submissionId);
       }
 
-      console.log("Selected RequestID to list", requestId);
+      console.log("Selected RequestID to list", item.requestId);
     }
   };
 
@@ -152,7 +156,7 @@ export default function SubmitList({
               key={item.requestId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                requestId === item.requestId && "bg-muted"
+                request.selected === item.requestId && "bg-muted"
               )}
               onClick={() => handleClick(item)}
             >
@@ -160,17 +164,19 @@ export default function SubmitList({
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
                     <div className="font-semibold">
-                      {item.requestTitle || item.requesterEmail}
+                      {item.requestTitle.length > 30 && item.requestTitle?.substring(0, 30) + "..." || item.requestTitle}
                     </div>
                     {getAssociatedSubmission(item.requestId)?.isRead && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                      <div>
+                      <span className="flex h-2 w-2 rounded-full bg-blue-600 min-h-full" />
+                      </div>
                     )}
                   </div>
 
                   <div
                     className={cn(
                       "ml-auto text-xs w-full flex justify-end",
-                      requestId === item.requestId
+                      request.selected === item.requestId
                         ? "text-foreground"
                         : "text-muted-foreground"
                     )}
@@ -181,7 +187,7 @@ export default function SubmitList({
                     })}
                   </div>
                 </div>
-                <div className="text-xs font-medium">{item.requesterEmail}</div>
+                <div className="text-xs font-medium">{item.requesterEmail.length > 30 && item.requesterEmail.substring(0,30) + "..." || item.requesterEmail}</div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
                 {item.description?.substring(0, 300)}

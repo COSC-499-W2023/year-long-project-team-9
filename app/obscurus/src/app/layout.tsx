@@ -26,19 +26,21 @@ export default function RootLayout({
       <body className={`${GeistSans.className}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           disableTransitionOnChange
         >
-          <NavBar />
-          <Toaster />
-          <main>{children}</main>
+          <div className=" flex-col md:flex min-h-screen h-screen">
+            <NavBar />
+            <Toaster/>
+            {children}
 
-          {/*If not signed in*/}
+            {/*If not signed in*/}
 
-          {/* <div className="h-screen w-full flex flex-col items-center justify-center">
+            {/* <div className="h-screen w-full flex flex-col items-center justify-center">
             <div className="absolute z-100 top-36 left-56">Top</div>
             <Home />
           </div> */}
+          </div>
         </ThemeProvider>
       </body>
     </html>

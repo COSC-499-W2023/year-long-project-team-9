@@ -1,6 +1,7 @@
 import VideoPlayer from "../video-player";
 
 const VideoDisplay = ({videoUrl} : {videoUrl: string}) => {
+  console.log(videoUrl);
   return (
     <div className="flex flex-col w-fit h-full">
       <div className="flex p-3 flex-col">
