@@ -727,6 +727,53 @@ export async function up(db) {
       },
     ])
     .execute();
+  await db
+    .insertInto("notifications")
+    .values([
+      {
+        notificationId: "d14e0786-01d9-4da2-9372-618b08edf863",
+        userEmail: "imightbejan@gmail.com",
+        type: "CHAT",
+        referenceId: "2a4f1a2a-1202-4f62-a019-da190c39a97f",
+        creationDate: new Date("2024.02.3 00:44:12"),
+        content:
+          "You have new message from Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam.",
+        isRead: false,
+        isTrashed: false,
+      },
+      {
+        notificationId: "0fbb2904-6611-4917-832e-b63cd541997f",
+        userEmail: "imightbejan@gmail.com",
+        type: "REQUEST",
+        referenceId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
+        creationDate: new Date("2024.02.3 02:44:12"),
+        content: "A request has been updated.",
+        isRead: true,
+        isTrashed: false,
+      },
+      {
+        notificationId: "01ae65a9-aa87-4c8d-b61a-7d468f04ab4e",
+        userEmail: "imightbejan@gmail.com",
+        type: "SUBMIT",
+        referenceId: "f50a22fb-f9ce-4c83-8954-60d6aa4dba3b",
+        creationDate: new Date("2024.02.3 01:44:12"),
+        content:
+          "You have a new request from Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam.",
+        isRead: true,
+        isTrashed: false,
+      },
+      {
+        notificationId: "82f4c6bc-aa01-4b70-ab38-ea00b3d5eae8",
+        userEmail: "imightbejan@gmail.com",
+        type: "CHAT",
+        referenceId: "01b3f0b0-2c27-4ad7-86e5-ce04bcd9cd48",
+        creationDate: new Date("2024.02.3 03:44:12"),
+        content: "You have a new message from Baz Sivakua.",
+        isRead: true,
+        isTrashed: false,
+      },
+    ])
+    .execute();
 }
 
 /**
