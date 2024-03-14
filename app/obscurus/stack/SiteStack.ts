@@ -52,8 +52,6 @@ export default function SiteStack({ stack }: StackContext) {
   //   permissions: [rekognitionPolicyStatement],
   // });
 
-
-
   //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
@@ -263,11 +261,17 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [inputBucket, rds],
         },
       },
+      "GET /getUserNames": {
+        function: {
+          handler: "./stack/lambdas/getUserNames.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
-
-
-
 
   // const processVideo = new Service(stack, "ProcessVideo", {
   //   path: "./stack/process-video",
@@ -305,10 +309,9 @@ export default function SiteStack({ stack }: StackContext) {
     },
     memorySize: "15 GB",
     timeout: "8 hours",
-    permissions: [rekognitionPolicyStatement]
+    permissions: [rekognitionPolicyStatement],
   });
   steveJobs.bind([api]);
-
 
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
@@ -372,13 +375,12 @@ export default function SiteStack({ stack }: StackContext) {
     // },
   });
 
-
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
-    WebSocketApiEndpoint: wsApi.url
+    WebSocketApiEndpoint: wsApi.url,
   });
 }

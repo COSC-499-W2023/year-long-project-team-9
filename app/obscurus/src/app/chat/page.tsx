@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { getEmail } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
+import { getUserNames } from "../functions/getUserNames";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
@@ -20,6 +21,7 @@ async function Chat() {
 
   const userEmail = await getEmail();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
+  const userNames = await getUserNames();
   const messages: Messages[] = await getMessages();
 
   const getLatestMessage = (item: Rooms): Messages => {
