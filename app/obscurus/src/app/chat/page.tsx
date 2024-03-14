@@ -10,6 +10,11 @@ import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 
+type UserNames = {
+  email: string;
+  fullName: string;
+};
+
 async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
@@ -21,7 +26,7 @@ async function Chat() {
 
   const userEmail = await getEmail();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
-  const userNames = await getUserNames();
+  const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
 
   const getLatestMessage = (item: Rooms): Messages => {
@@ -60,6 +65,7 @@ async function Chat() {
       defaultCollapsed={defaultCollapsed}
       userEmail={userEmail}
       rooms={rooms}
+      userNames={userNames}
       messages={messages}
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}

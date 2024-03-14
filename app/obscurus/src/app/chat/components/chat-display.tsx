@@ -51,8 +51,10 @@ export default function ChatDisplay({
 
   const selected = rooms.find((item) => item.roomId === roomId);
   const userName = getUserName(selected);
-  const otherUserName = getOtherParticipantName(selected);
   const otherEmail = getOtherParticipantEmail(selected);
+  const otherUserName = getOtherParticipantName(
+    getOtherParticipantEmail(selected)
+  );
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">

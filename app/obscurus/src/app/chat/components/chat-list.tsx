@@ -57,7 +57,9 @@ export default function ChatList({
       const searchTerm = search?.toLowerCase();
       const matchesSearch =
         !searchTerm ||
-        getOtherParticipantName(filRoom).toLowerCase().includes(searchTerm);
+        getOtherParticipantName(getOtherParticipantEmail(filRoom))
+          .toLowerCase()
+          .includes(searchTerm);
       return matchesSearch;
     });
     return (
@@ -74,9 +76,13 @@ export default function ChatList({
             >
               <div className="flex flex-row gap-2 w-full">
                 <Avatar>
-                  <AvatarImage alt={getOtherParticipantName(item)} />
+                  <AvatarImage
+                    alt={getOtherParticipantName(
+                      getOtherParticipantEmail(item)
+                    )}
+                  />
                   <AvatarFallback>
-                    {getOtherParticipantName(item)
+                    {getOtherParticipantName(getOtherParticipantEmail(item))
                       .split(" ")
                       .map((chunk: string[]) => chunk[0])
                       .join("")}
@@ -87,7 +93,9 @@ export default function ChatList({
                     <div className="flex flex-row">
                       <div className="flex items-center gap-2 w-full h-full">
                         <div className="font-semibold">
-                          {getOtherParticipantName(item)}
+                          {getOtherParticipantName(
+                            getOtherParticipantEmail(item)
+                          )}
                         </div>
                         {checkUnreadMessages(item) && (
                           <span className="flex h-2 w-2 rounded-full bg-blue-600" />
