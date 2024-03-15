@@ -11,7 +11,6 @@ import { Separator } from "@/components/ui/separator";
 import { FileUp } from "lucide-react";
 
 export default function ProfileImageInput({ form }: any) {
-  const fileRef = form.register("profileImage");
   return (
     <FormItem>
       <FormLabel>Profile Image</FormLabel>
