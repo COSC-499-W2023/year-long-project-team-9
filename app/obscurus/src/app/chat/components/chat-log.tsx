@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowUpCircle } from "lucide-react";
@@ -9,6 +9,7 @@ import {
   Messages,
 } from "stack/database/src/sql.generated";
 import { uuidv7 } from "uuidv7";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 interface ChatLogProps {
   userEmail: string;
@@ -48,7 +49,6 @@ export default function ChatLog({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
     const newMessageUUID = uuidv7();
@@ -76,7 +76,6 @@ export default function ChatLog({
     // createMessage(newMessage);
     sendMessage(JSON.stringify(newMessage));
     createMessageNotification(newNotification);
-    //scrollToBottom();
   };
 
   const handleTextareaKeyDown = (
@@ -90,32 +89,34 @@ export default function ChatLog({
     }
   };
 
-  // useEffect(() => {
-  //   const scrollElement = scrollRef.current;
-  //   if (scrollElement) {
-  //     scrollElement.scrollTop = scrollElement.scrollHeight;
-  //   }
-  // });
-
   return room ? (
     <div className="flex flex-col mt-auto relative">
       <div id="chatScroll">
         {roomMessages.map((message) => (
           <div key={message.messageId}>
-            {message.senderEmail === userEmail && (
+            {message.senderEmail === userEmail ? (
               <div className="flex justify-end">
                 <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
                   <p className="text-pretty break-words max-w-xs">
                     {message.messageContent}
                   </p>
+                  <p className="text-xs text-muted-foreground text-right mt-1">
+                    {formatDistanceToNow(new Date(message.creationDate), {
+                      addSuffix: true,
+                    })}
+                  </p>
                 </div>
               </div>
-            )}
-            {message.senderEmail != userEmail && (
+            ) : (
               <div className="flex w-3/4 m-1">
                 <div className="flex flex-col w-max max-w-[75%] rounded-md m-1 ml-4 bg-primary text-secondary p-2">
                   <p className="text-pretty break-words max-w-xs">
                     {message.messageContent}
+                  </p>
+                  <p className="text-xs text-muted-foreground text-left mt-1">
+                    {formatDistanceToNow(new Date(message.creationDate), {
+                      addSuffix: true,
+                    })}
                   </p>
                 </div>
               </div>
