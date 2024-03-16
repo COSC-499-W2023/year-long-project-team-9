@@ -6,7 +6,6 @@ import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ChatListProps {
@@ -63,82 +62,77 @@ export default function ChatList({
       return matchesSearch;
     });
     return (
-      <ScrollArea className="h-full">
-        <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-          {filteredRooms.map((item) => (
-            <button
-              key={item.roomId}
-              className={cn(
-                "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                roomId === item.roomId && "bg-muted"
-              )}
-              onClick={() => handleClick(item)}
-            >
-              <div className="flex flex-row gap-2 w-full">
-                <Avatar>
-                  <AvatarImage
-                    alt={getOtherParticipantName(
-                      getOtherParticipantEmail(item)
-                    )}
-                  />
-                  <AvatarFallback>
-                    {getOtherParticipantName(getOtherParticipantEmail(item))
-                      .split(" ")
-                      .map((chunk: string[]) => chunk[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col w-full">
-                  <div className="flex flex-col">
-                    <div className="flex flex-row">
-                      <div className="flex items-center gap-2 w-full h-full">
-                        <div className="font-semibold">
-                          {getOtherParticipantName(
-                            getOtherParticipantEmail(item)
-                          )}
-                        </div>
-                        {checkUnreadMessages(item) && (
-                          <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+      <div className="flex flex-col gap-2 p-4 pt-0 h-full">
+        {filteredRooms.map((item) => (
+          <button
+            key={item.roomId}
+            className={cn(
+              "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
+              roomId === item.roomId && "bg-muted"
+            )}
+            onClick={() => handleClick(item)}
+          >
+            <div className="flex flex-row gap-2 w-full">
+              <Avatar>
+                <AvatarImage
+                  alt={getOtherParticipantName(getOtherParticipantEmail(item))}
+                />
+                <AvatarFallback>
+                  {getOtherParticipantName(getOtherParticipantEmail(item))
+                    .split(" ")
+                    .map((chunk: string[]) => chunk[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col w-full">
+                <div className="flex flex-col">
+                  <div className="flex flex-row">
+                    <div className="flex items-center gap-2 w-full h-full">
+                      <div className="font-semibold">
+                        {getOtherParticipantName(
+                          getOtherParticipantEmail(item)
                         )}
                       </div>
+                      {checkUnreadMessages(item) && (
+                        <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                      )}
+                    </div>
 
-                      <div
-                        className={cn(
-                          "ml-auto text-xs w-full flex justify-end",
-                          roomId === item.roomId
-                            ? "text-foreground"
-                            : "text-muted-foreground"
+                    <div
+                      className={cn(
+                        "ml-auto text-xs w-full flex justify-end",
+                        roomId === item.roomId
+                          ? "text-foreground"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {" "}
+                      {getLatestMessage(item) != undefined &&
+                        formatDistanceToNow(
+                          new Date(getLatestMessage(item)?.creationDate),
+                          {
+                            addSuffix: true,
+                          }
                         )}
-                      >
-                        {" "}
-                        {getLatestMessage(item) != undefined &&
-                          formatDistanceToNow(
-                            new Date(getLatestMessage(item)?.creationDate),
-                            {
-                              addSuffix: true,
-                            }
-                          )}
-                        {getLatestMessage(item) === undefined && "N/A"}
-                      </div>
+                      {getLatestMessage(item) === undefined && "N/A"}
                     </div>
                   </div>
-                  <div className="line-clamp-2 text-xs text-muted-foreground">
-                    {getLatestMessage(item) != undefined &&
-                      getLatestMessage(item).messageContent.length > 24 &&
-                      getLatestMessage(item).messageContent?.substring(0, 24) +
-                        "..."}
-                    {getLatestMessage(item) != undefined &&
-                      getLatestMessage(item).messageContent.length <= 24 &&
-                      getLatestMessage(item).messageContent}
-                    {getLatestMessage(item) === undefined &&
-                      "No Message History"}
-                  </div>
+                </div>
+                <div className="line-clamp-2 text-xs text-muted-foreground">
+                  {getLatestMessage(item) != undefined &&
+                    getLatestMessage(item).messageContent.length > 24 &&
+                    getLatestMessage(item).messageContent?.substring(0, 24) +
+                      "..."}
+                  {getLatestMessage(item) != undefined &&
+                    getLatestMessage(item).messageContent.length <= 24 &&
+                    getLatestMessage(item).messageContent}
+                  {getLatestMessage(item) === undefined && "No Message History"}
                 </div>
               </div>
-            </button>
-          ))}
-        </div>
-      </ScrollArea>
+            </div>
+          </button>
+        ))}
+      </div>
     );
   };
 
