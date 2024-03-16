@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { ArrowUpCircle } from "lucide-react";
 import {
   Rooms,
   Notifications,
   Messages,
 } from "stack/database/src/sql.generated";
-import { Input } from "@/components/ui/input";
 import { uuidv7 } from "uuidv7";
 
 interface ChatLogProps {
@@ -36,7 +36,9 @@ export default function ChatLog({
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
   };
-  const handleChatMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChatMessageChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setChatMessage(value);
   };
@@ -94,14 +96,18 @@ export default function ChatLog({
             {message.senderEmail === userEmail && (
               <div className="flex justify-end">
                 <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
-                  <p className="break-all max-w-xs">{message.messageContent}</p>
+                  <p className="text-pretty break-words max-w-xs">
+                    {message.messageContent}
+                  </p>
                 </div>
               </div>
             )}
             {message.senderEmail != userEmail && (
               <div className="flex w-3/4 m-1">
                 <div className="flex flex-col w-max max-w-[75%] rounded-md m-1 ml-4 bg-primary text-secondary p-2">
-                  <p className="break-all max-w-xs">{message.messageContent}</p>
+                  <p className="text-pretty break-words max-w-xs">
+                    {message.messageContent}
+                  </p>
                 </div>
               </div>
             )}
@@ -109,13 +115,13 @@ export default function ChatLog({
         ))}
       </div>
       <div className="flex mr-3 ml-3 mb-6 mt-4 gap-2">
-        <Input
+        <Textarea
           className="items-end resize-none "
           placeholder="Send Message"
           maxLength={160}
           value={chatMessage}
           onChange={(e) => handleChatMessageChange(e)}
-        ></Input>
+        ></Textarea>
         <Button
           variant="ghost"
           onClick={() => handleClick()}
