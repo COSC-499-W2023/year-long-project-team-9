@@ -14,6 +14,7 @@ interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userEmail: string;
+  websocketApiEndpoint: string;
   rooms: Rooms[];
   userNames: UserNames[];
   messages: Messages[];
@@ -25,6 +26,7 @@ export default function ChatWrapper({
   defaultLayout,
   defaultCollapsed,
   userEmail,
+  websocketApiEndpoint,
   rooms,
   userNames,
   messages,
@@ -90,9 +92,7 @@ export default function ChatWrapper({
   };
 
   useEffect(() => {
-    const ws = new WebSocket(
-      "wss://o4tgfyn9n6.execute-api.us-west-2.amazonaws.com/Soren"
-    );
+    const ws = new WebSocket(websocketApiEndpoint);
     const handleBeforeUnload = () => {
       console.log("Page reloading or closing, disconnecting WebSocket");
       ws.close();
