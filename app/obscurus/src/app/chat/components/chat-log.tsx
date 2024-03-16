@@ -141,7 +141,7 @@ export default function ChatLog({
           </div>
         ))}
       </div>
-      <div className="flex mr-3 ml-3 mb-2 mt-2 gap-2">
+      <div className="flex mr-3 ml-3 mb-4 mt-2 gap-2">
         <Textarea
           className="items-end resize-none "
           placeholder="Send Message"
