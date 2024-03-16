@@ -36,6 +36,8 @@ export default function ChatLog({
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
   };
+  const roomMessages = getRoomMessages();
+  const [chatMessage, setChatMessage] = useState("");
   const handleChatMessageChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -46,15 +48,7 @@ export default function ChatLog({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
-
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   const scrollElement = scrollRef.current;
-  //   if (scrollElement) {
-  //     scrollElement.scrollTop = scrollElement.scrollHeight;
-  //   }
-  // });
 
   const handleClick = () => {
     const newMessageUUID = uuidv7();
@@ -85,8 +79,23 @@ export default function ChatLog({
     //scrollToBottom();
   };
 
-  const roomMessages = getRoomMessages();
-  const [chatMessage, setChatMessage] = useState("");
+  const handleTextareaKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevent default behavior (inserting new line)
+      if (chatMessage.length > 0) {
+        handleClick();
+      }
+    }
+  };
+
+  // useEffect(() => {
+  //   const scrollElement = scrollRef.current;
+  //   if (scrollElement) {
+  //     scrollElement.scrollTop = scrollElement.scrollHeight;
+  //   }
+  // });
 
   return room ? (
     <div className="flex flex-col mt-auto relative">
@@ -121,6 +130,7 @@ export default function ChatLog({
           maxLength={160}
           value={chatMessage}
           onChange={(e) => handleChatMessageChange(e)}
+          onKeyDown={(e) => handleTextareaKeyDown(e)}
         ></Textarea>
         <Button
           variant="ghost"
