@@ -62,7 +62,7 @@ export default function ChatList({
       return matchesSearch;
     });
     return (
-      <div className="flex flex-col gap-2 p-4 pt-0 h-full">
+      <div className="flex flex-col gap-2 p-4 pt-0 h-screen overflow-y-auto">
         {filteredRooms.map((item) => (
           <button
             key={item.roomId}

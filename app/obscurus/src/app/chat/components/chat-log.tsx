@@ -91,7 +91,7 @@ export default function ChatLog({
 
   return room ? (
     <div className="flex flex-col mt-auto relative">
-      <div id="chatScroll">
+      <div id="chatScroll" className="h-screen overflow-y-auto">
         {roomMessages.map((message) => (
           <div key={message.messageId}>
             {message.senderEmail === userEmail ? (
