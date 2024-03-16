@@ -62,7 +62,7 @@ export default function ChatList({
       return matchesSearch;
     });
     return (
-      <div className="flex flex-col gap-2 p-4 pt-0 h-screen overflow-y-auto">
+      <div className="flex flex-col gap-2 p-4 pt-0 h-full overflow-y-auto">
         {filteredRooms.map((item) => (
           <button
             key={item.roomId}
@@ -144,8 +144,8 @@ export default function ChatList({
   };
 
   return rooms ? (
-    <div className="flex h-full flex-col min-h-full">
-      <div className="flex items-center px-4">
+    <div className="flex h-screen flex-col min-h-full">
+      <div className="flex items-center p-2 px-5">
         <h1 className="text-xl font-bold">Chats</h1>
       </div>
       <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import { ArrowUpCircle } from "lucide-react";
 import {
   Rooms,
@@ -9,6 +10,7 @@ import {
   Messages,
 } from "stack/database/src/sql.generated";
 import { uuidv7 } from "uuidv7";
+import { format, isSameDay } from "date-fns";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 interface ChatLogProps {
@@ -89,11 +91,26 @@ export default function ChatLog({
     }
   };
 
+  const isSameDayAsPrevious = (currentDate: Date, index: number) => {
+    if (index === 0) {
+      return false; // Always show separator before the first message
+    }
+    const previousDate = new Date(roomMessages[index - 1].creationDate);
+    return isSameDay(currentDate, previousDate);
+  };
+
   return room ? (
     <div className="flex flex-col mt-auto relative">
-      <div id="chatScroll" className="h-screen overflow-y-auto">
-        {roomMessages.map((message) => (
+      <div id="chatScroll" className="mt-2 h-screen overflow-y-auto">
+        {roomMessages.map((message, index) => (
           <div key={message.messageId}>
+            {!isSameDayAsPrevious(new Date(message.creationDate), index) && (
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  {format(new Date(message.creationDate), "MMMM d, yyyy")}
+                </span>
+              </div>
+            )}
             {message.senderEmail === userEmail ? (
               <div className="flex justify-end">
                 <div className="flex flex-col ml-auto w-max max-w-[75%] rounded-md m-1 mr-5 bg-accent p-2">
@@ -124,7 +141,7 @@ export default function ChatLog({
           </div>
         ))}
       </div>
-      <div className="flex mr-3 ml-3 mb-6 mt-4 gap-2">
+      <div className="flex mr-3 ml-3 mb-2 mt-2 gap-2">
         <Textarea
           className="items-end resize-none "
           placeholder="Send Message"
@@ -141,7 +158,7 @@ export default function ChatLog({
           >
             <ArrowUpCircle></ArrowUpCircle>
           </Button>
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground text-center align-bottom">
             {chatMessage.length}/160
           </p>
         </div>
