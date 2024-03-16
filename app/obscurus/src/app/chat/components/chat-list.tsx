@@ -89,9 +89,16 @@ export default function ChatList({
                   <div className="flex flex-row">
                     <div className="flex items-center gap-2 w-full h-full">
                       <div className="font-semibold">
-                        {getOtherParticipantName(
-                          getOtherParticipantEmail(item)
-                        )}
+                        {getOtherParticipantName(getOtherParticipantEmail(item))
+                          .length > 50 &&
+                          getOtherParticipantName(
+                            getOtherParticipantEmail(item)
+                          ).substring(0, 50) + "..."}
+                        {getOtherParticipantName(getOtherParticipantEmail(item))
+                          .length <= 50 &&
+                          getOtherParticipantName(
+                            getOtherParticipantEmail(item)
+                          )}
                       </div>
                       {checkUnreadMessages(item) && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
