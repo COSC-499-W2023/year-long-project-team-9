@@ -132,13 +132,18 @@ export default function ChatLog({
           onChange={(e) => handleChatMessageChange(e)}
           onKeyDown={(e) => handleTextareaKeyDown(e)}
         ></Textarea>
-        <Button
-          variant="ghost"
-          onClick={() => handleClick()}
-          disabled={chatMessage.length < 1}
-        >
-          <ArrowUpCircle></ArrowUpCircle>
-        </Button>
+        <div className="flex flex-col">
+          <Button
+            variant="ghost"
+            onClick={() => handleClick()}
+            disabled={chatMessage.length < 1}
+          >
+            <ArrowUpCircle></ArrowUpCircle>
+          </Button>
+          <p className="text-xs text-muted-foreground text-center">
+            {chatMessage.length}/160
+          </p>
+        </div>
       </div>
     </div>
   ) : (
