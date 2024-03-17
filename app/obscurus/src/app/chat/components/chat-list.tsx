@@ -7,6 +7,7 @@ import { Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 
 interface ChatListProps {
   userEmail: string;
@@ -62,7 +63,7 @@ export default function ChatList({
       return matchesSearch;
     });
     return (
-      <div className="flex flex-col gap-2 p-4 pt-0 h-full overflow-y-auto">
+      <div className="flex flex-col gap-2 p-4 pt-2 h-full overflow-y-auto">
         {filteredRooms.map((item) => (
           <button
             key={item.roomId}
@@ -161,6 +162,7 @@ export default function ChatList({
           </div>
         </form>
       </div>
+      <Separator />
       {tabContent()}
     </div>
   ) : (
