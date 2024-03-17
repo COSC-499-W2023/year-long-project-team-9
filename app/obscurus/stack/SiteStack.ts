@@ -52,6 +52,12 @@ export default function SiteStack({ stack }: StackContext) {
   //   permissions: [rekognitionPolicyStatement],
   // });
 
+  const sesPolicyStatement = new PolicyStatement({
+    actions: ["ses:SendEmail", "ses:SendRawEmail", "ses:SendTemplatedEmail"],
+    effect: Effect.ALLOW,
+    resources: ["*"],
+  });
+
   //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
@@ -132,7 +138,7 @@ export default function SiteStack({ stack }: StackContext) {
         function: {
           handler: "./stack/lambdas/createRequest.handler",
           timeout: 20,
-          permissions: [inputBucket, rds],
+          permissions: [inputBucket, rds, sesPolicyStatement],
           bind: [inputBucket, rds],
         },
       },
