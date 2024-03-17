@@ -36,6 +36,20 @@ export function addUser({
     .execute();
 }
 
+export async function getUserDataByEmail(email: string) {
+  const requests = await SQL.DB.selectFrom("requests")
+    .selectAll()
+    .where("requesterEmail", "=", email)
+    .execute();
+  const submissions = await SQL.DB.selectFrom("submissions")
+    .innerJoin("requests", "requests.requestId", "submissions.requestId")
+    .selectAll()
+    .where("requests.requesterEmail", "=", email)
+    .execute();
+
+  return [requests, submissions];
+}
+
 export interface Users {
   email: string;
   givenName: string;

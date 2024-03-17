@@ -263,6 +263,15 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [inputBucket, rds],
         },
       },
+      "POST /getUserDataByEmail": {
+        function: {
+          handler: "./stack/lambdas/getUserDataByEmail.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
     },
   });
 

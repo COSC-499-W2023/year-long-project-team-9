@@ -18,14 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
-//import SignIn from "@/components/SignIn";
-// import { isSignedIn } from "@/auth/authenticationMethods";
 
-export async function getServerSideProps() {
-  return {
-    props: {}, // nothing yet
-  };
-}
 
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
@@ -44,15 +37,6 @@ const NavBar = () => {
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
 
-  // useEffect(() => {
-  //   const checkAsyncUserSignIn = async () => {
-  //     const userBoolean = await isSignedIn();
-  //     return userBoolean;
-  //   };
-  //   checkAsyncUserSignIn().then((result) => {
-  //     setUserSignedIn(result);
-  //   });
-  // });
 
   return (
     <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2 bg-background">

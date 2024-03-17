@@ -20,6 +20,7 @@ import {
   Square,
   Circle,
   LucideLoader2,
+  ArrowBigDown,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
 import VideoDisplay from "./video-display";
@@ -32,25 +33,25 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { useRequest } from "@/app/hooks/use-request";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getUserDataByEmail } from "@/app/functions/getUserDataByEmail";
+import { get } from "http";
 
 export default function SubmitDisplay({
   requests,
-  searchParams,
   submissions,
   getPresignedUrl,
   getDownloadPresignedUrl,
   triggerJob,
   updateStatus,
+  getUserDataByEmail,
 }: {
   requests: Requests[];
-  searchParams?: {
-    counter?: string | null[];
-  };
   submissions: Submissions[];
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
+  getUserDataByEmail?: (getUserDataByEmail: string) => Promise<Requests>;
 }) {
   const [request] = useRequest();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
@@ -524,7 +525,7 @@ export default function SubmitDisplay({
   const ShowRequest = ({ selected }: { selected: Requests }) => {
     return (
       <>
-        <ScrollArea className="h-full">
+        <div className="h-full">
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm">
               <Avatar>
@@ -563,11 +564,13 @@ export default function SubmitDisplay({
             )}
           </div>
           <Separator />
-          <div className="flex-1 whitespace-pre-wrap p-4 text-sm ">
-            {selected?.description}
-          </div>
-        </ScrollArea>
-        <div className=" flex justify-end w-full p-4">
+          <ScrollArea className="flex  p-4">
+            <div className="flex-1 whitespace-pre-wrap text-sm max-h-[400px] ">
+              {selected?.description}
+            </div>
+          </ScrollArea>
+        </div>
+        <div className=" flex justify-end w-full p-5 pt-7">
           <Button
             size="lg"
             className=" mb-16"
