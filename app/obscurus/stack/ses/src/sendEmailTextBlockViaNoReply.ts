@@ -6,7 +6,7 @@ export async function sendEmailTextBlockViaNoReply(
 ) {
   const templateData = {
     customsubject: subject,
-    textblock: "textblock",
+    textblock: textblock,
   };
   const params = {
     Source: "no-reply@obscurus.me",
