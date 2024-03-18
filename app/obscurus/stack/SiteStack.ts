@@ -63,9 +63,11 @@ export default function SiteStack({ stack }: StackContext) {
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
-
-  // Create secret keys
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
+  const WEBSOCKET_API_ENDPOINT = new Config.Secret(
+    stack,
+    "WEBSOCKET_API_ENDPOINT"
+  );
 
   const api = new Api(stack, "Api", {
     // defaults: {
@@ -265,6 +267,24 @@ export default function SiteStack({ stack }: StackContext) {
           timeout: 20,
           permissions: [inputBucket, rds],
           bind: [inputBucket, rds],
+        },
+      },
+      "GET /getUserNames": {
+        function: {
+          handler: "./stack/lambdas/getUserNames.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+          environment: { DB_NAME: rds.clusterArn },
+        },
+      },
+      "GET /getWebsocketApiEndpoint": {
+        function: {
+          handler: "./stack/lambdas/getWebsocketApiEndpoint.handler",
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds, WEBSOCKET_API_ENDPOINT],
+          environment: { DB_NAME: rds.clusterArn },
         },
       },
     },

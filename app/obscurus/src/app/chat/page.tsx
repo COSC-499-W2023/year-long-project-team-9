@@ -1,13 +1,19 @@
 "use server";
-import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { getEmail } from "../functions/authenticationMethods";
+import { getWebsocketApiEndpoint } from "../functions/getWebsocketApiEndpoint";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
+import { getUserNames } from "../functions/getUserNames";
 import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
+
+type UserNames = {
+  email: string;
+  fullName: string;
+};
 
 async function Chat() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -19,7 +25,9 @@ async function Chat() {
       : undefined;
 
   const userEmail = await getEmail();
+  const websocketApiEndpoint = await getWebsocketApiEndpoint();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
+  const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
 
   const getLatestMessage = (item: Rooms): Messages => {
@@ -57,7 +65,9 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={userEmail}
+      websocketApiEndpoint={websocketApiEndpoint.websocketApiEndpoint}
       rooms={rooms}
+      userNames={userNames}
       messages={messages}
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
