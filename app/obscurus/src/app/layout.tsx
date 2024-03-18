@@ -26,10 +26,11 @@ export default function RootLayout({
       <body className={`${GeistSans.className}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="system"
           disableTransitionOnChange
         >
           <div className=" flex-col md:flex min-h-screen h-screen">
+
             <NavBar />
             <Toaster/>
             {children}

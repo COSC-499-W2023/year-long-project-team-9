@@ -125,12 +125,13 @@ print("init")
 # Environment Variables
 input_bucket = os.environ['INPUT_BUCKET']
 payload = json.loads(os.getenv("SST_PAYLOAD"))
-key = payload['submissionId']
+submission_id = payload['submissionId']
 file_ext = payload['fileExt']
-print("Key: ", key)
+print("submission_id: ", submission_id)
 print("File ext", file_ext)
+input_name = submission_id + '.' + file_ext
 output_bucket = os.environ['OUTPUT_BUCKET']
-output_name = key.split('.')[0] + '-processed.' + file_ext
+output_name = submission_id.split('.')[0] + '-processed.' + file_ext
 api_url = os.environ['API_URL']
 print("API_URL", api_url)
 
@@ -139,9 +140,9 @@ print("API_URL", api_url)
 
 def start_face_detection():
     print("Running face detection...")
-    print("Bucket: " + input_bucket+ ", Key: " + key)
+    print("Bucket: " + input_bucket+ ", Input Name: " + input_name)
     response = rekognition.start_face_detection(
-        Video={'S3Object': {'Bucket': input_bucket, 'Name': key}}
+        Video={'S3Object': {'Bucket': input_bucket, 'Name': input_name}},
     )
     return response['JobId']
 
@@ -197,15 +198,13 @@ def update_status(status, submission_id):
 
 def process_video(timestamps, response):
     print("Processing video...")
-    print("Key in process_video", key)
-    filename=key
-    local_filename = '/tmp/{}.{}'.format(filename, file_ext)
-    local_filename_output = '/tmp/{}-processed.{}'.format(filename, file_ext)
+    local_filename = '/tmp/{}'.format(input_name)
+    local_filename_output = '/tmp/{}-processed.{}'.format(submission_id, file_ext)
     print("local_filename_output", local_filename_output)
-    s3.download_file(input_bucket, key, local_filename)
+    s3.download_file(input_bucket, input_name, local_filename)
     print("Job response", response)
     apply_faces_to_video(timestamps, local_filename, local_filename_output, response["VideoMetadata"])
-    print("Key before integrating audio", key)
+    print("submission_id before integrating audio", input_name)
     integrate_audio(local_filename, local_filename_output)
     s3.upload_file(local_filename_output, output_bucket, output_name)
     print("Output file uploaded to S3")
@@ -214,20 +213,20 @@ def process_video(timestamps, response):
 
 def main():
     print("Running...")
-    update_status("PROCESSING", key)
+    update_status("PROCESSING", submission_id)
     try:
         job_id = start_face_detection()
         job_response = check_job_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
         process_video(timestamps, job_response)
         print("API_URL", api_url)
-        update_status("COMPLETED", key)
+        update_status("COMPLETED", submission_id)
 
 
         print('Video processing completed')
     except Exception as e:
         print("Error", e)
-        update_status("FAILED", key)
+        update_status("FAILED", submission_id)
         print("Failed to process video")
 
 if __name__ == "__main__":

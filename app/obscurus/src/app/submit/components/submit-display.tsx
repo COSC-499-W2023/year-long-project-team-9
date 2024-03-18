@@ -9,7 +9,14 @@ import {
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
-import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Archive,
   Trash2,
@@ -21,11 +28,11 @@ import {
   Circle,
   LucideLoader2,
   ArrowBigDown,
+  FileText,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
-import VideoDisplay from "./video-display";
 import Webcam from "react-webcam";
-import VideoPlayer from "../video-player";
+import VideoPlayer from "./video-player";
 import { useRouter } from "next/navigation";
 import { DotLoader } from "react-spinners";
 import { el } from "date-fns/locale";
@@ -34,7 +41,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRequest } from "@/app/hooks/use-request";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getUserDataByEmail } from "@/app/functions/getUserDataByEmail";
-import { get } from "http";
+import { useDropzone } from "react-dropzone";
+import { useAtom } from "jotai";
+import { atomWithToggle } from "../../atoms/atomWithToggle";
 
 export default function SubmitDisplay({
   requests,
@@ -56,7 +65,7 @@ export default function SubmitDisplay({
   const [request] = useRequest();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [upload, setUpload] = useState(false);
-  const [showingVideo, setShowingVideo] = useQueryState("showVideo");
+  const [showingVideo, setShowingVideo] = useState(false);
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
@@ -69,6 +78,34 @@ export default function SubmitDisplay({
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   // console.log("URL", url);
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      if (!selected || !showingVideo) return;
+
+      const submission = submissions.find(
+        (sub) => sub.requestId === selected.requestId
+      );
+
+      if (
+        submission &&
+        submission.status === "COMPLETED" &&
+        getDownloadPresignedUrl
+      ) {
+        try {
+          const url = await getDownloadPresignedUrl(submission.submissionId);
+          setProcessedVideo(url);
+        } catch (error) {
+          console.error("Failed to get download URL", error);
+        }
+      } else {
+        console.log("No video to display or submission not completed");
+        // If there's no video to display, or the submission isn't completed, you might want to handle this case.
+      }
+    };
+
+    fetchVideo();
+  }, [selected, showingVideo, submissions, getDownloadPresignedUrl]);
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | "mp4">("mp4");
@@ -100,7 +137,7 @@ export default function SubmitDisplay({
       setObjectURL(null);
       setFile(undefined);
       toast({
-        title: "Request submitted",
+        title: "Processing Video",
         description: "Your video is being processed",
       });
 
@@ -194,6 +231,7 @@ export default function SubmitDisplay({
   };
 
   const handleSaveAndUpload = async () => {
+    console.log("Recorded Chunks", recordedChunks);
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, { type: "video/webm" });
       const fileName = `${submissionId}.webm`;
@@ -201,6 +239,7 @@ export default function SubmitDisplay({
 
       setFile(file);
 
+      console.log("File", file);
       if (submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
 
@@ -223,6 +262,8 @@ export default function SubmitDisplay({
           setRecordedChunks([]);
         }
       }
+    } else {
+      console.error("No recorded chunks");
     }
   };
 
@@ -230,9 +271,9 @@ export default function SubmitDisplay({
     if (!selected) return;
 
     if (!showingVideo) {
-      setShowingVideo("true");
+      setShowingVideo(true);
     } else {
-      setShowingVideo(null);
+      setShowingVideo(false);
     }
     const submission = submissions.find(
       (sub) => sub.requestId === selected.requestId
@@ -251,7 +292,6 @@ export default function SubmitDisplay({
       }
     } else {
       console.log("No video to display or submission not completed");
-      // Handle case when there's no video to display or submission isn't completed
     }
   };
 
@@ -269,7 +309,6 @@ export default function SubmitDisplay({
   };
 
   const handleChooseAnotherFile = () => {
-    setUpload(false);
     setFile(undefined);
     setObjectURL(null);
     setLoading(false);
@@ -373,14 +412,10 @@ export default function SubmitDisplay({
         <div className="flex p-3 flex-col">
           <div className="flex flex-col w-full h-full">
             <>
-              {/* <VideoPlayer
-                  videoUrl={objectURL}
-                  filename={file?.name || "No file selected."}
-                /> */}
-              {objectURL && !loading && (
+              {objectURL && !loading && file && (
                 <>
-                  <VideoDisplay videoUrl={objectURL} />
-                  <div className="flex w-full mr-10 mt-4 justify-between">
+                  <VideoPlayer videoUrl={objectURL} filename={file?.name} />
+                  <div className="flex w-full  justify-between p-3">
                     <Button
                       onClick={handleChooseAnotherFile}
                       variant={"outline"}
@@ -413,47 +448,36 @@ export default function SubmitDisplay({
         onSubmit={handleSubmit}
         className="flex flex-col w-full h-full p-10"
       >
-        <div className="flex flex-col w-full h-full justify-end items-center bg-accent rounded-lg p-16">
+        <div className="flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5">
           <div className="w-full h-[50%] flex flex-col items-center ">
             <LucideUploadCloud className="w-48 h-48 " />
           </div>
 
-          <div className="flex flex-col justify-around w-full h-full p-4">
-            {/* <Label htmlFor="video" className="text-xl font-bold text-center">
-              {file ? `Selected file: ${file.name}` : "No file selected."}
-            </Label> */}
+          <div className="flex flex-row gap-3 w-full justify-center pr-7">
             <input
               id="file-input"
               type="file"
               ref={fileInputRef}
               style={{ display: "none" }}
-              accept="video/mp4, video/quicktime"
               onChange={handleSubmit}
+              accept="video/mp4, video/quicktime"
             />
-
-            <div className="grid grid-cols-2 space-x-3 w-full">
-              <input
-                id="file-input"
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleSubmit}
-                accept="video/mp4, video/quicktime"
-              />
-              <div className=" flex justify-center">
-                <Button onClick={handleUploadClick}>Upload</Button>
-              </div>
-              <div className="flex justify-center">
-                <Button onClick={() => setRecord(true)}>Record</Button>
-              </div>
+            <div className=" flex justify-center">
+              <Button onClick={handleUploadClick} className="">
+                Choose File
+              </Button>
             </div>
-            <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
-              <div className="font-semibold text-base">Accepted filetypes:</div>
+            <div className="flex justify-center">
+              <Button onClick={() => setRecord(true)}>Record</Button>
+            </div>
+          </div>
+          <Separator />
+          <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
+            <div className="font-semibold text-base">Accepted filetypes:</div>
 
-              <div className="text-sm text-center text-muted-foreground">
-                {" "}
-                MP4, MOV
-              </div>
+            <div className="text-sm text-center text-muted-foreground">
+              {" "}
+              MP4, MOV
             </div>
           </div>
         </div>
@@ -470,6 +494,8 @@ export default function SubmitDisplay({
               variant="ghost"
               size="icon"
               onClick={handleStopCaptureClick}
+              type="submit"
+              onSubmit={handleSaveAndUpload}
             >
               <Square className=" fill-primary h-6 w-6 " />
               <span className="sr-only">Stop Recording</span>
@@ -564,12 +590,13 @@ export default function SubmitDisplay({
             )}
           </div>
           <Separator />
-          <ScrollArea className="flex  p-4">
+          <div className="flex  p-4 overflow-scroll">
             <div className="flex-1 whitespace-pre-wrap text-sm max-h-[400px] ">
               {selected?.description}
             </div>
-          </ScrollArea>
+          </div>
         </div>
+        <Separator />
         <div className=" flex justify-end w-full p-5 pt-7">
           <Button
             size="lg"
@@ -584,8 +611,25 @@ export default function SubmitDisplay({
     );
   };
 
+  const isShowingVideoAtom = atomWithToggle(false);
+
+  const Toggle = () => {
+    const [isActive, toggle] = useAtom(isShowingVideoAtom);
+
+    return (
+      <>
+        <button onClick={() => toggle()}>
+          isActive: {isActive ? "yes" : "no"}
+        </button>
+        <button onClick={() => toggle(true)}>force true</button>
+        <button onClick={() => toggle(false)}>force false</button>
+      </>
+    );
+  };
+
   return (
     <div className="flex h-full flex-col">
+      {/* <Toggle/> */}
       <div className="flex items-center p-2">
         {/* Toolbar states */}
         {upload ? <Back /> : <Toolbar />}
@@ -648,8 +692,9 @@ export default function SubmitDisplay({
           )}
         </div>
       ) : (
-        <div className="p-8 text-center text-muted-foreground">
-          No message selected
+        <div className="h-full flex flex-col space-y-4 justify-center items-center">
+          <FileText className="h-20 w-20" color="#111827" />
+          <p className="font-semibold text-lg">No request selected</p>
         </div>
       )}
     </div>
