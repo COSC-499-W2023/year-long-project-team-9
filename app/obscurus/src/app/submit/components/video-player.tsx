@@ -5,15 +5,17 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LucideLoader2 } from "lucide-react";
+import { cn } from "../../functions/utils";
 
 export default function VideoPlayer({ videoUrl, filename }: any) {
   console.log("videoUrl in video-player", videoUrl);
+  console.log("filename in video-player", filename);
   return (
     <div className="flex h-full flex-col rounded-md">
-      <Label htmlFor="video" className=" text-left text-base pt-3">
+      <Label htmlFor="video" className=" text-left text-base ">
         {filename}
       </Label>
-      <Separator className="my-3 text-muted-foreground" />
+      <Separator className="text-muted-foreground" />
       <Suspense fallback={<LucideLoader2 className="w-10 h-10" />}>
         <ReactPlayer
           url={videoUrl}

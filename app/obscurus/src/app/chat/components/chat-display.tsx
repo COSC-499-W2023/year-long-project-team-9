@@ -51,8 +51,10 @@ export default function ChatDisplay({
 
   const selected = rooms.find((item) => item.roomId === roomId);
   const userName = getUserName(selected);
-  const otherUserName = getOtherParticipantName(selected);
   const otherEmail = getOtherParticipantEmail(selected);
+  const otherUserName = getOtherParticipantName(
+    getOtherParticipantEmail(selected)
+  );
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">
@@ -67,8 +69,15 @@ export default function ChatDisplay({
           </AvatarFallback>
         </Avatar>
         <div className="pl-2 flex flex-col">
-          <div className="text-2x1 font-semibold">{otherUserName}</div>
-          <div className="text-xs text-muted-foreground">{otherEmail}</div>
+          <div className="text-2x1 font-semibold">
+            {otherUserName.length > 50 &&
+              otherUserName.substring(0, 50) + "..."}
+            {otherUserName.length <= 50 && otherUserName}
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {otherEmail.length > 50 && otherEmail.substring(0, 50) + "..."}
+            {otherEmail.length <= 50 && otherEmail}
+          </div>
         </div>
       </div>
       <Separator />

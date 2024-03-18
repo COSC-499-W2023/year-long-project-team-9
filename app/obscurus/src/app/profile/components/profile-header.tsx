@@ -11,7 +11,7 @@ export default function ProfileHeader() {
         <div className="font-semibold text-xl">Profile</div>
       </div>
       <div className="py-2">
-        <Separator />
+        <Separator /> 
       </div>
     </>
   );

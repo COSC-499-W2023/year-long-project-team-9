@@ -21,7 +21,12 @@ import LastNameInput from "@/components/authentication-and-profile-components/ac
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
 import ProfileHeader from "./profile-header";
 import { Users } from "@obscurus/database/src/sql.generated";
+import { useToast } from "@/components/ui/use-toast";
+import { Separator } from "@/components/ui/separator";
 // TODO: better error messages, be below for an example
+
+const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+// const { toast } = useToast();
 
 const profileFormSchema = z.object({
   firstName: z
@@ -31,30 +36,37 @@ const profileFormSchema = z.object({
     .max(100),
   email: z.string(),
   lastName: z.string().trim().min(1).max(100),
-  profileImageName: z.string(),
+  profileImage: z
+    .any()
+    .refine((files) => {
+      return files?.[0]?.size <= 10000000;
+    })
+    .refine(
+      (files) => acceptedImageFileTypes.includes(files?.[0]?.type),
+      "wrong type" //
+    ),
 });
-interface CreateFormProps {
-  userData: Users[];
-}
 
-export default function ProfileForm({ userData }: { userData: Users }) {
-  const form = useForm<z.infer<typeof profileFormSchema>>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      email: userData.email,
-      firstName: userData.givenName,
-      lastName: userData.familyName,
-    },
-  });
+export default function ProfileForm({
+  // toast({
+  //   title: "Profile Updated Successfully",
+  //   description: "",
+  // });
 
-  function onSubmit(values: z.infer<typeof profileFormSchema>) {
-    console.log(values);
-  }
+  userData,
+  form,
+  onSubmit,
+}: {
+  userData: Users;
+  form: any;
+  onSubmit: Function;
+}) {
   // TODO: Work in progress
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
+      <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <EmailInput

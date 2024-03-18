@@ -41,6 +41,8 @@ import {
 import { ResponsiveContainer } from "recharts";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import { useRequest } from "@/app/hooks/use-request";
+import { Separator } from "@/components/ui/separator";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -55,7 +57,7 @@ export default function SubmitList({
   const router = useRouter();
   const pathname = usePathname();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [requestId, setRequestId] = useQueryState("requestId");
+  const [request, setRequest] = useRequest();
   const [search, setSearch] = useQueryState("search");
   const [upload] = useQueryState("upload");
   const [sort, setSort] = useQueryState("sort");
@@ -69,30 +71,33 @@ export default function SubmitList({
   };
 
   useEffect(() => {
-    if (!tab) {
-      setTab("all");
-    }
-    if (!submissionId) {
-      const submission = getAssociatedSubmission(
-        requests && requests[0].requestId
-      );
-      console.log("Assoc. submission", submission);
-      if (submission) {
-        setSubmissionId(submission?.submissionId);
-      }
-    }
+    // if (!tab) {
+    //   setTab("all");
+    // }
+    // if (!submissionId) {
+    //   const submission = getAssociatedSubmission(
+    //     requests && requests[0].requestId
+    //   );
+    //   console.log("Assoc. submission", submission);
+    //   if (submission) {
+    //     setSubmissionId(submission?.submissionId);
+    //   }
+    // }
   });
 
   const handleClick = (item: Requests) => {
     if (!upload) {
-      setRequestId(item.requestId || null);
+      setRequest({
+        ...request,
+        selected: item.requestId,
+      });
       const submission = getAssociatedSubmission(item.requestId);
       console.log("Assoc. submission", submission);
       if (submission) {
         setSubmissionId(submission?.submissionId);
       }
 
-      console.log("Selected RequestID to list", requestId);
+      console.log("Selected RequestID to list", item.requestId);
     }
   };
 
@@ -119,7 +124,7 @@ export default function SubmitList({
     }
   };
 
-  const sortedRequests = requests ? [...requests].sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()) : []
+  const sortedRequests = requests?.sort(sortRequests);
 
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
@@ -141,7 +146,9 @@ export default function SubmitList({
         request.requestTitle.toLowerCase().includes(searchTerm) ||
         request.requesterEmail.toLowerCase().includes(searchTerm);
 
-        return tab === "all" ? matchesSearch : matchesStatus && matchesSearch;
+      return tab === "all" || tab === null
+        ? matchesSearch
+        : matchesStatus && matchesSearch;
     });
 
     return (
@@ -152,7 +159,7 @@ export default function SubmitList({
               key={item.requestId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                requestId === item.requestId && "bg-muted"
+                request.selected === item.requestId && "bg-muted"
               )}
               onClick={() => handleClick(item)}
             >
@@ -160,17 +167,19 @@ export default function SubmitList({
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
                     <div className="font-semibold">
-                      {item.requestTitle || item.requesterEmail}
+                      {(item.requestTitle.length > 30 &&
+                        item.requestTitle?.substring(0, 30) + "...") ||
+                        item.requestTitle}
                     </div>
                     {getAssociatedSubmission(item.requestId)?.isRead && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                      <span className="flex h-2 w-2 rounded-full bg-blue-600 min-h-full" />
                     )}
                   </div>
 
                   <div
                     className={cn(
                       "ml-auto text-xs w-full flex justify-end",
-                      requestId === item.requestId
+                      request.selected === item.requestId
                         ? "text-foreground"
                         : "text-muted-foreground"
                     )}
@@ -181,7 +190,11 @@ export default function SubmitList({
                     })}
                   </div>
                 </div>
-                <div className="text-xs font-medium">{item.requesterEmail}</div>
+                <div className="text-xs font-medium">
+                  {(item.requesterEmail.length > 30 &&
+                    item.requesterEmail.substring(0, 30) + "...") ||
+                    item.requesterEmail}
+                </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
                 {item.description?.substring(0, 300)}
@@ -211,8 +224,12 @@ export default function SubmitList({
   });
 
   return requests && submissions ? (
-    <Tabs defaultValue="all" className="h-screen overflow-scroll" onValueChange={setTab}>
-      <div className="flex justify-between items-center p-2 px-5">
+    <Tabs
+      defaultValue="all"
+      className="h-full flex flex-col gap-3 pt-2"
+      onValueChange={setTab}
+    >
+      <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Submit</h1>
         <Drawer>
           <span className="sr-only">View Processing</span>
@@ -232,7 +249,7 @@ export default function SubmitList({
                 <DrawerTitle>All Videos</DrawerTitle>
                 <DrawerDescription>View your uploaded videos</DrawerDescription>
               </DrawerHeader>
-              <div className="p-4 pb-5">
+              <div className=" pb-5">
                 <div className="mt-3 h-[600px] overflow-y-scroll ">
                   <ResponsiveContainer width="100%" height="100%">
                     <DataTable columns={columns} data={submissions} />
@@ -243,7 +260,7 @@ export default function SubmitList({
           </DrawerContent>
         </Drawer>
       </div>
-      <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
         <form>
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -262,13 +279,13 @@ export default function SubmitList({
           </div>
         </form>
       </div>
-      <div className="flex flex-row items-center justify-between px-4 pb-3">
+      <div className="flex flex-row items-center justify-between px-4">
         <TabsList>{tabsTriggers}</TabsList>
         <Tooltip>
           <TooltipTrigger asChild>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="mr-2">
+                <Button variant="ghost" size="icon" className="">
                   <SortDescIcon className="w-4 h-4  " />
                   <span className="sr-only">Filter Results</span>
                 </Button>
@@ -289,8 +306,8 @@ export default function SubmitList({
           <TooltipContent>Filter</TooltipContent>
         </Tooltip>
       </div>
-
-      {tabsContent}
+      <Separator />
+      <div className="h-full overflow-y-scroll">{tabsContent}</div>
     </Tabs>
   ) : (
     <div className="h-full flex flex-col justify-center items-center">

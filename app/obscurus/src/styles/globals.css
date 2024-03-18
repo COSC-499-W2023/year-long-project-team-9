@@ -77,25 +77,35 @@
 /* Style for the scroll bar, not a biggest fan, but of well */
 @layer utilities {
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
   }
   ::-webkit-scrollbar-thumb {
     background: #858585;
-    border-radius: 10px;
-    border: 5px solid #858585;
+    border: 0px none #858585;
+    border-radius: 50px;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #858585;
-    border-radius: 10px;
-    border: 5px solid #858585;
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background: #858585;
   }
   ::-webkit-scrollbar-track {
-    background-color: transparent;
-    border-radius: 8px;
+    background: transparent;
   }
   ::-webkit-scrollbar-track:hover {
-    background-color: #171717;
-    border-radius: 8px;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-track:active {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 

@@ -14,6 +14,7 @@ import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
+import {getUserDataByEmail} from "../functions/getUserDataByEmail";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -32,7 +33,10 @@ async function Submit() {
   console.log("updateStatus", updateStatus);
   console.log("getPresignedUrl", getPresignedUrl);
   console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+  console.log("getUserDataByEmail", getUserDataByEmail);
   // console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
+
+
 
   return (
     <>
@@ -51,6 +55,7 @@ async function Submit() {
             getDownloadPresignedUrl={getDownloadPresignedUrl}
             triggerJob={triggerJob}
             updateStatus={updateStatus}
+            getUserDataByEmail={getUserDataByEmail}
           />
         }
       />

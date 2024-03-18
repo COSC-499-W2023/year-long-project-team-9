@@ -1,6 +1,7 @@
 export * as Users from "./users";
 
 import { SQL } from "./sql";
+import { sql, expressionBuilder } from "kysely";
 
 export function addUser({
   email,
@@ -33,6 +34,28 @@ export function addUser({
       preference: preference,
       connectionId: connectionId,
     })
+    .execute();
+}
+
+export async function getUserDataByEmail(email: string) {
+  const requests = await SQL.DB.selectFrom("requests")
+    .selectAll()
+    .where("requesterEmail", "=", email)
+    .execute();
+  const submissions = await SQL.DB.selectFrom("submissions")
+    .innerJoin("requests", "requests.requestId", "submissions.requestId")
+    .selectAll()
+    .where("requests.requesterEmail", "=", email)
+    .execute();
+
+  return [requests, submissions];
+  
+export function getUserNames() {
+  return SQL.DB.selectFrom("users")
+    .select([
+      "email",
+      sql<string>`concat("givenName",' ',"familyName")`.as("fullName"),
+    ])
     .execute();
 }
 
