@@ -516,3 +516,37 @@ Screenshot from peer eval for Week 9:
 ### Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-21.png)
+
+## Week 10 ##
+
+### Applicable Date Range ###
+March 11 -  March 17, 2024
+
+### Tasks Worked On ###
+
+- This week I focused on refining the uploading process and did a lot of work on that front.
+- A major hurdle is managing the videos that are recorded in the browser but I'm close.
+- This week I also did more work on the request lifecycle, adding uddate status functions and adding getDownloadPresignedUrl to eventually allow the user to download the processed video through the UI.
+- I also did some UI work with Soren to make sure the entire panels are not scrollable, rather only the list items
+- I am trying to get the theme switcher to be a simple button rather than a dropdown but I've yet to figure out how to get around the hydration errors it creates.
+- This coming week I hope to finish Submit and my part of the project as a whole.
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-22.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-22.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-22.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-22.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-22.png)
