@@ -23,6 +23,8 @@ import ProfileHeader from "./profile-header";
 import { Users } from "@obscurus/database/src/sql.generated";
 // TODO: better error messages, be below for an example
 
+const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+
 const profileFormSchema = z.object({
   firstName: z
     .string()
@@ -31,25 +33,26 @@ const profileFormSchema = z.object({
     .max(100),
   email: z.string(),
   lastName: z.string().trim().min(1).max(100),
-  profileImageName: z.string(),
+  profileImage: z
+    .any()
+    .refine((files) => {
+      return files?.[0]?.size <= 10000000;
+    })
+    .refine(
+      (files) => acceptedImageFileTypes.includes(files?.[0]?.type),
+      "wrong type" //
+    ),
 });
-interface CreateFormProps {
-  userData: Users[];
-}
 
-export default function ProfileForm({ userData }: { userData: Users }) {
-  const form = useForm<z.infer<typeof profileFormSchema>>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      email: userData.email,
-      firstName: userData.givenName,
-      lastName: userData.familyName,
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof profileFormSchema>) {
-    console.log(values);
-  }
+export default function ProfileForm({
+  userData,
+  form,
+  onSubmit,
+}: {
+  userData: Users;
+  form: any;
+  onSubmit: Function;
+}) {
   // TODO: Work in progress
   return (
     <div className="overflow-auto">

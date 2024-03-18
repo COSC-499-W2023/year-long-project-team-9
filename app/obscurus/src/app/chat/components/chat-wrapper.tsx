@@ -5,11 +5,18 @@ import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
 
+type UserNames = {
+  email: string;
+  fullName: string;
+};
+
 interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userEmail: string;
+  websocketApiEndpoint: string;
   rooms: Rooms[];
+  userNames: UserNames[];
   messages: Messages[];
   createMessage: Function;
   createMessageNotification: Function;
@@ -19,7 +26,9 @@ export default function ChatWrapper({
   defaultLayout,
   defaultCollapsed,
   userEmail,
+  websocketApiEndpoint,
   rooms,
+  userNames,
   messages,
   createMessage,
   createMessageNotification,
@@ -37,17 +46,14 @@ export default function ChatWrapper({
       return item.participant1Email;
     }
   };
-  const getOtherParticipantName = (item: Rooms | undefined) => {
-    if (item === undefined) {
-      return "";
-    } else if (item.participant1Email === userEmail) {
-      return (
-        item.participant2RoomGivenName + " " + item.participant2RoomFamilyName
-      );
+  const getOtherParticipantName = (email: string) => {
+    const otherParticipant: UserNames[] = userNames.filter(
+      (user) => user.email === email
+    );
+    if (otherParticipant.length > 0) {
+      return otherParticipant[0].fullName;
     } else {
-      return (
-        item.participant1RoomGivenName + " " + item.participant1RoomFamilyName
-      );
+      return "No Name";
     }
   };
   const checkUnreadMessages = (item: Rooms) => {
@@ -86,9 +92,7 @@ export default function ChatWrapper({
   };
 
   useEffect(() => {
-    const ws = new WebSocket(
-      "wss://o4tgfyn9n6.execute-api.us-west-2.amazonaws.com/Soren"
-    );
+    const ws = new WebSocket(websocketApiEndpoint);
     const handleBeforeUnload = () => {
       console.log("Page reloading or closing, disconnecting WebSocket");
       ws.close();

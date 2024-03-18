@@ -1,6 +1,7 @@
 export * as Users from "./users";
 
 import { SQL } from "./sql";
+import { sql, expressionBuilder } from "kysely";
 
 export function addUser({
   email,
@@ -48,6 +49,14 @@ export async function getUserDataByEmail(email: string) {
     .execute();
 
   return [requests, submissions];
+  
+export function getUserNames() {
+  return SQL.DB.selectFrom("users")
+    .select([
+      "email",
+      sql<string>`concat("givenName",' ',"familyName")`.as("fullName"),
+    ])
+    .execute();
 }
 
 export interface Users {

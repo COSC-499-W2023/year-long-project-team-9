@@ -9,10 +9,6 @@ export async function up(db) {
     .addColumn("roomId", "varchar", (col) => col.primaryKey())
     .addColumn("participant1Email", "varchar")
     .addColumn("participant2Email", "varchar")
-    .addColumn("participant1RoomGivenName", "varchar")
-    .addColumn("participant1RoomFamilyName", "varchar")
-    .addColumn("participant2RoomGivenName", "varchar")
-    .addColumn("participant2RoomFamilyName", "varchar")
     .addColumn("isActive", "boolean", (col) => col.notNull().defaultTo(false))
     .addColumn("creationDate", "date", (col) =>
       col.notNull().defaultTo("now()")
