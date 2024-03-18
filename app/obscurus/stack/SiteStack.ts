@@ -157,6 +157,30 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
+      "POST /getNotificationsViaEmail": {
+        function: {
+          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          timeout: 20,
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
+        },
+      },
+      "POST /notificationRead": {
+        function: {
+          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          timeout: 20,
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
+        },
+      },
+      "POST /deleteNotification": {
+        function: {
+          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          timeout: 20,
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
+        },
+      },
       "POST /getRequestsViaEmail": {
         function: {
           handler: "./stack/lambdas/getRequestsViaEmail.handler",
