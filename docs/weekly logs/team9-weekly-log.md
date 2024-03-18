@@ -2032,3 +2032,132 @@ The tasks identified for this week were:
 
 End to end testing needs to be updated for new UI
 ___
+
+# TEAM 9 - TERM 2 WEEK 9
+
+## Milestone Features
+- Soren Stenback: Authentication & Refine Chat
+- Jan-Yaeger Dhillon: Video Submission Process & Home Page
+- Baz Sivakua: Account Page & Profile Image
+- Muhammad Bakar: Notification & Emails
+
+## Work Period
+
+Week 10 ran from 00:00 on 2024/03/10 to 23:59 on 2024/03/10.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Zod profile image validation
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Implement zod profile image validation for the profile page
+
+### Task 2: SES Integration
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Intergrate simple email services
+
+### Task 3: Refine Chat Backend
+
+* **Status:** Complete
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Refine back end of chat and fix know issues
+
+### Task 4: Notifications RDS data
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Added notifications data to RDS database
+
+### Task 5: Notifications Lambda Functions
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Create Lambda Functions for notifications
+
+### Task 6: Standardize Video Formats
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Standardized formats for videos after upload
+
+### Task 7: Add Dropzone
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add drag-drop upload functionality to video submission
+
+### Task 8: Video Upload Bug Fixes
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Cleanup known issues and bugs with uploads
+
+### Task 9: Create User Settings Page
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create page allowing user to change their account information
+
+### Task 10: Upload Profile Picture
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Upload video to s3 buckets and add link to database
+
+### Task 11: Authentication
+
+* **Status:** In-Progress
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Finish authentication 
+
+### Task 11: Notifications
+
+* **Status:** In-Progress
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Implement front end of notifications 
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-23/burnup-week23.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-23/completed-week23.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-23/inprogress-week23.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-23/testreport-week23.png)
+
+End to end testing needs to be updated for new UI
+___
