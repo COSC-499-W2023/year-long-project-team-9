@@ -22,11 +22,6 @@ import Notifications from "@/components/notifications";
 //import SignIn from "@/components/SignIn";
 // import { isSignedIn } from "@/auth/authenticationMethods";
 
-export async function getServerSideProps() {
-  return {
-    props: {}, // nothing yet
-  };
-}
 
 const NavBar = ({
   notificationsRead,
@@ -52,20 +47,6 @@ const NavBar = ({
 
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
-
-  // Muhammad
-  //
-  // end
-
-  // useEffect(() => {
-  //   const checkAsyncUserSignIn = async () => {
-  //     const userBoolean = await isSignedIn();
-  //     return userBoolean;
-  //   };
-  //   checkAsyncUserSignIn().then((result) => {
-  //     setUserSignedIn(result);
-  //   });
-  // });
 
   return (
     <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2 bg-background">
