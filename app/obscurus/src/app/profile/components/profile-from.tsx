@@ -21,9 +21,12 @@ import LastNameInput from "@/components/authentication-and-profile-components/ac
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
 import ProfileHeader from "./profile-header";
 import { Users } from "@obscurus/database/src/sql.generated";
+import { useToast } from "@/components/ui/use-toast";
+import { Separator } from "@/components/ui/separator";
 // TODO: better error messages, be below for an example
 
 const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+// const { toast } = useToast();
 
 const profileFormSchema = z.object({
   firstName: z
@@ -45,6 +48,11 @@ const profileFormSchema = z.object({
 });
 
 export default function ProfileForm({
+  // toast({
+  //   title: "Profile Updated Successfully",
+  //   description: "",
+  // });
+
   userData,
   form,
   onSubmit,
@@ -55,9 +63,10 @@ export default function ProfileForm({
 }) {
   // TODO: Work in progress
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
+      <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <EmailInput
