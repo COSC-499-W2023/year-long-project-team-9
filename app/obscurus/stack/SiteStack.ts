@@ -169,7 +169,7 @@ export default function SiteStack({ stack }: StackContext) {
       },
       "POST /notificationRead": {
         function: {
-          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          handler: "./stack/lambdas/notificationRead.handler",
           timeout: 20,
           permissions: [inputBucket, rds],
           bind: [inputBucket, rds],
@@ -177,7 +177,7 @@ export default function SiteStack({ stack }: StackContext) {
       },
       "POST /deleteNotification": {
         function: {
-          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
+          handler: "./stack/lambdas/deleteNotification.handler",
           timeout: 20,
           permissions: [inputBucket, rds],
           bind: [inputBucket, rds],
