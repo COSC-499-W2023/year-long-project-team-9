@@ -6,6 +6,8 @@ export async function getNotificationsViaEmail(email: string) {
   const notifications = await SQL.DB.selectFrom("notifications")
     .selectAll()
     .where("userEmail", "=", email)
+    .where("isTrashed", "=", false)
+    .orderBy("creationDate", "desc")
     .execute();
   return notifications;
 }
