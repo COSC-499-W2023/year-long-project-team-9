@@ -18,19 +18,18 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
-import Notifications from "@/components/notifications";
+import Notifications from "@/components/notification/notifications";
 //import SignIn from "@/components/SignIn";
 // import { isSignedIn } from "@/auth/authenticationMethods";
-
 
 const NavBar = ({
   notificationsRead,
   deleteNotifications,
-  getNotifications,
+  getNotificationsViaEmail,
 }: {
   notificationsRead: Function;
   deleteNotifications: Function;
-  getNotifications: Function;
+  getNotificationsViaEmail: Function;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -117,7 +116,7 @@ const NavBar = ({
             <Notifications
               notificationsRead={notificationsRead}
               deleteNotifications={deleteNotifications}
-              getNotifications={getNotifications}
+              getNotificationsViaEmail={getNotificationsViaEmail}
             ></Notifications>
           </div>
           <DropdownMenu>
