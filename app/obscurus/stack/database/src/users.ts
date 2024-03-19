@@ -49,7 +49,8 @@ export async function getUserDataByEmail(email: string) {
     .execute();
 
   return [requests, submissions];
-  
+}
+
 export function getUserNames() {
   return SQL.DB.selectFrom("users")
     .select([
