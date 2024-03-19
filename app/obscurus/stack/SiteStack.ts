@@ -296,7 +296,11 @@ export default function SiteStack({ stack }: StackContext) {
       "POST /getUserDataByEmail": {
         function: {
           handler: "./stack/lambdas/getUserDataByEmail.handler",
-
+          timeout: 20,
+          permissions: [rds],
+          bind: [rds],
+        },
+      },
       "GET /getUserNames": {
         function: {
           handler: "./stack/lambdas/getUserNames.handler",
