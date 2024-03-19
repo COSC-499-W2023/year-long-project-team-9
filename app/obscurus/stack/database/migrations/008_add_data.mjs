@@ -702,7 +702,7 @@ export async function up(db) {
         content:
           "You have a new request from Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam.",
         isRead: true,
-        isTrashed: false,
+        isTrashed: true,
       },
       {
         notificationId: "82f4c6bc-aa01-4b70-ab38-ea00b3d5eae8",
