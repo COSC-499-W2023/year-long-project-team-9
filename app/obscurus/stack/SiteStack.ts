@@ -64,10 +64,6 @@ export default function SiteStack({ stack }: StackContext) {
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
-  const WEBSOCKET_API_ENDPOINT = new Config.Secret(
-    stack,
-    "WEBSOCKET_API_ENDPOINT"
-  );
 
   const api = new Api(stack, "Api", {
     // defaults: {
@@ -316,7 +312,7 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "./stack/lambdas/getWebsocketApiEndpoint.handler",
           timeout: 20,
           permissions: [rds],
-          bind: [rds, WEBSOCKET_API_ENDPOINT],
+          bind: [rds],
           environment: { DB_NAME: rds.clusterArn },
         },
       },
@@ -408,7 +404,7 @@ export default function SiteStack({ stack }: StackContext) {
   api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, steveJobs],
+    bind: [inputBucket, outputBucket, rds, api, wsApi, steveJobs],
     permissions: [rekognitionPolicyStatement],
     // environment: {
     //   NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
