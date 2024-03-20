@@ -19,8 +19,7 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
-//import SignIn from "@/components/SignIn";
-// import { isSignedIn } from "@/auth/authenticationMethods";
+import Authentication from "@/components/authentication/authentication";
 
 const NavBar = ({
   notificationsRead,
@@ -67,46 +66,6 @@ const NavBar = ({
                 <span className="font-bold hover:cursor-pointer">obscurus</span>
               </NavigationMenuItem>
             </Link>
-            {/* <Link href="../CreateRequest">
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/CreateRequest"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  Create Request
-                </span>
-              </NavigationMenuItem>
-            </Link>
-
-            <Link href={userSignedIn ? "../MyRequests" : "/"}>
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/MyRequests"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  My Requests
-                </span>
-              </NavigationMenuItem>
-            </Link>
-            <Link href={userSignedIn ? "/submit" : "/"}>
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/submit"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  Submit
-                </span>
-              </NavigationMenuItem>
-            </Link> */}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -147,7 +106,7 @@ const NavBar = ({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {/* <SignIn /> */}
+        <Authentication />
       </div>
     </div>
   );
