@@ -66,18 +66,7 @@ export default function SiteStack({ stack }: StackContext) {
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
   const api = new Api(stack, "Api", {
-    // defaults: {
-    //   function: {
-    //     bind: [USER_POOL_WEB_CLIENT_ID_KEY, USER_POOL_ID_KEY],
-    //   },
-    //   authorizer: "iam",
-    // },
     routes: {
-      "GET /private": "./stack/lambdas/private.main",
-      "GET /public": {
-        function: "./stack/lambdas/public.main",
-        authorizer: "none",
-      },
       // "GET /start-machine": {
       //   function: {
       //     handler: "./stack/lambdas/startMachine.handler",
@@ -380,13 +369,6 @@ export default function SiteStack({ stack }: StackContext) {
 
   // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
-
-  // const table = new Table(stack, "Connections", {
-  //   fields: {
-  //     id: "string",
-  //   },
-  //   primaryIndex: { partitionKey: "id" },
-  // });
 
   const wsApi = new WebSocketApi(stack, "WSApi", {
     defaults: {
