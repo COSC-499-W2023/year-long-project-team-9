@@ -88,11 +88,10 @@ export default function SubmitDisplay({
 
 
   useEffect(() => {
-    // Here we explicitly declare intervalId as a number, which is the browser's definition
     let intervalId: number | undefined = undefined;
 
     if (submissionId) {
-      intervalId = window.setInterval(async () => { // Use window.setInterval to ensure the correct type
+      intervalId = window.setInterval(async () => {
         if (getStatus) {
           console.log("Polling for status");
           const currentStatus = await getStatus(submissionId);
@@ -107,20 +106,20 @@ export default function SubmitDisplay({
                 console.error("Error getting download URL", error);
               }
             }
-            clearInterval(intervalId); // Use clearInterval from the window object
+            clearInterval(intervalId);
           }
         } else {
           console.error("No getStatus function provided");
         }
-      }, 5000); // Poll every 5 seconds
+      }, 5000);
     }
 
     return () => {
-      if (intervalId !== undefined) {
-        clearInterval(intervalId); // Again, using clearInterval from the window object
+      if (intervalId) {
+        clearInterval(intervalId);
       }
     };
-  }, [submissionId, getStatus, getDownloadPresignedUrl]); // Include necessary dependencies
+  }, [submissionId, getStatus, getDownloadPresignedUrl]);
 
 
 
