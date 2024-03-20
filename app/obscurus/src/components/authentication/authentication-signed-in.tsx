@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -20,9 +21,15 @@ export default function AuthenticationSignedIn({
   userEmail: string;
   userName: string;
 }) {
-  const handleLogOut = () => {
-    signOutUser();
-  };
+  const router = useRouter();
+  console.log("Test1");
+  function pushToRoute(route: string) {
+    router.push(route);
+  }
+  function handleLogOut() {
+    // signOutUser();
+    router.push("/");
+  }
 
   return (
     <DropdownMenu>
@@ -39,31 +46,21 @@ export default function AuthenticationSignedIn({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link href={"/request"} className="w-full">
-              Request
-            </Link>
+          <DropdownMenuItem onClick={() => pushToRoute("/request")}>
+            Request
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"/submit"} className="w-full">
-              Submit
-            </Link>
+          <DropdownMenuItem onClick={() => pushToRoute("/submit")}>
+            Submit
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"/chat"} className="w-full">
-              Chat
-            </Link>
+          <DropdownMenuItem onClick={() => pushToRoute("/chat")}>
+            Chat
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href={"/profile"} className="w-full">
-              Profile
-            </Link>
+          <DropdownMenuItem onClick={() => pushToRoute("/profile")}>
+            Profile
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Change Password</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleLogOut()}>
-            Log out
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogOut}>Log out</DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
