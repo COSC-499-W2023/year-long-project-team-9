@@ -93,21 +93,12 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
-      "POST /secrets": {
+      "GET /getCognitoPools": {
         function: {
-          handler: "./stack/lambdas/secrets.handler",
+          handler: "./stack/lambdas/getCognitoPools.handler",
           timeout: 20,
           permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
-        },
-      },
-      "GET /secrets": {
-        function: {
-          handler: "./stack/lambdas/secrets.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
+          bind: [rds, USER_POOL_ID_KEY, USER_POOL_WEB_CLIENT_ID_KEY],
           environment: { DB_NAME: rds.clusterArn },
         },
       },
