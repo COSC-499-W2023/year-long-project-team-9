@@ -25,15 +25,20 @@ const NavBar = ({
   notificationsRead,
   deleteNotifications,
   getNotificationsViaEmail,
+  signedIn,
+  userEmail,
+  userName,
 }: {
   notificationsRead: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
+  signedIn: boolean;
+  userEmail: string;
+  userName: string;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
-  const [signedIn, setSignedIn] = useState(false);
   const [showSignInDialog, setShowSignInDialog] = useState(false);
   const handleAuth = (route: string) => {
     if (signedIn) {
@@ -44,7 +49,7 @@ const NavBar = ({
   };
 
   const [currentTab, selectCurrentTab] = useState("/");
-  const [userSignedIn, setUserSignedIn] = useState(false);
+  const [userSignedIn, setUserSignedIn] = useState(signedIn);
 
   return (
     <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2 bg-background">
@@ -106,7 +111,11 @@ const NavBar = ({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Authentication />
+        <Authentication
+          signedIn={signedIn}
+          userEmail={userEmail}
+          userName={userName}
+        />
       </div>
     </div>
   );

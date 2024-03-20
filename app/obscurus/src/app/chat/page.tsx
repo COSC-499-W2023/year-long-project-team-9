@@ -28,7 +28,6 @@ async function Chat() {
   const websocketApiEndpoint = await getWebsocketApiEndpoint();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
-  console.log(userNames);
   const messages: Messages[] = await getMessages();
 
   const getLatestMessage = (item: Rooms): Messages => {
