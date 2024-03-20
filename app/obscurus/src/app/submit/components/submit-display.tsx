@@ -44,6 +44,7 @@ import { getUserDataByEmail } from "@/app/functions/getUserDataByEmail";
 import { useDropzone } from "react-dropzone";
 import { useAtom } from "jotai";
 import { atomWithToggle } from "../../atoms/atomWithToggle";
+import { get } from "http";
 
 export default function SubmitDisplay({
   requests,
@@ -52,6 +53,7 @@ export default function SubmitDisplay({
   getDownloadPresignedUrl,
   triggerJob,
   updateStatus,
+  getStatus,
   getUserDataByEmail,
 }: {
   requests: Requests[];
@@ -60,6 +62,7 @@ export default function SubmitDisplay({
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
+  getStatus?: (submissionId: string) => Promise<string>;
   getUserDataByEmail?: (getUserDataByEmail: string) => Promise<Requests>;
 }) {
   const [request] = useRequest();
@@ -75,37 +78,53 @@ export default function SubmitDisplay({
 
   const selected = requests.find((item) => item.requestId === request.selected);
 
+  const associatedSubmission = submissions.find(
+    (sub) => sub.requestId === selected?.requestId
+  );
+
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   // console.log("URL", url);
 
+
   useEffect(() => {
-    const fetchVideo = async () => {
-      if (!selected || !showingVideo) return;
+    // Here we explicitly declare intervalId as a number, which is the browser's definition
+    let intervalId: number | undefined = undefined;
 
-      const submission = submissions.find(
-        (sub) => sub.requestId === selected.requestId
-      );
-
-      if (
-        submission &&
-        submission.status === "COMPLETED" &&
-        getDownloadPresignedUrl
-      ) {
-        try {
-          const url = await getDownloadPresignedUrl(submission.submissionId);
-          setProcessedVideo(url);
-        } catch (error) {
-          console.error("Failed to get download URL", error);
+    if (submissionId) {
+      intervalId = window.setInterval(async () => { // Use window.setInterval to ensure the correct type
+        if (getStatus) {
+          console.log("Polling for status");
+          const currentStatus = await getStatus(submissionId);
+          console.log("Retrieved Status", currentStatus);
+          if (currentStatus === "COMPLETED" || currentStatus === "FAILED") {
+            if (currentStatus === "COMPLETED" && getDownloadPresignedUrl) {
+              try {
+                const url = await getDownloadPresignedUrl(submissionId);
+                setProcessedVideo(url);
+                console.log("Processed Video URL", url);
+              } catch (error) {
+                console.error("Error getting download URL", error);
+              }
+            }
+            clearInterval(intervalId); // Use clearInterval from the window object
+          }
+        } else {
+          console.error("No getStatus function provided");
         }
-      } else {
-        console.log("No video to display or submission not completed");
-        // If there's no video to display, or the submission isn't completed, you might want to handle this case.
+      }, 5000); // Poll every 5 seconds
+    }
+
+    return () => {
+      if (intervalId !== undefined) {
+        clearInterval(intervalId); // Again, using clearInterval from the window object
       }
     };
+  }, [submissionId, getStatus, getDownloadPresignedUrl]); // Include necessary dependencies
 
-    fetchVideo();
-  }, [selected, showingVideo, submissions, getDownloadPresignedUrl]);
+
+
+  const canShowVideo = associatedSubmission && associatedSubmission.status === "COMPLETED" && processedVideo;
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | "mp4">("mp4");
@@ -359,29 +378,18 @@ export default function SubmitDisplay({
           </Tooltip>
         </div>
         <div className="flex ml-auto pr-1.5">
-          {showingVideo ? (
-            <Button variant={"destructive"} onClick={handleShowVideo}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <XSquare className="w-4 h-4 " />
-                </TooltipTrigger>
-                <TooltipContent>Hide Video</TooltipContent>
-              </Tooltip>
-            </Button>
-          ) : (
-            <Button
-              variant={"ghost"}
-              onClick={() => handleShowVideo()}
-              disabled={!processedVideo}
-            >
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <PlaySquare className="w-4 h-4 " />
-                </TooltipTrigger>
-                <TooltipContent>View Processed Video</TooltipContent>
-              </Tooltip>
-            </Button>
-          )}
+        <Button
+          variant={"ghost"}
+          onClick={() => setShowingVideo(!showingVideo)}
+          disabled={!canShowVideo}
+        >
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {showingVideo ? <XSquare className="w-4 h-4" /> : <PlaySquare className="w-4 h-4" />}
+            </TooltipTrigger>
+            <TooltipContent>{showingVideo ? 'Hide Processed Video' : 'View Processed Video'}</TooltipContent>
+          </Tooltip>
+        </Button>
         </div>
       </div>
     );
@@ -643,8 +651,7 @@ export default function SubmitDisplay({
           getPresignedUrl &&
           getDownloadPresignedUrl &&
           triggerJob &&
-          submissionId &&
-          objectURL ? (
+          submissionId ? (
             <>
               <div className="flex flex-col w-fit h-full">
                 <div className="flex p-3 flex-col">
@@ -692,9 +699,9 @@ export default function SubmitDisplay({
           )}
         </div>
       ) : (
-        <div className="h-full flex flex-col space-y-4 justify-center items-center">
-          <FileText className="h-20 w-20" color="#111827" />
-          <p className="font-semibold text-lg">No request selected</p>
+        <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+          <FileText className="h-20 w-20" />
+          <p className=" text-lg">No request selected.</p>
         </div>
       )}
     </div>

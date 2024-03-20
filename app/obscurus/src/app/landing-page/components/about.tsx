@@ -2,15 +2,21 @@ import Image from "next/image";
 
 const About = () => {
   return (
-    <div className="flex flex-col items-center justify-center ">
-      <h1 className="text-3xl font-bold">Powered by</h1>
+    <div className="flex flex-col items-center justify-center " id="about">
+      <h1 className="text-2xl font-semibold">Powered by</h1>
       <div
         className="flex flex-row items-center justify-center p-14 gap-20 align-middle"
         data-aos="fade-in"
         data-aos-delay="100"
       >
         {/*SST*/}
-        <Image src="sst-icon-seeklogo.com.svg" height={100} width={80} alt="sst" data-testid="sst"/>
+        <Image
+          src="sst-icon-seeklogo.com.svg"
+          height={100}
+          width={80}
+          alt="sst"
+          data-testid="sst"
+        />
 
         {/*NExt.js*/}
         <svg

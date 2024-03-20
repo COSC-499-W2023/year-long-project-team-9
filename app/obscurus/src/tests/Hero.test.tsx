@@ -1,7 +1,7 @@
 // Hero.test.tsx
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import Hero from "@/components/Hero";
+import Hero from "@/app/landing-page/components/hero";
 import '@testing-library/jest-dom'
 
 describe("Hero Component", () => {

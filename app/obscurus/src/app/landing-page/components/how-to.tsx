@@ -8,13 +8,13 @@ import {
 
 const HowTo = () => {
   return (
-    <div className="pb-64 w-full text-base pl-1 drop-shadow-md">
+    <div className=" w-full text-base pl-1 drop-shadow-md " id="how-to">
       <div className="flex justify-center">
-        <h1 className="text-3xl font-bold mb-10" data-aos="fade-right">
+        <h1 className="text-2xl font-semibold " data-aos="fade-right">
           How It Works
         </h1>
       </div>
-      <Accordion type="single" collapsible className="min-h-full w-full mb-10 ">
+      <Accordion type="single" collapsible className="min-h-full w-full  ">
         <AccordionItem value="step1">
           <AccordionTrigger
             className="font-bold text-xl"

@@ -38,7 +38,6 @@ export function Wrapper({
   secondPanel: ReactNode;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const [upload] = useQueryState("upload");
   const pathname = usePathname();
 
   const routeToLinkVariant: any = {
@@ -124,7 +123,7 @@ export function Wrapper({
           defaultSize={(defaultLayout && defaultLayout[1]) || 40}
           minSize={35}
         >
-          <div className="max-h-[800px] h-full flex-1 flex-col  md:flex">
+          <div className="h-full flex-1 flex-col  md:flex">
             <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
           </div>
         </ResizablePanel>

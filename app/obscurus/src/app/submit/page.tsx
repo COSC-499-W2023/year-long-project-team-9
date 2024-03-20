@@ -15,6 +15,7 @@ import { columns } from "./components/columns";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import {getUserDataByEmail} from "../functions/getUserDataByEmail";
+import getStatus from "../functions/getStatus";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -31,6 +32,7 @@ async function Submit() {
 
   console.log("triggerJob", triggerJob);
   console.log("updateStatus", updateStatus);
+  console.log("getStatus", getStatus);
   console.log("getPresignedUrl", getPresignedUrl);
   console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
   console.log("getUserDataByEmail", getUserDataByEmail);
@@ -55,6 +57,7 @@ async function Submit() {
             getDownloadPresignedUrl={getDownloadPresignedUrl}
             triggerJob={triggerJob}
             updateStatus={updateStatus}
+            getStatus={getStatus}
             getUserDataByEmail={getUserDataByEmail}
           />
         }
