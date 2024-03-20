@@ -1,3 +1,4 @@
+"use server";
 import { Auth, Amplify } from "aws-amplify";
 
 export async function isSignedIn() {
@@ -9,14 +10,14 @@ export async function isSignedIn() {
   }
 }
 
-// export async function signOutUser() {
-//   try {
-//     await Auth.signOut();
-//     return true;
-//   } catch {
-//     return false;
-//   }
-// }
+export async function signOutUser() {
+  try {
+    await Auth.signOut();
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 // Please update "" to the email for the particular user
 export async function getEmail() {

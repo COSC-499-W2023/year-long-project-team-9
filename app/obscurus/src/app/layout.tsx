@@ -10,7 +10,11 @@ import { getCognitoPools } from "./functions/getCognitoPools";
 import deleteNotifications from "./functions/deleteNotifications";
 import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
-import { isSignedIn, getEmail } from "./functions/authenticationMethods";
+import {
+  isSignedIn,
+  signOutUser,
+  getEmail,
+} from "./functions/authenticationMethods";
 import { getUserNames } from "./functions/getUserNames";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -48,7 +52,8 @@ export default async function RootLayout({
     }
   };
 
-  const signedIn = await isSignedIn();
+  // const signedIn = await isSignedIn();
+  const signedIn = true;
   const userEmail = await getEmail();
   const userName = await getUserName(userEmail);
 
@@ -66,6 +71,7 @@ export default async function RootLayout({
               deleteNotifications={deleteNotifications}
               getNotificationsViaEmail={getNotificationsViaEmail}
               signedIn={signedIn}
+              signOutUser={signOutUser}
               userEmail={userEmail}
               userName={userName}
             />

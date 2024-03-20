@@ -26,6 +26,7 @@ const NavBar = ({
   deleteNotifications,
   getNotificationsViaEmail,
   signedIn,
+  signOutUser,
   userEmail,
   userName,
 }: {
@@ -33,6 +34,7 @@ const NavBar = ({
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
   signedIn: boolean;
+  signOutUser: Function;
   userEmail: string;
   userName: string;
 }) => {
@@ -113,6 +115,7 @@ const NavBar = ({
         </div>
         <Authentication
           signedIn={signedIn}
+          signOutUser={signOutUser}
           userEmail={userEmail}
           userName={userName}
         />
