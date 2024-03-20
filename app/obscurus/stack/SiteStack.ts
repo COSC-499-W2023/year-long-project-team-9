@@ -93,15 +93,6 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
-      "GET /getCognitoPools": {
-        function: {
-          handler: "./stack/lambdas/getCognitoPools.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds, USER_POOL_ID_KEY, USER_POOL_WEB_CLIENT_ID_KEY],
-          environment: { DB_NAME: rds.clusterArn },
-        },
-      },
       "POST /processVideo": {
         function: {
           handler: "./stack/lambdas/process.handler",
@@ -377,7 +368,16 @@ export default function SiteStack({ stack }: StackContext) {
   api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [inputBucket, outputBucket, rds, api, wsApi, steveJobs],
+    bind: [
+      inputBucket,
+      outputBucket,
+      rds,
+      api,
+      wsApi,
+      steveJobs,
+      USER_POOL_ID_KEY,
+      USER_POOL_WEB_CLIENT_ID_KEY,
+    ],
     permissions: [rekognitionPolicyStatement],
     // environment: {
     //   NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
