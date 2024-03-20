@@ -40,7 +40,6 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { useRequest } from "@/app/hooks/use-request";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getUserDataByEmail } from "@/app/functions/getUserDataByEmail";
 import { useDropzone } from "react-dropzone";
 import { useAtom } from "jotai";
 import { atomWithToggle } from "../../atoms/atomWithToggle";
@@ -54,7 +53,6 @@ export default function SubmitDisplay({
   triggerJob,
   updateStatus,
   getStatus,
-  getUserDataByEmail,
 }: {
   requests: Requests[];
   submissions: Submissions[];
@@ -63,7 +61,6 @@ export default function SubmitDisplay({
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
-  getUserDataByEmail?: (getUserDataByEmail: string) => Promise<Requests>;
 }) {
   const [request] = useRequest();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");

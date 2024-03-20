@@ -14,7 +14,7 @@ import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
-import {getUserDataByEmail} from "../functions/getUserDataByEmail";
+import getUserDataByEmail from "../functions/getUserDataByEmail";
 import getStatus from "../functions/getStatus";
 
 async function Submit() {
@@ -27,8 +27,7 @@ async function Submit() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const submissions: Submissions[] = await getSubmissions();
-  const requests: Requests[] = await getRequests();
+
 
   console.log("triggerJob", triggerJob);
   console.log("updateStatus", updateStatus);
@@ -39,6 +38,12 @@ async function Submit() {
   // console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
 
 
+  const res = await getUserDataByEmail("imightbejan@gmail.com");
+
+  // console.log("Data", res);
+
+  const requests = res.requests;
+  const submissions = res.submissions;
 
   return (
     <>
@@ -58,7 +63,6 @@ async function Submit() {
             triggerJob={triggerJob}
             updateStatus={updateStatus}
             getStatus={getStatus}
-            getUserDataByEmail={getUserDataByEmail}
           />
         }
       />
