@@ -18,7 +18,7 @@ export async function deleteNotification(id: string) {
     .execute();
 }
 
-export async function notificationRead(email: string) {
+export async function notificationsRead(email: string) {
   const notificationRead = await SQL.DB.updateTable("notifications")
     .set({ isRead: true })
     .where("userEmail", "=", email)
