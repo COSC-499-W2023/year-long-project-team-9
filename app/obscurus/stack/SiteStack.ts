@@ -13,6 +13,8 @@ import {
   Queue,
   Table,
   WebSocketApi,
+  EventBus,
+  Topic,
 } from "sst/constructs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
@@ -56,12 +58,34 @@ export default function SiteStack({ stack }: StackContext) {
     "WEBSOCKET_API_ENDPOINT"
   );
 
+  const topic = new Topic(stack, "Topic", {
+    subscribers: {
+      receipt: "stack/lambdas/receipt.main",
+      shipping: "stack/lambdas/shipping.main",
+    },
+  });
+
+  const bus = new EventBus(stack, "Ordered", {
+    rules: {
+      rule1: {
+        pattern: {
+          source: ["myevent"],
+          detailType: ["Order"],
+        },
+        targets: {
+          receipt: "stack/lambdas/receipt.handler",
+          shipping: "stack/lambdas/shipping.handler",
+        },
+      },
+    },
+  });
+
   const api = new Api(stack, "Api", {
     defaults: {
       function: {
         timeout: 20,
-        permissions: [rds, chumBucket],
-        bind: [rds, chumBucket],
+        permissions: [rds, chumBucket, topic, bus],
+        bind: [rds, chumBucket, topic, bus],
         environment: { DB_NAME: rds.clusterArn },
       },
     },
@@ -200,9 +224,9 @@ export default function SiteStack({ stack }: StackContext) {
       "GET /getWebsocketApiEndpoint": {
         function: {
           handler: "stack/lambdas/getWebsocketApiEndpoint.handler",
-          bind: [WEBSOCKET_API_ENDPOINT],
         },
       },
+      "POST /order": "stack/lambdas/order.handler",
     },
   });
 
@@ -295,8 +319,9 @@ export default function SiteStack({ stack }: StackContext) {
   });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [chumBucket, chumBucket, rds, api, steveJobs],
+    bind: [chumBucket, chumBucket, rds, api, steveJobs, bus, topic, wsApi],
     permissions: [rekognitionPolicyStatement],
+    environment: {NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url},
   });
 
   stack.addOutputs({

@@ -44,25 +44,29 @@ import { useDropzone } from "react-dropzone";
 import { useAtom } from "jotai";
 import { atomWithToggle } from "../../atoms/atomWithToggle";
 import { get } from "http";
+import { useSubmissions } from "@/app/hooks/use-submissions";
+import { useRequests } from "@/app/hooks/use-requests";
 
 export default function SubmitDisplay({
-  requests,
-  submissions,
   getPresignedUrl,
   getDownloadPresignedUrl,
   triggerJob,
   updateStatus,
   getStatus,
+  updateSubmissionStatus,
+  updateRequests,
 }: {
-  requests: Requests[];
-  submissions: Submissions[];
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
+  updateSubmissionStatus?: (status: string, submissionId: string) => void;
+  updateRequests?: (requests: Requests[]) => void;
 }) {
-  const [request] = useRequest();
+  const [request, setRequest] = useRequest();
+  const [requests] = useRequests();
+  const [submissions] = useSubmissions();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [upload, setUpload] = useState(false);
   const [showingVideo, setShowingVideo] = useState(false);
@@ -73,9 +77,9 @@ export default function SubmitDisplay({
   //   setRequest(requests && requests[0]);
   // }
 
-  const selected = requests.find((item) => item.requestId === request.selected);
+  const selected = requests && requests.find((item) => item.requestId === request.selected);
 
-  const associatedSubmission = submissions.find(
+  const associatedSubmission = submissions && submissions.find(
     (sub) => sub.requestId === selected?.requestId
   );
 
@@ -85,6 +89,10 @@ export default function SubmitDisplay({
 
 
   useEffect(() => {
+
+
+
+
     let intervalId: number | undefined = undefined;
 
     if (submissionId) {
@@ -116,7 +124,7 @@ export default function SubmitDisplay({
         clearInterval(intervalId);
       }
     };
-  }, [submissionId, getStatus, getDownloadPresignedUrl]);
+  }, [submissionId, getStatus, getDownloadPresignedUrl, requests]);
 
 
 
@@ -135,7 +143,7 @@ export default function SubmitDisplay({
   };
 
   const getAssociatedSubmission = (requestId: string) => {
-    if (requestId) {
+    if (requestId && submissions) {
       return submissions.find((item) => requestId === item.requestId);
     }
     return null;
@@ -290,7 +298,7 @@ export default function SubmitDisplay({
     } else {
       setShowingVideo(false);
     }
-    const submission = submissions.find(
+    const submission = submissions && submissions.find(
       (sub) => sub.requestId === selected.requestId
     );
 
@@ -313,14 +321,21 @@ export default function SubmitDisplay({
   const router = useRouter();
 
   const handleArchive = (requestId: string) => {
-    if (updateStatus && requestId) {
+    console.log("Archiving");
+    if (requests && updateStatus && requestId && updateSubmissionStatus) {
       const submission = getAssociatedSubmission(requestId);
       if (submission && submission.status !== "ARCHIVED") {
         updateStatus("ARCHIVED", submission.submissionId);
-        return `Status updated to ${submission.status}`;
+        updateSubmissionStatus("ARCHIVED", submission.submissionId);
+        updateRequests && updateRequests(requests)
+        console.log(`Status updated to ${submission.status}`)
+      } else {
+        console.log(`Failed to update status, already ARCHIVED`);
       }
+    } else {
+      console.error("Failed to update status");
     }
-    return `Failed to archive submission`;
+
   };
 
   const handleChooseAnotherFile = () => {

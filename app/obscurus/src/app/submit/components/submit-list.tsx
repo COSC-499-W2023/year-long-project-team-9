@@ -43,17 +43,25 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { useRequest } from "@/app/hooks/use-request";
 import { Separator } from "@/components/ui/separator";
+import { useRequests } from "@/app/hooks/use-requests";
+import { useSubmissions } from "@/app/hooks/use-submissions";
 
 interface RequestsListProps {
-  requests: Requests[];
-  submissions: Submissions[];
-  isCollapsed?: boolean;
+  requests?: Requests[];
+  submissions?: Submissions[];
+  updateRequests?: (requests: Requests[]) => void;
+
 }
 
 export default function SubmitList({
-  requests,
-  submissions,
+  updateRequests,
 }: RequestsListProps) {
+  const [requests] = useRequests();
+  const [submissions] = useSubmissions();
+
+  console.log("Requests", requests);
+  console.log("Submissions", submissions);
+
   const router = useRouter();
   const pathname = usePathname();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
@@ -64,26 +72,30 @@ export default function SubmitList({
   const [tab, setTab] = useQueryState("tab");
 
   const getAssociatedSubmission = (requestId: string | null) => {
-    if (requestId) {
+    if (requestId && submissions) {
       return submissions.find((item) => requestId === item.requestId);
     }
     return null;
   };
 
+  if (!submissionId && requests && requests[0] && requests[0].requestId){
+    const submission = getAssociatedSubmission(requests[0].requestId);
+    console.log("Assoc. submission", submission);
+    if (submission) {
+      setSubmissionId(submission?.submissionId);
+    }
+
+  }
+
   useEffect(() => {
-    // if (!tab) {
-    //   setTab("all");
-    // }
-    // if (!submissionId) {
-    //   const submission = getAssociatedSubmission(
-    //     requests && requests[0].requestId
-    //   );
-    //   console.log("Assoc. submission", submission);
-    //   if (submission) {
-    //     setSubmissionId(submission?.submissionId);
-    //   }
-    // }
-  });
+    if (!request && requests && requests[0] && requests[0].requestId){
+      setRequest({
+        ...requests[0],
+        selected: requests[0].requestId,
+      });
+    }
+
+  }), [requests];
 
   const handleClick = (item: Requests) => {
     if (!upload) {
@@ -223,7 +235,7 @@ export default function SubmitList({
     );
   });
 
-  return requests && submissions ? (
+  return (
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
@@ -252,7 +264,7 @@ export default function SubmitList({
               <div className=" pb-5">
                 <div className="mt-3 h-[600px] overflow-y-scroll ">
                   <ResponsiveContainer width="100%" height="100%">
-                    <DataTable columns={columns} data={submissions} />
+                    <DataTable columns={columns} data={submissions || []} />
                   </ResponsiveContainer>
                 </div>
               </div>
@@ -309,11 +321,7 @@ export default function SubmitList({
       <Separator />
       <div className="h-full overflow-y-scroll">{tabsContent}</div>
     </Tabs>
-  ) : (
-    <div className="h-full flex flex-col justify-center items-center">
-      Failed to load data :({" "}
-    </div>
-  );
+  )
 }
 
 function getBadgeVariantFromLabel(

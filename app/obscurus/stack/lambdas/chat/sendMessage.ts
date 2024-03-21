@@ -1,9 +1,9 @@
 import { ApiGatewayManagementApi } from "aws-sdk";
-import { APIGatewayProxyHandler } from "aws-lambda";
+import { APIGatewayProxyHandler, APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { Connections } from "@obscurus/database/src/connections";
 import { Connections as ConnectionsType } from "@obscurus/database/src/sql.generated";
 
-export const main: APIGatewayProxyHandler = async (event) => {
+export const main: APIGatewayProxyHandlerV2 = async (event:any) => {
   if (event.body != null) {
     // Save applicable data
     const messageData = JSON.parse(event.body).data;

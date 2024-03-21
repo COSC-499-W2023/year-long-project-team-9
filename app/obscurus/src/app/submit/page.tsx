@@ -16,6 +16,8 @@ import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import getUserDataByEmail from "../functions/getUserDataByEmail";
 import getStatus from "../functions/getStatus";
+import { SubmitWrapper } from "./components/submit-wrapper";
+import { WebSocketApi } from "sst/node/websocket-api";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -28,45 +30,32 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-
   console.log("triggerJob", triggerJob);
   console.log("updateStatus", updateStatus);
   console.log("getStatus", getStatus);
   console.log("getPresignedUrl", getPresignedUrl);
   console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
-  console.log("getUserDataByEmail", getUserDataByEmail);
   // console.log("service url", process.env.NEXT_PUBLIC_SERVICE_URL);
 
+  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
 
-  const res = await getUserDataByEmail("imightbejan@gmail.com");
+  console.log("wsApi", wsApi);
 
-  // console.log("Data", res);
-
-  const requests = res.requests;
-  const submissions = res.submissions;
 
   return (
-    <>
-      <Wrapper
+    <Suspense fallback={<div>loading...</div>}>
+      <SubmitWrapper
+        getPresignedUrl={getPresignedUrl}
+        getDownloadPresignedUrl={getDownloadPresignedUrl}
+        triggerJob={triggerJob}
+        updateStatus={updateStatus}
+        getStatus={getStatus}
+        getUserDataByEmail={getUserDataByEmail}
         defaultLayout={defaultLayout}
         defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-        firstPanel={
-          <SubmitList requests={requests} submissions={submissions} />
-        }
-        secondPanel={
-          <SubmitDisplay
-            requests={requests}
-            submissions={submissions}
-            getPresignedUrl={getPresignedUrl}
-            getDownloadPresignedUrl={getDownloadPresignedUrl}
-            triggerJob={triggerJob}
-            updateStatus={updateStatus}
-            getStatus={getStatus}
-          />
-        }
+        websocketApiEndpoint={wsApi as string}
       />
-    </>
+    </Suspense>
   );
 }
 
