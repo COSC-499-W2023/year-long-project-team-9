@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import Wrapper from "@/app/wrapper";
-import SignInForm from "./components/sign-in";
+import SignInForm from "../../components/authentication/authentication-sign-in-form";
 
 async function Sign() {
   const layout = cookies().get("react-resizable-panels:layout");

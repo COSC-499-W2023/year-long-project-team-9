@@ -22,23 +22,27 @@ const accountFormSchema = z.object({
   password: z.string().trim().min(1).max(24),
 });
 
-export default function SignInForm() {
+export default function SignInForm({
+  setDialogState,
+}: {
+  setDialogState: Function;
+}) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {},
   });
 
+  function onSignUp() {
+    setDialogState("signup");
+  }
+
   function onSubmit(values: z.infer<typeof accountFormSchema>) {
     console.log(values);
   }
+
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="overflow-auto">
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
-      <div>Style the button google button</div>
-      <Button className="w-full mb-2">Google</Button>
-      {/* Style please */}
-      <div className="text-center">Or</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
@@ -46,7 +50,7 @@ export default function SignInForm() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="px-1">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder="Email" {...field} />
@@ -61,7 +65,7 @@ export default function SignInForm() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="px-1">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <div>
@@ -92,7 +96,10 @@ export default function SignInForm() {
       </Form>
       <div className="text-center text-xs mt-2">
         Need an account?{" "}
-        <a href="/sign/up" className="underline underline text-blue-400">
+        <a
+          onClick={onSignUp}
+          className="underline text-blue-400 hover:cursor-pointer"
+        >
           Sign Up
         </a>
       </div>

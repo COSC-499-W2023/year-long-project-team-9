@@ -1,5 +1,6 @@
 "use client";
 import AuthenticationSignedIn from "./authentication-signed-in";
+import AuthenticationSignedOut from "./authentication-signed-out";
 
 export default function Authentication({
   signedIn,
@@ -20,6 +21,6 @@ export default function Authentication({
       userName={userName}
     ></AuthenticationSignedIn>
   ) : (
-    <></>
+    <AuthenticationSignedOut></AuthenticationSignedOut>
   );
 }

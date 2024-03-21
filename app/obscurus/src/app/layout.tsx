@@ -53,7 +53,7 @@ export default async function RootLayout({
   };
 
   // const signedIn = await isSignedIn();
-  const signedIn = true;
+  const signedIn = false;
   const userEmail = await getEmail();
   const userName = await getUserName(userEmail);
 
