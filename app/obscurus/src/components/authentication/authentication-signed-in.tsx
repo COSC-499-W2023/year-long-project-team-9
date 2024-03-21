@@ -22,10 +22,6 @@ export default function AuthenticationSignedIn({
   userName: string;
 }) {
   const router = useRouter();
-  console.log("Test1");
-  function pushToRoute(route: string) {
-    router.push(route);
-  }
   function handleLogOut() {
     // signOutUser();
     router.push("/");
@@ -46,18 +42,18 @@ export default function AuthenticationSignedIn({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => pushToRoute("/request")}>
-            Request
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => pushToRoute("/submit")}>
-            Submit
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => pushToRoute("/chat")}>
-            Chat
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => pushToRoute("/profile")}>
-            Profile
-          </DropdownMenuItem>
+          <Link href="/request">
+            <DropdownMenuItem>Request</DropdownMenuItem>
+          </Link>
+          <Link href="/submit">
+            <DropdownMenuItem>Submit</DropdownMenuItem>
+          </Link>
+          <Link href="/chat">
+            <DropdownMenuItem>Chat</DropdownMenuItem>
+          </Link>
+          <Link href="/profile">
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Change Password</DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogOut}>Log out</DropdownMenuItem>
