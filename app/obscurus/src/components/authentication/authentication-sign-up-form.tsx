@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import AuthenticationTermsInput from "./authentication-form-terms-input";
-import AuthenticationAgeInput from "./authentication-form-age-input";
+import AuthenticationTermsInput from "../../app/sign/components/authentication-form-terms-input";
+import AuthenticationAgeInput from "../../app/sign/components/authentication-form-age-input";
 import FirstNameInput from "@/components/authentication-and-profile-components/account-form-first-name-input";
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
@@ -52,21 +52,27 @@ const signUpFormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function SignUpForm() {
+export default function SignUpForm({
+  setDialogState,
+}: {
+  setDialogState: Function;
+}) {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
   });
 
+  function onSignIn() {
+    setDialogState("signin");
+  }
+
   function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     console.log(values);
   }
+
   return (
-    <div className="overflow-auto">
-      {/* TODO Have the ability to go back */}
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
-      <div>Sign Up</div>
+    <div className="overflow-auto max-h-[80vh]">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-1">
           {/* Email */}
           <EmailInput
             form={form}
@@ -137,6 +143,15 @@ export default function SignUpForm() {
           </div>
         </form>
       </Form>
+      <div className="text-center text-xs mt-2">
+        Have an account?{" "}
+        <a
+          onClick={onSignIn}
+          className="underline text-blue-400 hover:cursor-pointer"
+        >
+          Sign In
+        </a>
+      </div>
     </div>
   );
 }

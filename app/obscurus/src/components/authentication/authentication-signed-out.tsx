@@ -14,6 +14,9 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import SignInForm from "./authentication-sign-in-form";
+import SignUpForm from "./authentication-sign-up-form";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 
 export default function AuthenticationSignedOut() {
   const [dialogState, setDialogState] = useState<string>("signin");
@@ -24,7 +27,7 @@ export default function AuthenticationSignedOut() {
           Sign In
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="min-w-[90%] min-h-[90%] flex flex-col">
+      <AlertDialogContent className="min-w-[90%] min-h-full flex flex-col">
         <div className="flex flex-col flex-grow justify-center items-center">
           <AlertDialogHeader className="grid grid-cols-2 flex-grow-0 w-full h-full">
             <Image
@@ -37,13 +40,21 @@ export default function AuthenticationSignedOut() {
             {dialogState === "signin" && (
               <div>
                 <AlertDialogDescription>
-                  <SignInForm setDialogState={setDialogState}></SignInForm>
+                  <SignInForm setDialogState={setDialogState} />
+                </AlertDialogDescription>
+              </div>
+            )}
+            {dialogState === "signup" && (
+              <div>
+                <AlertDialogDescription>
+                  <SignUpForm setDialogState={setDialogState} />
                 </AlertDialogDescription>
               </div>
             )}
           </AlertDialogHeader>
           <div className="flex-grow-1"></div>
         </div>
+        <Separator />
         <AlertDialogFooter className="justify-items-end">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>

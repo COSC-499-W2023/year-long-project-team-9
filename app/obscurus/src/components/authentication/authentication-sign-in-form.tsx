@@ -42,7 +42,7 @@ export default function SignInForm({
 
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto max-h-[80vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}

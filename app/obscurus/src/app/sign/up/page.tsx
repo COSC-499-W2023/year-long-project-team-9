@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import Wrapper from "@/app/wrapper";
-import SignUpForm from "../components/sign-up";
+import SignUpForm from "../../../components/authentication/authentication-sign-up-form";
 
 async function Up() {
   const layout = cookies().get("react-resizable-panels:layout");
