@@ -38,7 +38,7 @@ export default function AuthenticationSignedOut() {
             {dialogState === "signup" && (
               <div>
                 <AlertDialogDescription>
-                  <SignUpForm setDialogState={setDialogState} />
+                  <SignUpForm />
                 </AlertDialogDescription>
               </div>
             )}
@@ -46,7 +46,7 @@ export default function AuthenticationSignedOut() {
         </div>
         <Separator />
         <AlertDialogFooter>
-          {dialogState === "signin" && (
+          {(dialogState === "signin" || dialogState === "forgotPassword") && (
             <div className="text-xs mt-2">
               <span>Need an account? </span>
               <a

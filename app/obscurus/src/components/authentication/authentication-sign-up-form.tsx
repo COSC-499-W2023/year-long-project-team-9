@@ -41,7 +41,7 @@ const signUpFormSchema = z
     firstName: z
       .string()
       .trim()
-      .min(1, { message: "First name must be at least on character." })
+      .min(1, { message: "First name must be at least one character." })
       .max(100),
     lastName: z.string().trim().min(1).max(100),
     ageVerified: z.boolean(),
@@ -52,18 +52,10 @@ const signUpFormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function SignUpForm({
-  setDialogState,
-}: {
-  setDialogState: Function;
-}) {
+export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
   });
-
-  function onSignIn() {
-    setDialogState("signin");
-  }
 
   function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     console.log(values);
@@ -78,7 +70,7 @@ export default function SignUpForm({
             form={form}
             isDisabled={false}
             formDescription={
-              "One cannot change their email once an account has been set."
+              "Your email cannot be changed once account is created."
             }
             fieldName="email"
             label="Email"
@@ -90,7 +82,7 @@ export default function SignUpForm({
             form={form}
             isDisabled={false}
             formDescription={
-              "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
+              "Password must contain both a lowercase and uppercase letter. Password must contain both a number and a special character. Password must be at least 8 characters and no more than 24 characters."
             }
             fieldName={"password"}
             label={"Password"}
@@ -99,7 +91,7 @@ export default function SignUpForm({
           <PasswordInput
             form={form}
             isDisabled={false}
-            formDescription={"Confirm password must match the password above."}
+            formDescription={"Passwords must match."}
             fieldName={"confirmPassword"}
             label={"Confirm Password"}
             placeHolder={"Confirm Password"}
@@ -110,7 +102,7 @@ export default function SignUpForm({
           <FirstNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you first name."}
+            formDescription={"Other users will see your first name."}
             fieldName={"firstName"}
             label={"First Name"}
             placeHolder="First Name"
@@ -120,7 +112,7 @@ export default function SignUpForm({
           <LastNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you last name"}
+            formDescription={"Other users will see your last name."}
             fieldName={"lastName"}
             label={"Last Name"}
             placeHolder={"Last Name"}
