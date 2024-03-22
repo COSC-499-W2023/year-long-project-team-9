@@ -32,7 +32,7 @@ export default function AccountCancel() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <a href="/account">
+          <a href="/profile">
             <Button>Continue</Button>
           </a>
         </AlertDialogFooter>

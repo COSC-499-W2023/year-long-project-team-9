@@ -66,7 +66,7 @@ export default function ProfileForm({
     <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
-      <Separator />
+      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <EmailInput
