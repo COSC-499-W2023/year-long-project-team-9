@@ -25,30 +25,44 @@ import LastNameInput from "@/components/authentication-and-profile-components/ac
 
 const signUpFormSchema = z
   .object({
-    email: z.string().trim().toLowerCase().min(1).max(320).email(),
+    email: z
+      .string()
+      .trim()
+      .toLowerCase()
+      .min(1, { message: "Email cannot be blank." })
+      .max(320, { message: "Email cannot be more than 320 characters." })
+      .email({ message: "Email is not valid." }),
     password: z
       .string()
       .trim()
-      .min(8)
-      .max(24)
-      .regex(/[A-Z]/, { message: "Must contain at least one uppercase letter" })
-      .regex(/[a-z]/, { message: "Must contain at least one lowercase letter" })
-      .regex(/[0-9]/, { message: "Must contain at least one number" })
+      .min(8, { message: "Password must be at least 8 characters." })
+      .max(24, { message: "Password cannot be more than 24 characters." })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number" })
       .regex(/[\W_]/, {
-        message: "Must contain at least one special character",
+        message: "Password must contain at least one special character",
       }),
     confirmPassword: z.string(),
     firstName: z
       .string()
       .trim()
-      .min(1, { message: "First name must be at least one character." })
-      .max(100),
-    lastName: z.string().trim().min(1).max(100),
+      .min(1, { message: "First name cannot be blank." })
+      .max(100, { message: "First name cannot be more than 100 characters." }),
+    lastName: z
+      .string()
+      .trim()
+      .min(1, { message: "Last name cannot be blank." })
+      .max(100, { message: "Last name cannot be more than 100 characters." }),
     ageVerified: z.boolean(),
     agreedToTermsAndConditions: z.boolean(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Password does not match with the password above.",
+    message: "Passwords do not match.",
     path: ["confirmPassword"],
   });
 
