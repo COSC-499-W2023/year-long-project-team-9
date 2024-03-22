@@ -22,19 +22,11 @@ const accountFormSchema = z.object({
   password: z.string().trim().min(1).max(24),
 });
 
-export default function SignInForm({
-  setDialogState,
-}: {
-  setDialogState: Function;
-}) {
+export default function SignInForm() {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {},
   });
-
-  function onSignUp() {
-    setDialogState("signup");
-  }
 
   function onSubmit(values: z.infer<typeof accountFormSchema>) {
     console.log(values);
@@ -94,15 +86,6 @@ export default function SignInForm({
           </div>
         </form>
       </Form>
-      <div className="text-center text-xs mt-2">
-        Need an account?{" "}
-        <a
-          onClick={onSignUp}
-          className="underline text-blue-400 hover:cursor-pointer"
-        >
-          Sign Up
-        </a>
-      </div>
     </div>
   );
 }

@@ -11,36 +11,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../modified-shadcn-ui-components/modified-alert-dialog";
-import Image from "next/image";
 import { Button } from "../ui/button";
 import SignInForm from "./authentication-sign-in-form";
 import SignUpForm from "./authentication-sign-up-form";
-import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 
 export default function AuthenticationSignedOut() {
   const [dialogState, setDialogState] = useState<string>("signin");
   return (
-    <AlertDialog>
+    <AlertDialog onOpenChange={() => setDialogState("signin")}>
       <AlertDialogTrigger asChild>
         <Button size="sm" className="text-xs">
           Sign In
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="min-w-[90%] min-h-full flex flex-col">
+      <AlertDialogContent className="min-w-[40%] min-h-[90%] max-h-[90%] flex flex-col">
         <div className="flex flex-col flex-grow justify-center items-center">
-          <AlertDialogHeader className="grid grid-cols-2 flex-grow-0 w-full h-full">
-            <Image
-              className="min-h-[100%] min-w-[50%] justify-self-center"
-              src="/logo.svg"
-              alt="obscurus"
-              width={40}
-              height={40}
-            />
+          <AlertDialogHeader className="flex-grow-0 w-full h-full">
             {dialogState === "signin" && (
               <div>
                 <AlertDialogDescription>
-                  <SignInForm setDialogState={setDialogState} />
+                  <SignInForm />
                 </AlertDialogDescription>
               </div>
             )}
@@ -52,10 +43,32 @@ export default function AuthenticationSignedOut() {
               </div>
             )}
           </AlertDialogHeader>
-          <div className="flex-grow-1"></div>
         </div>
         <Separator />
-        <AlertDialogFooter className="justify-items-end">
+        <AlertDialogFooter>
+          {dialogState === "signin" && (
+            <div className="text-xs mt-2">
+              <span>Need an account? </span>
+              <a
+                onClick={() => setDialogState("signup")}
+                className="underline text-blue-400 hover:cursor-pointer"
+              >
+                Sign Up
+              </a>
+            </div>
+          )}
+          {dialogState === "signup" && (
+            <div className="text-xs mt-2">
+              <span>Have an account? </span>
+              <a
+                onClick={() => setDialogState("signin")}
+                className="underline text-blue-400 hover:cursor-pointer"
+              >
+                Sign In
+              </a>
+            </div>
+          )}
+          <div className="flex-grow" />
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

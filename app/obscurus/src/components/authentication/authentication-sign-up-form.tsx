@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import AuthenticationTermsInput from "../../app/sign/components/authentication-form-terms-input";
-import AuthenticationAgeInput from "../../app/sign/components/authentication-form-age-input";
+import AuthenticationTermsInput from "./authentication-form-terms-input";
+import AuthenticationAgeInput from "./authentication-form-age-input";
 import FirstNameInput from "@/components/authentication-and-profile-components/account-form-first-name-input";
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
@@ -70,7 +70,7 @@ export default function SignUpForm({
   }
 
   return (
-    <div className="overflow-auto max-h-[80vh]">
+    <div className="overflow-auto max-h-[65vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-1">
           {/* Email */}
@@ -143,15 +143,6 @@ export default function SignUpForm({
           </div>
         </form>
       </Form>
-      <div className="text-center text-xs mt-2">
-        Have an account?{" "}
-        <a
-          onClick={onSignIn}
-          className="underline text-blue-400 hover:cursor-pointer"
-        >
-          Sign In
-        </a>
-      </div>
     </div>
   );
 }
