@@ -40,11 +40,11 @@ export function Notifications({
 const NavBar = ({
   notificationsRead,
   deleteNotifications,
-  getNotifications,
+  getNotificationsViaEmail,
 }: {
   notificationsRead: Function;
   deleteNotifications: Function;
-  getNotifications: Function;
+  getNotificationsViaEmail: Function;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();

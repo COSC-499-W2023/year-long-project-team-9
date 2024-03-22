@@ -8,7 +8,8 @@ import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
 import deleteNotifications from "./functions/deleteNotifications";
 import notificationsRead from "./functions/notificationsRead";
-import getNotifications from "./functions/getNotifications";
+import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
+import { getEmail } from "./functions/authenticationMethods";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,13 +38,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className=" flex-col md:flex min-h-screen h-screen">
-          <NavBar
-            notificationsRead={notificationsRead}
-            deleteNotifications={deleteNotifications}
-            getNotifications={getNotifications}
-          />
-          <Toaster />
-          {children}
+            <NavBar
+              notificationsRead={notificationsRead}
+              deleteNotifications={deleteNotifications}
+              getNotificationsViaEmail={getNotificationsViaEmail}
+            />
+            <Toaster />
+            {children}
 
             {/*If not signed in*/}
 

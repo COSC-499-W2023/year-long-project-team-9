@@ -26,6 +26,7 @@ async function Chat() {
   const userEmail = await getEmail();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
+  console.log(userNames);
   const messages: Messages[] = await getMessages();
 
   const getLatestMessage = (item: Rooms): Messages => {
