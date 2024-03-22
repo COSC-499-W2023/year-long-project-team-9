@@ -1,19 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import AuthenticationTermsInput from "./authentication-form-terms-input";
 import AuthenticationAgeInput from "./authentication-form-age-input";
@@ -21,7 +12,6 @@ import FirstNameInput from "@/components/authentication-and-profile-components/a
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
 import LastNameInput from "@/components/authentication-and-profile-components/account-form-last-name-input";
-// TODO: Fill better error messages, be below for an example
 
 const signUpFormSchema = z
   .object({
