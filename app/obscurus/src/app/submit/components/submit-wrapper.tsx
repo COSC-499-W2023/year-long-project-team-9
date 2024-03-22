@@ -7,6 +7,7 @@ import { Suspense, use, useEffect, useState } from "react";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { set } from "date-fns";
+import Loading from "./loading";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -37,6 +38,7 @@ export const SubmitWrapper = ({
   const [loading, setLoading] = useState(false);
 
   const fetchUserData = async () => {
+    setLoading(true);
     if (getUserDataByEmail) {
       getUserDataByEmail("imightbejan@gmail.com")
         .then((data) => {
@@ -49,6 +51,7 @@ export const SubmitWrapper = ({
           console.log("Submissions:", submissions);
         });
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -63,9 +66,9 @@ export const SubmitWrapper = ({
     };
     // window.addEventListener("beforeunload", handleBeforeUnload);
     setSocket(ws);
-    setLoading(true);
+
     fetchUserData();
-    setLoading(false);
+
 
     ws.onmessage = (event) => {
       try {
@@ -115,6 +118,7 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
+        loading ? ( <Loading /> ) :
         <SubmitList requests={requests || []} submissions={submissions || []} />
       }
       secondPanel={

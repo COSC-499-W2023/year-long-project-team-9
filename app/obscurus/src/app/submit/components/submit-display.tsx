@@ -47,6 +47,7 @@ import { atomWithToggle } from "../../atoms/atomWithToggle";
 import { get } from "http";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { useRequests } from "@/app/hooks/use-requests";
+import substring from "@/app/functions/substring";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -85,6 +86,12 @@ export default function SubmitDisplay({
         console.log("RES", res);
         return res;
       };
+    }
+    if (!request.selected && requests) {
+      setRequest({
+        ...request,
+        selected: requests[0].requestId,
+      });
     }
   });
 
@@ -539,18 +546,20 @@ export default function SubmitDisplay({
                 </AvatarFallback>
               </Avatar>
               <div className="grid gap-1">
-                <div className="font-semibold">{selected?.requestTitle}</div>
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">From:</span>{" "}
-                  {selected?.requestTitle}
+                <div className="font-semibold">
+                  {substring(selected?.requestTitle, 30)}
                 </div>
                 <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">From:</span>{" "}
+                  <div>{substring(selected?.requestTitle, 50)}</div>
+                </div>
+                <div className="line-clamp-3 text-xs">
                   <span className="font-medium">From:</span> Jan Dhillon
                 </div>
 
                 <div className="line-clamp-1 text-xs">
                   <span className="font-medium">Reply-To:</span>{" "}
-                  {selected?.requesterEmail}
+                  {substring(selected?.requesterEmail, 50)}
                 </div>
                 <div className="line-clamp-1 text-xs">
                   <span className="font-medium">Due:</span>{" "}

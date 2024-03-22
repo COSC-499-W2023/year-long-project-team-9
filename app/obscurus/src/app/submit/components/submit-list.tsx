@@ -1,11 +1,12 @@
 "use client";
-import { ComponentProps, useEffect } from "react";
+import { ComponentProps, Suspense, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  FileText,
   Filter,
   List,
   ListVideo,
@@ -152,7 +153,11 @@ export default function SubmitList({
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold">{item.requestTitle}</div>
+                    <div className="font-semibold">
+                      {(item.requestTitle.length > 30 &&
+                        item.requestTitle?.substring(0, 30) + "...") ||
+                        item.requestTitle}
+                    </div>
                     {getAssociatedSubmission(item.requestId)?.isRead && (
                       <span className="flex h-2 w-2 rounded-full bg-blue-600 min-h-full" />
                     )}
@@ -175,10 +180,16 @@ export default function SubmitList({
                     )}
                   </div>
                 </div>
-                <div className="text-xs font-medium">{item.requesterEmail}</div>
+                <div className="text-xs font-medium">
+                  <div className="text-xs font-medium">
+                    {(item.requesterEmail.length > 30 &&
+                      item.requesterEmail.substring(0, 30) + "...") ||
+                      item.requesterEmail}
+                  </div>
+                </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.description?.substring(0, 300)}
+                {item.description}
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel("due-date")}>
@@ -204,7 +215,12 @@ export default function SubmitList({
     );
   });
 
-  return (
+  return !requests ? (
+    <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+      <List className="h-20 w-20" />
+      <p className=" text-lg">No requests.</p>
+    </div>
+  ) : (
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
@@ -288,9 +304,11 @@ export default function SubmitList({
         </Tooltip>
       </div>
       <Separator />
-      <div className="h-full overflow-y-scroll">
-        {tabsContent || <div>No requests.</div>}
-      </div>
+      <Suspense fallback={<List className="h-20 w-20" />}>
+        <div className="h-full overflow-y-scroll">
+          {tabsContent || <div>No requests.</div>}
+        </div>
+      </Suspense>
     </Tabs>
   );
 }
@@ -299,9 +317,7 @@ function getBadgeVariantFromLabel(
   label: string
 ): ComponentProps<typeof Badge>["variant"] {
   if (["status"].includes(label.toLowerCase())) {
-    if (label.toLowerCase() === "processing") {
-      return "secondary";
-    } else return "default";
+    return "default";
   }
 
   if (["due-date"].includes(label.toLowerCase())) {
