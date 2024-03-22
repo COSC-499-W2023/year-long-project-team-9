@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import HowTo from "@/components/HowTo";
+import HowTo from "@/app/landing-page/components/how-to";
 
 describe("HowTo Component", () => {
   beforeEach(() => {

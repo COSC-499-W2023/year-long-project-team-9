@@ -1,7 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
 import { getEmail } from "../functions/authenticationMethods";
-import { getWebsocketApiEndpoint } from "../functions/getWebsocketApiEndpoint";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getUserNames } from "../functions/getUserNames";
@@ -25,7 +24,6 @@ async function Chat() {
       : undefined;
 
   const userEmail = await getEmail();
-  const websocketApiEndpoint = await getWebsocketApiEndpoint();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
   console.log(userNames);
@@ -66,7 +64,7 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={userEmail}
-      websocketApiEndpoint={websocketApiEndpoint}
+      websocketApiEndpoint={process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string}
       rooms={rooms}
       userNames={userNames}
       messages={messages}

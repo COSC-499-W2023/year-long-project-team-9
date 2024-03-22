@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import About from '@/components/About';
+import About from '@/app/landing-page/components/about';
 
 
 jest.mock("aos", () => ({
@@ -17,8 +17,8 @@ describe('About Component', () => {
 
   test('includes specific SVG images', () => {
     render(<About />);
-    expect(screen.getByTestId('sst')).toBeInTheDocument(); 
-    expect(screen.getByTestId('nextjs')).toBeInTheDocument(); 
+    expect(screen.getByTestId('sst')).toBeInTheDocument();
+    expect(screen.getByTestId('nextjs')).toBeInTheDocument();
     expect(screen.getByTestId('tailwindcss')).toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe('About Component', () => {
       });
   });
 
-     
+
 
 
 });

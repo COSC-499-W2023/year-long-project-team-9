@@ -11,7 +11,7 @@ export default function VideoPlayer({ videoUrl, filename }: any) {
   console.log("videoUrl in video-player", videoUrl);
   console.log("filename in video-player", filename);
   return (
-    <div className="flex h-full flex-col rounded-md">
+    <div className="flex h-full flex-col rounded-md space-y-5">
       <Label htmlFor="video" className=" text-left text-base ">
         {filename}
       </Label>

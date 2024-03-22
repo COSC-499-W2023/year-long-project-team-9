@@ -4,7 +4,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Bucket } from "sst/node/bucket";
 async function getPresignedUrl(submissionId: string) {
   console.log("getPresignedUrl called")
-  const bucket = Bucket.inputBucket.bucketName;
+  const bucket = Bucket.ChumBucket.bucketName;
   const command = new PutObjectCommand({
     ACL: "public-read",
     Key: submissionId,
