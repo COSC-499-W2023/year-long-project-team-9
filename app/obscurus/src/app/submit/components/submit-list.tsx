@@ -46,6 +46,8 @@ import { useRequest } from "@/app/hooks/use-request";
 import { Separator } from "@/components/ui/separator";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
+import { Skeleton } from "@/components/ui/skeleton";
+import PanelLoader from "./panel-1-loader";
 
 interface RequestsListProps {
   requests?: Requests[];
@@ -215,12 +217,7 @@ export default function SubmitList({
     );
   });
 
-  return !requests ? (
-    <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
-      <List className="h-20 w-20" />
-      <p className=" text-lg">No requests.</p>
-    </div>
-  ) : (
+  return (
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
@@ -304,11 +301,10 @@ export default function SubmitList({
         </Tooltip>
       </div>
       <Separator />
-      <Suspense fallback={<List className="h-20 w-20" />}>
-        <div className="h-full overflow-y-scroll">
-          {tabsContent || <div>No requests.</div>}
-        </div>
-      </Suspense>
+      <div className="h-full overflow-y-scroll">
+        {requests && requests.length === 0 && <PanelLoader />}
+        {tabsContent || <div>No requests.</div>}
+      </div>
     </Tabs>
   );
 }

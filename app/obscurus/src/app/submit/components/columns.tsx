@@ -11,6 +11,11 @@ import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 import { Submissions } from "@obscurus/database/src/sql.generated"
 
+
+const substring = (str: string, len: number) => {
+  return str.substring(0, len) && str.length > len ? str + "..." : str;
+}
+
 export const columns: ColumnDef<Submissions>[] = [
   // {
   //   id: "select",
@@ -57,9 +62,9 @@ export const columns: ColumnDef<Submissions>[] = [
   {
     accessorKey: "requesteeEmail",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Requester Email" />
+      <DataTableColumnHeader column={column} title="Requestee Email" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("requesteeEmail")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{substring(row.getValue("requesteeEmail"), 30)}</div>,
     enableSorting: false,
     enableHiding: false,
   },

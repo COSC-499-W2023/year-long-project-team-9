@@ -9,12 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
-import {
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import {
   Archive,
   Trash2,
@@ -45,6 +40,8 @@ import { get } from "http";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { useRequests } from "@/app/hooks/use-requests";
 import substring from "@/app/functions/substring";
+import Loading from "./loading";
+import PanelLoader from "./panel-2-loader";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -215,7 +212,7 @@ export default function SubmitDisplay({
   const handleStartCaptureClick = () => {
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current!.stream!, {
-      mimeType: "video/webm",
+      mimeType: "video/mp4",
     });
     mediaRecorderRef.current.addEventListener(
       "dataavailable",
@@ -237,9 +234,9 @@ export default function SubmitDisplay({
 
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
+      const blob = new Blob(recordedChunks, { type: "video/mp4" });
       const fileName = `${submissionId}.webm`;
-      const file = new File([blob], fileName, { type: "video/webm" });
+      const file = new File([blob], fileName, { type: "video/mp4" });
 
       setFile(file);
 
@@ -249,7 +246,7 @@ export default function SubmitDisplay({
         const response = await fetch(presignedUrl, {
           method: "PUT",
           headers: {
-            "Content-Type": "video/webm",
+            "Content-Type": "video/mp4",
           },
           body: file,
         });
@@ -665,10 +662,7 @@ export default function SubmitDisplay({
           )}
         </div>
       ) : (
-        <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
-          <FileText className="h-20 w-20" />
-          <p className=" text-lg">No request selected.</p>
-        </div>
+        <PanelLoader />
       )}
     </div>
   );
