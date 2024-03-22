@@ -28,9 +28,10 @@ export default async function RootLayout({
   // Muhammad
   // deleteNotifications;
   const email = await getEmail();
-  console.log(email);
-  const notifications: Notification[] = await getNotificationsViaEmail(email);
-  console.log(notifications);
+  const notificationCall: { notifications: Notifications[] } =
+    await getNotificationsViaEmail(email);
+  const notifications: Notifications[] = notificationCall.notifications;
+
   // notificationsRead;
   //
 

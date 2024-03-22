@@ -30,7 +30,7 @@ const NavBar = ({
 }: {
   readNotification: Function;
   deleteNotifications: Function;
-  notifications: Notification[];
+  notifications: Notifications[];
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
