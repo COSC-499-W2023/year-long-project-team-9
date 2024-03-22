@@ -12,6 +12,7 @@ import { useQueryState } from "nuqs";
 import {
   FormEvent,
   Suspense,
+  use,
   useCallback,
   useEffect,
   useRef,
@@ -48,25 +49,23 @@ import { useSubmissions } from "@/app/hooks/use-submissions";
 import { useRequests } from "@/app/hooks/use-requests";
 
 export default function SubmitDisplay({
+  fetchUserData,
   getPresignedUrl,
   getDownloadPresignedUrl,
   triggerJob,
-  updateStatus,
   getStatus,
   updateSubmissionStatus,
   updateRequests,
 }: {
+  fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
-  updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
-  updateSubmissionStatus?: (status: string, submissionId: string) => void;
-  updateRequests?: (requests: Requests[]) => void;
+  updateSubmissionStatus?: Function;
+  updateRequests?: Function;
 }) {
   const [request, setRequest] = useRequest();
-  const [requests] = useRequests();
-  const [submissions] = useSubmissions();
   const [submissionId, setSubmissionId] = useQueryState("submissionId");
   const [upload, setUpload] = useState(false);
   const [showingVideo, setShowingVideo] = useState(false);
@@ -77,58 +76,33 @@ export default function SubmitDisplay({
   //   setRequest(requests && requests[0]);
   // }
 
-  const selected = requests && requests.find((item) => item.requestId === request.selected);
+  const [requests] = useRequests();
+  const [submissions] = useSubmissions();
+  useEffect(() => {
+    {
+      async () => {
+        const res = await fetchUserData();
+        console.log("RES", res);
+        return res;
+      };
+    }
+  });
 
-  const associatedSubmission = submissions && submissions.find(
-    (sub) => sub.requestId === selected?.requestId
-  );
+  const selected =
+    requests && requests.find((item) => item.requestId === request.selected);
+
+  const associatedSubmission =
+    submissions &&
+    submissions.find((sub) => sub.requestId === selected?.requestId);
 
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   // console.log("URL", url);
 
-
-  useEffect(() => {
-
-
-
-
-    let intervalId: number | undefined = undefined;
-
-    if (submissionId) {
-      intervalId = window.setInterval(async () => {
-        if (getStatus) {
-          console.log("Polling for status");
-          const currentStatus = await getStatus(submissionId);
-          console.log("Retrieved Status", currentStatus);
-          if (currentStatus === "COMPLETED" || currentStatus === "FAILED") {
-            if (currentStatus === "COMPLETED" && getDownloadPresignedUrl) {
-              try {
-                const url = await getDownloadPresignedUrl(submissionId);
-                setProcessedVideo(url);
-                console.log("Processed Video URL", url);
-              } catch (error) {
-                console.error("Error getting download URL", error);
-              }
-            }
-            clearInterval(intervalId);
-          }
-        } else {
-          console.error("No getStatus function provided");
-        }
-      }, 5000);
-    }
-
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [submissionId, getStatus, getDownloadPresignedUrl, requests]);
-
-
-
-  const canShowVideo = associatedSubmission && associatedSubmission.status === "COMPLETED" && processedVideo;
+  const canShowVideo =
+    associatedSubmission &&
+    associatedSubmission.status === "COMPLETED" &&
+    processedVideo;
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | "mp4">("mp4");
@@ -153,8 +127,16 @@ export default function SubmitDisplay({
 
   const handleProcessVideo = async (e: any) => {
     setLoading(true);
-    if (submissionId && triggerJob && updateStatus) {
-      const res = await triggerJob(submissionId, fileExt);
+    const submission = getAssociatedSubmission(request?.selected || "");
+    if (submission && triggerJob) {
+      const res = await triggerJob(submission.submissionId, fileExt);
+      if (res === "Video jobbed successfully" && updateSubmissionStatus) {
+        await updateSubmissionStatus("PROCESSING", submission.submissionId);
+        console.log("Updated submission status");
+        updateRequests && updateRequests();
+        await fetchUserData();
+      }
+
       setUpload(false);
       setLoading(false);
       setObjectURL(null);
@@ -188,8 +170,6 @@ export default function SubmitDisplay({
 
     const key = `${submissionId}.${fileExt}`;
 
-    console.log("Key", key);
-
     if (submissionId && getPresignedUrl) {
       try {
         const url = await getPresignedUrl(key);
@@ -203,8 +183,6 @@ export default function SubmitDisplay({
           },
           body: file,
         });
-
-        console.log("Data", response);
         setObjectURL(URL.createObjectURL(file));
         console.log("Upload successful");
         setLoading(false);
@@ -254,7 +232,6 @@ export default function SubmitDisplay({
   };
 
   const handleSaveAndUpload = async () => {
-    console.log("Recorded Chunks", recordedChunks);
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, { type: "video/webm" });
       const fileName = `${submissionId}.webm`;
@@ -262,7 +239,6 @@ export default function SubmitDisplay({
 
       setFile(file);
 
-      console.log("File", file);
       if (submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
 
@@ -290,52 +266,26 @@ export default function SubmitDisplay({
     }
   };
 
-  const handleShowVideo = async () => {
-    if (!selected) return;
-
-    if (!showingVideo) {
-      setShowingVideo(true);
-    } else {
-      setShowingVideo(false);
-    }
-    const submission = submissions && submissions.find(
-      (sub) => sub.requestId === selected.requestId
-    );
-
-    if (submission && submission.status === "COMPLETED") {
-      if (getDownloadPresignedUrl) {
-        try {
-          const url = await getDownloadPresignedUrl(submission.submissionId);
-          setProcessedVideo(url);
-          console.log("URL", url);
-          return url;
-        } catch (error) {
-          console.error("Failed to get download URL", error);
-        }
-      }
-    } else {
-      console.log("No video to display or submission not completed");
-    }
-  };
-
   const router = useRouter();
 
-  const handleArchive = (requestId: string) => {
+  const handleArchive = async (requestId: string) => {
     console.log("Archiving");
-    if (requests && updateStatus && requestId && updateSubmissionStatus) {
+    if (requests && requestId) {
       const submission = getAssociatedSubmission(requestId);
-      if (submission && submission.status !== "ARCHIVED") {
-        updateStatus("ARCHIVED", submission.submissionId);
-        updateSubmissionStatus("ARCHIVED", submission.submissionId);
-        updateRequests && updateRequests(requests)
-        console.log(`Status updated to ${submission.status}`)
-      } else {
-        console.log(`Failed to update status, already ARCHIVED`);
+      if (submission && updateSubmissionStatus) {
+        await updateSubmissionStatus("ARCHIVED", submission.submissionId);
+        console.log("Updated submission status");
+        updateRequests && updateRequests();
+        await fetchUserData();
+
+        toast({
+          title: "Archived",
+          description: "Request has been archived",
+        });
       }
     } else {
       console.error("Failed to update status");
     }
-
   };
 
   const handleChooseAnotherFile = () => {
@@ -389,18 +339,24 @@ export default function SubmitDisplay({
           </Tooltip>
         </div>
         <div className="flex ml-auto pr-1.5">
-        <Button
-          variant={"ghost"}
-          onClick={() => setShowingVideo(!showingVideo)}
-          disabled={!canShowVideo}
-        >
-          <Tooltip>
-            <TooltipTrigger asChild>
-              {showingVideo ? <XSquare className="w-4 h-4" /> : <PlaySquare className="w-4 h-4" />}
-            </TooltipTrigger>
-            <TooltipContent>{showingVideo ? 'Hide Processed Video' : 'View Processed Video'}</TooltipContent>
-          </Tooltip>
-        </Button>
+          <Button
+            variant={"ghost"}
+            onClick={() => setShowingVideo(!showingVideo)}
+            disabled={!canShowVideo}
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                {showingVideo ? (
+                  <XSquare className="w-4 h-4" />
+                ) : (
+                  <PlaySquare className="w-4 h-4" />
+                )}
+              </TooltipTrigger>
+              <TooltipContent>
+                {showingVideo ? "Hide Processed Video" : "View Processed Video"}
+              </TooltipContent>
+            </Tooltip>
+          </Button>
         </div>
       </div>
     );

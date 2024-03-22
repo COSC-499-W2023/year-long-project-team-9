@@ -3,9 +3,10 @@ import Wrapper from "@/app/wrapper";
 import { Requests, Submissions } from "@obscurus/database/src/sql.generated";
 import SubmitList from "./submit-list";
 import SubmitDisplay from "./submit-display";
-import { useEffect, useState } from "react";
+import { Suspense, use, useEffect, useState } from "react";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
+import { set } from "date-fns";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -29,58 +30,49 @@ export const SubmitWrapper = ({
   websocketApiEndpoint: string;
 }) => {
   const [requests, setRequests] = useRequests();
-  const [submissions, setSubmissions] = useSubmissions()
+  const [submissions, setSubmissions] = useSubmissions();
+
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  const updateRequests = (newRequests: Requests[]) => {
-    setRequests(newRequests);
-  }
+  const [loading, setLoading] = useState(false);
 
-  const updateSubmissionStatus = (status: string, submissionId: string) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({
-        action: "updateSubmissionStatus",
-        data: { status, submissionId }
-      }));
-      console.log("Sent updateSubmissionStatus message");
+  const fetchUserData = async () => {
+    if (getUserDataByEmail) {
+      getUserDataByEmail("imightbejan@gmail.com")
+        .then((data) => {
+          console.log("User data:", data);
+          setRequests(data.requests);
+          setSubmissions(data.submissions);
+        })
+        .then(() => {
+          console.log("Requests:", requests);
+          console.log("Submissions:", submissions);
+        });
     }
   };
 
-
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (!getUserDataByEmail) return;
-      try {
-        const result = await getUserDataByEmail("imightbejan@gmail.com");
-        setRequests(result.requests);
-        setSubmissions(result.submissions);
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, [getUserDataByEmail]);
-
-  useEffect(() => {
-    let ws = new WebSocket(websocketApiEndpoint);
+    const ws = new WebSocket(websocketApiEndpoint);
+    // const handleBeforeUnload = () => {
+    //   console.log("Page reloading or closing, disconnecting WebSocket");
+    //   ws.close();
+    // };
 
     ws.onopen = () => {
       console.log("Connected to WebSocket");
     };
+    // window.addEventListener("beforeunload", handleBeforeUnload);
+    setSocket(ws);
+    setLoading(true);
+    fetchUserData();
+    setLoading(false);
 
     ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-        console.log("Received message:", message);
-      switch (message.type) {
-        case "updateRequests":
-          setRequests(message.data);
-          break;
-        case "updateSubmissions":
-          setSubmissions(message.data);
-          break;
-        default:
-          console.log("Received unknown message type:", message.type);
+      try {
+        const data = JSON.parse(event.data);
+        setRequests(data.requests);
+      } catch {
+        console.log("Message data is not valid JSON");
       }
     };
 
@@ -96,28 +88,43 @@ export const SubmitWrapper = ({
       ws.close();
       console.log("WebSocket connection closed");
     };
-  }, [websocketApiEndpoint]);
+  }, []);
 
-
-
-  console.log(updateSubmissionStatus)
-  console.log(updateRequests)
+  const updateSubmissionStatus = (status: string, submissionId: string) => {
+    if (socket) {
+      console.log("Sending updateSubmissionStatus message");
+      socket.send(
+        JSON.stringify({
+          action: "updateSubmissionStatus",
+          data: { status, submissionId },
+        })
+      );
+      console.log("Sent updateSubmissionStatus message");
+      if (updateStatus) {
+        updateStatus(status, submissionId);
+      }
+      console.log("Updated submission status");
+    } else {
+      console.error("WebSocket not connected");
+    }
+  };
 
   return (
     <Wrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<SubmitList updateRequests={updateRequests} />}
+      firstPanel={
+        <SubmitList requests={requests || []} submissions={submissions || []} />
+      }
       secondPanel={
         <SubmitDisplay
+          fetchUserData={fetchUserData}
           getPresignedUrl={getPresignedUrl}
           getDownloadPresignedUrl={getDownloadPresignedUrl}
           triggerJob={triggerJob}
-          updateStatus={updateStatus}
           getStatus={getStatus}
-        updateSubmissionStatus={updateSubmissionStatus}
-        updateRequests={updateRequests}
+          updateSubmissionStatus={updateSubmissionStatus}
         />
       }
     />

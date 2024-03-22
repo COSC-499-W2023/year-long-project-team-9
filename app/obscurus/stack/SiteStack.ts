@@ -300,6 +300,7 @@ export default function SiteStack({ stack }: StackContext) {
       $connect: "stack/lambdas/chat/connect.main",
       $disconnect: "stack/lambdas/chat/disconnect.main",
       sendmessage: "stack/lambdas/chat/sendMessage.main",
+      updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
     },
   });
 
@@ -320,7 +321,7 @@ export default function SiteStack({ stack }: StackContext) {
 
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, steveJobs, bus, topic, wsApi],
-    permissions: [rekognitionPolicyStatement],
+    permissions: [rekognitionPolicyStatement, wsApi],
     environment: {NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url},
   });
 
