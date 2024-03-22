@@ -163,9 +163,9 @@ export default function SiteStack({ stack }: StackContext) {
           bind: [inputBucket, rds],
         },
       },
-      "POST /notificationsRead": {
+      "POST /readNotification": {
         function: {
-          handler: "./stack/lambdas/notificationsRead.handler",
+          handler: "./stack/lambdas/readNotification.handler",
           timeout: 20,
           permissions: [inputBucket, rds],
           bind: [inputBucket, rds],

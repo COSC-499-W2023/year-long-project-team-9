@@ -1,4 +1,4 @@
-import { notificationsRead } from "@obscurus/database/src/notification";
+import { readNotification } from "@obscurus/database/src/notification";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   }
 
-  const notification = await notificationsRead(body.email);
+  const notification = await readNotification(body.email);
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
