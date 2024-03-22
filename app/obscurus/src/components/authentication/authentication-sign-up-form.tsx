@@ -66,7 +66,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="overflow-auto max-h-[65vh]">
+    <div className="overflow-auto max-h-[60vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-1">
           {/* Email */}

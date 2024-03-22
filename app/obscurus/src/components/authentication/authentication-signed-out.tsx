@@ -24,7 +24,7 @@ export default function AuthenticationSignedOut() {
           Sign In
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="min-w-[40%] min-h-[90%] max-h-[90%] flex flex-col">
+      <AlertDialogContent className="min-w-[40%] min-h-[85%] max-h-[85%] flex flex-col">
         <div className="flex flex-col flex-grow justify-center items-center">
           <AlertDialogHeader className="flex-grow-0 w-full h-full">
             {dialogState === "signIn" && (
