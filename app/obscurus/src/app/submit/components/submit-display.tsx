@@ -10,10 +10,7 @@ import {
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import {
-  FormEvent,
   Suspense,
-  use,
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -416,13 +413,6 @@ export default function SubmitDisplay({
       </div>
     );
   };
-
-  // const DisplayProcessedVideo = () => {
-  //   console.log("Processed Video", processedVideo)
-  //   return processedVideo ? (
-
-  //   );
-  // };
 
   const Upload = () => {
     return (

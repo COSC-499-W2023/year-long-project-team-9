@@ -3,21 +3,13 @@ import {
   StackContext,
   NextjsSite,
   Bucket,
-  Function,
   RDS,
   Api,
   Job,
-  Service,
   Cognito,
   Config,
-  Queue,
-  Table,
   WebSocketApi,
-  EventBus,
-  Topic,
 } from "sst/constructs";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { HostedZone } from "aws-cdk-lib/aws-route53";
 import * as cdk from "aws-cdk-lib";
 
 export default function SiteStack({ stack }: StackContext) {
@@ -53,39 +45,14 @@ export default function SiteStack({ stack }: StackContext) {
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
-  const WEBSOCKET_API_ENDPOINT = new Config.Secret(
-    stack,
-    "WEBSOCKET_API_ENDPOINT"
-  );
 
-  const topic = new Topic(stack, "Topic", {
-    subscribers: {
-      receipt: "stack/lambdas/receipt.main",
-      shipping: "stack/lambdas/shipping.main",
-    },
-  });
-
-  const bus = new EventBus(stack, "Ordered", {
-    rules: {
-      rule1: {
-        pattern: {
-          source: ["myevent"],
-          detailType: ["Order"],
-        },
-        targets: {
-          receipt: "stack/lambdas/receipt.handler",
-          shipping: "stack/lambdas/shipping.handler",
-        },
-      },
-    },
-  });
 
   const api = new Api(stack, "Api", {
     defaults: {
       function: {
         timeout: 20,
-        permissions: [rds, chumBucket, topic, bus],
-        bind: [rds, chumBucket, topic, bus],
+        permissions: [rds, chumBucket],
+        bind: [rds, chumBucket],
         environment: { DB_NAME: rds.clusterArn },
       },
     },
@@ -306,21 +273,9 @@ export default function SiteStack({ stack }: StackContext) {
 
   api.bind([wsApi]);
 
-  const videoProcessingQueue = new Queue(stack, "VideoProcessingQueue", {
-    consumer: {
-      function: {
-        handler: "stack/lambdas/processVideo.handler",
-        environment: {
-          BUCKET_NAME: chumBucket.bucketName,
-          API_URL: api.url,
-        },
-        permissions: [rekognitionPolicyStatement, chumBucket],
-      },
-    },
-  });
 
   const site = new NextjsSite(stack, "site", {
-    bind: [chumBucket, chumBucket, rds, api, steveJobs, bus, topic, wsApi],
+    bind: [chumBucket, chumBucket, rds, api, steveJobs, wsApi],
     permissions: [rekognitionPolicyStatement, wsApi],
     environment: {NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url},
   });
