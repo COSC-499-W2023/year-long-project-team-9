@@ -29,7 +29,11 @@ const accountFormSchema = z.object({
     .max(24, { message: "Password cannot be more than 24 characters." }),
 });
 
-export default function SignInForm() {
+export default function SignInForm({
+  setDialogState,
+}: {
+  setDialogState: Function;
+}) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {},
@@ -39,7 +43,6 @@ export default function SignInForm() {
     console.log(values);
   }
 
-  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="overflow-auto max-h-[80vh]">
       <Form {...form}>
@@ -70,8 +73,8 @@ export default function SignInForm() {
                   <div>
                     <Input placeholder="Password" {...field} />
                     <a
-                      href="/sign/recover"
-                      className="underline text-xs text-blue-400"
+                      onClick={() => setDialogState("forgotPassword")}
+                      className="underline text-xs text-blue-400 hover:cursor-pointer"
                     >
                       Forgot password
                     </a>

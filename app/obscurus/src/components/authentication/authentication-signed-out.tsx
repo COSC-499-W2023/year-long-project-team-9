@@ -2,24 +2,23 @@
 import { useState } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "../modified-shadcn-ui-components/modified-alert-dialog";
 import { Button } from "../ui/button";
 import SignInForm from "./authentication-sign-in-form";
 import SignUpForm from "./authentication-sign-up-form";
+import RecoverPasswordForm from "./authentication-recover-password-form";
 import { Separator } from "../ui/separator";
 
 export default function AuthenticationSignedOut() {
-  const [dialogState, setDialogState] = useState<string>("signin");
+  const [dialogState, setDialogState] = useState<string>("signIn");
   return (
-    <AlertDialog onOpenChange={() => setDialogState("signin")}>
+    <AlertDialog onOpenChange={() => setDialogState("signIn")}>
       <AlertDialogTrigger asChild>
         <Button size="sm" className="text-xs">
           Sign In
@@ -28,17 +27,24 @@ export default function AuthenticationSignedOut() {
       <AlertDialogContent className="min-w-[40%] min-h-[90%] max-h-[90%] flex flex-col">
         <div className="flex flex-col flex-grow justify-center items-center">
           <AlertDialogHeader className="flex-grow-0 w-full h-full">
-            {dialogState === "signin" && (
+            {dialogState === "signIn" && (
               <div>
                 <AlertDialogDescription>
-                  <SignInForm />
+                  <SignInForm setDialogState={setDialogState} />
                 </AlertDialogDescription>
               </div>
             )}
-            {dialogState === "signup" && (
+            {dialogState === "signUp" && (
               <div>
                 <AlertDialogDescription>
                   <SignUpForm />
+                </AlertDialogDescription>
+              </div>
+            )}
+            {dialogState === "forgotPassword" && (
+              <div>
+                <AlertDialogDescription>
+                  <RecoverPasswordForm />
                 </AlertDialogDescription>
               </div>
             )}
@@ -46,22 +52,22 @@ export default function AuthenticationSignedOut() {
         </div>
         <Separator />
         <AlertDialogFooter>
-          {(dialogState === "signin" || dialogState === "forgotPassword") && (
+          {dialogState === "signIn" && (
             <div className="text-xs mt-2">
               <span>Need an account? </span>
               <a
-                onClick={() => setDialogState("signup")}
+                onClick={() => setDialogState("signUp")}
                 className="underline text-blue-400 hover:cursor-pointer"
               >
                 Sign Up
               </a>
             </div>
           )}
-          {dialogState === "signup" && (
+          {(dialogState === "signUp" || dialogState === "forgotPassword") && (
             <div className="text-xs mt-2">
               <span>Have an account? </span>
               <a
-                onClick={() => setDialogState("signin")}
+                onClick={() => setDialogState("signIn")}
                 className="underline text-blue-400 hover:cursor-pointer"
               >
                 Sign In
