@@ -9,14 +9,14 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   }
   const body = JSON.parse(event.body);
-  if (!body.email) {
+  if (!body.id) {
     return {
       statusCode: 400,
       headers: { "Content-Type": "application/json" },
     };
   }
 
-  const notification = await readNotification(body.email);
+  const notification = await readNotification(body.id);
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },

@@ -18,18 +18,19 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
-import Notifications from "@/components/notification/notifications";
+import { Notifications } from "@obscurus/database/src/sql.generated";
+import NotificationsComponent from "@/components/notification/notifications-component";
 //import SignIn from "@/components/SignIn";
 // import { isSignedIn } from "@/auth/authenticationMethods";
 
 const NavBar = ({
-  notificationsRead,
+  readNotification,
   deleteNotifications,
-  getNotificationsViaEmail,
+  notifications,
 }: {
-  notificationsRead: Function;
+  readNotification: Function;
   deleteNotifications: Function;
-  getNotificationsViaEmail: Function;
+  notifications: Notification[];
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -113,11 +114,11 @@ const NavBar = ({
       <div className="grid grid-flow-col gap-2 justify-end items-center pr-5 ">
         <div className="flex justify-end space-x-2">
           <div className="content-center">
-            <Notifications
-              notificationsRead={notificationsRead}
+            <NotificationsComponent
+              readNotification={readNotification}
               deleteNotifications={deleteNotifications}
-              getNotificationsViaEmail={getNotificationsViaEmail}
-            ></Notifications>
+              notifications={notifications}
+            ></NotificationsComponent>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

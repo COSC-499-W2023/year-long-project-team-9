@@ -15,6 +15,7 @@ export default function NotificationSummary({
   type,
   referenceId,
   deleteNotifications,
+  readNotification,
   id,
 }: {
   isRead: boolean;
@@ -23,6 +24,7 @@ export default function NotificationSummary({
   referenceId: string;
   id: string;
   deleteNotifications: Function;
+  readNotification: Function;
 }) {
   let link = "/";
   if (type === "CHAT") {
@@ -37,6 +39,7 @@ export default function NotificationSummary({
   return (
     <div className="flex flex-col-2">
       <Link
+        onClick={() => {}}
         href={link}
         className="flex flex-col-3 items-start w-full gap-2 p-3 text-justify text-sm"
       >

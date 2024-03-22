@@ -19,40 +19,20 @@ import { useEffect, useState } from "react";
 import { Notifications } from "@obscurus/database/src/sql.generated";
 import NotificationSummary from "./notification-summary";
 
-export default function Notifications({
-  notificationsRead,
+export default function NotificationsComponent({
+  readNotification,
   deleteNotifications,
-  getNotificationsViaEmail,
+  notifications,
 }: {
-  notificationsRead: Function;
+  readNotification: Function;
   deleteNotifications: Function;
-  getNotificationsViaEmail: Function;
+  notifications: Notification[];
 }) {
-  const [email, setEmail] = useState("");
-  const [notifications, setNotifications] = useState([]);
-
-  useEffect(() => {
-    getEmail()
-      .then((email) => {
-        setEmail(email);
-        getNotificationsViaEmail(email)
-          .then((value: any) => {
-            setNotifications(value);
-          })
-          .catch(setNotifications([]));
-      })
-      .catch((err) => {
-        setEmail("");
-      });
-  }, []);
+  console.log(notifications);
   return (
-    <DropdownMenu
-      onOpenChange={() => {
-        notificationsRead(email);
-      }}
-    >
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div onClick={() => notificationsRead(email)}>
+        <div>
           <Button variant="ghost" size="icon">
             <Bell size={25} />
           </Button>
@@ -60,13 +40,18 @@ export default function Notifications({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto">
         <div className="font-semibold text-base my-1">Notifications</div>
-        <Button></Button>
+        <Button
+          onClick={() => {
+            readNotification("01ae65a9-aa87-4c8d-b61a-7d468f04ab4e");
+          }}
+        ></Button>
         <NotificationSummary
           isRead={true}
           content={""}
           type={"REQUEST"}
           referenceId={"f50a22fb-f9ce-4c83-8954-60d6aa4dba3b"}
           deleteNotifications={deleteNotifications}
+          readNotification={readNotification}
           id="82f4c6bc-aa01-4b70-ab38-ea00b3d5eae8"
         ></NotificationSummary>
         <NotificationSummary
@@ -75,6 +60,7 @@ export default function Notifications({
           type={"Profile"}
           referenceId={"f50a22fb-f9ce-4c83-8954-60d6aa4dba3b"}
           deleteNotifications={deleteNotifications}
+          readNotification={readNotification}
           id="d14e0786-01d9-4da2-9372-618b08edf863"
         ></NotificationSummary>
         <NotificationSummary
@@ -85,6 +71,7 @@ export default function Notifications({
           type={"CHAT"}
           referenceId={"f50a22fb-f9ce-4c83-8954-60d6aa4dba3b"}
           deleteNotifications={deleteNotifications}
+          readNotification={readNotification}
           id="d14e0786-01d9-4da2-9372-618b08edf863"
         ></NotificationSummary>
         <NotificationSummary
@@ -93,6 +80,7 @@ export default function Notifications({
           type={"SUBMIT"}
           referenceId={"f50a22fb-f9ce-4c83-8954-60d6aa4dba3b"}
           deleteNotifications={deleteNotifications}
+          readNotification={readNotification}
           id="d14e0786-01d9-4da2-9372-618b08edf863"
         ></NotificationSummary>
       </DropdownMenuContent>
