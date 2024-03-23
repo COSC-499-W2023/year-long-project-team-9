@@ -60,11 +60,6 @@ export default function ChatLog({
                 <p className="text-pretty break-words max-w-xs">
                   {message.messageContent}
                 </p>
-                <p className="text-xs text-muted-foreground text-right mt-1">
-                  {formatDistanceToNow(new Date(message.creationDate), {
-                    addSuffix: true,
-                  })}
-                </p>
               </div>
             </div>
           ) : (
@@ -72,11 +67,6 @@ export default function ChatLog({
               <div className="flex flex-col w-max max-w-[75%] rounded-md m-1 ml-4 bg-primary text-secondary p-2">
                 <p className="text-pretty break-words max-w-xs">
                   {message.messageContent}
-                </p>
-                <p className="text-xs text-muted-foreground text-left mt-1">
-                  {formatDistanceToNow(new Date(message.creationDate), {
-                    addSuffix: true,
-                  })}
                 </p>
               </div>
             </div>
