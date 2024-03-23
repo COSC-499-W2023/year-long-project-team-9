@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
-import { Search } from "lucide-react";
+import { MessageCircle, Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -48,11 +48,6 @@ export default function ChatList({
     });
   };
 
-  useEffect(() => {
-    !roomId && setRoomId(rooms[0].roomId);
-  }),
-    [];
-
   const tabContent = () => {
     sortRooms();
     const filteredRooms = rooms.filter((filRoom) => {
@@ -64,7 +59,7 @@ export default function ChatList({
           .includes(searchTerm);
       return matchesSearch;
     });
-    return (
+    return filteredRooms && filteredRooms.length > 0 ? (
       <div className="flex flex-col gap-2 p-4 pt-2 h-full overflow-y-auto">
         {filteredRooms.map((item) => (
           <button
@@ -132,6 +127,11 @@ export default function ChatList({
             </div>
           </button>
         ))}
+      </div>
+    ) : (
+      <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+        <MessageCircle className="h-20 w-20" />
+        <p className=" text-lg">No rooms available.</p>
       </div>
     );
   };

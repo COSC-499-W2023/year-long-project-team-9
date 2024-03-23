@@ -5,6 +5,7 @@ import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
 import { Suspense } from "react";
 import ChatLog from "../../chat/components/chat-log";
+import { MessagesSquare } from "lucide-react";
 
 interface ChatDisplayProps {
   userEmail: string;
@@ -32,10 +33,6 @@ export default function ChatDisplay({
   createMessageNotification,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
-
-  if (!roomId) {
-    setRoomId(rooms[0].roomId);
-  }
 
   const getUserName = (item: Rooms | undefined) => {
     if (item === undefined) {
@@ -95,6 +92,9 @@ export default function ChatDisplay({
       </Suspense>
     </div>
   ) : (
-    <div>Failed to load data....</div>
+    <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+      <MessagesSquare className="h-20 w-20" />
+      <p className=" text-lg">No room selected.</p>
+    </div>
   );
 }
