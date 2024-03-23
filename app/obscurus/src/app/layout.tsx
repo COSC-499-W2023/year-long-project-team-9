@@ -6,11 +6,10 @@ import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
-import deleteNotifications from "./functions/deleteNotification";
-import readNotification from "./functions/notificationsRead";
+import deleteNotifications from "./functions/deleteNotifications";
+import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import { getEmail } from "./functions/authenticationMethods";
-import { Notifications } from "@obscurus/database/src/sql.generated";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
   description: "Blur faces automatically",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -27,15 +26,6 @@ export default async function RootLayout({
   const signedIn = true;
   // Muhammad
   // deleteNotifications;
-  const email = await getEmail();
-  const notificationCall: { notifications: Notifications[] } =
-    await getNotificationsViaEmail(email);
-  let notifications: Notifications[];
-  if (!notificationCall?.notifications) {
-    notifications = [];
-  } else {
-    notifications = notificationCall.notifications;
-  }
   // notificationsRead;
   //
 
@@ -49,9 +39,9 @@ export default async function RootLayout({
         >
           <div className=" flex-col md:flex min-h-screen h-screen">
             <NavBar
-              readNotification={readNotification}
+              notificationsRead={notificationsRead}
               deleteNotifications={deleteNotifications}
-              notifications={notifications}
+              getNotificationsViaEmail={getNotificationsViaEmail}
             />
             <Toaster />
             {children}

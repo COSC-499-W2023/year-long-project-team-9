@@ -36,19 +36,15 @@ export function Notifications({
     </>
   );
 }
-import { Notifications } from "@obscurus/database/src/sql.generated";
-import NotificationsComponent from "@/components/notification/notifications-component";
-//import SignIn from "@/components/SignIn";
-// import { isSignedIn } from "@/auth/authenticationMethods";
 
 const NavBar = ({
-  readNotification,
+  notificationsRead,
   deleteNotifications,
-  notifications,
+  getNotificationsViaEmail,
 }: {
-  readNotification: Function;
+  notificationsRead: Function;
   deleteNotifications: Function;
-  notifications: Notifications[];
+  getNotificationsViaEmail: Function;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -144,7 +140,6 @@ const NavBar = ({
     );
   };
 
-
   return (
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
@@ -155,73 +150,6 @@ const NavBar = ({
           getNotifications={getNotifications}
         />
         <ThemeSwitcher />
-            <Link href={userSignedIn ? "../MyRequests" : "/"}>
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/MyRequests"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  My Requests
-                </span>
-              </NavigationMenuItem>
-            </Link>
-            <Link href={userSignedIn ? "/submit" : "/"}>
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/submit"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  Submit
-                </span>
-              </NavigationMenuItem>
-            </Link> */}
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-      <div className="grid grid-flow-col gap-2 justify-end items-center pr-5 ">
-        <div className="flex justify-end space-x-2">
-          <div className="content-center">
-            <NotificationsComponent
-              readNotification={readNotification}
-              deleteNotifications={deleteNotifications}
-              notifications={notifications}
-            ></NotificationsComponent>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" data-testid="theme-toggle">
-                <Sun size={25} className="stroke-primary fill-primary" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => setTheme("light")}
-                data-testid="light"
-              >
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setTheme("dark")}
-                data-testid="dark"
-              >
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setTheme("system")}
-                data-testid="system"
-              >
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        {/* <SignIn /> */}
       </div>
     </div>
   );

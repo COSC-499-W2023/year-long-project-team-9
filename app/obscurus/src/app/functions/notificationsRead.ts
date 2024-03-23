@@ -1,12 +1,11 @@
 "use server";
 import { Api } from "sst/node/api";
 
-export default async function readNotification(id: string) {
-  console.log("==========================");
-  const res = await fetch(Api.Api.url + "/readNotification", {
+export default async function notificationsRead(email: string) {
+  const res = await fetch(Api.Api.url + "/notificationsRead", {
     method: "post",
     body: JSON.stringify({
-      id: id,
+      email: email,
     }),
   });
   if (res.ok) {
