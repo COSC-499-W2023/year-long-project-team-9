@@ -278,15 +278,6 @@ export default function SiteStack({ stack }: StackContext) {
           environment: { DB_NAME: rds.clusterArn },
         },
       },
-      "GET /getWebsocketApiEndpoint": {
-        function: {
-          handler: "./stack/lambdas/getWebsocketApiEndpoint.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
-        },
-      },
     },
   });
 
