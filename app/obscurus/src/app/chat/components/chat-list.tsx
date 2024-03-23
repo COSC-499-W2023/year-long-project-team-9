@@ -62,6 +62,9 @@ export default function ChatList({
         !searchTerm ||
         getOtherParticipantName(getOtherParticipantEmail(filRoom))
           .toLowerCase()
+          .includes(searchTerm) ||
+        getLatestMessage(filRoom)
+          ?.messageContent.toLowerCase()
           .includes(searchTerm);
       return matchesSearch;
     });
