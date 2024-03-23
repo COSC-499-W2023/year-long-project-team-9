@@ -30,8 +30,12 @@ export default async function RootLayout({
   const email = await getEmail();
   const notificationCall: { notifications: Notifications[] } =
     await getNotificationsViaEmail(email);
-  const notifications: Notifications[] = notificationCall.notifications;
-
+  let notifications: Notifications[];
+  if (!notificationCall?.notifications) {
+    notifications = [];
+  } else {
+    notifications = notificationCall.notifications;
+  }
   // notificationsRead;
   //
 
