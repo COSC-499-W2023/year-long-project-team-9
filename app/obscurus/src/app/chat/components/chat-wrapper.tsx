@@ -14,7 +14,7 @@ interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userEmail: string;
-  websocketApiEndpoint: string;
+  websocketApiEndpoint: string | undefined;
   rooms: Rooms[];
   userNames: UserNames[];
   messages: Messages[];
@@ -92,37 +92,41 @@ export default function ChatWrapper({
   };
 
   useEffect(() => {
-    const ws = new WebSocket(websocketApiEndpoint);
-    const handleBeforeUnload = () => {
-      console.log("Page reloading or closing, disconnecting WebSocket");
-      ws.close();
-    };
+    if (!websocketApiEndpoint) {
+      console.log("No WSApi Endpoint");
+    } else {
+      const ws = new WebSocket(websocketApiEndpoint);
+      const handleBeforeUnload = () => {
+        console.log("Page reloading or closing, disconnecting WebSocket");
+        ws.close();
+      };
 
-    ws.onopen = () => {
-      console.log("Connected to WebSocket");
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    setSocket(ws);
+      ws.onopen = () => {
+        console.log("Connected to WebSocket");
+      };
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      setSocket(ws);
 
-    ws.onmessage = (event) => {
-      console.log("Here");
-      const messageData = event.data;
-      try {
-        const messageJSON: Messages = JSON.parse(messageData);
-        if (!checkIfMessageInList(messageJSON)) {
-          const newMessages = [...chatMessages, messageJSON];
-          setChatMessages(newMessages);
+      ws.onmessage = (event) => {
+        console.log("Here");
+        const messageData = event.data;
+        try {
+          const messageJSON: Messages = JSON.parse(messageData);
+          if (!checkIfMessageInList(messageJSON)) {
+            const newMessages = [...chatMessages, messageJSON];
+            setChatMessages(newMessages);
+          }
+        } catch {
+          console.log("Message data is not valid JSON");
         }
-      } catch {
-        console.log("Message data is not valid JSON");
-      }
-    };
+      };
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      console.log("Disconnecting WebSocket");
-      ws.close();
-    };
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+        console.log("Disconnecting WebSocket");
+        ws.close();
+      };
+    }
   }, [chatMessages]);
   const sendMessage = (messageData: string) => {
     if (socket) {
