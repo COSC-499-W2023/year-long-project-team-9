@@ -11,7 +11,8 @@ import createMessageNotification from "../functions/createMessageNotification";
 
 type UserNames = {
   email: string;
-  fullName: string;
+  givenName: string;
+  familyName: string;
 };
 
 async function Chat() {
@@ -64,7 +65,9 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={userEmail}
-      websocketApiEndpoint={process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string}
+      websocketApiEndpoint={
+        process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string
+      }
       rooms={rooms}
       userNames={userNames}
       messages={messages}

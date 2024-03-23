@@ -18,7 +18,7 @@ interface ChatLogProps {
   room: Rooms;
   messages: Messages[];
   userName: string;
-  otherEmail: string;
+  otherUserEmail: string;
   updateChatMessages: Function;
   createMessage: Function;
   sendMessage: Function;
@@ -30,7 +30,7 @@ export default function ChatLog({
   room,
   messages,
   userName,
-  otherEmail,
+  otherUserEmail,
   updateChatMessages,
   createMessage,
   sendMessage,
@@ -65,7 +65,7 @@ export default function ChatLog({
     const newNotificationUUID = uuidv7();
     const newNotification: Notifications = {
       notificationId: newNotificationUUID,
-      userEmail: otherEmail,
+      userEmail: otherUserEmail,
       type: "CHAT",
       referenceId: room.roomId,
       creationDate: new Date(),

@@ -12,6 +12,7 @@ interface ChatDisplayProps {
   messages: Messages[];
   getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
+  getOtherParticipantInitials: Function;
   updateChatMessages: Function;
   createMessage: Function;
   sendMessage: Function;
@@ -24,6 +25,7 @@ export default function ChatDisplay({
   messages,
   getOtherParticipantEmail,
   getOtherParticipantName,
+  getOtherParticipantInitials,
   updateChatMessages,
   createMessage,
   sendMessage,
@@ -51,32 +53,23 @@ export default function ChatDisplay({
 
   const selected = rooms.find((item) => item.roomId === roomId);
   const userName = getUserName(selected);
-  const otherEmail = getOtherParticipantEmail(selected);
-  const otherUserName = getOtherParticipantName(
-    getOtherParticipantEmail(selected)
-  );
+  const otherUserEmail = getOtherParticipantEmail(selected);
+  const otherUserName = getOtherParticipantName(otherUserEmail);
+  const otherUserInitials = getOtherParticipantInitials(otherUserEmail);
 
   return selected ? (
     <div className="flex h-full flex-col min-h-full">
       <div className="flex flex-row items-center justify-left p-4">
         <Avatar>
           <AvatarImage alt={otherUserName} />
-          <AvatarFallback>
-            {otherUserName
-              .split(" ")
-              .map((chunk: string[]) => chunk[0])
-              .join("")}
-          </AvatarFallback>
+          <AvatarFallback>{otherUserInitials}</AvatarFallback>
         </Avatar>
-        <div className="pl-2 flex flex-col">
-          <div className="text-2x1 font-semibold">
-            {otherUserName.length > 50 &&
-              otherUserName.substring(0, 50) + "..."}
-            {otherUserName.length <= 50 && otherUserName}
+        <div className="pl-2 flex flex-col w-[90%]">
+          <div className="text-2x1 font-semibold line-clamp-1">
+            {otherUserName}
           </div>
-          <div className="text-xs text-muted-foreground">
-            {otherEmail.length > 50 && otherEmail.substring(0, 50) + "..."}
-            {otherEmail.length <= 50 && otherEmail}
+          <div className="text-xs text-muted-foreground truncate">
+            {otherUserEmail}
           </div>
         </div>
       </div>
@@ -93,7 +86,7 @@ export default function ChatDisplay({
           room={selected}
           messages={messages}
           userName={userName}
-          otherEmail={otherEmail}
+          otherUserEmail={otherUserEmail}
           updateChatMessages={updateChatMessages}
           createMessage={createMessage}
           sendMessage={sendMessage}

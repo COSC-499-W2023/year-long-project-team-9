@@ -15,6 +15,7 @@ interface ChatListProps {
   messages: Messages[];
   getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
+  getOtherParticipantInitials: Function;
   checkUnreadMessages: Function;
   getLatestMessage: Function;
   sortRooms: Function;
@@ -27,6 +28,7 @@ export default function ChatList({
   messages,
   getOtherParticipantEmail,
   getOtherParticipantName,
+  getOtherParticipantInitials,
   checkUnreadMessages,
   getLatestMessage,
   sortRooms,
@@ -79,27 +81,17 @@ export default function ChatList({
                   alt={getOtherParticipantName(getOtherParticipantEmail(item))}
                 />
                 <AvatarFallback>
-                  {getOtherParticipantName(getOtherParticipantEmail(item))
-                    .split(" ")
-                    .map((chunk: string[]) => chunk[0])
-                    .join("")}
+                  {getOtherParticipantInitials(getOtherParticipantEmail(item))}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col w-full">
                 <div className="flex flex-col">
                   <div className="flex flex-row">
                     <div className="flex items-center gap-2 w-full h-full">
-                      <div className="font-semibold">
-                        {getOtherParticipantName(getOtherParticipantEmail(item))
-                          .length > 50 &&
-                          getOtherParticipantName(
-                            getOtherParticipantEmail(item)
-                          ).substring(0, 50) + "..."}
-                        {getOtherParticipantName(getOtherParticipantEmail(item))
-                          .length <= 50 &&
-                          getOtherParticipantName(
-                            getOtherParticipantEmail(item)
-                          )}
+                      <div className="font-semibold text-ellipsis line-clamp-1">
+                        {getOtherParticipantName(
+                          getOtherParticipantEmail(item)
+                        )}
                       </div>
                       {checkUnreadMessages(item) && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
