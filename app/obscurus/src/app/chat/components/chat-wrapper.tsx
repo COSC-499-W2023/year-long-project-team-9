@@ -7,7 +7,8 @@ import ChatDisplay from "./chat-display";
 
 type UserNames = {
   email: string;
-  fullName: string;
+  givenName: string;
+  familyName: string;
 };
 
 interface ChatWrapperProps {
@@ -20,6 +21,7 @@ interface ChatWrapperProps {
   messages: Messages[];
   createMessage: Function;
   createMessageNotification: Function;
+  setIsReadTrue: Function;
 }
 
 export default function ChatWrapper({
@@ -32,9 +34,11 @@ export default function ChatWrapper({
   messages,
   createMessage,
   createMessageNotification,
+  setIsReadTrue,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
+  const [chatScrollBoolean, setChatScrollBoolean] = useState<boolean>(false);
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
@@ -51,9 +55,23 @@ export default function ChatWrapper({
       (user) => user.email === email
     );
     if (otherParticipant.length > 0) {
-      return otherParticipant[0].fullName;
+      return (
+        otherParticipant[0].givenName + " " + otherParticipant[0].familyName
+      );
     } else {
       return "No Name";
+    }
+  };
+  const getOtherParticipantInitials = (email: string) => {
+    const otherParticipant: UserNames[] = userNames.filter(
+      (user) => user.email === email
+    );
+    if (otherParticipant.length > 0) {
+      return (
+        otherParticipant[0].givenName[0] + otherParticipant[0].familyName[0]
+      );
+    } else {
+      return "N/A";
     }
   };
   const checkUnreadMessages = (item: Rooms) => {
@@ -136,7 +154,6 @@ export default function ChatWrapper({
     return newMessages.length > 0;
   };
 
-
   return (
     <>
       <Wrapper
@@ -150,9 +167,12 @@ export default function ChatWrapper({
             messages={chatMessages}
             getOtherParticipantEmail={getOtherParticipantEmail}
             getOtherParticipantName={getOtherParticipantName}
+            getOtherParticipantInitials={getOtherParticipantInitials}
             checkUnreadMessages={checkUnreadMessages}
             getLatestMessage={getLatestMessage}
             sortRooms={sortRooms}
+            setIsReadTrue={setIsReadTrue}
+            setChatScrollBoolean={setChatScrollBoolean}
           />
         }
         secondPanel={
@@ -162,10 +182,13 @@ export default function ChatWrapper({
             messages={chatMessages}
             getOtherParticipantEmail={getOtherParticipantEmail}
             getOtherParticipantName={getOtherParticipantName}
+            getOtherParticipantInitials={getOtherParticipantInitials}
             updateChatMessages={updateChatMessages}
             createMessage={createMessage}
             sendMessage={sendMessage}
             createMessageNotification={createMessageNotification}
+            chatScrollBoolean={chatScrollBoolean}
+            setChatScrollBoolean={setChatScrollBoolean}
           />
         }
       />

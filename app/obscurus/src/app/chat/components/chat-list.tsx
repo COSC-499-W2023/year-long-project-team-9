@@ -1,9 +1,8 @@
 "use client";
-import { useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
-import { Search } from "lucide-react";
+import { MessageCircle, Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -15,10 +14,13 @@ interface ChatListProps {
   messages: Messages[];
   getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
+  getOtherParticipantInitials: Function;
   checkUnreadMessages: Function;
   getLatestMessage: Function;
   sortRooms: Function;
+  setIsReadTrue: Function;
   isCollapsed?: boolean;
+  setChatScrollBoolean: Function;
 }
 
 export default function ChatList({
@@ -27,29 +29,30 @@ export default function ChatList({
   messages,
   getOtherParticipantEmail,
   getOtherParticipantName,
+  getOtherParticipantInitials,
   checkUnreadMessages,
   getLatestMessage,
   sortRooms,
+  setIsReadTrue,
+  setChatScrollBoolean,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
   const handleClick = (item: Rooms) => {
+    setChatScrollBoolean(true);
     setRoomId(item.roomId);
+    setIsReadTrue(item.roomId, getOtherParticipantEmail(item));
     messages.forEach((message) => {
       if (
         message.roomId === item.roomId &&
-        message.senderEmail === getOtherParticipantEmail(item)
+        message.senderEmail === getOtherParticipantEmail(item) &&
+        message.isRead === false
       ) {
         message.isRead = true;
       }
     });
   };
-
-  useEffect(() => {
-    !roomId && setRoomId(rooms[0].roomId);
-  }),
-    [];
 
   const tabContent = () => {
     sortRooms();
@@ -59,10 +62,13 @@ export default function ChatList({
         !searchTerm ||
         getOtherParticipantName(getOtherParticipantEmail(filRoom))
           .toLowerCase()
+          .includes(searchTerm) ||
+        getLatestMessage(filRoom)
+          ?.messageContent.toLowerCase()
           .includes(searchTerm);
       return matchesSearch;
     });
-    return (
+    return filteredRooms && filteredRooms.length > 0 ? (
       <div className="flex flex-col gap-2 p-4 pt-2 h-full overflow-y-auto">
         {filteredRooms.map((item) => (
           <button
@@ -79,30 +85,20 @@ export default function ChatList({
                   alt={getOtherParticipantName(getOtherParticipantEmail(item))}
                 />
                 <AvatarFallback>
-                  {getOtherParticipantName(getOtherParticipantEmail(item))
-                    .split(" ")
-                    .map((chunk: string[]) => chunk[0])
-                    .join("")}
+                  {getOtherParticipantInitials(getOtherParticipantEmail(item))}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col w-full">
                 <div className="flex flex-col">
                   <div className="flex flex-row">
-                    <div className="flex items-center gap-2 w-full h-full">
-                      <div className="font-semibold">
-                        {getOtherParticipantName(getOtherParticipantEmail(item))
-                          .length > 50 &&
-                          getOtherParticipantName(
-                            getOtherParticipantEmail(item)
-                          ).substring(0, 50) + "..."}
-                        {getOtherParticipantName(getOtherParticipantEmail(item))
-                          .length <= 50 &&
-                          getOtherParticipantName(
-                            getOtherParticipantEmail(item)
-                          )}
+                    <div className="flex items-center gap-2 w-full">
+                      <div className="font-semibold text-ellipsis line-clamp-1">
+                        {getOtherParticipantName(
+                          getOtherParticipantEmail(item)
+                        )}
                       </div>
                       {checkUnreadMessages(item) && (
-                        <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                        <span className="flex p-1 rounded-full bg-blue-600" />
                       )}
                     </div>
 
@@ -140,6 +136,11 @@ export default function ChatList({
             </div>
           </button>
         ))}
+      </div>
+    ) : (
+      <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+        <MessageCircle className="h-20 w-20" />
+        <p className=" text-lg">No rooms available.</p>
       </div>
     );
   };

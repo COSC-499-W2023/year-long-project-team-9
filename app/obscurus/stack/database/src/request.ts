@@ -1,7 +1,13 @@
 "use server";
 import { createFormSchema } from "@/app/request/create/form/createFormSchema";
 import { SQL } from "./sql";
-import { Requests, Submissions, Rooms, Notifications } from "./sql.generated";
+import {
+  Requests,
+  Submissions,
+  Rooms,
+  Notifications,
+  Users,
+} from "./sql.generated";
 import { uuidv7 } from "uuidv7";
 
 export async function createRequest(data: any) {
@@ -62,12 +68,22 @@ export async function createRequest(data: any) {
         .where("participant2Email", "=", validData.data.userEmail)
         .executeTakeFirst();
       if (!roomOne && !roomTwo) {
+        const receiver = await SQL.DB.selectFrom("users")
+          .selectAll()
+          .where("email", "=", validData.data.clientEmail[i].email)
+          .executeTakeFirst();
+        let active;
+        if (!receiver) {
+          active = false;
+        } else {
+          active = true;
+        }
         const insertRoom = await SQL.DB.insertInto("rooms")
           .values({
             roomId: uuidv7(),
             participant1Email: validData.data.userEmail,
             participant2Email: validData.data.clientEmail[i].email,
-            isActive: false,
+            isActive: active,
             creationDate: new Date(),
           })
           .execute();
