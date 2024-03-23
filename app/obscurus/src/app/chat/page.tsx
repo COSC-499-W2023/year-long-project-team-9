@@ -25,7 +25,7 @@ async function Chat() {
       : undefined;
 
   const userEmail = await getEmail();
-  const websocketApiEndpoint = await getWebsocketApiEndpoint();
+  const websocketApiEndpoint = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
