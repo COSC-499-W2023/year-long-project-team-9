@@ -408,7 +408,7 @@ export async function up(db) {
         participant2Email:
           "E4EhC6FAvJO382hcaPE2TOhUbKcnIFHJhyTk5IDP2bScbbKk3Db22ED7wggnmB9JEZluCxns8r9c03g6FKgjc69v8Y0B514txCUi1kR0h1QlsONYUhMDFnm0U86ZZ67ucO1ejZCam4oAaDFh4SjLRltmIrJD1OEGvl5ockzgNHOuOiBgkf3SGj0ogCy1iOhd2kXJC511qQW98nS6Vv9jeal3yxOBJLXdFoof4QlVpv57romcC7U1XTO2cyUZcLc3daXsuOwuaX5d3RblCQ9Xj7uaDrRiiNTn4f440dv1OpQQANViixbo@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "b9e33dc6-ac44-4c2c-aea4-d45f3f3e2810",
@@ -416,7 +416,7 @@ export async function up(db) {
         participant2Email:
           "Pi9nD26zVTMaoDzBcVBw7rYkHtSDU746mJsxYcL9X8VhZOurxRxyAtBcFLheWiWindgb7GfI3Pv2OkJ8MrckDW5peBhFTBiPDX0uOCCu9huByDxzrHbbFkmqgOjwo7oEQEaO20o2G3oPt9ZceP1ROmhoTbTsgL6iI9WgJMikv8CAlGzjcXlCCKBlgHskD7x0nGHELmaeDGrRYL6IAfJLq7HU1ZxdrhxGnDhnXzXXJ3bUpztoUpyvhoMmPEJbtkHWo2BRnJbGCx89LGlOWuCTb1s49f7jbOKnbneajSaYSBn5fUbbLB2N@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "eaaeb305-5d64-4a30-ac77-f6e3c5271395",
@@ -424,7 +424,7 @@ export async function up(db) {
         participant2Email:
           "1wWfnvBJbh6e8R5W8XBkEBp6omQViOAy4HI69QBa07o964Q1G70DSF2tHArTr3HCdoUvfoqcMyfaBm4Wbkc8s6bZhd3cevF7Mk86MsOADZGJv5Da8CStRXcrDWAPYcAwtoxaDJDM40S2Es04r3xL3hYYa23Xi4WqPMJhoemULqSatXImQql49GIg7GQMo1vy4E7cx6Kri668zEzUseSfR6VbMCngNEBTe82nyPzRjcdyBy1eK2QDWsWtt35aYY1uI2Asw3TiebVTMu2GHGbMJipODnKqB5eC0NVkDrzHf990S7UOquu2@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "6937e6f0-9ee8-492d-a4dd-faa7fad629bc",
@@ -432,7 +432,7 @@ export async function up(db) {
         participant2Email:
           "Sagwpe6fM7n2A26oQC1Nj1lKcHMqejOW71a7w20rgEb2QLxfSWUFD3gGPISz9cbqAPswVx9QZ2zG5ngkJeZosxZhiqw611sLiOhFfU4KMEXt4vnK71j4VAQMMCTVOqt963Fi2ImJDcPSpUdrQNvoz4m6Nl7JMshhOVmpozpKDIMpGx3SBYmmel2YbTQCHkoTiKBkXTZ53IDvieRpcipKYaFG1jjE093Lddpasdod0dnoQg4Ot9VXF6nR1t1Fbn7wyVjOTVBJFBqOQxs84sucaMWEnIkZ6xNQdiZdySlB1MWCh1tDuLU1@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "a181ff4b-b816-43b2-b99b-b6f1ffb8500f",
@@ -440,7 +440,7 @@ export async function up(db) {
         participant2Email:
           "2ZZaKfQju9yetVylaVGpKLXtStfeW3zXWtcYVSsoSePYCCfRZXoqVZ9M0unIdtwQUPJclpssXTLCEsjIhXtSbgK252rl5G6m8syZejH9zH0SPw8h8CnhSu4WKZ4BRrhy8lvP1ZUEIhT3Bl6NUZUyz6PEwOuNW4wkJeRIUE6azCkA5QcP3HJpPzqY9semlRkIRwAOkjRlPof70xOfBjnQfgpwSYWf606NC5vXdJDk3hN9rbIGVlpD6dsrkgZOEysGasoYir39YWaWZiE62rN4vFlBXeScxQCCTiuKdfVEz0Gvu1ot7L5Q@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "7d9bc5da-6f1a-461e-be1d-6ea2d71aac58",
@@ -448,7 +448,7 @@ export async function up(db) {
         participant2Email:
           "zkJYBHrgrvgcP0Iu5SwXJMOvWkijsvuTrCDoRxxRFvoAZiHMekLIxjR3uCsJuAVhftA0TfEboRmzEC2lRQfm4juZiyXS93MqnIKrviO9ETAZjP5ZoVIdENqFFdhkDwXBYxLFhEN8zjRWW1U96xb2XudjRv5ZvdJyc1zHz88F8u0w0lo8QRcQuG7QdeTaGJHrxI6AYZrvBbkBJpNPhNpTBl440Z36Uqap1Rf9xrPAV58U1LIaF9rIAWpEBpTIFtr8mePBBT1nd6fHflgdubGZKRerdlreyaOjgTynp8ZwtDROF814Pa2S@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "84953bf3-a3c0-4677-a4ff-725d96a843d3",
@@ -456,7 +456,7 @@ export async function up(db) {
         participant2Email:
           "q5eYNFs06vA5D4s4qRSZFckISZfCeyWUb65zxNlMk192YGifg4HNi70mA0vNGzrmnq7OIMlnCuUa6RTP5VUOq4QNYfc2MotF5ZkS0MArwxKqHG64jouCQ5NbiIsv0KduFHzEHA5gdjq9ZSTOZC6Ya9TWnRKfMMvh8UcJz1wUlgoD8OQ5vc88Cd2mpkSW8n2AaTuXzs6rJ0a0rVgVbbgf1l6Y5sWy0AnUdQU5LdFgwSAoNw2n0L386KJ5CYrpwaXlN3YhJThUFXonLNcHFKDWKk6jU2G8zQSXiCGjIwTSSxwiAj8lRZI5@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "d20517d2-7260-4ec1-b0c0-4edecea269a1",
@@ -464,7 +464,7 @@ export async function up(db) {
         participant2Email:
           "hURdvTKWdDHLEIu3aoVKpFFxQjkaHTTaNuHF2M2cHnttCi2UknQgB2R5yzok7mbchgDrdJnRXU0IEjH7fPIDiM71nAjksNmrjoHNTDokHU8XSQBKltiaff0tWULiucx456H7x5jU8DZAeE6fkh7KXCxNpCUSisNvcHZRUXmuCrotacouIr4GNUezJG09mnjrRYcITiNCdLQwvvDlLJAjHNJWMjesJHqhbKUs9cEp8q4xbPDijviqavOqf33ZvPpYZVNAVCDbeaGNYtLsyrnSkysYo7yVjxRze1iXKaJ7QWRQGPubSC0o@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "1d993b6f-38c4-4223-9a97-80ee78a6c941",
@@ -472,7 +472,7 @@ export async function up(db) {
         participant2Email:
           "iKALTR5YtVJyeVxOK6boNOBgMvTEeio2qrcjNklQjpbt6mOOEI7LguF7N8mmNJov4JTfeNNtDmfnoOCtOmpyegGF6rxfQvQP6PkHa278Itfyq2YSz8iaQcbVpHToyiwYhXB0qOsQ9XVjRC95bQBKXXO1JEq4meFKYUNp6lRTqWqkFtBT8f2LTpFNvsFLQJuiOZ007Xrc4PyFdqNSVmPxsAJyOJtlyyNFTaYby6T9nhFujjmjJQ7zitHqpmNwUTSk8s3v5Jbczas4MnySQ8FP54unlf03VO9sQ9k65Jg1JQuXmENcuoWO@example.com",
         creationDate: new Date("2023-12-12"),
-        isActive: true,
+        isActive: false,
       },
       {
         roomId: "2a4f1a2a-1202-4f62-a019-da190c39a97f",
