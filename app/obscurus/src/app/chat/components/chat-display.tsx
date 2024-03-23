@@ -167,6 +167,7 @@ export default function ChatDisplay({
             >
               <ArrowUpCircle></ArrowUpCircle>
             </Button>
+            <div className="flex-grow" />
             <p className="text-xs text-muted-foreground text-center align-bottom">
               {chatMessage.length}/160
             </p>
