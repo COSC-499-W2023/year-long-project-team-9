@@ -103,9 +103,16 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getNotificationsViaEmail.handler",
         },
       },
-      "POST /notificationRead": {
+      "POST /readNotification": {
         function: {
+
           handler: "stack/lambdas/getNotificationsViaEmail.handler",
+
+          handler: "./stack/lambdas/readNotification.handler",
+          timeout: 20,
+          permissions: [inputBucket, rds],
+          bind: [inputBucket, rds],
+
         },
       },
       "POST /deleteNotification": {
