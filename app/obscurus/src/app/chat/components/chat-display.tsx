@@ -26,6 +26,8 @@ interface ChatDisplayProps {
   createMessage: Function;
   sendMessage: Function;
   createMessageNotification: Function;
+  chatScrollBoolean: boolean;
+  setChatScrollBoolean: Function;
 }
 
 export default function ChatDisplay({
@@ -39,6 +41,8 @@ export default function ChatDisplay({
   createMessage,
   sendMessage,
   createMessageNotification,
+  chatScrollBoolean,
+  setChatScrollBoolean,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -75,6 +79,7 @@ export default function ChatDisplay({
   };
   const handleClick = () => {
     if (selected) {
+      setChatScrollBoolean(true);
       const newMessageUUID = uuidv7();
       const newMessage: Messages = {
         messageId: newMessageUUID,
@@ -137,7 +142,13 @@ export default function ChatDisplay({
           </div>
         }
       >
-        <ChatLog userEmail={userEmail} room={selected} messages={messages} />
+        <ChatLog
+          userEmail={userEmail}
+          room={selected}
+          messages={messages}
+          chatScrollBoolean={chatScrollBoolean}
+          setChatScrollBoolean={setChatScrollBoolean}
+        />
         <div className="flex-grow" />
         <div className="flex mr-3 ml-3 mb-4 mt-2 gap-2">
           <Textarea

@@ -2,14 +2,25 @@
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { format, isSameDay } from "date-fns";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useEffect, useRef } from "react";
+import { useQueryState } from "nuqs";
 
 interface ChatLogProps {
   userEmail: string;
   room: Rooms;
   messages: Messages[];
+  chatScrollBoolean: boolean;
+  setChatScrollBoolean: Function;
 }
 
-export default function ChatLog({ userEmail, room, messages }: ChatLogProps) {
+export default function ChatLog({
+  userEmail,
+  room,
+  messages,
+  chatScrollBoolean,
+  setChatScrollBoolean,
+}: ChatLogProps) {
+  const [roomId, setRoomId] = useQueryState("roomId");
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
   };
@@ -23,8 +34,17 @@ export default function ChatLog({ userEmail, room, messages }: ChatLogProps) {
     return isSameDay(currentDate, previousDate);
   };
 
+  const chatLogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatScrollBoolean) {
+      chatLogRef.current?.lastElementChild?.scrollIntoView();
+      setChatScrollBoolean(false);
+    }
+  });
+
   return room ? (
-    <div id="chatScroll" className="mt-2 overflow-y-auto">
+    <div id="chatScroll" ref={chatLogRef} className="mt-2 overflow-y-auto">
       {roomMessages.map((message, index) => (
         <div key={message.messageId}>
           {!isSameDayAsPrevious(new Date(message.creationDate), index) && (

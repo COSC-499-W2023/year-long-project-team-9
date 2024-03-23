@@ -38,6 +38,7 @@ export default function ChatWrapper({
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
+  const [chatScrollBoolean, setChatScrollBoolean] = useState<boolean>(false);
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
@@ -171,6 +172,7 @@ export default function ChatWrapper({
             getLatestMessage={getLatestMessage}
             sortRooms={sortRooms}
             setIsReadTrue={setIsReadTrue}
+            setChatScrollBoolean={setChatScrollBoolean}
           />
         }
         secondPanel={
@@ -185,6 +187,8 @@ export default function ChatWrapper({
             createMessage={createMessage}
             sendMessage={sendMessage}
             createMessageNotification={createMessageNotification}
+            chatScrollBoolean={chatScrollBoolean}
+            setChatScrollBoolean={setChatScrollBoolean}
           />
         }
       />

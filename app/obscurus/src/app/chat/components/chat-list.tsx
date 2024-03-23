@@ -20,6 +20,7 @@ interface ChatListProps {
   sortRooms: Function;
   setIsReadTrue: Function;
   isCollapsed?: boolean;
+  setChatScrollBoolean: Function;
 }
 
 export default function ChatList({
@@ -33,11 +34,13 @@ export default function ChatList({
   getLatestMessage,
   sortRooms,
   setIsReadTrue,
+  setChatScrollBoolean,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
   const handleClick = (item: Rooms) => {
+    setChatScrollBoolean(true);
     setRoomId(item.roomId);
     setIsReadTrue(item.roomId, getOtherParticipantEmail(item));
     messages.forEach((message) => {
