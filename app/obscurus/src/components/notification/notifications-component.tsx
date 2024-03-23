@@ -1,5 +1,6 @@
 import {
   Bell,
+  BellPlus,
   FileText,
   Inbox,
   MessageCircle,
@@ -39,76 +40,91 @@ export default function NotificationsComponent({
 }) {
   const [notificationsArray, setNotificationsArray] = useState(notifications);
 
+  let allRead: boolean = true;
+  for (let i = 0; i < notificationsArray.length; i++) {
+    if (notificationsArray[i].isRead === false) {
+      allRead = false;
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
           <Button variant="ghost" size="icon">
-            <Bell size={25} />
+            {allRead === false ? <BellPlus size={25} /> : <Bell size={25} />}
           </Button>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto">
         <div className="font-semibold text-base my-1">Notifications</div>
         {notificationsArray.length <= 0 ? (
-          <div>nothing</div>
+          <div className="h-full flex flex-col space-y-4 justify-center items-center">
+            <Bell size={36} color="#111827" />
+            <p className="font-semibold">No Notifications</p>
+          </div>
         ) : (
           notificationsArray.map((value, index) => (
-            <div className="flex flex-col-2" id={`index`}>
-              <Link
-                onClick={() => {
-                  readNotification(value.notificationId);
-                }}
-                href={
-                  value.type === "CHAT"
-                    ? `/chat?roomId=${value.referenceId}`
-                    : value.type === "SUBMIT"
-                    ? `/submit?submissionId=${value.referenceId}`
-                    : value.type === "REQUEST"
-                    ? `/request?requestId=${value.referenceId}`
-                    : `/profile`
-                }
-                className="flex flex-col-3 items-start w-full gap-2 p-3 text-justify text-sm"
-              >
-                <div className="flex items-center">
-                  {value.type === "CHAT" ? (
-                    <MessageCircle size={26} className="mt-1" />
+            <div className="flex flex-col-2 gap-2" key={`${index}`}>
+              <div className="w-full">
+                <Button
+                  onClick={() => {
+                    readNotification(value.notificationId).then(
+                      () =>
+                        (window.location.href =
+                          value.type === "REQUEST"
+                            ? `/request?requestId=${value.referenceId}`
+                            : value.type === "SUBMIT"
+                            ? `/submit?submissionId=${value.referenceId}`
+                            : value.type === "CHAT"
+                            ? `/chat?roomId=${value.referenceId}`
+                            : `/profile`)
+                    );
+                  }}
+                  variant={"ghost"}
+                  className="flex flex-col-3 w-full mb-1"
+                >
+                  {value.type === "REQUEST" ? (
+                    <span className="mr-auto">
+                      <Inbox size={26} className="mt-1" />
+                    </span>
                   ) : value.type === "SUBMIT" ? (
-                    <UploadCloudIcon size={26} className="mt-1" />
-                  ) : value.type === "REQUEST" ? (
-                    <Inbox size={26} className="mt-1" />
+                    <span className="mr-auto">
+                      <UploadCloudIcon size={26} className="mt-1" />
+                    </span>
+                  ) : value.type === "CHAT" ? (
+                    <span className="mr-auto">
+                      <MessageCircle size={26} className="mt-1" />
+                    </span>
                   ) : (
-                    <User size={26} className="mt-1" />
+                    <span className="mr-auto">
+                      <User size={26} className="mt-1" />
+                    </span>
                   )}
-                </div>
-                <div>
-                  <div className="flex items-center">
-                    <div>
-                      <div className="break-all text-xs line-clamp-2">
-                        {value.content}
-                      </div>
-                    </div>
-                    <div className="content-normal ml-2">
-                      {value.isRead === false ? (
-                        <span className="flex h-2 w-2 rounded-full bg-blue-600"></span>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-              <Button
-                className="m-1 mt-3"
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  deleteNotifications(value.notificationId);
-                  let newNotificationsArray = [...notificationsArray];
-                  newNotificationsArray.splice(index, 1);
-                  setNotificationsArray(newNotificationsArray);
-                }}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+
+                  <p className="text-justify w-full ml-2 mr-5 text-xs line-clamp-2">
+                    {" "}
+                    {value.content}
+                  </p>
+
+                  {value.isRead === false ? (
+                    <span className="flex p-1 rounded-full bg-blue-600"></span>
+                  ) : null}
+                </Button>
+              </div>
+              <div className="ml-auto">
+                <Button
+                  variant={"outline"}
+                  onClick={() => {
+                    deleteNotifications(value.notificationId);
+                    let newNotificationsArray = [...notificationsArray];
+                    newNotificationsArray.splice(index, 1);
+                    setNotificationsArray(newNotificationsArray);
+                  }}
+                >
+                  <Trash2 className="h-4 w-4"></Trash2>
+                </Button>
+              </div>
             </div>
           ))
         )}
@@ -116,3 +132,17 @@ export default function NotificationsComponent({
     </DropdownMenu>
   );
 }
+
+// <Button
+//                 className="ml-atuo"
+//                 type="button"
+//                 variant="outline"
+//                 onClick={() => {
+//                   deleteNotifications(value.notificationId);
+//                   let newNotificationsArray = [...notificationsArray];
+//                   newNotificationsArray.splice(index, 1);
+//                   // setNotificationsArray(newNotificationsArray);
+//                 }}
+//               >
+//                 <Trash2 className="h-4 w-4" />
+//               </Button>
