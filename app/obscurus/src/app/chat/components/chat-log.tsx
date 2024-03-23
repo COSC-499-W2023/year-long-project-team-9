@@ -1,15 +1,5 @@
 "use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { ArrowUpCircle } from "lucide-react";
-import {
-  Rooms,
-  Notifications,
-  Messages,
-} from "stack/database/src/sql.generated";
-import { uuidv7 } from "uuidv7";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { format, isSameDay } from "date-fns";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
