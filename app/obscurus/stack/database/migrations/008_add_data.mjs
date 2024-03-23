@@ -556,7 +556,7 @@ export async function up(db) {
         roomId: "8c0ea510-5870-41a0-a01a-dbf5cf2b7b3b",
         senderEmail: "ansivana@gmail.com",
         messageId: "9fa8f751-d3ba-4701-87b7-cb0ec9094ad3",
-        creationDate: new Date("2024.02.3 00:44:01"),
+        creationDate: new Date("2024.06.3 00:44:01"),
         messageContent: "fine",
         isRead: true,
       },
