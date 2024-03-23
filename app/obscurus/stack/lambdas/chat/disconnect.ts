@@ -1,8 +1,8 @@
-import { APIGatewayProxyHandler } from "aws-lambda";
+import { APIGatewayProxyHandler, APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { Connections } from "@obscurus/database/src/connections";
 import { Connections as ConnectionsType } from "@obscurus/database/src/sql.generated";
 
-export const main: APIGatewayProxyHandler = async (event) => {
+export const main: APIGatewayProxyHandlerV2 = async (event:any) => {
   if (event.requestContext != undefined) {
     if (event.requestContext.connectionId != undefined) {
       const connectionId: string = event.requestContext.connectionId;

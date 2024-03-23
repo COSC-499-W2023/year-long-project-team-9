@@ -140,6 +140,7 @@ export default function ChatWrapper({
     return newMessages.length > 0;
   };
 
+
   return (
     <>
       <Wrapper

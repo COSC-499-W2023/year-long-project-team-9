@@ -1,11 +1,12 @@
 "use client";
-import { ComponentProps, useEffect } from "react";
+import { ComponentProps, Suspense, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  FileText,
   Filter,
   List,
   ListVideo,
@@ -43,11 +44,12 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { useRequest } from "@/app/hooks/use-request";
 import { Separator } from "@/components/ui/separator";
+import { useRequests } from "@/app/hooks/use-requests";
+import { useSubmissions } from "@/app/hooks/use-submissions";
 
 interface RequestsListProps {
-  requests: Requests[];
-  submissions: Submissions[];
-  isCollapsed?: boolean;
+  requests?: Requests[];
+  submissions?: Submissions[];
 }
 
 export default function SubmitList({
@@ -64,26 +66,11 @@ export default function SubmitList({
   const [tab, setTab] = useQueryState("tab");
 
   const getAssociatedSubmission = (requestId: string | null) => {
-    if (requestId) {
+    if (requestId && submissions) {
       return submissions.find((item) => requestId === item.requestId);
     }
     return null;
   };
-
-  useEffect(() => {
-    // if (!tab) {
-    //   setTab("all");
-    // }
-    // if (!submissionId) {
-    //   const submission = getAssociatedSubmission(
-    //     requests && requests[0].requestId
-    //   );
-    //   console.log("Assoc. submission", submission);
-    //   if (submission) {
-    //     setSubmissionId(submission?.submissionId);
-    //   }
-    // }
-  });
 
   const handleClick = (item: Requests) => {
     if (!upload) {
@@ -185,24 +172,29 @@ export default function SubmitList({
                     )}
                   >
                     {" "}
-                    {formatDistanceToNow(new Date(item.creationDate), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceToNow(
+                      new Date(item.creationDate || "2024/03/21"),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
                   </div>
                 </div>
                 <div className="text-xs font-medium">
-                  {(item.requesterEmail.length > 30 &&
-                    item.requesterEmail.substring(0, 30) + "...") ||
-                    item.requesterEmail}
+                  <div className="text-xs font-medium">
+                    {(item.requesterEmail.length > 30 &&
+                      item.requesterEmail.substring(0, 30) + "...") ||
+                      item.requesterEmail}
+                  </div>
                 </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.description?.substring(0, 300)}
+                {item.description}
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel("due-date")}>
                   Due{" "}
-                  {formatDistanceToNow(new Date(item.dueDate), {
+                  {formatDistanceToNow(new Date(item.dueDate || "2024/03/21"), {
                     addSuffix: true,
                   })}
                 </Badge>
@@ -223,7 +215,12 @@ export default function SubmitList({
     );
   });
 
-  return requests && submissions ? (
+  return !requests ? (
+    <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+      <List className="h-20 w-20" />
+      <p className=" text-lg">No requests.</p>
+    </div>
+  ) : (
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
@@ -252,7 +249,7 @@ export default function SubmitList({
               <div className=" pb-5">
                 <div className="mt-3 h-[600px] overflow-y-scroll ">
                   <ResponsiveContainer width="100%" height="100%">
-                    <DataTable columns={columns} data={submissions} />
+                    <DataTable columns={columns} data={submissions || []} />
                   </ResponsiveContainer>
                 </div>
               </div>
@@ -307,12 +304,12 @@ export default function SubmitList({
         </Tooltip>
       </div>
       <Separator />
-      <div className="h-full overflow-y-scroll">{tabsContent}</div>
+      <Suspense fallback={<List className="h-20 w-20" />}>
+        <div className="h-full overflow-y-scroll">
+          {tabsContent || <div>No requests.</div>}
+        </div>
+      </Suspense>
     </Tabs>
-  ) : (
-    <div className="h-full flex flex-col justify-center items-center">
-      Failed to load data :({" "}
-    </div>
   );
 }
 

@@ -3,23 +3,24 @@ import {
   StackContext,
   NextjsSite,
   Bucket,
-  Function,
   RDS,
   Api,
   Job,
-  Service,
   Cognito,
   Config,
-  Queue,
-  Table,
   WebSocketApi,
 } from "sst/constructs";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { HostedZone } from "aws-cdk-lib/aws-route53";
+import * as cdk from "aws-cdk-lib";
 
 export default function SiteStack({ stack }: StackContext) {
-  const inputBucket = new Bucket(stack, "inputBucket");
-  const outputBucket = new Bucket(stack, "outputBucket");
+  const chumBucket = new Bucket(stack, "ChumBucket", {
+    cdk: {
+      bucket: {
+        autoDeleteObjects: true,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    },
+  });
 
   const rekognitionPolicyStatement = new PolicyStatement({
     actions: ["rekognition:*", "rekognition:DetectFaces"],
@@ -27,30 +28,11 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
-  // add RDS construct
   const rds = new RDS(stack, "Database", {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
-    migrations: "./stack/database/migrations/",
+    migrations: "stack/database/migrations/",
   });
-
-  // const steveJobs = new Job(stack, "SteveJobs", {
-  //   runtime: "container",
-  //   handler: "./stack/process-video",
-  //   container: {
-  //     cmd: ["python3", "/var/task/app.py"],
-  //   },
-  //   bind: [inputBucket, outputBucket],
-  //   environment: {
-  //     INPUT_BUCKET: inputBucket.bucketName,
-  //     OUTPUT_BUCKET: outputBucket.bucketName,
-  //     INPUT_NAME: "test3.mp4",
-  //     OUTPUT_NAME: "processed.mp4",
-  //   },
-  //   memorySize: "15 GB",
-  //   timeout: "8 hours",
-  //   permissions: [rekognitionPolicyStatement],
-  // });
 
   const sesPolicyStatement = new PolicyStatement({
     actions: ["ses:SendEmail", "ses:SendRawEmail", "ses:SendTemplatedEmail"],
@@ -58,233 +40,151 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
-  //Create secret keys
   const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
     stack,
     "USER_POOL_WEB_CLIENT_ID_KEY"
   );
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
+
   const api = new Api(stack, "Api", {
+    defaults: {
+      function: {
+        timeout: 20,
+        permissions: [rds, chumBucket],
+        bind: [rds, chumBucket],
+        environment: { DB_NAME: rds.clusterArn },
+      },
+    },
     routes: {
-      // "GET /start-machine": {
-      //   function: {
-      //     handler: "./stack/lambdas/startMachine.handler",
-      //     environment: {
-      //       STATE_MACHINE: stateMachine.stateMachineArn,
-      //     },
-      //   },
-      // },
       "GET /getUsers": {
         function: {
-          handler: "./stack/lambdas/listUsers.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/listUsers.handler",
         },
       },
       "GET /getRequests": {
         function: {
-          handler: "./stack/lambdas/listRequests.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/listRequests.handler",
         },
       },
       "POST /processVideo": {
         function: {
-          handler: "./stack/lambdas/process.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/process.handler",
         },
       },
       "POST /createRequest": {
         function: {
-          handler: "./stack/lambdas/createRequest.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds, sesPolicyStatement],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/createRequest.handler",
+          permissions: [sesPolicyStatement],
         },
       },
       "POST /createUser": {
         function: {
-          handler: "./stack/lambdas/createUser.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/createUser.handler",
         },
       },
       "GET /getSubmissions": {
         function: {
-          handler: "./stack/lambdas/listSubmissions.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/listSubmissions.handler",
         },
       },
       "POST /getNotificationsViaEmail": {
         function: {
-          handler: "./stack/lambdas/getNotificationsViaEmail.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/getNotificationsViaEmail.handler",
         },
       },
       "POST /notificationRead": {
         function: {
-          handler: "./stack/lambdas/notificationRead.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/getNotificationsViaEmail.handler",
         },
       },
       "POST /deleteNotification": {
         function: {
-          handler: "./stack/lambdas/deleteNotification.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/getNotificationsViaEmail.handler",
         },
       },
       "POST /getRequestsViaEmail": {
         function: {
-          handler: "./stack/lambdas/getRequestsViaEmail.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/getRequestsViaEmail.handler",
         },
       },
       "POST /getSubmissionsViaEmail": {
         function: {
-          handler: "./stack/lambdas/getSubmissionsViaEmail.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/getSubmissionsViaEmail.handler",
         },
       },
       "POST /getUserViaEmail": {
         function: {
-          handler: "./stack/lambdas/getUserViaEmail.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/getUserViaEmail.handler",
         },
       },
       "POST /updateStatus": {
         function: {
-          handler: "./stack/lambdas/updateStatus.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/updateStatus.handler",
         },
       },
-      "GET /getStatus": {
+      "POST /getStatus": {
         function: {
-          handler: "./stack/lambdas/getStatus.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/getStatus.handler",
         },
       },
       "POST /getRequest": {
         function: {
-          handler: "./stack/lambdas/getRequest.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/getRequest.handler",
         },
       },
       "GET /getRoomsViaEmail": {
         function: {
-          handler: "./stack/lambdas/getRoomsViaEmail.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/getRoomsViaEmail.handler",
         },
       },
       "GET /getMessages": {
         function: {
-          handler: "./stack/lambdas/listMessages.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/listMessages.handler",
         },
       },
       "POST /createMessage": {
         function: {
-          handler: "./stack/lambdas/createMessage.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/createMessage.handler",
         },
       },
       "POST /setIsReadTrue": {
         function: {
-          handler: "./stack/lambdas/setIsReadTrue.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/setIsReadTrue.handler",
         },
       },
       "GET /listNotifications": {
         function: {
-          handler: "./stack/lambdas/listNotifications.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/listNotifications.handler",
         },
       },
       "POST /createNotification": {
         function: {
-          handler: "./stack/lambdas/createNotification.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/createNotification.handler",
         },
       },
       "POST /updateNotificationDate": {
         function: {
-          handler: "./stack/lambdas/updateNotificationDate.handler",
-          timeout: 20,
-          permissions: [inputBucket, rds],
-          bind: [inputBucket, rds],
+          handler: "stack/lambdas/updateNotificationDate.handler",
         },
       },
       "POST /getUserDataByEmail": {
         function: {
-          handler: "./stack/lambdas/getUserDataByEmail.handler",
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
+          handler: "stack/lambdas/getUserDataByEmail.handler",
         },
       },
       "GET /getUserNames": {
         function: {
-          handler: "./stack/lambdas/getUserNames.handler",
-
-          timeout: 20,
-          permissions: [rds],
-          bind: [rds],
-          environment: { DB_NAME: rds.clusterArn },
+          handler: "stack/lambdas/getUserNames.handler",
         },
       },
     },
   });
 
   // const processVideo = new Service(stack, "ProcessVideo", {
-  //   path: "./stack/process-video",
+  //   path: "stack/process-video",
   //   port: 8080,
-  //   bind: [inputBucket, outputBucket, api],
+  //   bind: [chumBucket, chumBucket, api],
   //   cdk: {
   //     fargateService: {
   //       circuitBreaker: { rollback: true },
@@ -292,8 +192,8 @@ export default function SiteStack({ stack }: StackContext) {
 
   //   },
   //   environment: {
-  //     INPUT_BUCKET: inputBucket.bucketName,
-  //     OUTPUT_BUCKET: outputBucket.bucketName,
+  //     INPUT_BUCKET: chumBucket.bucketName,
+  //     OUTPUT_BUCKET: chumBucket.bucketName,
   //     INPUT_NAME: "test3.mp4",
   //     OUTPUT_NAME: "processed.mp4",
   //     API_URL: api.url,
@@ -305,14 +205,13 @@ export default function SiteStack({ stack }: StackContext) {
 
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
-    handler: "./stack/process-video",
+    handler: "stack/process-video",
     container: {
       cmd: ["python3", "/var/task/app.py"],
     },
-    bind: [inputBucket, outputBucket],
+    bind: [chumBucket],
     environment: {
-      INPUT_BUCKET: inputBucket.bucketName,
-      OUTPUT_BUCKET: outputBucket.bucketName,
+      BUCKET_NAME: chumBucket.bucketName,
       API_URL: api.url,
     },
     memorySize: "15 GB",
@@ -335,12 +234,11 @@ export default function SiteStack({ stack }: StackContext) {
     //   },
     // },
     // triggers: {
-    //   preAuthentication: "./stack/database/src/preAuthentication.main",
-    //   postAuthentication: "./stack/database/src/postAuthentication.main",
+    //   preAuthentication: "stack/database/src/preAuthentication.main",
+    //   postAuthentication: "stack/database/src/postAuthentication.main",
     // },
   });
 
-  // Allow authenticated users invoke API
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
   const wsApi = new WebSocketApi(stack, "WSApi", {
@@ -350,39 +248,29 @@ export default function SiteStack({ stack }: StackContext) {
       },
     },
     routes: {
-      $connect: "./stack/lambdas/chat/connect.main",
-      $disconnect: "./stack/lambdas/chat/disconnect.main",
-      sendmessage: "./stack/lambdas/chat/sendMessage.main",
+      $connect: "stack/lambdas/chat/connect.main",
+      $disconnect: "stack/lambdas/chat/disconnect.main",
+      sendmessage: "stack/lambdas/chat/sendMessage.main",
+      updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
     },
   });
 
   api.bind([wsApi]);
 
+
   const site = new NextjsSite(stack, "site", {
     bind: [
-      inputBucket,
-      outputBucket,
+      chumBucket,
+      chumBucket,
       rds,
       api,
-      wsApi,
       steveJobs,
+      wsApi,
       USER_POOL_ID_KEY,
       USER_POOL_WEB_CLIENT_ID_KEY,
     ],
-    permissions: [rekognitionPolicyStatement],
-    // environment: {
-    //   NEXT_PUBLIC_SERVICE_URL: processVideo.url || ""
-    // }
-    // customDomain: {
-    //   domainName: "obscurus.me",
-    //   domainAlias: "www.obscurus.me",
-    //   cdk: {
-    //     hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
-    //       hostedZoneId: "Z09403151W7ZFKPC0YJEL",
-    //       zoneName: "obscurus.me",
-    //     }),
-    //   },
-    // },
+    permissions: [rekognitionPolicyStatement, wsApi],
+    environment: {NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url},
   });
 
   stack.addOutputs({
