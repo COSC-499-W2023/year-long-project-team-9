@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
@@ -19,6 +18,7 @@ interface ChatListProps {
   checkUnreadMessages: Function;
   getLatestMessage: Function;
   sortRooms: Function;
+  setIsReadTrue: Function;
   isCollapsed?: boolean;
 }
 
@@ -32,16 +32,19 @@ export default function ChatList({
   checkUnreadMessages,
   getLatestMessage,
   sortRooms,
+  setIsReadTrue,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
 
   const handleClick = (item: Rooms) => {
     setRoomId(item.roomId);
+    setIsReadTrue(item.roomId, getOtherParticipantEmail(item));
     messages.forEach((message) => {
       if (
         message.roomId === item.roomId &&
-        message.senderEmail === getOtherParticipantEmail(item)
+        message.senderEmail === getOtherParticipantEmail(item) &&
+        message.isRead === false
       ) {
         message.isRead = true;
       }

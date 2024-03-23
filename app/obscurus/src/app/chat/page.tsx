@@ -8,6 +8,7 @@ import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
+import setIsReadTrue from "../functions/setIsReadTrue";
 
 type UserNames = {
   email: string;
@@ -27,7 +28,6 @@ async function Chat() {
   const userEmail = await getEmail();
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
-  console.log(userNames);
   const messages: Messages[] = await getMessages();
 
   const getLatestMessage = (item: Rooms): Messages => {
@@ -73,6 +73,7 @@ async function Chat() {
       messages={messages}
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
+      setIsReadTrue={setIsReadTrue}
     />
   );
 }

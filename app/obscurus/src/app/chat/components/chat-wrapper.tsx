@@ -21,6 +21,7 @@ interface ChatWrapperProps {
   messages: Messages[];
   createMessage: Function;
   createMessageNotification: Function;
+  setIsReadTrue: Function;
 }
 
 export default function ChatWrapper({
@@ -33,6 +34,7 @@ export default function ChatWrapper({
   messages,
   createMessage,
   createMessageNotification,
+  setIsReadTrue,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
@@ -168,6 +170,7 @@ export default function ChatWrapper({
             checkUnreadMessages={checkUnreadMessages}
             getLatestMessage={getLatestMessage}
             sortRooms={sortRooms}
+            setIsReadTrue={setIsReadTrue}
           />
         }
         secondPanel={
