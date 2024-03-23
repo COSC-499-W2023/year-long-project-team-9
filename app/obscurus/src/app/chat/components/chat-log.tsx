@@ -17,79 +17,13 @@ interface ChatLogProps {
   userEmail: string;
   room: Rooms;
   messages: Messages[];
-  userName: string;
-  otherUserEmail: string;
-  updateChatMessages: Function;
-  createMessage: Function;
-  sendMessage: Function;
-  createMessageNotification: Function;
 }
 
-export default function ChatLog({
-  userEmail,
-  room,
-  messages,
-  userName,
-  otherUserEmail,
-  updateChatMessages,
-  createMessage,
-  sendMessage,
-  createMessageNotification,
-}: ChatLogProps) {
+export default function ChatLog({ userEmail, room, messages }: ChatLogProps) {
   const getRoomMessages = () => {
     return messages.filter((message) => message.roomId === room.roomId);
   };
   const roomMessages = getRoomMessages();
-  const [chatMessage, setChatMessage] = useState("");
-  const handleChatMessageChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setChatMessage(value);
-  };
-  const addNewChatMessage = (newChatMessage: Messages) => {
-    const newChatMessages = [...messages, newChatMessage];
-    updateChatMessages(newChatMessages);
-  };
-
-  const handleClick = () => {
-    const newMessageUUID = uuidv7();
-    const newMessage: Messages = {
-      messageId: newMessageUUID,
-      roomId: room.roomId,
-      senderEmail: userEmail,
-      creationDate: new Date(),
-      messageContent: chatMessage,
-      isRead: false,
-    };
-    const newNotificationUUID = uuidv7();
-    const newNotification: Notifications = {
-      notificationId: newNotificationUUID,
-      userEmail: otherUserEmail,
-      type: "CHAT",
-      referenceId: room.roomId,
-      creationDate: new Date(),
-      content: `New message from ${userName}`,
-      isRead: false,
-      isTrashed: false,
-    };
-    setChatMessage("");
-    addNewChatMessage(newMessage);
-    // createMessage(newMessage);
-    sendMessage(JSON.stringify(newMessage));
-    createMessageNotification(newNotification);
-  };
-
-  const handleTextareaKeyDown = (
-    e: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent default behavior (inserting new line)
-      if (chatMessage.length > 0) {
-        handleClick();
-      }
-    }
-  };
 
   const isSameDayAsPrevious = (currentDate: Date, index: number) => {
     if (index === 0) {

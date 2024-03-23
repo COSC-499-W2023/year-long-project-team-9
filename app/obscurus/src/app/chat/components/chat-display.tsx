@@ -1,14 +1,19 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Rooms, Messages } from "stack/database/src/sql.generated";
+import {
+  Rooms,
+  Notifications,
+  Messages,
+} from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ArrowUpCircle } from "lucide-react";
 import ChatLog from "../../chat/components/chat-log";
 import { MessagesSquare } from "lucide-react";
+import { uuidv7 } from "uuidv7";
 
 interface ChatDisplayProps {
   userEmail: string;
@@ -57,6 +62,57 @@ export default function ChatDisplay({
   const otherUserName = getOtherParticipantName(otherUserEmail);
   const otherUserInitials = getOtherParticipantInitials(otherUserEmail);
 
+  const [chatMessage, setChatMessage] = useState("");
+  const handleChatMessageChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setChatMessage(value);
+  };
+  const addNewChatMessage = (newChatMessage: Messages) => {
+    const newChatMessages = [...messages, newChatMessage];
+    updateChatMessages(newChatMessages);
+  };
+  const handleClick = () => {
+    if (selected) {
+      const newMessageUUID = uuidv7();
+      const newMessage: Messages = {
+        messageId: newMessageUUID,
+        roomId: selected.roomId,
+        senderEmail: userEmail,
+        creationDate: new Date(),
+        messageContent: chatMessage,
+        isRead: false,
+      };
+      const newNotificationUUID = uuidv7();
+      const newNotification: Notifications = {
+        notificationId: newNotificationUUID,
+        userEmail: otherUserEmail,
+        type: "CHAT",
+        referenceId: selected.roomId,
+        creationDate: new Date(),
+        content: `New message from ${userName}`,
+        isRead: false,
+        isTrashed: false,
+      };
+      setChatMessage("");
+      addNewChatMessage(newMessage);
+      createMessage(newMessage);
+      sendMessage(JSON.stringify(newMessage));
+      createMessageNotification(newNotification);
+    }
+  };
+  const handleTextareaKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevent default behavior (inserting new line)
+      if (chatMessage.length > 0) {
+        handleClick();
+      }
+    }
+  };
+
   return selected ? (
     <div className="flex flex-col h-full">
       <div className="flex flex-row items-center justify-left p-4">
@@ -81,37 +137,27 @@ export default function ChatDisplay({
           </div>
         }
       >
-        <ChatLog
-          userEmail={userEmail}
-          room={selected}
-          messages={messages}
-          userName={userName}
-          otherUserEmail={otherUserEmail}
-          updateChatMessages={updateChatMessages}
-          createMessage={createMessage}
-          sendMessage={sendMessage}
-          createMessageNotification={createMessageNotification}
-        />
+        <ChatLog userEmail={userEmail} room={selected} messages={messages} />
         <div className="flex-grow" />
         <div className="flex mr-3 ml-3 mb-4 mt-2 gap-2">
           <Textarea
             className="items-end resize-none "
             placeholder="Send Message"
             maxLength={160}
-            // value={chatMessage}
-            // onChange={(e) => handleChatMessageChange(e)}
-            // onKeyDown={(e) => handleTextareaKeyDown(e)}
+            value={chatMessage}
+            onChange={(e) => handleChatMessageChange(e)}
+            onKeyDown={(e) => handleTextareaKeyDown(e)}
           ></Textarea>
           <div className="flex flex-col">
             <Button
               variant="ghost"
-              // onClick={() => handleClick()}
-              // disabled={chatMessage.length < 1}
+              onClick={() => handleClick()}
+              disabled={chatMessage.length < 1}
             >
               <ArrowUpCircle></ArrowUpCircle>
             </Button>
             <p className="text-xs text-muted-foreground text-center align-bottom">
-              {/* {chatMessage.length}/160 */}
+              {chatMessage.length}/160
             </p>
           </div>
         </div>
