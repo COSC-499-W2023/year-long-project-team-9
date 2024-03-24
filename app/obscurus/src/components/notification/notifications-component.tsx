@@ -38,7 +38,8 @@ export default function NotificationsComponent({
   deleteNotifications: Function;
   notifications: Notifications[];
 }) {
-  const [notificationsArray, setNotificationsArray] = useState(notifications);
+  const [notificationsArray, setNotificationsArray] =
+    useState<Notifications[]>(notifications);
 
   let allRead: boolean = true;
   for (let i = 0; i < notificationsArray.length; i++) {
@@ -58,7 +59,7 @@ export default function NotificationsComponent({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto">
         <div className="font-semibold text-base my-1">Notifications </div>
-        {!notificationsArray ? (
+        {notificationsArray.length <= 0 ? (
           <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
             <Bell className="h-17 w-17" />
             <p>No notifications</p>

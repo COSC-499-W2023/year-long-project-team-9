@@ -710,7 +710,7 @@ export async function up(db) {
         type: "CHAT",
         referenceId: "01b3f0b0-2c27-4ad7-86e5-ce04bcd9cd48",
         creationDate: new Date("2024.02.3 03:44:12"),
-        content: "You have a new message from Baz Sivakua.",
+        content: "You have a new message from Soren Stenback.",
         isRead: false,
         isTrashed: false,
       },
