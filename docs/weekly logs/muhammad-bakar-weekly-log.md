@@ -294,7 +294,7 @@ HashMap:
 
 ### March 18 2024 - March 24 2024
 
-- I worked on Milestone #6.
+- I worked on Milestone #6, helped with chat and worked on notifications.
 
 ### Picture of Project Board Week 11
 
