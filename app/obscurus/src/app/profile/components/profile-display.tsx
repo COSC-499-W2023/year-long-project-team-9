@@ -39,7 +39,6 @@ export default function ProfileDisplay({ form }: { form: any }) {
           </div>
           <div className="text-muted-foreground mt-2 text-sm">Joined: January 15 2024</div>
         </div>
-
       </div>
     </>
   );

@@ -39,11 +39,11 @@ const profileFormSchema = z.object({
   profileImage: z
     .any()
     .refine((files) => {
-      return files?.[0]?.size <= 10000000;
+      return !files || files?.[0]?.size <= 10000000;
     })
     .refine(
-      (files) => acceptedImageFileTypes.includes(files?.[0]?.type),
-      "wrong type" //
+      (files) => !files || acceptedImageFileTypes.includes(files?.[0]?.type),
+      "wrong type" 
     ),
 });
 
@@ -66,7 +66,6 @@ export default function ProfileForm({
     <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
-      {/* <Separator /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <EmailInput

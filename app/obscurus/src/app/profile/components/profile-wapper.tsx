@@ -20,10 +20,10 @@ const profileFormSchema = z.object({
   profileImage: z
     .any()
     .refine((files) => {
-      return files?.[0]?.size <= 10000000;
+      return !files || files?.[0]?.size <= 10000000;
     })
     .refine(
-      (files) => acceptedImageFileTypes.includes(files?.[0]?.type),
+      (files) => !files || acceptedImageFileTypes.includes(files?.[0]?.type),
       "wrong type" 
     ),
 });
