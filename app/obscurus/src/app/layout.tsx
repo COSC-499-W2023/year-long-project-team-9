@@ -8,6 +8,9 @@ import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import { getEmail } from "./functions/authenticationMethods";
+import { Notifications } from "@obscurus/database/src/sql.generated";
+import readNotification from "./functions/readNotification";
+import deleteNotification from "./functions/deleteNotification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,7 @@ export const metadata: Metadata = {
   description: "Blur faces automatically",
 };
 
-export default aysnc function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,6 +28,15 @@ export default aysnc function RootLayout({
   // Muhammad
   // deleteNotifications;
   // notificationsRead;
+  const email = await getEmail();
+  const notificationCall: { notifications: Notifications[] } =
+    await getNotificationsViaEmail(email);
+  let notifications: Notifications[];
+  if (!notificationCall?.notifications) {
+    notifications = [];
+  } else {
+    notifications = notificationCall.notifications;
+  }
   //
 
   return (
@@ -37,9 +49,9 @@ export default aysnc function RootLayout({
         >
           <div className=" flex-col md:flex min-h-screen h-screen">
             <NavBar
-              notificationsRead={notificationsRead}
-              deleteNotifications={deleteNotifications}
-              getNotificationsViaEmail={getNotificationsViaEmail}
+              readNotification={readNotification}
+              deleteNotifications={deleteNotification}
+              notifications={notifications}
             />
             <Toaster />
             {children}

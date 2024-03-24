@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
+import NotificationsComponent from "@/components/notification/notifications-component";
+import { Notifications } from "@obscurus/database/src/sql.generated";
 
 export function Notifications({
   notificationsRead,
@@ -38,13 +40,13 @@ export function Notifications({
 }
 
 const NavBar = ({
-  notificationsRead,
+  readNotification,
   deleteNotifications,
-  getNotificationsViaEmail,
+  notifications,
 }: {
-  notificationsRead: Function;
+  readNotification: Function;
   deleteNotifications: Function;
-  getNotificationsViaEmail: Function;
+  notifications: Notifications[];
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -144,11 +146,11 @@ const NavBar = ({
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
       <div>
-        <Notifications
-          notificationsRead={notificationsRead}
+        <NotificationsComponent
+          readNotification={readNotification}
           deleteNotifications={deleteNotifications}
-          getNotificationsViaEmail={getNotificationsViaEmail}
-        />
+          notifications={notifications}
+        ></NotificationsComponent>
         <ThemeSwitcher />
       </div>
     </div>
