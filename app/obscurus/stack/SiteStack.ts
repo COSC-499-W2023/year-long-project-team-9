@@ -46,7 +46,6 @@ export default function SiteStack({ stack }: StackContext) {
   );
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
-
   const api = new Api(stack, "Api", {
     defaults: {
       function: {
@@ -103,9 +102,9 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getNotificationsViaEmail.handler",
         },
       },
-      "POST /notificationRead": {
+      "POST /readNotification": {
         function: {
-          handler: "stack/lambdas/getNotificationsViaEmail.handler",
+          handler: "stack/lambdas/readNotification.handler",
         },
       },
       "POST /deleteNotification": {
@@ -273,11 +272,10 @@ export default function SiteStack({ stack }: StackContext) {
 
   api.bind([wsApi]);
 
-
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, steveJobs, wsApi],
     permissions: [rekognitionPolicyStatement, wsApi],
-    environment: {NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url},
+    environment: { NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url },
   });
 
   stack.addOutputs({
