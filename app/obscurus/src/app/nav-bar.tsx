@@ -145,7 +145,7 @@ const NavBar = ({
   return (
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
-      <div>
+      <div className="flex flex-col-2">
         <NotificationsComponent
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
