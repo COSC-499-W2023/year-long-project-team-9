@@ -6,8 +6,6 @@ import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
-import deleteNotifications from "./functions/deleteNotifications";
-import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import { getEmail } from "./functions/authenticationMethods";
 
@@ -18,7 +16,7 @@ export const metadata: Metadata = {
   description: "Blur faces automatically",
 };
 
-export default function RootLayout({
+export default aysnc function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
