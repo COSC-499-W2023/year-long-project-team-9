@@ -22,11 +22,11 @@ import useScroll from "@/app/hooks/scroll";
 export function Notifications({
   notificationsRead,
   deleteNotifications,
-  getNotifications,
+  getNotificationsViaEmail,
 }: {
   notificationsRead: Function;
   deleteNotifications: Function;
-  getNotifications: Function;
+  getNotificationsViaEmail: Function;
 }) {
   return (
     <>
@@ -147,7 +147,7 @@ const NavBar = ({
         <Notifications
           notificationsRead={notificationsRead}
           deleteNotifications={deleteNotifications}
-          getNotifications={getNotificationsViaEmail}
+          getNotificationsViaEmail={getNotificationsViaEmail}
         />
         <ThemeSwitcher />
       </div>

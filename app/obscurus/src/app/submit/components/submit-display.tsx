@@ -393,7 +393,7 @@ export default function SubmitDisplay({
               {objectURL && !loading && file && (
                 <>
                   <VideoPlayer videoUrl={objectURL} filename={file?.name} />
-                  <div className="flex w-full  justify-between p-3">
+                  <div className="flex w-full  justify-between py-4">
                     <Button
                       onClick={handleChooseAnotherFile}
                       variant={"outline"}
