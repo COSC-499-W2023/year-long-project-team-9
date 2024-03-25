@@ -23,11 +23,12 @@ export function insert(message: Messages) {
     .execute();
 }
 
-export function setIsReadTrue(messageId: string) {
+export function setIsReadTrue(roomId: string, senderEmail: string) {
   return SQL.DB.updateTable("messages")
     .set({
       isRead: true,
     })
-    .where("messageId", "=", messageId)
-    .executeTakeFirst();
+    .where("roomId", "=", roomId)
+    .where("senderEmail", "=", senderEmail)
+    .execute();
 }

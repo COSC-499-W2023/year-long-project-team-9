@@ -1,7 +1,7 @@
 "use client";
 import { Users } from "@obscurus/database/src/sql.generated";
 import Wrapper from "@/app/wrapper";
-import ProfileForm from "./profile-from";
+import ProfileForm from "./profile-form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,11 +20,11 @@ const profileFormSchema = z.object({
   profileImage: z
     .any()
     .refine((files) => {
-      return files?.[0]?.size <= 10000000;
+      return !files || files?.[0]?.size <= 10000000;
     })
     .refine(
-      (files) => acceptedImageFileTypes.includes(files?.[0]?.type),
-      "wrong type" //
+      (files) => !files || acceptedImageFileTypes.includes(files?.[0]?.type),
+      "wrong type" 
     ),
 });
 

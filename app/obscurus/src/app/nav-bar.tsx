@@ -7,7 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Sun } from "lucide-react";
+import { Bell, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,19 +18,35 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
-import Notifications from "@/components/notifications";
-//import SignIn from "@/components/SignIn";
-// import { isSignedIn } from "@/auth/authenticationMethods";
+import NotificationsComponent from "@/components/notification/notifications-component";
+import { Notifications } from "@obscurus/database/src/sql.generated";
 
-
-const NavBar = ({
+export function Notifications({
   notificationsRead,
   deleteNotifications,
-  getNotifications,
+  getNotificationsViaEmail,
 }: {
   notificationsRead: Function;
   deleteNotifications: Function;
-  getNotifications: Function;
+  getNotificationsViaEmail: Function;
+}) {
+  return (
+    <>
+      <Button variant="ghost" size="icon">
+        <Bell size={20} className="stroke-primary" />
+      </Button>
+    </>
+  );
+}
+
+const NavBar = ({
+  readNotification,
+  deleteNotifications,
+  notifications,
+}: {
+  readNotification: Function;
+  deleteNotifications: Function;
+  notifications: Notifications[];
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -48,107 +64,94 @@ const NavBar = ({
   const [currentTab, selectCurrentTab] = useState("/");
   const [userSignedIn, setUserSignedIn] = useState(false);
 
-  return (
-    <div className="sticky top-0 z-50 flex flex-column justify-between min-w-full border-b-2 bg-background">
-      <div className="">
-        <NavigationMenu>
-          <Link href="/" className="p-5">
-            <Image
-              className="min-h-full min-w-full"
-              src="/logo.svg"
-              alt="obscurus"
-              width={40}
-              height={40}
-            />
+  const ThemeSwitcher = () => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" data-testid="theme-toggle">
+            <Sun size={20} className="stroke-primary fill-primary" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            onClick={() => setTheme("light")}
+            data-testid="light"
+          >
+            Light
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
+            Dark
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setTheme("system")}
+            data-testid="system"
+          >
+            System
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
+  const Navigation = () => {
+    return (
+      <NavigationMenu className="flex flex-row space-x-4 ">
+        <Link href="/" className="">
+          <Image
+            className="min-h-full min-w-full"
+            src="/logo.svg"
+            alt="obscurus"
+            width={40}
+            height={40}
+          />
+        </Link>
+
+        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-4  ">
+          <Link href="/" className="">
+            <NavigationMenuItem className="font-bold text-lg">
+              obscurus
+            </NavigationMenuItem>
           </Link>
+          <NavigationMenuItem
+            className="font-semibold text-sm cursor-pointer"
+            onClick={() => {
+              scroll("features");
+            }}
+          >
+            Features
+          </NavigationMenuItem>
 
-          <NavigationMenuList>
-            <Link href="/">
-              <NavigationMenuItem>
-                <span className="font-bold hover:cursor-pointer">obscurus</span>
-              </NavigationMenuItem>
-            </Link>
-            {/* <Link href="../CreateRequest">
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/CreateRequest"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  Create Request
-                </span>
-              </NavigationMenuItem>
-            </Link>
+          <NavigationMenuItem
+            className="font-semibold text-sm cursor-pointer"
+            onClick={() => {
+              scroll("how-to");
+            }}
+          >
+            Get Started
+          </NavigationMenuItem>
+          <NavigationMenuItem
+            className="font-semibold text-sm cursor-pointer"
+            onClick={() => {
+              scroll("about");
+            }}
+          >
+            About
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    );
+  };
 
-            <Link href={userSignedIn ? "../MyRequests" : "/"}>
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/MyRequests"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  My Requests
-                </span>
-              </NavigationMenuItem>
-            </Link>
-            <Link href={userSignedIn ? "/submit" : "/"}>
-              <NavigationMenuItem>
-                <span
-                  className={`font-bold text-base p-5 hover:cursor-pointer ${
-                    router.pathname === "/submit"
-                      ? " underline font-extrabold"
-                      : ""
-                  }`}
-                >
-                  Submit
-                </span>
-              </NavigationMenuItem>
-            </Link> */}
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-      <div className="grid grid-flow-col gap-2 justify-end items-center pr-5 ">
-        <div className="flex justify-end space-x-2">
-          <div className="content-center">
-            <Notifications
-              notificationsRead={notificationsRead}
-              deleteNotifications={deleteNotifications}
-              getNotifications={getNotifications}
-            ></Notifications>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" data-testid="theme-toggle">
-                <Sun size={25} className="stroke-primary fill-primary" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => setTheme("light")}
-                data-testid="light"
-              >
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setTheme("dark")}
-                data-testid="dark"
-              >
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setTheme("system")}
-                data-testid="system"
-              >
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        {/* <SignIn /> */}
+  return (
+    <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
+      <Navigation />
+      <div className="flex flex-col-2">
+        <NotificationsComponent
+          readNotification={readNotification}
+          deleteNotifications={deleteNotifications}
+          notifications={notifications}
+        ></NotificationsComponent>
+        <ThemeSwitcher />
       </div>
     </div>
   );

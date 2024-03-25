@@ -1,27 +1,28 @@
 "use server";
-import notificationsRead from "@/app/functions/notificationsRead";
 import { SQL } from "./sql";
 
+// methods for notification feature
 export async function getNotificationsViaEmail(email: string) {
   const notifications = await SQL.DB.selectFrom("notifications")
     .selectAll()
     .where("userEmail", "=", email)
+    .where("isTrashed", "=", false)
+    .orderBy("creationDate", "desc")
     .execute();
   return notifications;
 }
 
 export async function deleteNotification(id: string) {
-  const deleteNotification = await SQL.DB.deleteFrom("notifications").where(
-    "notificationId",
-    "=",
-    id
-  );
-  // console.log(deleteNotification);
+  const deleteNotification = await SQL.DB.updateTable("notifications")
+    .set({ isTrashed: true })
+    .where("notificationId", "=", id)
+    .execute();
 }
 
-export async function notificationRead(email: string) {
+export async function readNotification(id: string) {
   const notificationRead = await SQL.DB.updateTable("notifications")
     .set({ isRead: true })
-    .where("userEmail", "=", email);
+    .where("notificationId", "=", id)
+    .execute();
   // console.log(notificationRead);
 }

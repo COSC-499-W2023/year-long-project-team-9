@@ -6,9 +6,11 @@ import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
-import deleteNotifications from "./functions/deleteNotifications";
-import notificationsRead from "./functions/notificationsRead";
-import getNotifications from "./functions/getNotifications";
+import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
+import { getEmail } from "./functions/authenticationMethods";
+import { Notifications } from "@obscurus/database/src/sql.generated";
+import readNotification from "./functions/readNotification";
+import deleteNotification from "./functions/deleteNotification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
   description: "Blur faces automatically",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,6 +28,15 @@ export default function RootLayout({
   // Muhammad
   // deleteNotifications;
   // notificationsRead;
+  const email = await getEmail();
+  const notificationCall: { notifications: Notifications[] } =
+    await getNotificationsViaEmail(email);
+  let notifications: Notifications[];
+  if (!notificationCall?.notifications) {
+    notifications = [];
+  } else {
+    notifications = notificationCall.notifications;
+  }
   //
 
   return (
@@ -37,13 +48,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className=" flex-col md:flex min-h-screen h-screen">
-          <NavBar
-            notificationsRead={notificationsRead}
-            deleteNotifications={deleteNotifications}
-            getNotifications={getNotifications}
-          />
-          <Toaster />
-          {children}
+            <NavBar
+              readNotification={readNotification}
+              deleteNotifications={deleteNotification}
+              notifications={notifications}
+            />
+            <Toaster />
+            {children}
 
             {/*If not signed in*/}
 

@@ -18,6 +18,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
+    "types": ["react/experimental"],
     "paths": {
       "@/*": [
         "./src/*",
@@ -38,7 +39,7 @@
     "**/*.tsx",
     "**/*.mjs",
     ".next/types/**/*.ts"
-, "stack/database/migrations/007_add_data.mjs", "src/app/template.js"  ],
+, "stack/database/migrations/007_add_data.mjs", "src/app/template.js", "src/app/submit/components/app.jsx"  ],
   "exclude": [
     "node_modules"
   ]

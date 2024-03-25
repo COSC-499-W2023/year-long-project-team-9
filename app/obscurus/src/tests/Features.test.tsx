@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Features from "@/components/Features";
+import Features from "@/app/landing-page/components/features";
 import "@testing-library/jest-dom";
 
 jest.mock("aos", () => ({
