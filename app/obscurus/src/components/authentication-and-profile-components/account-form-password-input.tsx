@@ -17,14 +17,12 @@ export interface PasswordInputProps {
 export default function PasswordInput({
   form,
   isDisabled,
-  formDescription,
   fieldName,
   label,
   placeHolder,
 }: {
   form: any;
   isDisabled: boolean;
-  formDescription: string;
   fieldName: string;
   label: string;
   placeHolder: string;
@@ -63,12 +61,6 @@ export default function PasswordInput({
           </Button>
         )}
       </div>
-      <FormDescription className="text-justify">
-        {formDescription}
-      </FormDescription>
-      {form.getFieldState(fieldName).error && (
-        <FormMessage>{form.getFieldState(fieldName).error.message}</FormMessage>
-      )}
     </FormItem>
   );
 }
