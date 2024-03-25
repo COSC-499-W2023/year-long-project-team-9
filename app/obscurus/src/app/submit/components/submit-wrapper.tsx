@@ -3,11 +3,30 @@ import Wrapper from "@/app/wrapper";
 import { Requests, Submissions } from "@obscurus/database/src/sql.generated";
 import SubmitList from "./submit-list";
 import SubmitDisplay from "./submit-display";
-import { Suspense, use, useEffect, useState } from "react";
+import {
+  Suspense,
+  use,
+  useEffect,
+  useOptimistic,
+  useRef,
+  useState,
+} from "react";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { set } from "date-fns";
 import Loading from "./loading";
+import { useUserData } from "@/app/hooks/use-user-data";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
+
+const queryClient = new QueryClient()
+
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -30,8 +49,9 @@ export const SubmitWrapper = ({
   defaultCollapsed: boolean;
   websocketApiEndpoint: string;
 }) => {
-  const [requests, setRequests] = useRequests();
-  const [submissions, setSubmissions] = useSubmissions();
+  const [userData, setUserData] = useUserData();
+
+  console.log("User data from hook:", userData);
 
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
@@ -40,16 +60,27 @@ export const SubmitWrapper = ({
   const fetchUserData = async () => {
     setLoading(true);
     if (getUserDataByEmail) {
-      getUserDataByEmail("imightbejan@gmail.com")
-        .then((data) => {
-          console.log("User data:", data);
-          setRequests(data.requests);
-          setSubmissions(data.submissions);
-        })
-        .then(() => {
-          console.log("Requests:", requests);
-          console.log("Submissions:", submissions);
-        });
+      getUserDataByEmail("imightbejan@gmail.com").then((data) => {
+        console.log("User data in fetchUserData:", data);
+        setUserData(data);
+        console.log("User data set");
+        console.log("Optimistic data:", userData);
+        try {
+          if (optimisticData) {
+            console.log("Setting optimistic data");
+            console.log("Optimistic data:", optimisticData);
+            setRequests(optimisticData.requests);
+            setSubmissions(optimisticData.submissions);
+          } else {
+            setRequests(data.requests);
+            setSubmissions(data.submissions);
+          }
+        } catch (e) {
+          console.error(e);
+          setRequests([]);
+          setSubmissions([]);
+        }
+      });
     }
     setLoading(false);
   };
@@ -69,11 +100,11 @@ export const SubmitWrapper = ({
 
     fetchUserData();
 
-
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        setRequests(data.requests);
+
+        setUserData(data);
       } catch {
         console.log("Message data is not valid JSON");
       }
@@ -112,25 +143,49 @@ export const SubmitWrapper = ({
     }
   };
 
+  const [optimisticData, addOptimisticData] = useOptimistic(
+    userData,
+    (state: any, updatedData: any) => [...state, updatedData]
+  );
+
+
+
+
+
+  const [requests, setRequests] = useRequests();
+  const [submissions, setSubmissions] = useSubmissions();
+
+
+
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={
-        loading ? ( <Loading /> ) :
-        <SubmitList requests={requests || []} submissions={submissions || []} />
-      }
-      secondPanel={
-        <SubmitDisplay
-          fetchUserData={fetchUserData}
-          getPresignedUrl={getPresignedUrl}
-          getDownloadPresignedUrl={getDownloadPresignedUrl}
-          triggerJob={triggerJob}
-          getStatus={getStatus}
-          updateSubmissionStatus={updateSubmissionStatus}
-        />
-      }
-    />
+    <QueryClientProvider client={queryClient}>
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          loading ? (
+            <Loading />
+          ) : (
+            <SubmitList
+              requests={requests || []}
+              submissions={submissions || []}
+            />
+          )
+        }
+        secondPanel={
+          <SubmitDisplay
+            requests={requests || []}
+            submissions={submissions || []}
+            fetchUserData={fetchUserData}
+            getPresignedUrl={getPresignedUrl}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
+            triggerJob={triggerJob}
+            getStatus={getStatus}
+            updateSubmissionStatus={updateSubmissionStatus}
+          />
+        }
+      />
+    </QueryClientProvider>
   );
 };

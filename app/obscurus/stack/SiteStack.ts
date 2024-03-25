@@ -188,12 +188,8 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getUserNames.handler",
         },
       },
-      "GET /getWebsocketApiEndpoint": {
-        function: {
-          handler: "stack/lambdas/getWebsocketApiEndpoint.handler",
-        },
-      },
       "POST /order": "stack/lambdas/order.handler",
+
     },
   });
 

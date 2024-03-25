@@ -42,29 +42,20 @@ export const columns: ColumnDef<Submissions>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: "title",
+    accessorKey: "requestTitle",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
-    cell: ({ row }) => {
-      // const label = labels.find((label) => label.value === row.original.submissionId)
-
-      return (
-        <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title") || "No title"}
-          </span>
-        </div>
-      )
-    },
+    cell: ({ row }) => <div className=" w-[100px]">{row.getValue("requestTitle")}</div>,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: "requesteeEmail",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Requestee Email" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{substring(row.getValue("requesteeEmail"), 30)}</div>,
+    cell: ({ row }) => <div className=" w-[250px] text-ellipsis overflow-hidden ...">{substring(row.getValue("requesteeEmail"), 30)}</div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -112,26 +103,6 @@ export const columns: ColumnDef<Submissions>[] = [
       )
     },
   },
-  // {
-  //   accessorKey: "priority",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Priority" />
-  //   ),
-  //   cell: ({ row }) => {
-
-  //     return (
-  //       <div className="flex items-center">
-  //         {priority.icon && (
-  //           <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-  //         )}
-  //         <span>{priority.label}</span>
-  //       </div>
-  //     )
-  //   },
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id))
-  //   },
-  // },
   {
     id: "actions",
     header: ({ column }) => (

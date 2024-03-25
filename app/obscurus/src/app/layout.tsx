@@ -10,6 +10,7 @@ import deleteNotifications from "./functions/deleteNotifications";
 import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import { getEmail } from "./functions/authenticationMethods";
+import { QueryClient } from "@tanstack/react-query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,7 +45,9 @@ export default function RootLayout({
               getNotificationsViaEmail={getNotificationsViaEmail}
             />
             <Toaster />
+
             {children}
+
 
             {/*If not signed in*/}
 

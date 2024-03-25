@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useOptimistic, useRef, useState } from "react";
 import {
   Archive,
   Trash2,
@@ -23,6 +23,7 @@ import {
   ArrowBigDown,
   FileText,
   UploadIcon,
+  Inbox,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
 import Webcam from "react-webcam";
@@ -43,8 +44,12 @@ import { useRequests } from "@/app/hooks/use-requests";
 import substring from "@/app/functions/substring";
 import Loading from "./loading";
 import PanelLoader from "./panel-2-loader";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getRequestsViaEmail } from "@/app/functions/getRequestsViaEmail";
 
 export default function SubmitDisplay({
+  requests,
+  submissions,
   fetchUserData,
   getPresignedUrl,
   getDownloadPresignedUrl,
@@ -53,7 +58,9 @@ export default function SubmitDisplay({
   updateSubmissionStatus,
   updateRequests,
 }: {
-  fetchUserData: Function;
+  requests: Requests[];
+  submissions: Submissions[];
+  fetchUserData: any;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
@@ -72,30 +79,18 @@ export default function SubmitDisplay({
   //   setRequest(requests && requests[0]);
   // }
 
-  const [requests] = useRequests();
-  const [submissions] = useSubmissions();
-  useEffect(() => {
-    {
-      async () => {
-        const res = await fetchUserData();
-        console.log("RES", res);
-        return res;
-      };
-    }
-    if (!request.selected && requests) {
-      setRequest({
-        ...request,
-        selected: requests[0].requestId,
-      });
-    }
-  });
+  const queryClient = useQueryClient();
+
+
+
+
 
   const selected =
-    requests && requests.find((item) => item.requestId === request.selected);
+    requests && requests.find((item:any) => item.requestId === request.selected);
 
   const associatedSubmission =
     submissions &&
-    submissions.find((sub) => sub.requestId === selected?.requestId);
+    submissions.find((sub:any) => sub.requestId === selected?.requestId);
 
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
@@ -120,12 +115,14 @@ export default function SubmitDisplay({
 
   const getAssociatedSubmission = (requestId: string) => {
     if (requestId && submissions) {
-      return submissions.find((item) => requestId === item.requestId);
+      return submissions.find((item:any) => requestId === item.requestId);
     }
     return null;
   };
 
   const reset = () => {};
+
+
 
   const handleProcessVideo = async (e: any) => {
     console.log("Processing video");
@@ -133,7 +130,16 @@ export default function SubmitDisplay({
     if (submission && fileExt && triggerJob) {
       const res = await triggerJob(submission.submissionId, fileExt);
       if (res === "Video jobbed successfully" && updateSubmissionStatus) {
-        await updateSubmissionStatus("PROCESSING", submission.submissionId);
+        const mutation = useMutation({
+          mutationFn: await updateSubmissionStatus(
+            "PROCESSING",
+            submission.submissionId
+          ),
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["data"] });
+          },
+        });
+
         console.log("Updated submission status");
         updateRequests && updateRequests();
         await fetchUserData();
@@ -157,26 +163,30 @@ export default function SubmitDisplay({
   };
 
   const handleSubmit = async (e: any) => {
-    setLoading(true);
     e.preventDefault();
-    setUpload(true);
-    const file = fileInputRef.current?.files?.[0];
-    setFile(file);
     if (!file) {
       console.error("No file selected");
-      setUpload(false);
+
       return;
     }
-    const fileExt = file.name.split(".").pop();
-    console.log("File extension", fileExt);
-    setFileExt(fileExt);
 
+    return;
+  };
+
+  const handleConfirmUpload = async () => {
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+    setLoading(true);
+    const fileExt = file.name.split(".").pop();
+    setFileExt(fileExt);
     const key = `${submissionId}.${fileExt}`;
 
     if (submissionId && getPresignedUrl) {
       try {
         const url = await getPresignedUrl(key);
-        const response = await fetch(url, {
+        await fetch(url, {
           method: "PUT",
           headers: {
             "Content-Type": file.type,
@@ -186,12 +196,12 @@ export default function SubmitDisplay({
           },
           body: file,
         });
-        setObjectURL(URL.createObjectURL(file));
         console.log("Upload successful");
-        setLoading(false);
-        return;
+        setObjectURL(URL.createObjectURL(file));
+        handleProcessVideo(file);
       } catch (error) {
         console.error("Upload failed:", error);
+      } finally {
         setLoading(false);
       }
     }
@@ -271,15 +281,22 @@ export default function SubmitDisplay({
 
   const router = useRouter();
 
+  const query = useQuery({
+    queryKey: ["data"],
+    queryFn: () => fetchUserData(),
+  });
+
+  console.log("Query returned", query);
+
   const handleArchive = async (requestId: string) => {
     console.log("Archiving");
     if (requests && requestId) {
       const submission = getAssociatedSubmission(requestId);
       if (submission && updateSubmissionStatus) {
-        await updateSubmissionStatus("ARCHIVED", submission.submissionId);
+        updateSubmissionStatus("ARCHIVED", submission.submissionId),
         console.log("Updated submission status");
-        updateRequests && updateRequests();
-        await fetchUserData();
+        //updateRequests && updateRequests();
+        //await fetchUserData();
 
         toast({
           title: "Archived",
@@ -400,7 +417,7 @@ export default function SubmitDisplay({
                     >
                       Choose Another File
                     </Button>
-                    <Button onClick={handleProcessVideo} disabled={!canUpload}>
+                    <Button onClick={handleConfirmUpload} disabled={!canUpload}>
                       Submit Video
                     </Button>
                   </div>
@@ -430,7 +447,16 @@ export default function SubmitDisplay({
               type="file"
               ref={fileInputRef}
               style={{ display: "none" }}
-              onChange={handleSubmit}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setFile(file);
+                  console.log("File selected", file.name);
+                  const fileExt = file.name.split(".").pop();
+                  setFileExt(fileExt);
+                  console.log("File extension", fileExt);
+                }
+              }}
               accept="video/mp4, video/quicktime"
             />
             <div className=" flex justify-center">
@@ -509,7 +535,7 @@ export default function SubmitDisplay({
         </Tooltip>
 
         <Button
-          onClick={handleSaveAndUpload}
+          onClick={handleConfirmUpload}
           disabled={!recordedChunks.length}
           variant={"default"}
         >
@@ -671,7 +697,10 @@ export default function SubmitDisplay({
           )}
         </div>
       ) : (
-        <PanelLoader />
+        <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
+          <FileText className="h-20 w-20 " />
+          <p className=" text-lg">No request selected.</p>
+        </div>
       )}
     </div>
   );
