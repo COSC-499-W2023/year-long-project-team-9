@@ -312,3 +312,20 @@
 ### Picture of T2 Week 10's Survey
 
 ![T2 Week 10 Survey](img/soren-stenback/T2Week10-Survey-ID4.png)
+
+---
+
+## T2 Week 11
+
+### March 18 - March 24, 2024
+
+- This week I worked on Milestone #6, Final Project Review.
+- The goals for this week were to begin setting up the sign in/sign up windows and fix front-end errors in chat/createRequest.
+
+### Picture of Project Board
+
+![T2 Week 11 Project Board](img/soren-stenback/T2Week11-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 11's Survey
+
+![T2 Week 11 Survey](img/soren-stenback/T2Week11-Survey-ID4.png)
