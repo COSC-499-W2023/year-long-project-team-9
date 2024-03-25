@@ -15,18 +15,12 @@ const recoverPasswordFormSchema = z
     password: z
       .string()
       .trim()
-      .min(8, { message: "Password must be at least 8 characters." })
-      .max(24, { message: "Password cannot be more than 24 characters." })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" })
-      .regex(/[\W_]/, {
-        message: "Password must contain at least one special character",
-      }),
+      .min(8)
+      .max(24)
+      .regex(/[A-Z]/)
+      .regex(/[a-z]/)
+      .regex(/[0-9]/)
+      .regex(/[\W_]/),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -34,7 +28,11 @@ const recoverPasswordFormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RecoverPasswordForm() {
+export default function RecoverPasswordForm({
+  setDialogState,
+}: {
+  setDialogState: Function;
+}) {
   const form = useForm<z.infer<typeof recoverPasswordFormSchema>>({
     resolver: zodResolver(recoverPasswordFormSchema),
     defaultValues: {},
@@ -44,34 +42,113 @@ export default function RecoverPasswordForm() {
     console.log(values);
   }
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto max-h-[55vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-1">
           {/* Password */}
-          <PasswordInput
-            form={form}
-            isDisabled={false}
-            formDescription={
-              "Password must contain both a lowercase and uppercase letter. Password must contain both a number and a special character. Password must be at least 8 characters and no more than 24 characters."
-            }
-            fieldName={"password"}
-            label={"Password"}
-            placeHolder={"Password"}
-          ></PasswordInput>
-          <PasswordInput
-            form={form}
-            isDisabled={false}
-            formDescription={"Passwords must match."}
-            fieldName={"confirmPassword"}
-            label={"Confirm Password"}
-            placeHolder={"Confirm Password"}
-          ></PasswordInput>
-          <div className="text-right">
-            <Button
-              type="submit"
-              variant={"default"}
-              className="justify-self-start"
-            >
+          <div>
+            <PasswordInput
+              form={form}
+              isDisabled={false}
+              fieldName={"password"}
+              label={"Password"}
+              placeHolder={"Password"}
+            />
+            <div id="passwordErrorChecks">
+              {form.getFieldState("password").error &&
+              form.getFieldState("password").error?.type === "too_small" ? (
+                <li className="text-xs mt-2 text-red-500">
+                  Password must be at least 8 characters.
+                </li>
+              ) : (
+                <li className="text-xs mt-2">
+                  Password must be at least 8 characters.
+                </li>
+              )}
+              {form.getFieldState("password").error &&
+              form.getFieldState("password").error?.type === "too_big" ? (
+                <li className="text-xs text-red-500">
+                  Password must be at most 24 characters.
+                </li>
+              ) : (
+                <li className="text-xs">
+                  Password must be at most 24 characters.
+                </li>
+              )}
+              {form.getFieldState("password").error &&
+              form.getFieldState("password").error?.type === "invalid_string" &&
+              !/[A-Z]/.test(form.getValues("password")) ? (
+                <li className="text-xs text-red-500">
+                  Password must contain at least one uppercase letter.
+                </li>
+              ) : (
+                <li className="text-xs">
+                  Password must contain at least one uppercase letter.
+                </li>
+              )}
+              {form.getFieldState("password").error &&
+              form.getFieldState("password").error?.type === "invalid_string" &&
+              !/[a-z]/.test(form.getValues("password")) ? (
+                <li className="text-xs text-red-500">
+                  Password must contain at least one lowercase letter.
+                </li>
+              ) : (
+                <li className="text-xs">
+                  Password must contain at least one lowercase letter.
+                </li>
+              )}
+              {form.getFieldState("password").error &&
+              form.getFieldState("password").error?.type === "invalid_string" &&
+              !/[0-9]/.test(form.getValues("password")) ? (
+                <li className="text-xs text-red-500">
+                  Password must contain at least one number.
+                </li>
+              ) : (
+                <li className="text-xs">
+                  Password must contain at least one number.
+                </li>
+              )}
+              {form.getFieldState("password").error &&
+              form.getFieldState("password").error?.type === "invalid_string" &&
+              !/[\W_]/.test(form.getValues("password")) ? (
+                <li className="text-xs text-red-500">
+                  Password must contain at least one special character.
+                </li>
+              ) : (
+                <li className="text-xs">
+                  Password must contain at least one special character.
+                </li>
+              )}
+            </div>
+          </div>
+          <div>
+            <PasswordInput
+              form={form}
+              isDisabled={false}
+              fieldName={"confirmPassword"}
+              label={"Confirm Password"}
+              placeHolder={"Confirm Password"}
+            />
+            {form.getFieldState("confirmPassword").error &&
+            form.getFieldState("confirmPassword").error?.type === "custom" ? (
+              <li className="text-xs mt-2 text-red-500">
+                Passwords must match.
+              </li>
+            ) : (
+              <li className="text-xs mt-2">Passwords must match.</li>
+            )}
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="text-xs mt-2">
+              <span>Have an account? </span>
+              <a
+                onClick={() => setDialogState("signIn")}
+                className="underline text-blue-400 hover:cursor-pointer"
+              >
+                Sign In
+              </a>
+            </div>
+            <Button type="submit" variant={"default"}>
               Recover
             </Button>
           </div>
