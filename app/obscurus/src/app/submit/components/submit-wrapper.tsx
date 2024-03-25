@@ -8,6 +8,7 @@ import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { set } from "date-fns";
 import Loading from "./loading";
+import { Provider } from "jotai";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -69,7 +70,6 @@ export const SubmitWrapper = ({
 
     fetchUserData();
 
-
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
@@ -118,8 +118,14 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-        loading ? ( <Loading /> ) :
-        <SubmitList requests={requests || []} submissions={submissions || []} />
+        loading ? (
+          <Loading />
+        ) : (
+          <SubmitList
+            requests={requests || []}
+            submissions={submissions || []}
+          />
+        )
       }
       secondPanel={
         <SubmitDisplay

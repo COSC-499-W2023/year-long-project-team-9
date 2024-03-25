@@ -27,21 +27,18 @@ async function Submit() {
 
   console.log("wsApi", wsApi);
 
-
   return (
-
-      <SubmitWrapper
-        getPresignedUrl={getPresignedUrl}
-        getDownloadPresignedUrl={getDownloadPresignedUrl}
-        triggerJob={triggerJob}
-        updateStatus={updateStatus}
-        getStatus={getStatus}
-        getUserDataByEmail={getUserDataByEmail}
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        websocketApiEndpoint={wsApi as string}
-      />
-
+    <SubmitWrapper
+      getPresignedUrl={getPresignedUrl}
+      getDownloadPresignedUrl={getDownloadPresignedUrl}
+      triggerJob={triggerJob}
+      updateStatus={updateStatus}
+      getStatus={getStatus}
+      getUserDataByEmail={getUserDataByEmail}
+      defaultLayout={defaultLayout}
+      defaultCollapsed={defaultCollapsed}
+      websocketApiEndpoint={wsApi as string}
+    />
   );
 }
 

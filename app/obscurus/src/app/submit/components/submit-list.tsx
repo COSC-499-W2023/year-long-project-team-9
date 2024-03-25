@@ -100,9 +100,15 @@ export default function SubmitList({
   const sortRequests = (a: Requests, b: Requests) => {
     switch (sort.sort) {
       case "newest":
-        return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
+        return (
+          new Date(b.creationDate).getTime() -
+          new Date(a.creationDate).getTime()
+        );
       case "oldest":
-        return new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime();
+        return (
+          new Date(a.creationDate).getTime() -
+          new Date(b.creationDate).getTime()
+        );
       case "due":
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       default:
@@ -218,7 +224,7 @@ export default function SubmitList({
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
-      onValueChange={() => setTab}
+      onValueChange={(newValue) => setTab({ ...tab, tab: newValue })}
     >
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Submit</h1>
@@ -258,7 +264,7 @@ export default function SubmitList({
             <Input
               placeholder="Search"
               className="pl-8"
-              onChange={(e) => setSearch({search:e.target.value})}
+              onChange={(e) => setSearch({ search: e.target.value })}
               value={search.search || ""}
             />
             {search && (
@@ -283,13 +289,13 @@ export default function SubmitList({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setSort({sort: "newest"})}>
+                <DropdownMenuItem onClick={() => setSort({ sort: "newest" })}>
                   Newest
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort({sort: "oldest"})}>
+                <DropdownMenuItem onClick={() => setSort({ sort: "oldest" })}>
                   Oldest
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort({sort: "due"})}>
+                <DropdownMenuItem onClick={() => setSort({ sort: "due" })}>
                   Due
                 </DropdownMenuItem>
               </DropdownMenuContent>
