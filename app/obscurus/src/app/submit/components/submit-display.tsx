@@ -8,7 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useRef, useState } from "react";
 import {
   Archive,
@@ -43,6 +42,7 @@ import { useRequests } from "@/app/hooks/use-requests";
 import substring from "@/app/functions/substring";
 import Loading from "./loading";
 import PanelLoader from "./panel-2-loader";
+import { useSubmission } from "@/app/hooks/use-submission";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -62,7 +62,7 @@ export default function SubmitDisplay({
   updateRequests?: Function;
 }) {
   const [request, setRequest] = useRequest();
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
+  const [submission, setSubmission] = useSubmission();
   const [upload, setUpload] = useState(false);
   const [showingVideo, setShowingVideo] = useState(false);
   const { toast } = useToast();
@@ -82,16 +82,16 @@ export default function SubmitDisplay({
         return res;
       };
     }
-    if (!request.selected && requests) {
+    if (!request.requestId && requests) {
       setRequest({
         ...request,
-        selected: requests[0].requestId,
+        requestId: requests[0].requestId,
       });
     }
   });
 
   const selected =
-    requests && requests.find((item) => item.requestId === request.selected);
+    requests && requests.find((item) => item.requestId === request.requestId);
 
   const associatedSubmission =
     submissions &&
@@ -129,7 +129,7 @@ export default function SubmitDisplay({
 
   const handleProcessVideo = async (e: any) => {
     console.log("Processing video");
-    const submission = getAssociatedSubmission(request?.selected || "");
+    const submission = getAssociatedSubmission(request?.requestId || "");
     if (submission && fileExt && triggerJob) {
       const res = await triggerJob(submission.submissionId, fileExt);
       if (res === "Video jobbed successfully" && updateSubmissionStatus) {
@@ -171,9 +171,9 @@ export default function SubmitDisplay({
     console.log("File extension", fileExt);
     setFileExt(fileExt);
 
-    const key = `${submissionId}.${fileExt}`;
+    const key = `${submission.submissionId}.${fileExt}`;
 
-    if (submissionId && getPresignedUrl) {
+    if (submission && getPresignedUrl) {
       try {
         const url = await getPresignedUrl(key);
         const response = await fetch(url, {
@@ -237,12 +237,12 @@ export default function SubmitDisplay({
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, { type: "video/mp4" });
-      const fileName = `${submissionId}.mp4`;
+      const fileName = `${submission}.mp4`;
       const file = new File([blob], fileName, { type: "video/mp4" });
 
       setFile(file);
 
-      if (submissionId && getPresignedUrl) {
+      if (submission.submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
 
         const response = await fetch(presignedUrl, {
@@ -623,7 +623,7 @@ export default function SubmitDisplay({
           getPresignedUrl &&
           getDownloadPresignedUrl &&
           triggerJob &&
-          submissionId ? (
+          submission ? (
             <>
               <div className="flex flex-col w-fit h-full">
                 <div className="flex p-3 flex-col">
@@ -636,7 +636,7 @@ export default function SubmitDisplay({
                 </div>
               </div>
             </>
-          ) : upload && getPresignedUrl && triggerJob && submissionId ? (
+          ) : upload && getPresignedUrl && triggerJob && submission ? (
             // Upload or record video
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}

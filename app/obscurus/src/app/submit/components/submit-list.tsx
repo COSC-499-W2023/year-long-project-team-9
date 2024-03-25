@@ -15,9 +15,7 @@ import {
   SortDescIcon,
   XCircle,
 } from "lucide-react";
-import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
-import { useQueryState } from "nuqs";
 import { TabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -46,8 +44,13 @@ import { useRequest } from "@/app/hooks/use-request";
 import { Separator } from "@/components/ui/separator";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
+import { useSubmission } from "@/app/hooks/use-submission";
 import { Skeleton } from "@/components/ui/skeleton";
 import PanelLoader from "./panel-1-loader";
+import { useSearch } from "@/app/hooks/use-search";
+import { useUpload } from "@/app/hooks/use-upload";
+import { useSort } from "@/app/hooks/use-sort";
+import { useTab } from "@/app/hooks/use-tab";
 
 interface RequestsListProps {
   requests?: Requests[];
@@ -60,12 +63,12 @@ export default function SubmitList({
 }: RequestsListProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
+  const [submission, setSubmission] = useSubmission();
   const [request, setRequest] = useRequest();
-  const [search, setSearch] = useQueryState("search");
-  const [upload] = useQueryState("upload");
-  const [sort, setSort] = useQueryState("sort");
-  const [tab, setTab] = useQueryState("tab");
+  const [search, setSearch] = useSearch();
+  const [upload] = useUpload();
+  const [sort, setSort] = useSort();
+  const [tab, setTab] = useTab();
 
   const getAssociatedSubmission = (requestId: string | null) => {
     if (requestId && submissions) {
@@ -75,15 +78,15 @@ export default function SubmitList({
   };
 
   const handleClick = (item: Requests) => {
-    if (!upload) {
+    if (!upload.upload) {
       setRequest({
         ...request,
-        selected: item.requestId,
+        requestId: item.requestId,
       });
       const submission = getAssociatedSubmission(item.requestId);
       console.log("Assoc. submission", submission);
       if (submission) {
-        setSubmissionId(submission?.submissionId);
+        setSubmission({ ...submission, submissionId: submission.submissionId });
       }
 
       console.log("Selected RequestID to list", item.requestId);
@@ -91,21 +94,15 @@ export default function SubmitList({
   };
 
   const clearSearch = () => {
-    setSearch(null);
+    setSearch({ ...search, search: null });
   };
 
   const sortRequests = (a: Requests, b: Requests) => {
-    switch (sort) {
+    switch (sort.sort) {
       case "newest":
-        return (
-          new Date(b.creationDate).getTime() -
-          new Date(a.creationDate).getTime()
-        );
+        return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
       case "oldest":
-        return (
-          new Date(a.creationDate).getTime() -
-          new Date(b.creationDate).getTime()
-        );
+        return new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime();
       case "due":
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       default:
@@ -129,13 +126,13 @@ export default function SubmitList({
       const matchesStatus =
         submission && submission.status.toUpperCase() === status.toUpperCase();
 
-      const searchTerm = search?.toLowerCase();
+      const searchTerm = search.search?.toLowerCase();
       const matchesSearch =
         !searchTerm ||
         request.requestTitle.toLowerCase().includes(searchTerm) ||
         request.requesterEmail.toLowerCase().includes(searchTerm);
 
-      return tab === "all" || tab === null
+      return tab.tab === "all" || tab.tab === null
         ? matchesSearch
         : matchesStatus && matchesSearch;
     });
@@ -148,7 +145,7 @@ export default function SubmitList({
               key={item.requestId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                request.selected === item.requestId && "bg-muted"
+                request.requestId === item.requestId && "bg-muted"
               )}
               onClick={() => handleClick(item)}
             >
@@ -168,7 +165,7 @@ export default function SubmitList({
                   <div
                     className={cn(
                       "ml-auto text-xs w-full flex justify-end",
-                      request.selected === item.requestId
+                      request.requestId === item.requestId
                         ? "text-foreground"
                         : "text-muted-foreground"
                     )}
@@ -221,7 +218,7 @@ export default function SubmitList({
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
-      onValueChange={setTab}
+      onValueChange={() => setTab}
     >
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Submit</h1>
@@ -261,8 +258,8 @@ export default function SubmitList({
             <Input
               placeholder="Search"
               className="pl-8"
-              onChange={(e) => setSearch(e.target.value)}
-              value={search || ""}
+              onChange={(e) => setSearch({search:e.target.value})}
+              value={search.search || ""}
             />
             {search && (
               <XCircle
@@ -285,13 +282,13 @@ export default function SubmitList({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setSort("newest")}>
+                <DropdownMenuItem onClick={() => setSort({sort: "newest"})}>
                   Newest
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort("oldest")}>
+                <DropdownMenuItem onClick={() => setSort({sort: "oldest"})}>
                   Oldest
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort("due")}>
+                <DropdownMenuItem onClick={() => setSort({sort: "due"})}>
                   Due
                 </DropdownMenuItem>
               </DropdownMenuContent>
