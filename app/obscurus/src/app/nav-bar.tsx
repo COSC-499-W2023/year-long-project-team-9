@@ -155,7 +155,7 @@ const NavBar = ({
         <Notifications
           notificationsRead={notificationsRead}
           deleteNotifications={deleteNotifications}
-          getNotifications={getNotifications}
+          getNotifications={getNotificationsViaEmail}
         />
         <ThemeSwitcher />
         <Authentication
