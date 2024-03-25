@@ -550,3 +550,35 @@ Screenshot from peer eval for Week 10:
 ### Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-22.png)
+
+## Week 11 ##
+
+### Applicable Date Range ###
+March 18 -  March 24, 2024
+
+### Tasks Worked On ###
+
+- This week was all about cleaning things up, and I think I did a good job. The video processing pipeline is quite smooth now, and the UI is stable and responsive.
+- One big hurdle I overcame this week was seeting up a WebSocket API endpoint for updating the status of submissions. Using this in combination with a refactoring of Submit, I am now able to update the status of requests/submissions without refreshing the page.
+- To be honest though, I am investigating some other state management solutions like React Query. It seems upating the UI on the server is a bit of a weakspot for Next.js and my solution definitely works, but I would prefer a more optimized solution.
+- However, there is still much to be done before we finish the term so this week will be a lot of work as well.
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-23.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-23.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-23.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-23.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-23.png)
