@@ -40,7 +40,7 @@ export default function AuthenticationSignedOut() {
             {dialogState === "signUp" && (
               <div>
                 <Label className="flex justify-center text-xl">Sign Up</Label>
-                <Separator className="flex justify-center w-[90%] my-2" />
+                <Separator className="mt-2 mb-4" />
                 <AlertDialogDescription>
                   <SignUpForm setDialogState={setDialogState} />
                 </AlertDialogDescription>
@@ -51,7 +51,7 @@ export default function AuthenticationSignedOut() {
                 <Label className="flex justify-center text-xl">
                   Forgot Password
                 </Label>
-                <Separator className="flex justify-center w-[90%] my-2" />
+                <Separator className="mt-2 mb-4" />
                 <AlertDialogDescription>
                   <RecoverPasswordForm setDialogState={setDialogState} />
                 </AlertDialogDescription>

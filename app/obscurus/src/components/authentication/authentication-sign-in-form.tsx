@@ -34,7 +34,7 @@ export default function SignInForm({
   }
 
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto max-h-[55vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
