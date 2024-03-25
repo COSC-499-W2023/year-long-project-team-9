@@ -56,7 +56,11 @@ const signUpFormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function SignUpForm() {
+export default function SignUpForm({
+  setDialogState,
+}: {
+  setDialogState: Function;
+}) {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
   });
@@ -66,7 +70,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="overflow-auto max-h-[60vh]">
+    <div className="overflow-auto max-h-[55vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-1">
           {/* Email */}
@@ -85,9 +89,6 @@ export default function SignUpForm() {
           <PasswordInput
             form={form}
             isDisabled={false}
-            formDescription={
-              "Password must contain both a lowercase and uppercase letter. Password must contain both a number and a special character. Password must be at least 8 characters and no more than 24 characters."
-            }
             fieldName={"password"}
             label={"Password"}
             placeHolder={"Password"}
@@ -95,7 +96,6 @@ export default function SignUpForm() {
           <PasswordInput
             form={form}
             isDisabled={false}
-            formDescription={"Passwords must match."}
             fieldName={"confirmPassword"}
             label={"Confirm Password"}
             placeHolder={"Confirm Password"}
@@ -128,12 +128,17 @@ export default function SignUpForm() {
           {/* Terms and Conditions */}
           <AuthenticationTermsInput form={form}></AuthenticationTermsInput>
 
-          <div className="text-right gap-2">
-            <Button
-              type="submit"
-              variant={"default"}
-              className="justify-self-start"
-            >
+          <div className="flex justify-between items-center">
+            <div className="text-xs mt-2">
+              <span>Have an account? </span>
+              <a
+                onClick={() => setDialogState("signIn")}
+                className="underline text-blue-400 hover:cursor-pointer"
+              >
+                Sign In
+              </a>
+            </div>
+            <Button type="submit" variant={"default"}>
               Sign Up
             </Button>
           </div>

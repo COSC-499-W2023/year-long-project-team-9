@@ -42,7 +42,7 @@ export default function AuthenticationSignedOut() {
                 <Label className="flex justify-center text-xl">Sign Up</Label>
                 <Separator className="flex justify-center w-[90%] my-2" />
                 <AlertDialogDescription>
-                  <SignUpForm />
+                  <SignUpForm setDialogState={setDialogState} />
                 </AlertDialogDescription>
               </div>
             )}
@@ -61,17 +61,6 @@ export default function AuthenticationSignedOut() {
         </div>
         <Separator />
         <AlertDialogFooter>
-          {dialogState === "signUp" && (
-            <div className="text-xs mt-2">
-              <span>Have an account? </span>
-              <a
-                onClick={() => setDialogState("signIn")}
-                className="underline text-blue-400 hover:cursor-pointer"
-              >
-                Sign In
-              </a>
-            </div>
-          )}
           <div className="flex-grow" />
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
