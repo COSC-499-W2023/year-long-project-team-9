@@ -20,7 +20,7 @@ export default function AuthenticationSignedOut() {
   return (
     <AlertDialog onOpenChange={() => setDialogState("signIn")}>
       <AlertDialogTrigger asChild>
-        <Button size="sm" className="text-xs">
+        <Button size="sm" className="align-top mt-0.5">
           Sign In
         </Button>
       </AlertDialogTrigger>
