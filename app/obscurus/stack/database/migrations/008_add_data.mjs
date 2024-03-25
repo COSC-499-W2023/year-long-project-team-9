@@ -137,6 +137,26 @@ export async function up(db) {
         dueDate: new Date("2024-01-02"),
       },
       {
+        requestId: "7b6f2f94-03b0-4730-a017-46d36d3a5f17",
+        requestTitle: "New English Assignment",
+        requesterEmail: "imightbejan@gmail.com",
+        grouping: null,
+        description: "Please prepare an essay on the impact of social media.",
+        blurred: false,
+        creationDate: new Date("2024-03-20"),
+        dueDate: new Date("2024-04-10"),
+      },
+      {
+        requestId: "c36871fd-6baf-40f3-b932-acb433da5d52",
+        requestTitle: "Science Project Update",
+        requesterEmail: "ansivana@gmail.com",
+        grouping: null,
+        description: "Update on the current status of your science project.",
+        blurred: false,
+        creationDate: new Date("2024-03-20"),
+        dueDate: new Date("2024-04-05"),
+      },
+      {
         requestId: "f11ded41-37c6-4709-968d-5b8c7d77b19f",
         requestTitle:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam sed molestie dapibus nam.",
@@ -369,6 +389,30 @@ export async function up(db) {
         submittedDate: null,
         requestId: "f11ded41-37c6-4709-968d-5b8c7d77b19f",
       },
+      {
+        submissionId: "8a4db5b7-862c-4ddf-bc8d-930ed577185b",
+        requesteeEmail: "imightbejan@gmail.com",
+        status: "COMPLETED",
+        isRead: false,
+        submittedDate: new Date("2024-03-21"),
+        requestId: "7b6f2f94-03b0-4730-a017-46d36d3a5f17",
+      },
+      {
+        submissionId: "ae532db3-84a7-4275-a155-ca85a847a38a",
+        requesteeEmail: "ansivana@gmail.com",
+        status: "PENDING",
+        isRead: false,
+        submittedDate: null, // Not submitted yet
+        requestId: "c36871fd-6baf-40f3-b932-acb433da5d52",
+      },
+      {
+        submissionId: "64f33fc6-1415-4ab0-9191-60f97dd48f7a",
+        requesteeEmail: "bakar.a.muhammad@gmail.com",
+        status: "IN PROGRESS",
+        isRead: false,
+        submittedDate: null, // Still in progress
+        requestId: "c36871fd-6baf-40f3-b932-acb433da5d52",
+      }
     ])
     .execute();
 

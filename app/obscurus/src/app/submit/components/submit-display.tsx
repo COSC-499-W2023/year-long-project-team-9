@@ -9,12 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
-import {
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import {
   Archive,
   Trash2,
@@ -27,6 +22,7 @@ import {
   LucideLoader2,
   ArrowBigDown,
   FileText,
+  UploadIcon,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
 import Webcam from "react-webcam";
@@ -45,6 +41,8 @@ import { get } from "http";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { useRequests } from "@/app/hooks/use-requests";
 import substring from "@/app/functions/substring";
+import Loading from "./loading";
+import PanelLoader from "./panel-2-loader";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -109,7 +107,7 @@ export default function SubmitDisplay({
     processedVideo;
 
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [fileExt, setFileExt] = useState<string | "mp4">("mp4");
+  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -130,9 +128,9 @@ export default function SubmitDisplay({
   const reset = () => {};
 
   const handleProcessVideo = async (e: any) => {
-    setLoading(true);
+    console.log("Processing video");
     const submission = getAssociatedSubmission(request?.selected || "");
-    if (submission && triggerJob) {
+    if (submission && fileExt && triggerJob) {
       const res = await triggerJob(submission.submissionId, fileExt);
       if (res === "Video jobbed successfully" && updateSubmissionStatus) {
         await updateSubmissionStatus("PROCESSING", submission.submissionId);
@@ -140,11 +138,12 @@ export default function SubmitDisplay({
         updateRequests && updateRequests();
         await fetchUserData();
       }
+      console.log("RES", res);
 
       setUpload(false);
-      setLoading(false);
       setObjectURL(null);
       setFile(undefined);
+      console.log("Video jobbed successfully");
       toast({
         title: "Processing Video",
         description: "Your video is being processed",
@@ -152,7 +151,6 @@ export default function SubmitDisplay({
 
       return;
     } else {
-      setLoading(false);
       setObjectURL(null);
       return "Failed to run Job";
     }
@@ -170,7 +168,8 @@ export default function SubmitDisplay({
       return;
     }
     const fileExt = file.name.split(".").pop();
-    setFileExt(fileExt || "mp4");
+    console.log("File extension", fileExt);
+    setFileExt(fileExt);
 
     const key = `${submissionId}.${fileExt}`;
 
@@ -237,9 +236,9 @@ export default function SubmitDisplay({
 
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const fileName = `${submissionId}.webm`;
-      const file = new File([blob], fileName, { type: "video/webm" });
+      const blob = new Blob(recordedChunks, { type: "video/mp4" });
+      const fileName = `${submissionId}.mp4`;
+      const file = new File([blob], fileName, { type: "video/mp4" });
 
       setFile(file);
 
@@ -249,7 +248,7 @@ export default function SubmitDisplay({
         const response = await fetch(presignedUrl, {
           method: "PUT",
           headers: {
-            "Content-Type": "video/webm",
+            "Content-Type": "video/mp4",
           },
           body: file,
         });
@@ -394,7 +393,7 @@ export default function SubmitDisplay({
               {objectURL && !loading && file && (
                 <>
                   <VideoPlayer videoUrl={objectURL} filename={file?.name} />
-                  <div className="flex w-full  justify-between p-3">
+                  <div className="flex w-full  justify-between py-4">
                     <Button
                       onClick={handleChooseAnotherFile}
                       variant={"outline"}
@@ -565,21 +564,28 @@ export default function SubmitDisplay({
           </div>
           <Separator />
           <div className="flex  p-4 overflow-scroll">
-            <div className="flex-1 whitespace-pre-wrap text-sm max-h-[400px] ">
+            <div className="flex-1 whitespace-pre-wrap text-sm max-h-[500px] ">
               {selected?.description}
             </div>
           </div>
         </div>
-        <Separator />
-        <div className=" flex justify-end w-full p-5 pt-7">
-          <Button
-            size="lg"
-            className=" mb-16"
-            onClick={() => setUpload(true)}
-            disabled={!canUpload}
-          >
-            <p className="font-semibold">Upload</p>
-          </Button>
+
+        <div className="absolute bottom-10 right-10">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="lg"
+                onClick={() => setUpload(true)}
+                disabled={!canUpload}
+                variant={"ghost"}
+                style={{ display: "flex" }}
+                className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+              >
+                <UploadIcon className="h-8 w-8 " />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Upload Video</TooltipContent>
+          </Tooltip>
         </div>
       </>
     );
@@ -665,10 +671,7 @@ export default function SubmitDisplay({
           )}
         </div>
       ) : (
-        <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
-          <FileText className="h-20 w-20" />
-          <p className=" text-lg">No request selected.</p>
-        </div>
+        <PanelLoader />
       )}
     </div>
   );
