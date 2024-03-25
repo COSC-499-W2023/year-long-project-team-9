@@ -2033,7 +2033,7 @@ The tasks identified for this week were:
 End to end testing needs to be updated for new UI
 ___
 
-# TEAM 9 - TERM 2 WEEK 9
+# TEAM 9 - TERM 2 WEEK 10
 
 ## Milestone Features
 - Soren Stenback: Authentication & Refine Chat
@@ -2043,7 +2043,7 @@ ___
 
 ## Work Period
 
-Week 10 ran from 00:00 on 2024/03/10 to 23:59 on 2024/03/10.
+Week 10 ran from 00:00 on 2024/03/10 to 23:59 on 2024/03/17.
 
 ## Milestone Goal Recap
 
@@ -2161,3 +2161,118 @@ The tasks identified for this week were:
 
 End to end testing needs to be updated for new UI
 ___
+
+
+# TEAM 9 - TERM 2 WEEK 11
+
+## Milestone Features
+- Soren Stenback: Authentication & Refine Chat
+- Jan-Yaeger Dhillon: Video Submission Process & Home Page
+- Baz Sivakua: Account Page & Profile Image
+- Muhammad Bakar: Notification & Emails
+
+## Work Period
+
+Week 11 ran from 00:00 on 2024/03/18 to 23:59 on 2024/03/24.
+
+## Milestone Goal Recap
+
+### Milestone Goal 1: Back-End Coding
+Complete coding for back-end functionality of the application, such as the system architecture and database.
+
+### Milestone Goal 2: Front-End Coding
+Complete coding for front-pages and connect them to functions set up in back end development
+
+## Associated Board Tasks
+
+The tasks identified for this week were:
+
+### Task 1: Front-end Chat fixes
+
+* **Status:** Complete
+* **Assignee(s):** Soren Stenback & Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix bugs regarding front end of chat 
+
+### Task 2: Create Request inActive Bug
+
+* **Status:** Complete
+* **Assignee(s):** Soren Stenback & Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Fix bug when creating a request and an inactive chat
+
+### Task 3: Notifications
+
+* **Status:** Complete
+* **Assignee(s):** Muhammad Bakar
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Implement front end of notifications 
+
+### Task 4: Create User Settings Page
+
+* **Status:** Complete
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create page allowing user to change their account information
+
+### Task 5: User Stats
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Create function that compiles user statistics displayed on profile page
+
+### Task 6: Standardize Video Formats
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Standardized formats for videos after upload
+
+### Task 7: Add Dropzone
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Add drag-drop upload functionality to video submission
+
+### Task 8: Video Upload Bug Fixes
+
+* **Status:** In-Progress
+* **Assignee(s):** Jan-Yaeger Dhillon
+* **Associated Milestone Goal:** Milestone Goal 1: Back-End Coding
+* **Description:** Cleanup known issues and bugs with uploads
+
+### Task 10: Upload Profile Picture
+
+* **Status:** In-Progress
+* **Assignee(s):** Baz Sivakua
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Upload video to s3 buckets and add link to database
+
+### Task 11: Authentication
+
+* **Status:** In-Progress
+* **Assignee(s):** Soren Stenback
+* **Associated Milestone Goal:** Milestone Goal 2: Front-End Coding
+* **Description:** Finish authentication 
+
+## Details
+
+### Burnup Chart
+
+![screenshot of burnupchart](img/team-weekly-log-img/week-24/burnup-week24.png)
+
+### Table View of Completed Tasks
+
+![screenshot of completed board tasks](img/team-weekly-log-img/week-24/completed-week24.png)
+
+### Table View of In Progress Tasks
+
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-24/inprogress-week24.png)
+
+### Test Report
+
+![test report](img/team-weekly-log-img/week-24/testreport-week24.png)
+
+___ 
