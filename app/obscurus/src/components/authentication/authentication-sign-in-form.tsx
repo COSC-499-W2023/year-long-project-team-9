@@ -15,18 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const accountFormSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .min(1, { message: "Email cannot be blank." })
-    .max(320, { message: "Email cannot be more than 320 characters." })
-    .email({ message: "Email is not valid." }),
-  password: z
-    .string()
-    .trim()
-    .min(1, { message: "Password cannot be blank." })
-    .max(24, { message: "Password cannot be more than 24 characters." }),
+  email: z.string().trim().toLowerCase().min(1).max(320).email(),
+  password: z.string().trim().min(1).max(24),
 });
 
 export default function SignInForm({
@@ -44,7 +34,7 @@ export default function SignInForm({
   }
 
   return (
-    <div className="overflow-auto max-h-[80vh]">
+    <div className="overflow-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
@@ -57,7 +47,6 @@ export default function SignInForm({
                 <FormControl>
                   <Input placeholder="Email" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -80,17 +69,21 @@ export default function SignInForm({
                     </a>
                   </div>
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
-
-          <div className="text-right">
-            <Button
-              type="submit"
-              variant={"default"}
-              className="justify-self-start"
-            >
+          <div className="flex flex-grow" />
+          <div className="flex justify-between items-center">
+            <div className="text-xs mt-2">
+              <span>Need an account? </span>
+              <a
+                onClick={() => setDialogState("signUp")}
+                className="underline text-blue-400 hover:cursor-pointer"
+              >
+                Sign Up
+              </a>
+            </div>
+            <Button type="submit" variant={"default"}>
               Sign In
             </Button>
           </div>
