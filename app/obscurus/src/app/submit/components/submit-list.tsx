@@ -263,8 +263,9 @@ export default function SubmitList({
             />
             {search && (
               <XCircle
-                className="absolute right-4 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
                 onClick={clearSearch}
+                visibility={search.search ? "visible" : "hidden"}
               />
             )}
           </div>
