@@ -32,7 +32,7 @@ export default function AuthenticationSignedOut() {
             <X />
           </AlertDialogCancel>
         </AlertDialogHeader>
-        <AlertDialogDescription className="justify-center w-full h-full">
+        <AlertDialogDescription className="justify-center w-full max-h-full overflow-auto">
           {dialogState === "signIn" && (
             <div>
               <Label className="flex justify-start text-2xl font-black">
@@ -47,7 +47,7 @@ export default function AuthenticationSignedOut() {
               <Label className="flex justify-start text-2xl font-black">
                 Sign Up
               </Label>
-              <Separator className="mt-2 mb-4" />
+              <Separator className="mt-1 mb-2" />
               <SignUpForm setDialogState={setDialogState} />
             </div>
           )}
@@ -56,7 +56,7 @@ export default function AuthenticationSignedOut() {
               <Label className="flex justify-center text-xl">
                 Forgot Password
               </Label>
-              <Separator className="mt-2 mb-4" />
+              <Separator className="mt-1 mb-2" />
               <RecoverPasswordForm setDialogState={setDialogState} />
             </div>
           )}
