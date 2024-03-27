@@ -13,44 +13,9 @@ import PasswordInput from "@/components/authentication-and-profile-components/ac
 import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
 import LastNameInput from "@/components/authentication-and-profile-components/account-form-last-name-input";
 import { ArrowRight } from "lucide-react";
+import SignUpEmailNamesForm from "./authentication-sign-up-email-names-form";
+import SignUpPasswordAgeTermsForm from "./authentication-sign-up-password-age-terms-form";
 
-const signUpEmailNamesFormSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .min(1, { message: "Email cannot be blank." })
-    .max(320, { message: "Email cannot be more than 320 characters." })
-    .email({ message: "Email is not valid." }),
-  firstName: z
-    .string()
-    .trim()
-    .min(1, { message: "First name cannot be blank." })
-    .max(100, { message: "First name cannot be more than 100 characters." }),
-  lastName: z
-    .string()
-    .trim()
-    .min(1, { message: "Last name cannot be blank." })
-    .max(100, { message: "Last name cannot be more than 100 characters." }),
-});
-const signUpPasswordAgeTermsFormSchema = z.object({
-  password: z
-    .string()
-    .trim()
-    .min(8, { message: "Password must be at least 8 characters." })
-    .max(24, { message: "Password cannot be more than 24 characters." })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter",
-    })
-    .regex(/[0-9]/, { message: "Password must contain at least one number" })
-    .regex(/[\W_]/, {
-      message: "Password must contain at least one special character",
-    }),
-  confirmPassword: z.string(),
-});
 const signUpFormSchema = z
   .object({
     email: z
@@ -66,14 +31,14 @@ const signUpFormSchema = z
       .min(8, { message: "Password must be at least 8 characters." })
       .max(24, { message: "Password cannot be more than 24 characters." })
       .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
+        message: "Password must contain at least one uppercase letter.",
       })
       .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
+        message: "Password must contain at least one lowercase letter.",
       })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" })
+      .regex(/[0-9]/, { message: "Password must contain at least one number." })
       .regex(/[\W_]/, {
-        message: "Password must contain at least one special character",
+        message: "Password must contain at least one special character.",
       }),
     confirmPassword: z.string(),
     firstName: z
@@ -99,23 +64,12 @@ export default function SignUpForm({
 }: {
   setDialogState: Function;
 }) {
-  const emailNamesForm = useForm<z.infer<typeof signUpEmailNamesFormSchema>>({
-    resolver: zodResolver(signUpEmailNamesFormSchema),
-  });
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
   });
   const [signUpState, setSignUpState] = useState("emailNames");
   const [passwordAgeTermBool, setPasswordAgeTermBool] = useState(false);
   const passwordAgeTermRef = useRef<HTMLDivElement>(null);
-  function scrollTopPasswordAgeTerm() {
-    passwordAgeTermRef.current?.firstElementChild?.scrollIntoView();
-  }
-  function onEmailNamesSubmit(
-    values: z.infer<typeof signUpEmailNamesFormSchema>
-  ) {
-    console.log(values);
-  }
   function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     console.log(values);
   }
@@ -126,58 +80,15 @@ export default function SignUpForm({
     }
   });
   return (
-    <div className="">
+    <div>
       {signUpState === "emailNames" && (
-        <Form {...emailNamesForm}>
-          <form
-            onSubmit={emailNamesForm.handleSubmit(onEmailNamesSubmit)}
-            className="space-y-2 px-1"
-          >
-            <EmailInput
-              form={form}
-              isDisabled={false}
-              formDescription={
-                "Your email cannot be changed once your account is created."
-              }
-              fieldName="email"
-              label="Email"
-              placeHolder="Email"
-            />
-            <FirstNameInput
-              form={form}
-              isDisabled={false}
-              formDescription={
-                "Other users will be able to see your first name."
-              }
-              fieldName={"firstName"}
-              label={"First Name"}
-              placeHolder="First Name"
-            />
-            <LastNameInput
-              form={form}
-              isDisabled={false}
-              formDescription={
-                "Other users will be able to see your last name."
-              }
-              fieldName={"lastName"}
-              label={"Last Name"}
-              placeHolder={"Last Name"}
-            />
-            <Button type="submit" variant={"default"} className="w-full">
-              Next
-              <ArrowRight />
-            </Button>
-            <div className="text-xs text-center mt-2">
-              <span>Have an account? </span>
-              <a
-                onClick={() => setDialogState("signIn")}
-                className="underline text-blue-400 hover:cursor-pointer"
-              >
-                Sign In
-              </a>
-            </div>
-          </form>
-        </Form>
+        <SignUpEmailNamesForm
+          setDialogState={setDialogState}
+          setSignUpState={setSignUpState}
+        />
+      )}
+      {signUpState === "passwordAgeTerms" && (
+        <SignUpPasswordAgeTermsForm setDialogState={setDialogState} />
       )}
       {/* <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">

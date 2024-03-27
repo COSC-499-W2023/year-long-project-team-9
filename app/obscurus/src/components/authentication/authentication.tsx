@@ -13,14 +13,13 @@ export default function Authentication({
   userEmail: string;
   userName: string;
 }) {
-  console.log(signedIn, userEmail, userName);
   return signedIn ? (
     <AuthenticationSignedIn
       signOutUser={signOutUser}
       userEmail={userEmail}
       userName={userName}
-    ></AuthenticationSignedIn>
+    />
   ) : (
-    <AuthenticationSignedOut></AuthenticationSignedOut>
+    <AuthenticationSignedOut />
   );
 }
