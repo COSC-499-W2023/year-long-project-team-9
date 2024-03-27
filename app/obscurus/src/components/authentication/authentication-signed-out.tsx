@@ -26,24 +26,27 @@ export default function AuthenticationSignedOut() {
           Sign In
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[40%] h-[85%] flex flex-col">
-        {/* <div className="flex flex-col flex-grow justify-center items-center"> */}
+      <AlertDialogContent className="w-[30%] h-[70%] flex flex-col">
         <AlertDialogHeader className="flex items-end">
           <AlertDialogCancel>
             <X />
           </AlertDialogCancel>
         </AlertDialogHeader>
-        <AlertDialogDescription className="flex-grow-0 w-full h-full">
+        <AlertDialogDescription className="justify-center w-full h-full">
           {dialogState === "signIn" && (
             <div>
-              <Label className="flex justify-center text-xl">Sign In</Label>
-              <Separator className="mt-2 mb-4" />
+              <Label className="flex justify-start text-2xl font-black">
+                Sign In
+              </Label>
+              <Separator className="mt-1 mb-2" />
               <SignInForm setDialogState={setDialogState} />
             </div>
           )}
           {dialogState === "signUp" && (
             <div>
-              <Label className="flex justify-center text-xl">Sign Up</Label>
+              <Label className="flex justify-start text-2xl font-black">
+                Sign Up
+              </Label>
               <Separator className="mt-2 mb-4" />
               <SignUpForm setDialogState={setDialogState} />
             </div>
@@ -58,7 +61,6 @@ export default function AuthenticationSignedOut() {
             </div>
           )}
         </AlertDialogDescription>
-        {/* </div> */}
       </AlertDialogContent>
     </AlertDialog>
   );

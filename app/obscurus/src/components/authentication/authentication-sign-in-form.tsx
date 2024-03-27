@@ -36,8 +36,7 @@ export default function SignInForm({
   return (
     <div className="overflow-auto max-h-[55vh]">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {/* Email */}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -50,8 +49,6 @@ export default function SignInForm({
               </FormItem>
             )}
           />
-
-          {/* Password */}
           <FormField
             control={form.control}
             name="password"
@@ -72,20 +69,17 @@ export default function SignInForm({
               </FormItem>
             )}
           />
-          <div className="flex flex-grow" />
-          <div className="flex justify-between items-center">
-            <div className="text-xs mt-2">
-              <span>Need an account? </span>
-              <a
-                onClick={() => setDialogState("signUp")}
-                className="underline text-blue-400 hover:cursor-pointer"
-              >
-                Sign Up
-              </a>
-            </div>
-            <Button type="submit" variant={"default"}>
-              Sign In
-            </Button>
+          <Button type="submit" variant={"default"} className="w-full">
+            Sign In
+          </Button>
+          <div className="text-xs text-center mt-2">
+            <span>Need an account? </span>
+            <a
+              onClick={() => setDialogState("signUp")}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Sign Up
+            </a>
           </div>
         </form>
       </Form>
