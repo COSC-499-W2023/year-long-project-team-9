@@ -15,12 +15,18 @@ const recoverPasswordFormSchema = z
     password: z
       .string()
       .trim()
-      .min(8)
-      .max(24)
-      .regex(/[A-Z]/)
-      .regex(/[a-z]/)
-      .regex(/[0-9]/)
-      .regex(/[\W_]/),
+      .min(8, { message: "Password must be at least 8 characters." })
+      .max(24, { message: "Password must be at most 24 characters." })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number." })
+      .regex(/[\W_]/, {
+        message: "Password must contain at least one special character.",
+      }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -44,22 +50,25 @@ export default function RecoverPasswordForm({
   return (
     <div className="overflow-auto max-h-[55vh]">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-1">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
           {/* Password */}
           <PasswordInput
             form={form}
             isDisabled={false}
             formDescription={
-              "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
+              "Password must contain atleast one lowercase and one uppercase letter. Password must contain atleast one number and one special character. Password must be at least 8 characters and at most 24 characters."
             }
             fieldName={"password"}
             label={"Password"}
             placeHolder={"Password"}
           />
+          {form.getFieldState("password").error && (
+            <div className="flex flex-grow" />
+          )}
           <PasswordInput
             form={form}
             isDisabled={false}
-            formDescription={"Confirm password must match the password above."}
+            formDescription={"Passwords must match."}
             fieldName={"confirmPassword"}
             label={"Confirm Password"}
             placeHolder={"Confirm Password"}
