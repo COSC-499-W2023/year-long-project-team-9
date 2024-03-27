@@ -56,7 +56,7 @@ export default function RecoverPasswordForm({
             form={form}
             isDisabled={false}
             formDescription={
-              "Password must contain atleast one lowercase and one uppercase letter. Password must contain atleast one number and one special character. Password must be at least 8 characters and at most 24 characters."
+              "Password must contain at least one lowercase and one uppercase letter. Password must contain at least one number and one special character. Password must be at least 8 characters and at most 24 characters."
             }
             fieldName={"password"}
             label={"Password"}
