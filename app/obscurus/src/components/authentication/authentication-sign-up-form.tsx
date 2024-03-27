@@ -89,6 +89,9 @@ export default function SignUpForm({
           <PasswordInput
             form={form}
             isDisabled={false}
+            formDescription={
+              "Password must a lowercase and uppercase letter. Password must have a number and a special character. Password at least 8 characters and no more than 24 characters."
+            }
             fieldName={"password"}
             label={"Password"}
             placeHolder={"Password"}
@@ -96,6 +99,7 @@ export default function SignUpForm({
           <PasswordInput
             form={form}
             isDisabled={false}
+            formDescription={"Confirm password must match the password above."}
             fieldName={"confirmPassword"}
             label={"Confirm Password"}
             placeHolder={"Confirm Password"}

@@ -33,6 +33,9 @@ export default function EmailInput({
       <FormDescription className="text-justify">
         {formDescription}
       </FormDescription>
+      {form.getFieldState(fieldName).error && (
+        <FormMessage>{form.getFieldState(fieldName).error.message}</FormMessage>
+      )}
     </FormItem>
   );
 }
