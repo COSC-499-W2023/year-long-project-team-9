@@ -40,13 +40,6 @@ export default function SiteStack({ stack }: StackContext) {
     resources: ["*"],
   });
 
-  const USER_POOL_WEB_CLIENT_ID_KEY = new Config.Secret(
-    stack,
-    "USER_POOL_WEB_CLIENT_ID_KEY"
-  );
-  const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
-
-
   const api = new Api(stack, "Api", {
     defaults: {
       function: {
@@ -257,25 +250,21 @@ export default function SiteStack({ stack }: StackContext) {
 
   api.bind([wsApi]);
 
-
   const site = new NextjsSite(stack, "site", {
-    bind: [
-      chumBucket,
-      chumBucket,
-      rds,
-      api,
-      steveJobs,
-      wsApi,
-      USER_POOL_ID_KEY,
-      USER_POOL_WEB_CLIENT_ID_KEY,
-    ],
+    bind: [chumBucket, chumBucket, rds, api, steveJobs, wsApi],
     permissions: [rekognitionPolicyStatement, wsApi],
-    environment: {NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url},
+    environment: {
+      NEXT_PUBLIC_REGION: stack.region,
+      NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
+      NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID: auth.userPoolClientId,
+      NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
+    },
   });
 
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
+    Region: stack.region,
     UserPoolId: auth.userPoolId,
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,

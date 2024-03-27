@@ -6,7 +6,6 @@ import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
 import { Amplify } from "aws-amplify";
-import { getCognitoPools } from "./functions/getCognitoPools";
 import deleteNotifications from "./functions/deleteNotifications";
 import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
@@ -16,6 +15,16 @@ import {
   getEmail,
 } from "./functions/authenticationMethods";
 import { getUserNames } from "./functions/getUserNames";
+import amplifyConfig from "./utils/amplifyConfig";
+
+Amplify.configure({
+  Auth: {
+    region: amplifyConfig.cognito.REGION,
+    userPoolId: amplifyConfig.cognito.USER_POOL_ID,
+    userPoolWebClientId: amplifyConfig.cognito.USER_POOL_WEB_CLIENT_ID,
+  },
+  ssr: true,
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,14 +43,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cognitoPools = await getCognitoPools();
-  Amplify.configure({
-    Auth: {
-      region: "us-west-2",
-      userPoolId: cognitoPools[0],
-      userPoolWebClientId: cognitoPools[1],
-    },
-  });
   const getUserName = async (userEmail: string) => {
     const userNames: UserNames[] = await getUserNames();
     const filUserNames = userNames.filter((user) => user.email === userEmail);
