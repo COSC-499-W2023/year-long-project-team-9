@@ -80,100 +80,17 @@ export default function SignUpForm({
     }
   });
   return (
-    <div>
+    <div ref={passwordAgeTermRef}>
       {signUpState === "emailNames" && (
         <SignUpEmailNamesForm
           setDialogState={setDialogState}
           setSignUpState={setSignUpState}
+          setPasswordAgeTermBool={setPasswordAgeTermBool}
         />
       )}
       {signUpState === "passwordAgeTerms" && (
         <SignUpPasswordAgeTermsForm setDialogState={setDialogState} />
       )}
-      {/* <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
-          {signUpState === "emailNames" && (
-            <div className="space-y-2">
-              <EmailInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Your email cannot be changed once your account is created."
-                }
-                fieldName="email"
-                label="Email"
-                placeHolder="Email"
-              />
-              <FirstNameInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Other users will be able to see your first name."
-                }
-                fieldName={"firstName"}
-                label={"First Name"}
-                placeHolder="First Name"
-              />
-              <LastNameInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Other users will be able to see your last name."
-                }
-                fieldName={"lastName"}
-                label={"Last Name"}
-                placeHolder={"Last Name"}
-              />
-              <Button
-                onClick={() => [
-                  setSignUpState("passwordAgeTerms"),
-                  setPasswordAgeTermBool(true),
-                ]}
-                className="w-full"
-              >
-                Next
-                <ArrowRight />
-              </Button>
-              <div className="text-xs text-center mt-2">
-                <span>Have an account? </span>
-                <a
-                  onClick={() => setDialogState("signIn")}
-                  className="underline text-blue-400 hover:cursor-pointer"
-                >
-                  Sign In
-                </a>
-              </div>
-            </div>
-          )}
-          {signUpState === "passwordAgeTerms" && (
-            <div ref={passwordAgeTermRef} className="space-y-2">
-              <PasswordInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Password must contain at least one lowercase and one uppercase letter. Password must contain at least one number and one special character. Password must be at least 8 characters and at most 24 characters."
-                }
-                fieldName={"password"}
-                label={"Password"}
-                placeHolder={"Password"}
-              />
-              <PasswordInput
-                form={form}
-                isDisabled={false}
-                formDescription={"Passwords must match."}
-                fieldName={"confirmPassword"}
-                label={"Confirm Password"}
-                placeHolder={"Confirm Password"}
-              />
-              <AuthenticationAgeInput form={form} />
-              <AuthenticationTermsInput form={form} />
-              <Button type="submit" variant={"default"} className="w-full">
-                Sign Up
-              </Button>
-            </div>
-          )}
-        </form>
-      </Form> */}
     </div>
   );
 }
