@@ -59,8 +59,11 @@ export default function CreateFormDueDateInput({ form }: any) {
         >
           <Select
             onValueChange={(value) => {
-              setDate(addDays(endOfDay(new Date()), parseInt(value)));
-              form.setValue("dueDate", endOfDay(new Date()), parseInt(value));
+              setDate(endOfDay(addDays(new Date(), parseInt(value))));
+              form.setValue(
+                "dueDate",
+                endOfDay(addDays(new Date(), parseInt(value)))
+              );
               form.clearErrors("dueDate");
             }}
           >

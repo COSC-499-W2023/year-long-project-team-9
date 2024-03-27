@@ -102,7 +102,7 @@ export default function CreateDisplay({
                 <HoverCardTrigger className="text-xs line-clamp-1">
                   To:{" "}
                   {form
-                    .getValues("clientEmail")
+                    .watch("clientEmail")
                     .map((item: { email: string }, index: number) =>
                       item.email !== ""
                         ? item.email
@@ -112,11 +112,11 @@ export default function CreateDisplay({
                     )
                     .join(", ")}
                 </HoverCardTrigger>
-                <HoverCardContent>
+                <HoverCardContent className="max-h-48 overflow-y-auto">
                   <div>To: </div>
                   <div className="ml-1">
                     {form
-                      .getValues("clientEmail")
+                      .watch("clientEmail")
                       .map((item: { email: string }, index: number) => (
                         <div key={index}>
                           •{" "}
