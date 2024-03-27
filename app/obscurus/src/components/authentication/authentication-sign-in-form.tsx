@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { Auth } from "aws-amplify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,7 +10,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,9 @@ export default function SignInForm({
   });
 
   function onSubmit(values: z.infer<typeof accountFormSchema>) {
-    console.log(values);
+    Auth.signIn(values.email, values.password)
+      .then(() => window.location.reload())
+      .catch((e) => alert(e));
   }
 
   return (
