@@ -39,10 +39,7 @@ export default function AuthenticationSignedOut() {
                 Sign In
               </Label>
               <Separator className="mt-1 mb-2" />
-              <SignInForm
-                dialogState={dialogState}
-                setDialogState={setDialogState}
-              />
+              <SignInForm setDialogState={setDialogState} />
             </div>
           )}
           {dialogState === "signUp" && (

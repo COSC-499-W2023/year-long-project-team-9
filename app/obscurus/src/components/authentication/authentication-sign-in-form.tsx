@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Loading from "./loading";
+import { Loader } from "lucide-react";
 
 const accountFormSchema = z.object({
   email: z.string().trim().toLowerCase().min(1).max(320).email(),
@@ -21,27 +21,26 @@ const accountFormSchema = z.object({
 });
 
 export default function SignInForm({
-  dialogState,
   setDialogState,
 }: {
-  dialogState: string;
   setDialogState: Function;
 }) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {},
   });
+  const [signInState, setSignInState] = useState("signIn");
 
   async function onSubmit(values: z.infer<typeof accountFormSchema>) {
-    setDialogState("signInLoading");
+    setSignInState("signInLoading");
     await Auth.signIn(values.email, values.password)
       .then(() => window.location.reload())
-      .catch((e) => [alert(e), setDialogState("signIn")]);
+      .catch((e) => [alert(e), setSignInState("signIn")]);
   }
 
   return (
     <div>
-      {dialogState === "signIn" && (
+      {signInState === "signIn" && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -91,11 +90,7 @@ export default function SignInForm({
           </form>
         </Form>
       )}
-      {dialogState === "signInLoading" && (
-        <div>
-          <Loading />
-        </div>
-      )}
+      {signInState === "signInLoading" && <Loader />}
     </div>
   );
 }
