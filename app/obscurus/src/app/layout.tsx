@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "./nav-bar";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
-import { Amplify } from "aws-amplify";
 import deleteNotifications from "./functions/deleteNotifications";
 import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
@@ -15,9 +14,6 @@ import {
   getEmail,
 } from "./functions/authenticationMethods";
 import { getUserNames } from "./functions/getUserNames";
-import amplifyConfig from "./utils/amplifyConfig";
-
-Amplify.configure(amplifyConfig);
 
 const inter = Inter({ subsets: ["latin"] });
 
