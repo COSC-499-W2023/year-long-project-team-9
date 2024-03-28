@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader } from "lucide-react";
+import Loading from "./loading";
 
 const accountFormSchema = z.object({
   email: z.string().trim().toLowerCase().min(1).max(320).email(),
@@ -21,11 +21,9 @@ const accountFormSchema = z.object({
 });
 
 export default function SignInForm({
-  setDialogOpenState,
   dialogState,
   setDialogState,
 }: {
-  setDialogOpenState: Function;
   dialogState: string;
   setDialogState: Function;
 }) {
@@ -37,7 +35,7 @@ export default function SignInForm({
   async function onSubmit(values: z.infer<typeof accountFormSchema>) {
     setDialogState("signInLoading");
     await Auth.signIn(values.email, values.password)
-      .then(() => setDialogOpenState(false))
+      .then(() => window.location.reload())
       .catch((e) => [alert(e), setDialogState("signIn")]);
   }
 
@@ -93,7 +91,11 @@ export default function SignInForm({
           </form>
         </Form>
       )}
-      {dialogState === "signInLoading" && <Loader />}
+      {dialogState === "signInLoading" && (
+        <div>
+          <Loading />
+        </div>
+      )}
     </div>
   );
 }
