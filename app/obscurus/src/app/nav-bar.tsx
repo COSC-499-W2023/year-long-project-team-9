@@ -19,6 +19,10 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Authentication from "@/components/authentication/authentication";
+import amplifyConfig from "@/app/utils/amplifyConfig";
+import { Amplify } from "aws-amplify";
+
+Amplify.configure(amplifyConfig);
 
 export function Notifications({
   notificationsRead,
