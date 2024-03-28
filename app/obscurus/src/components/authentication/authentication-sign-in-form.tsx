@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
+
 import { Auth } from "aws-amplify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,7 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader } from "lucide-react";
+import { LucideLoader2 } from "lucide-react";
+import { Label } from "../ui/label";
 
 const accountFormSchema = z.object({
   email: z.string().trim().toLowerCase().min(1).max(320).email(),
@@ -29,18 +31,24 @@ export default function SignInForm({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {},
   });
-  const [signInState, setSignInState] = useState("signIn");
+  const [loading, setLoading] = useState(false);
+  const [failedLogin, setFailedLogin] = useState(false);
 
   async function onSubmit(values: z.infer<typeof accountFormSchema>) {
-    setSignInState("signInLoading");
+    setLoading(true);
     await Auth.signIn(values.email, values.password)
       .then(() => window.location.reload())
-      .catch((e) => [alert(e), setSignInState("signIn")]);
+      .catch((e) => [setLoading(false), setFailedLogin(true)]);
   }
 
   return (
-    <div>
-      {signInState === "signIn" && (
+    <div className="flex flex-col h-full">
+      {loading ? (
+        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+          <LucideLoader2 className="animate-spin text-primary" size={75} />
+          <p className="font-bold">Loading...</p>
+        </div>
+      ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -75,6 +83,13 @@ export default function SignInForm({
                 </FormItem>
               )}
             />
+            {failedLogin && (
+              <div className="flex justify-center border border-red-500 rounded p-2">
+                <Label className="text-red-500 text-xs">
+                  Invalid Credentials
+                </Label>
+              </div>
+            )}
             <Button type="submit" variant={"default"} className="w-full">
               Sign In
             </Button>
@@ -90,7 +105,6 @@ export default function SignInForm({
           </form>
         </Form>
       )}
-      {signInState === "signInLoading" && <Loader />}
     </div>
   );
 }
