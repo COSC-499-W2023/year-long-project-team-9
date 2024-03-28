@@ -17,14 +17,7 @@ import {
 import { getUserNames } from "./functions/getUserNames";
 import amplifyConfig from "./utils/amplifyConfig";
 
-Amplify.configure({
-  Auth: {
-    region: amplifyConfig.cognito.REGION,
-    userPoolId: amplifyConfig.cognito.USER_POOL_ID,
-    userPoolWebClientId: amplifyConfig.cognito.USER_POOL_WEB_CLIENT_ID,
-  },
-  ssr: true,
-});
+Amplify.configure(amplifyConfig);
 
 const inter = Inter({ subsets: ["latin"] });
 

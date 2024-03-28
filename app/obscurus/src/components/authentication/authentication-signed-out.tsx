@@ -18,9 +18,13 @@ import { Label } from "../ui/label";
 import { X } from "lucide-react";
 
 export default function AuthenticationSignedOut() {
+  const [dialogOpenState, setDialogOpenState] = useState(false);
   const [dialogState, setDialogState] = useState<string>("signIn");
   return (
-    <AlertDialog onOpenChange={() => setDialogState("signIn")}>
+    <AlertDialog
+      open={dialogOpenState}
+      onOpenChange={() => [setDialogOpenState(true), setDialogState("signIn")]}
+    >
       <AlertDialogTrigger asChild>
         <Button size="sm" className="align-top mt-0.5">
           Sign In
@@ -39,7 +43,10 @@ export default function AuthenticationSignedOut() {
                 Sign In
               </Label>
               <Separator className="mt-1 mb-2" />
-              <SignInForm setDialogState={setDialogState} />
+              <SignInForm
+                setDialogOpenState={setDialogOpenState}
+                setDialogState={setDialogState}
+              />
             </div>
           )}
           {dialogState === "signUp" && (

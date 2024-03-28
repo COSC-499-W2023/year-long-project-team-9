@@ -1,6 +1,10 @@
 "use client";
 import AuthenticationSignedIn from "./authentication-signed-in";
 import AuthenticationSignedOut from "./authentication-signed-out";
+import amplifyConfig from "@/app/utils/amplifyConfig";
+import { Amplify } from "aws-amplify";
+
+Amplify.configure(amplifyConfig);
 
 export default function Authentication({
   signedIn,

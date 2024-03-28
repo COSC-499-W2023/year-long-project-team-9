@@ -20,8 +20,10 @@ const accountFormSchema = z.object({
 });
 
 export default function SignInForm({
+  setDialogOpenState,
   setDialogState,
 }: {
+  setDialogOpenState: Function;
   setDialogState: Function;
 }) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
@@ -29,9 +31,9 @@ export default function SignInForm({
     defaultValues: {},
   });
 
-  function onSubmit(values: z.infer<typeof accountFormSchema>) {
-    Auth.signIn(values.email, values.password)
-      .then(() => window.location.reload())
+  async function onSubmit(values: z.infer<typeof accountFormSchema>) {
+    await Auth.signIn(values.email, values.password)
+      .then(() => setDialogOpenState(false))
       .catch((e) => alert(e));
   }
 
