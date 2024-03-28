@@ -34,17 +34,19 @@ const signUpEmailNamesFormSchema = z.object({
 export default function SignUpEmailNamesForm({
   setDialogState,
   setSignUpState,
+  setSignUpEmailNames,
   setPasswordAgeTermBool,
 }: {
   setDialogState: Function;
   setSignUpState: Function;
+  setSignUpEmailNames: Function;
   setPasswordAgeTermBool: Function;
 }) {
   const form = useForm<z.infer<typeof signUpEmailNamesFormSchema>>({
     resolver: zodResolver(signUpEmailNamesFormSchema),
   });
   function onSubmit(values: z.infer<typeof signUpEmailNamesFormSchema>) {
-    console.log(values);
+    setSignUpEmailNames(values);
     setSignUpState("passwordAgeTerms");
     setPasswordAgeTermBool(true);
   }

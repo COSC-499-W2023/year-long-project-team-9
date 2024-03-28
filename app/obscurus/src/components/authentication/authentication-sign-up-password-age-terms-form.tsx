@@ -10,6 +10,25 @@ import AuthenticationTermsInput from "./authentication-form-terms-input";
 import AuthenticationAgeInput from "./authentication-form-age-input";
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
 
+const signUpEmailNamesFormSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(1, { message: "Email cannot be blank." })
+    .max(320, { message: "Email cannot be more than 320 characters." })
+    .email({ message: "Email is not valid." }),
+  firstName: z
+    .string()
+    .trim()
+    .min(1, { message: "First name cannot be blank." })
+    .max(100, { message: "First name cannot be more than 100 characters." }),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, { message: "Last name cannot be blank." })
+    .max(100, { message: "Last name cannot be more than 100 characters." }),
+});
 const signUpPasswordAgeTermsFormSchema = z
   .object({
     password: z
@@ -38,13 +57,17 @@ const signUpPasswordAgeTermsFormSchema = z
 
 export default function SignUpPasswordAgeTermsForm({
   setDialogState,
+  signUpEmailNames,
 }: {
   setDialogState: Function;
+  signUpEmailNames: z.infer<typeof signUpEmailNamesFormSchema>;
 }) {
   const form = useForm<z.infer<typeof signUpPasswordAgeTermsFormSchema>>({
     resolver: zodResolver(signUpPasswordAgeTermsFormSchema),
   });
-  function onSubmit(values: z.infer<typeof signUpPasswordAgeTermsFormSchema>) {
+  async function onSubmit(
+    values: z.infer<typeof signUpPasswordAgeTermsFormSchema>
+  ) {
     console.log(values);
   }
   return (

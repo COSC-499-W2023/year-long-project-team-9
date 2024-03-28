@@ -45,6 +45,7 @@ export default function AuthenticationSignedOut() {
               <Separator className="mt-1 mb-2" />
               <SignInForm
                 setDialogOpenState={setDialogOpenState}
+                dialogState={dialogState}
                 setDialogState={setDialogState}
               />
             </div>

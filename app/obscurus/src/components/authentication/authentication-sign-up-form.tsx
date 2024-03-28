@@ -16,63 +16,37 @@ import { ArrowRight } from "lucide-react";
 import SignUpEmailNamesForm from "./authentication-sign-up-email-names-form";
 import SignUpPasswordAgeTermsForm from "./authentication-sign-up-password-age-terms-form";
 
-const signUpFormSchema = z
-  .object({
-    email: z
-      .string()
-      .trim()
-      .toLowerCase()
-      .min(1, { message: "Email cannot be blank." })
-      .max(320, { message: "Email cannot be more than 320 characters." })
-      .email({ message: "Email is not valid." }),
-    password: z
-      .string()
-      .trim()
-      .min(8, { message: "Password must be at least 8 characters." })
-      .max(24, { message: "Password cannot be more than 24 characters." })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter.",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter.",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number." })
-      .regex(/[\W_]/, {
-        message: "Password must contain at least one special character.",
-      }),
-    confirmPassword: z.string(),
-    firstName: z
-      .string()
-      .trim()
-      .min(1, { message: "First name cannot be blank." })
-      .max(100, { message: "First name cannot be more than 100 characters." }),
-    lastName: z
-      .string()
-      .trim()
-      .min(1, { message: "Last name cannot be blank." })
-      .max(100, { message: "Last name cannot be more than 100 characters." }),
-    ageVerified: z.boolean(),
-    agreedToTermsAndConditions: z.boolean(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match.",
-    path: ["confirmPassword"],
-  });
+const signUpEmailNamesFormSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(1, { message: "Email cannot be blank." })
+    .max(320, { message: "Email cannot be more than 320 characters." })
+    .email({ message: "Email is not valid." }),
+  firstName: z
+    .string()
+    .trim()
+    .min(1, { message: "First name cannot be blank." })
+    .max(100, { message: "First name cannot be more than 100 characters." }),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, { message: "Last name cannot be blank." })
+    .max(100, { message: "Last name cannot be more than 100 characters." }),
+});
 
 export default function SignUpForm({
   setDialogState,
 }: {
   setDialogState: Function;
 }) {
-  const form = useForm<z.infer<typeof signUpFormSchema>>({
-    resolver: zodResolver(signUpFormSchema),
-  });
   const [signUpState, setSignUpState] = useState("emailNames");
+  const [signUpEmailNames, setSignUpEmailNames] = useState<
+    z.infer<typeof signUpEmailNamesFormSchema>
+  >({ email: "", firstName: "", lastName: "" });
   const [passwordAgeTermBool, setPasswordAgeTermBool] = useState(false);
   const passwordAgeTermRef = useRef<HTMLDivElement>(null);
-  function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    console.log(values);
-  }
   useEffect(() => {
     if (passwordAgeTermBool) {
       passwordAgeTermRef.current?.firstElementChild?.scrollIntoView();
@@ -85,11 +59,15 @@ export default function SignUpForm({
         <SignUpEmailNamesForm
           setDialogState={setDialogState}
           setSignUpState={setSignUpState}
+          setSignUpEmailNames={setSignUpEmailNames}
           setPasswordAgeTermBool={setPasswordAgeTermBool}
         />
       )}
       {signUpState === "passwordAgeTerms" && (
-        <SignUpPasswordAgeTermsForm setDialogState={setDialogState} />
+        <SignUpPasswordAgeTermsForm
+          setDialogState={setDialogState}
+          signUpEmailNames={signUpEmailNames}
+        />
       )}
     </div>
   );
