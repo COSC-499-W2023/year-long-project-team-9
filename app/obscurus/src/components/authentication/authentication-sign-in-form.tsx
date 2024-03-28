@@ -1,6 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
-
+import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -46,7 +45,6 @@ export default function SignInForm({
       {loading ? (
         <div className="flex flex-col w-full h-full justify-start items-center gap-5">
           <LucideLoader2 className="animate-spin text-primary" size={75} />
-          <p className="font-bold">Loading...</p>
         </div>
       ) : (
         <Form {...form}>

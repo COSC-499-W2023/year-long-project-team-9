@@ -1,20 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 import { z } from "zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import AuthenticationTermsInput from "./authentication-form-terms-input";
-import AuthenticationAgeInput from "./authentication-form-age-input";
-import FirstNameInput from "@/components/authentication-and-profile-components/account-form-first-name-input";
-import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
-import EmailInput from "@/components/authentication-and-profile-components/account-form-email-input";
-import LastNameInput from "@/components/authentication-and-profile-components/account-form-last-name-input";
-import { ArrowRight } from "lucide-react";
 import SignUpEmailNamesForm from "./authentication-sign-up-email-names-form";
 import SignUpPasswordAgeTermsForm from "./authentication-sign-up-password-age-terms-form";
+import SignUpVerifyEmailForm from "./authentication-sign-up-verify-email-form";
+import { LucideLoader2 } from "lucide-react";
+import { Label } from "../ui/label";
 
 const signUpEmailNamesFormSchema = z.object({
   email: z
@@ -35,6 +28,31 @@ const signUpEmailNamesFormSchema = z.object({
     .min(1, { message: "Last name cannot be blank." })
     .max(100, { message: "Last name cannot be more than 100 characters." }),
 });
+const signUpPasswordAgeTermsFormSchema = z
+  .object({
+    password: z
+      .string()
+      .trim()
+      .min(8, { message: "Password must be at least 8 characters." })
+      .max(24, { message: "Password cannot be more than 24 characters." })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number." })
+      .regex(/[\W_]/, {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z.string(),
+    ageVerified: z.boolean(),
+    agreedToTermsAndConditions: z.boolean(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
 
 export default function SignUpForm({
   setDialogState,
@@ -45,28 +63,97 @@ export default function SignUpForm({
   const [signUpEmailNames, setSignUpEmailNames] = useState<
     z.infer<typeof signUpEmailNamesFormSchema>
   >({ email: "", firstName: "", lastName: "" });
-  const [passwordAgeTermBool, setPasswordAgeTermBool] = useState(false);
-  const passwordAgeTermRef = useRef<HTMLDivElement>(null);
+  const [signUpPasswordAgeTerms, setSignUpPasswordAgeTerms] = useState<
+    z.infer<typeof signUpPasswordAgeTermsFormSchema>
+  >({
+    password: "",
+    confirmPassword: "",
+    ageVerified: false,
+    agreedToTermsAndConditions: false,
+  });
+  const [signUpVerificationCode, setSignUpVerificationCode] = useState("");
+  const [signUpRefBoolean, setSignUpRefBoolean] = useState(false);
+  const signUpRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [failedSignUp, setFailedSignUp] = useState(false);
+
+  async function triggerSignUp() {
+    setLoading(true);
+    await Auth.signUp({
+      username: signUpEmailNames.email,
+      password: signUpPasswordAgeTerms.password,
+    })
+      .then(() => setSignUpState("verifyEmail"))
+      .catch((e) => [
+        alert(e),
+        setLoading(false),
+        setFailedSignUp(true),
+        setSignUpState("emailNames"),
+      ]);
+  }
+
+  async function triggerVerifyEmail() {
+    setLoading(true);
+    await Auth.confirmSignUp(signUpEmailNames.email, signUpVerificationCode)
+      .then(() =>
+        Auth.signIn(signUpEmailNames.email, signUpPasswordAgeTerms.password)
+          .then(() => window.location.reload())
+          .catch((e) => [
+            setLoading(false),
+            setFailedSignUp(true),
+            setSignUpState("emailNames"),
+          ])
+      )
+      .catch((e) => [
+        setLoading(false),
+        setFailedSignUp(true),
+        setSignUpState("emailNames"),
+      ]);
+  }
+
   useEffect(() => {
-    if (passwordAgeTermBool) {
-      passwordAgeTermRef.current?.firstElementChild?.scrollIntoView();
-      setPasswordAgeTermBool(false);
+    if (signUpRefBoolean) {
+      signUpRef.current?.firstElementChild?.scrollIntoView();
+      setSignUpRefBoolean(false);
     }
   });
   return (
-    <div ref={passwordAgeTermRef}>
-      {signUpState === "emailNames" && (
+    <div ref={signUpRef}>
+      {loading && (
+        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+          <LucideLoader2 className="animate-spin text-primary" size={75} />
+        </div>
+      )}
+      {failedSignUp && !loading && (
+        <div className="flex justify-center border border-red-500 rounded p-2">
+          <Label className="text-red-500 text-xs">
+            Failed To Sign Up, Please Try Again
+          </Label>
+        </div>
+      )}
+      {signUpState === "emailNames" && !loading && (
         <SignUpEmailNamesForm
           setDialogState={setDialogState}
           setSignUpState={setSignUpState}
           setSignUpEmailNames={setSignUpEmailNames}
-          setPasswordAgeTermBool={setPasswordAgeTermBool}
+          setSignUpRefBoolean={setSignUpRefBoolean}
+          setFailedSignUp={setFailedSignUp}
         />
       )}
-      {signUpState === "passwordAgeTerms" && (
+      {signUpState === "passwordAgeTerms" && !loading && (
         <SignUpPasswordAgeTermsForm
           setDialogState={setDialogState}
-          signUpEmailNames={signUpEmailNames}
+          setSignUpState={setSignUpState}
+          setSignUpPasswordAgeTerms={setSignUpPasswordAgeTerms}
+          triggerSignUp={triggerSignUp}
+        />
+      )}
+      {signUpState === "verifyEmail" && !loading && (
+        <SignUpVerifyEmailForm
+          email={signUpEmailNames.email}
+          setDialogState={setDialogState}
+          setSignUpVerificationCode={setSignUpVerificationCode}
+          triggerVerifyEmail={triggerVerifyEmail}
         />
       )}
     </div>
