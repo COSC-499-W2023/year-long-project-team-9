@@ -220,7 +220,7 @@ export default function SiteStack({ stack }: StackContext) {
       WS_API_URL: wsApi.url,
     },
     permissions: ["s3", rekognitionPolicyStatement, "rds-data", rds, wsApi, api, chumBucket],
-    cpu: "4 vCPU",
+    cpu: "16 vCPU",
     memory: "8 GB",
   });
 
