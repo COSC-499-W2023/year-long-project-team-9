@@ -3,8 +3,6 @@ import { z } from "zod";
 import { Status } from "stack/database/src/types/status";
 import { GroupingState } from "@tanstack/react-table";
 
-// We're keeping a simple non-relational schema here.
-// IRL, you will have a schema for your data models.
 export const SubmissionSchema = z.object({
   submissionId: z.string(),
   requesteeEmail: z.string().default("NULL"),
@@ -12,7 +10,7 @@ export const SubmissionSchema = z.object({
   title: z.string().nullable(),
   isRead: z.boolean(),
   grouping: z.custom<GroupingState>(),
-  submittedDate:  z.date().nullable(),
+  submittedDate:  z.date().nullable().or(z.string().nullable()),
   requestId: z.string(),
 });
 

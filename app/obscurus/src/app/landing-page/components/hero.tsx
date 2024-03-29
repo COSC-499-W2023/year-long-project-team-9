@@ -126,10 +126,10 @@ const Hero = () => {
 
   return (
     <div
-      className="flex flex-row  justify-center w-full items-center "
+      className="flex flex-col gap-4 md:flex-row  justify-center w-full items-center "
       id="hero"
     >
-      <div className="flex flex-col gap-5 items-center ">
+      <div className="flex flex-col gap-1 md:gap-5 items-center ">
         <div className="text-4xl font-extrabold">
           Communicate Privately, Share Confidently.
         </div>
@@ -156,7 +156,7 @@ const Hero = () => {
           </Tabs>
         </div>
       </div>
-      <div className="p-10 min-w-fit">
+      <div className="p-4 md:p-10 min-w-fit">
         <Mascot isBlurred={isBlurred} />
       </div>
     </div>

@@ -291,6 +291,11 @@ export default function SubmitDisplay({
     }
   };
 
+  const handleTrash = async (requestId: string) => {
+    console.log("Removing request");
+    const submission = getAssociatedSubmission(requestId);
+  }
+
   const handleChooseAnotherFile = () => {
     setFile(undefined);
     setObjectURL(null);

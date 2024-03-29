@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
   console.log("data", data[0]);
   console.log("columns", columns);
   return (
-    <div className="space-y-4 h-full">
+    <div className="space-y-4 h-full p-3">
       <DataTableToolbar table={table} />
       <div className="rounded-md border overflow-y-scroll max-h-[450px]">
         <Table>
