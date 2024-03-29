@@ -33,6 +33,9 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "stack/database/migrations/",
+    cdk: {
+
+    },
   });
 
   const sesPolicyStatement = new PolicyStatement({

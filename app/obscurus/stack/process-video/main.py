@@ -278,6 +278,7 @@ async def update_submission_status(submission_id: str, status: str):
         await websocket.send(message)
         print(f"WebSocket message sent for submission {submission_id} with status {status}")
 
+
 async def send_email_notification(email: str, subject: str, body: str):
     ses_client = boto3.client("ses", region_name="us-west-2")
     ses_client.send_email(
@@ -289,6 +290,12 @@ async def send_email_notification(email: str, subject: str, body: str):
         }
     )
     print(f"Email notification sent to {email}")
+
+
+
+@app.get("/")
+async def root():
+    return {"message": "Root path"}
 
 
 @app.post("/process-video/")
@@ -304,14 +311,14 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             )
         print(f"SubmissionId: {submission_id}, File Extension: {file_extension}")
         await update_submission_status("PROCESSING", submission_id)
-        await send_email_notification(submission_id, recipient_email, "Your video is being processed")
+        await send_email_notification(recipient_email, submission_id, "Your video is being processed")
         background_tasks.add_task(process_video_background, submission_id, file_extension)
         return {"message": "Video processing started"}
     except Exception as e:
         print(f"Error processing video: {e}")
         try:
             await update_submission_status("FAILED", submission_id)
-            await send_email_notification(submission_id, recipient_email, "Error processing video")
+            await send_email_notification(recipient_email, submission_id, "Error processing video")
             return {"message": "Error processing video"}
         except Exception as error:
             print("Error updating status:", error)
