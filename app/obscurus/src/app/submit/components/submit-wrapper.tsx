@@ -9,6 +9,7 @@ import { useSubmissions } from "@/app/hooks/use-submissions";
 import { set } from "date-fns";
 import Loading from "./loading";
 import { Provider } from "jotai";
+import { c } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -16,7 +17,7 @@ export const SubmitWrapper = ({
   triggerJob,
   updateStatus,
   getStatus,
-  getUserDataByEmail,
+  getRequestsAndSubmissionsByEmail,
   defaultLayout,
   defaultCollapsed,
   websocketApiEndpoint,
@@ -26,12 +27,11 @@ export const SubmitWrapper = ({
   triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
-  getUserDataByEmail?: (email: string) => Promise<any>;
+  getRequestsAndSubmissionsByEmail?: Function;
   defaultLayout: number[];
   defaultCollapsed: boolean;
   websocketApiEndpoint: string;
 }) => {
-  const [requests, setRequests] = useRequests();
   const [submissions, setSubmissions] = useSubmissions();
 
   const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -40,40 +40,38 @@ export const SubmitWrapper = ({
 
   const fetchUserData = async () => {
     setLoading(true);
-    if (getUserDataByEmail) {
-      getUserDataByEmail("imightbejan@gmail.com")
-        .then((data) => {
+    console.log("Fetching user data");
+    if (getRequestsAndSubmissionsByEmail) {
+      getRequestsAndSubmissionsByEmail("imightbejan@gmail.com")
+        .then((data: any) => {
           console.log("User data:", data);
-          setRequests(data.requests);
           setSubmissions(data.submissions);
         })
-        .then(() => {
-          console.log("Requests:", requests);
-          console.log("Submissions:", submissions);
-        });
     }
     setLoading(false);
   };
 
   useEffect(() => {
     const ws = new WebSocket(websocketApiEndpoint);
+    setSocket(ws);
     // const handleBeforeUnload = () => {
     //   console.log("Page reloading or closing, disconnecting WebSocket");
     //   ws.close();
     // };
 
     ws.onopen = () => {
+      fetchUserData();
       console.log("Connected to WebSocket");
     };
     // window.addEventListener("beforeunload", handleBeforeUnload);
-    setSocket(ws);
 
-    fetchUserData();
+
+
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        setRequests(data.requests);
+        setSubmissions(data.submissions);
       } catch {
         console.log("Message data is not valid JSON");
       }
@@ -122,7 +120,6 @@ export const SubmitWrapper = ({
           <Loading />
         ) : (
           <SubmitList
-            requests={requests || []}
             submissions={submissions || []}
           />
         )

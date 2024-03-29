@@ -51,6 +51,7 @@ import { useSearch } from "@/app/hooks/use-search";
 import { useUpload } from "@/app/hooks/use-upload";
 import { useSort } from "@/app/hooks/use-sort";
 import { useTab } from "@/app/hooks/use-tab";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 
 interface RequestsListProps {
   requests?: Requests[];
@@ -58,38 +59,28 @@ interface RequestsListProps {
 }
 
 export default function SubmitList({
-  requests,
   submissions,
-}: RequestsListProps) {
+}: {
+  submissions: EnrichedSubmissions[];
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const [submission, setSubmission] = useSubmission();
-  const [request, setRequest] = useRequest();
   const [search, setSearch] = useSearch();
   const [upload] = useUpload();
   const [sort, setSort] = useSort();
   const [tab, setTab] = useTab();
 
-  const getAssociatedSubmission = (requestId: string | null) => {
-    if (requestId && submissions) {
-      return submissions.find((item) => requestId === item.requestId);
-    }
-    return null;
-  };
-
-  const handleClick = (item: Requests) => {
+  const handleClick = (item: EnrichedSubmissions) => {
     if (!upload.upload) {
-      setRequest({
-        ...request,
-        requestId: item.requestId,
-      });
-      const submission = getAssociatedSubmission(item.requestId);
-      console.log("Assoc. submission", submission);
+      const submission = submissions.find(
+        (submission) => submission.submissionId === item.submissionId
+      );
       if (submission) {
         setSubmission({ ...submission, submissionId: submission.submissionId });
       }
 
-      console.log("Selected RequestID to list", item.requestId);
+      console.log("Selected submission to list", submission);
     }
   };
 
@@ -97,26 +88,29 @@ export default function SubmitList({
     setSearch({ ...search, search: null });
   };
 
-  const sortRequests = (a: Requests, b: Requests) => {
+  const sortRequests = (a: EnrichedSubmissions, b: EnrichedSubmissions) => {
     switch (sort.sort) {
       case "newest":
         return (
-          new Date(b.creationDate).getTime() -
-          new Date(a.creationDate).getTime()
+          new Date(b.requestDetails.creationDate).getTime() -
+          new Date(a.requestDetails.creationDate).getTime()
         );
       case "oldest":
         return (
-          new Date(a.creationDate).getTime() -
-          new Date(b.creationDate).getTime()
+          new Date(a.requestDetails.creationDate).getTime() -
+          new Date(b.requestDetails.creationDate).getTime()
         );
       case "due":
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+        return (
+          new Date(a.requestDetails.dueDate).getTime() -
+          new Date(b.requestDetails.dueDate).getTime()
+        );
       default:
         return 0;
     }
   };
 
-  const sortedRequests = requests?.sort(sortRequests);
+  const sortedRequests = submissions?.sort(sortRequests);
 
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
@@ -127,20 +121,21 @@ export default function SubmitList({
   ));
 
   const tabsContent = statuses.map((status) => {
-    const filteredRequests = sortedRequests?.filter((request) => {
-      const submission = getAssociatedSubmission(request.requestId);
+    const filteredRequests = sortedRequests?.filter((submission) => {
       const matchesStatus =
-        submission && submission.status.toUpperCase() === status.toUpperCase();
+        status === "all" || submission.status.toLowerCase() === status;
 
       const searchTerm = search.search?.toLowerCase();
       const matchesSearch =
         !searchTerm ||
-        request.requestTitle.toLowerCase().includes(searchTerm) ||
-        request.requesterEmail.toLowerCase().includes(searchTerm);
+        submission.requestDetails.requestTitle
+          .toLowerCase()
+          .includes(searchTerm) ||
+        submission.requestDetails.requesterEmail
+          .toLowerCase()
+          .includes(searchTerm);
 
-      return tab.tab === "all" || tab.tab === null
-        ? matchesSearch
-        : matchesStatus && matchesSearch;
+      return matchesStatus && matchesSearch;
     });
 
     return (
@@ -148,10 +143,12 @@ export default function SubmitList({
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRequests?.map((item) => (
             <button
-              key={item.requestId}
+              key={item.submissionId} // Use submissionId for key as requestId could be duplicated in filteredRequests
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                request.requestId === item.requestId && "bg-muted"
+                submission?.submissionId === item.submissionId // Use condition based on submission state
+                  ? "bg-accent text-foreground"
+                  : "bg-background border-muted-border"
               )}
               onClick={() => handleClick(item)}
             >
@@ -159,58 +156,45 @@ export default function SubmitList({
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
                     <div className="font-semibold">
-                      {(item.requestTitle.length > 30 &&
-                        item.requestTitle?.substring(0, 30) + "...") ||
-                        item.requestTitle}
+                      {item.requestDetails.requestTitle.length > 30
+                        ? item.requestDetails.requestTitle.substring(0, 30) +
+                          "..."
+                        : item.requestDetails.requestTitle}
                     </div>
-                    {getAssociatedSubmission(item.requestId)?.isRead && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600 min-h-full" />
-                    )}
                   </div>
 
-                  <div
-                    className={cn(
-                      "ml-auto text-xs w-full flex justify-end",
-                      request.requestId === item.requestId
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    {" "}
+                  <div className="ml-auto text-xs w-full flex justify-end">
                     {formatDistanceToNow(
-                      new Date(item.creationDate || "2024/03/21"),
-                      {
-                        addSuffix: true,
-                      }
+                      new Date(item.requestDetails.creationDate),
+                      { addSuffix: true }
                     )}
                   </div>
                 </div>
                 <div className="text-xs font-medium">
-                  <div className="text-xs font-medium">
-                    {(item.requesterEmail.length > 30 &&
-                      item.requesterEmail.substring(0, 30) + "...") ||
-                      item.requesterEmail}
-                  </div>
+                  {item.requestDetails.requesterEmail.length > 30
+                    ? item.requestDetails.requesterEmail.substring(0, 30) +
+                      "..."
+                    : item.requestDetails.requesterEmail}
                 </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.description}
+                {item.requestDetails.description}
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel("due-date")}>
                   Due{" "}
-                  {formatDistanceToNow(new Date(item.dueDate || "2024/03/21"), {
+                  {formatDistanceToNow(new Date(item.requestDetails.dueDate), {
                     addSuffix: true,
                   })}
                 </Badge>
                 <Badge variant={getBadgeVariantFromLabel("status")}>
-                  {getAssociatedSubmission(item.requestId)
-                    ?.status.split(" ")
+                  {item.status
+                    .split(" ")
                     .map(
                       (word) =>
                         word[0].toUpperCase() + word.substring(1).toLowerCase()
                     )
-                    .join(" ")}{" "}
+                    .join(" ")}
                 </Badge>
               </div>
             </button>
@@ -306,7 +290,7 @@ export default function SubmitList({
       </div>
       <Separator />
       <div className="h-full overflow-y-scroll">
-        {requests && requests.length === 0 && <PanelLoader />}
+        {submissions && submissions.length === 0 && <PanelLoader />}
         {tabsContent || <div>No requests.</div>}
       </div>
     </Tabs>

@@ -4,9 +4,9 @@ import getPresignedUrl from "../functions/getPresignedUrl";
 import { triggerJob } from "../functions/triggerJob";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
-import getUserDataByEmail from "../functions/getUserDataByEmail";
 import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
+import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -22,6 +22,7 @@ async function Submit() {
   console.log("getStatus", getStatus);
   console.log("getPresignedUrl", getPresignedUrl);
   console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+  console.log("getRequestsAndSubmissions", getRequestsAndSubmissionsByEmail);
 
   const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
 
@@ -34,7 +35,7 @@ async function Submit() {
       triggerJob={triggerJob}
       updateStatus={updateStatus}
       getStatus={getStatus}
-      getUserDataByEmail={getUserDataByEmail}
+      getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       websocketApiEndpoint={wsApi as string}

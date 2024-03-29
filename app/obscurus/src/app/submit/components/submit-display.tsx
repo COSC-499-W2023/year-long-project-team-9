@@ -61,8 +61,7 @@ export default function SubmitDisplay({
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
 }) {
-  const [request, setRequest] = useRequest();
-  const [submission, setSubmission] = useSubmission();
+  const [submission] = useSubmission();
   const [upload, setUpload] = useState(false);
   const [showingVideo, setShowingVideo] = useState(false);
   const { toast } = useToast();
@@ -72,7 +71,6 @@ export default function SubmitDisplay({
   //   setRequest(requests && requests[0]);
   // }
 
-  const [requests] = useRequests();
   const [submissions] = useSubmissions();
   useEffect(() => {
     {
@@ -82,16 +80,9 @@ export default function SubmitDisplay({
         return res;
       };
     }
-    if (!request.requestId && requests) {
-      setRequest({
-        ...request,
-        requestId: requests[0].requestId,
-      });
-    }
   });
 
-  const selected =
-    requests && requests.find((item) => item.requestId === request.requestId);
+  const selected = submissions?.find((sub) => sub.submissionId === submission.submissionId);
 
   const associatedSubmission =
     submissions &&
@@ -127,75 +118,70 @@ export default function SubmitDisplay({
 
   const reset = () => {};
 
-  const handleProcessVideo = async (e: any) => {
-    console.log("Processing video");
-    const submission = getAssociatedSubmission(request?.requestId || "");
-    if (submission && fileExt && triggerJob) {
-      const res = await triggerJob(submission.submissionId, fileExt);
-      if (res === "Video jobbed successfully" && updateSubmissionStatus) {
-        await updateSubmissionStatus("PROCESSING", submission.submissionId);
-        console.log("Updated submission status");
-        updateRequests && updateRequests();
-        await fetchUserData();
-      }
-      console.log("RES", res);
-
-      setUpload(false);
-      setObjectURL(null);
-      setFile(undefined);
-      console.log("Video jobbed successfully");
-      toast({
-        title: "Processing Video",
-        description: "Your video is being processed",
-      });
-
-      return;
-    } else {
-      setObjectURL(null);
-      return "Failed to run Job";
-    }
-  };
-
-  const handleSubmit = async (e: any) => {
-    setLoading(true);
-    e.preventDefault();
-    setUpload(true);
-    const file = fileInputRef.current?.files?.[0];
-    setFile(file);
+  const handleProcessVideo = async () => {
     if (!file) {
-      console.error("No file selected");
-      setUpload(false);
+      console.error("No file to upload");
       return;
     }
-    const fileExt = file.name.split(".").pop();
-    console.log("File extension", fileExt);
-    setFileExt(fileExt);
 
+    setLoading(true); // Show loading indicator during upload
+
+    // Extract file extension and prepare the key
+    const fileExt = file.name.split(".").pop() || 'mp4'; // Default to mp4 if extension is not found
     const key = `${submission.submissionId}.${fileExt}`;
 
-    if (submission && getPresignedUrl) {
+    if (getPresignedUrl) {
       try {
         const url = await getPresignedUrl(key);
+        // Perform the upload to the pre-signed URL
         const response = await fetch(url, {
           method: "PUT",
           headers: {
             "Content-Type": file.type,
-            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
-              key
-            )}`,
           },
           body: file,
         });
-        setObjectURL(URL.createObjectURL(file));
-        console.log("Upload successful");
-        setLoading(false);
-        return;
+
+        if (response.ok) {
+          console.log("Upload successful");
+          toast({
+            title: "Success",
+            description: "Your video has been uploaded successfully.",
+          });
+        } else {
+          throw new Error("Upload failed");
+        }
       } catch (error) {
-        console.error("Upload failed:", error);
-        setLoading(false);
+        console.error("Upload error:", error);
+        toast({
+          title: "Error",
+          description: "There was an issue with the video upload.",
+        });
+      } finally {
+        setLoading(false); // Hide loading indicator
+        setUpload(false); // Reset upload state
+        setFile(undefined); // Clear selected file
+        setObjectURL(null); // Clear object URL
       }
     }
   };
+
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault(); // Prevent form submission if it's being used within a form
+    const selectedFile = e.target.files[0]; // Assuming this is triggered by a file input change
+
+    if (!selectedFile) {
+      console.error("No file selected");
+      return;
+    }
+
+    // Just set the file, do not upload yet
+    setFile(selectedFile);
+    setObjectURL(URL.createObjectURL(selectedFile)); // For preview purposes
+    setUpload(true); // Assuming this indicates that a file is ready for confirmation
+  };
+
 
   // useEffect(() => {
   //   if (!requestId) {
@@ -273,8 +259,7 @@ export default function SubmitDisplay({
 
   const handleArchive = async (requestId: string) => {
     console.log("Archiving");
-    if (requests && requestId) {
-      const submission = getAssociatedSubmission(requestId);
+    if (submission && updateSubmissionStatus) {
       if (submission && updateSubmissionStatus) {
         await updateSubmissionStatus("ARCHIVED", submission.submissionId);
         console.log("Updated submission status");
@@ -421,7 +406,6 @@ export default function SubmitDisplay({
   const Upload = () => {
     return (
       <form
-        onSubmit={handleSubmit}
         className="flex flex-col w-full h-full p-10"
       >
         <div className="flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5">
@@ -672,7 +656,7 @@ export default function SubmitDisplay({
               </div>
             </div>
           ) : (
-            <ShowRequest selected={selected} />
+            <ShowRequest selected={selected.requestDetails} />
           )}
         </div>
       ) : (

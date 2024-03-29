@@ -193,6 +193,11 @@ export default function SiteStack({ stack }: StackContext) {
         },
       },
       "POST /order": "stack/lambdas/order.handler",
+      "POST /getRequestsAndSubmissionsByEmail": {
+        function: {
+          handler: "stack/lambdas/getRequestsAndSubmissionsByEmail.handler",
+        },
+      },
     },
   });
 
