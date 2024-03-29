@@ -25,19 +25,22 @@ export const columns: ColumnDef<EnrichedSubmissions>[] = [
     },
   },
   {
-    accessorKey: "requesterEmail",
-    accessorFn: (row) => row.requestDetails.requesterEmail,
+    accessorKey: "requesterName",
+    accessorFn: (row) => row.requester.givenName + " " + row.requester.familyName,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Requester Email" />
+      <DataTableColumnHeader column={column} title="Requester" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <span className="max-w-[200px] truncate font-medium">
-            {row.original.requestDetails.requesterEmail || "-"}
+            {row.getValue("requesterName")}
           </span>
         </div>
       );
+    },
+    sortingFn: (rowA, rowB) => {
+      return rowA.original.requester.givenName.localeCompare(rowB.original.requester.givenName);
     },
     enableSorting: false,
     enableHiding: false,

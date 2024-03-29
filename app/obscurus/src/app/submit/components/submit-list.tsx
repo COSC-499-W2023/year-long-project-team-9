@@ -155,7 +155,7 @@ export default function SubmitList({
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold">
+                    <div className="font-semibold text-ellipsis">
                       {item.requestDetails.requestTitle.length > 30
                         ? item.requestDetails.requestTitle.substring(0, 30) +
                           "..."
@@ -170,7 +170,10 @@ export default function SubmitList({
                     )}
                   </div>
                 </div>
-                <div className="text-xs font-medium">
+                <div className="text-xs font-medium text-ellipsis line-clamp-1">
+                  {item.requester.givenName} {item.requester.familyName}
+                </div>
+                <div className="text-xs">
                   {item.requestDetails.requesterEmail.length > 30
                     ? item.requestDetails.requesterEmail.substring(0, 30) +
                       "..."
@@ -214,7 +217,7 @@ export default function SubmitList({
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Submit</h1>
         <Drawer>
-          <span className="sr-only">View Processing</span>
+          <span className="sr-only">Submissions</span>
           <Tooltip>
             <DrawerTrigger asChild>
               <Button variant="ghost" size="icon" disabled={submissions && submissions.length === 0}>
@@ -223,16 +226,16 @@ export default function SubmitList({
                 </TooltipTrigger>
               </Button>
             </DrawerTrigger>
-            <TooltipContent> All Videos</TooltipContent>
+            <TooltipContent>Submissions</TooltipContent>
           </Tooltip>
           <DrawerContent>
             <div className="w-full ">
               <DrawerHeader>
-                <DrawerTitle>All Videos</DrawerTitle>
-                <DrawerDescription>View your uploaded videos</DrawerDescription>
+                <DrawerTitle>Submissions</DrawerTitle>
+                <DrawerDescription>View all submissions</DrawerDescription>
               </DrawerHeader>
-              <div className=" pb-5">
-                <div className="mt-3 h-[600px] overflow-y-scroll ">
+              <div className=" md:pb-10 md:mb-24">
+                <div className="mt-3 overflow-y-scroll ">
                   <ResponsiveContainer width="100%" height="100%">
                     <DataTable columns={columns} data={submissions || []} />
                   </ResponsiveContainer>
