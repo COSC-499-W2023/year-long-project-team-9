@@ -221,7 +221,7 @@ export default function SiteStack({ stack }: StackContext) {
     },
     permissions: ["s3", rekognitionPolicyStatement, "rds-data", rds, wsApi, api, chumBucket],
     cpu: "16 vCPU",
-    memory: "8 GB",
+    memory: "32 GB",
   });
 
   // const steveJobs = new Job(stack, "SteveJobs", {
