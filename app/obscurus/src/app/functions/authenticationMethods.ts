@@ -1,5 +1,5 @@
 "use server";
-import { Auth, Amplify } from "aws-amplify";
+import { Auth } from "aws-amplify";
 
 export async function isSignedIn() {
   try {
@@ -13,6 +13,7 @@ export async function isSignedIn() {
 export async function signOutUser() {
   try {
     await Auth.signOut();
+    window.location.reload();
     return true;
   } catch {
     return false;
@@ -21,7 +22,12 @@ export async function signOutUser() {
 
 // Please update "" to the email for the particular user
 export async function getEmail() {
-  return "imightbejan@gmail.com";
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    return user.email;
+  } catch {
+    return "";
+  }
 }
 
 // export async function getIDToken() {
