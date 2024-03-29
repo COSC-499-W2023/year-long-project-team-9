@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import { z } from "zod";
 import SignUpEmailNamesForm from "./authentication-sign-up-email-names-form";
 import SignUpPasswordAgeTermsForm from "./authentication-sign-up-password-age-terms-form";
+import SignUpFinalCheckForm from "./authentication-sign-up-final-check-form";
 import SignUpVerifyEmailForm from "./authentication-sign-up-verify-email-form";
 import { LucideLoader2 } from "lucide-react";
 import { Label } from "../ui/label";
@@ -71,7 +72,6 @@ export default function SignUpForm({
     ageVerified: false,
     agreedToTermsAndConditions: false,
   });
-  const [signUpVerificationCode, setSignUpVerificationCode] = useState("");
   const [signUpRefBoolean, setSignUpRefBoolean] = useState(false);
   const signUpRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -83,18 +83,17 @@ export default function SignUpForm({
       username: signUpEmailNames.email,
       password: signUpPasswordAgeTerms.password,
     })
-      .then(() => setSignUpState("verifyEmail"))
+      .then(() => [setSignUpState("verifyEmail"), setLoading(false)])
       .catch((e) => [
-        alert(e),
         setLoading(false),
         setFailedSignUp(true),
         setSignUpState("emailNames"),
       ]);
   }
 
-  async function triggerVerifyEmail() {
+  async function triggerVerifyEmail(code: string) {
     setLoading(true);
-    await Auth.confirmSignUp(signUpEmailNames.email, signUpVerificationCode)
+    await Auth.confirmSignUp(signUpEmailNames.email, code)
       .then(() =>
         Auth.signIn(signUpEmailNames.email, signUpPasswordAgeTerms.password)
           .then(() => window.location.reload())
@@ -145,6 +144,14 @@ export default function SignUpForm({
           setDialogState={setDialogState}
           setSignUpState={setSignUpState}
           setSignUpPasswordAgeTerms={setSignUpPasswordAgeTerms}
+        />
+      )}
+      {signUpState === "finalCheck" && !loading && (
+        <SignUpFinalCheckForm
+          setSignUpState={setSignUpState}
+          email={signUpEmailNames.email}
+          firstName={signUpEmailNames.firstName}
+          lastName={signUpEmailNames.lastName}
           triggerSignUp={triggerSignUp}
         />
       )}
@@ -152,7 +159,6 @@ export default function SignUpForm({
         <SignUpVerifyEmailForm
           email={signUpEmailNames.email}
           setDialogState={setDialogState}
-          setSignUpVerificationCode={setSignUpVerificationCode}
           triggerVerifyEmail={triggerVerifyEmail}
         />
       )}

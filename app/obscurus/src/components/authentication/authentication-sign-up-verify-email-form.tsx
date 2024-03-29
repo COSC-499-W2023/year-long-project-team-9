@@ -22,12 +22,10 @@ const verifyEmailFormSchema = z.object({
 export default function SignUpVerifyEmailForm({
   email,
   setDialogState,
-  setSignUpVerificationCode,
   triggerVerifyEmail,
 }: {
   email: string;
   setDialogState: Function;
-  setSignUpVerificationCode: Function;
   triggerVerifyEmail: Function;
 }) {
   const form = useForm<z.infer<typeof verifyEmailFormSchema>>({
@@ -35,8 +33,7 @@ export default function SignUpVerifyEmailForm({
   });
 
   async function onSubmit(values: z.infer<typeof verifyEmailFormSchema>) {
-    setSignUpVerificationCode(values.code);
-    triggerVerifyEmail();
+    triggerVerifyEmail(values.code);
   }
   return (
     <div>

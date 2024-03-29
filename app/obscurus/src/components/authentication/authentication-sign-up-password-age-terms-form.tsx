@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import AuthenticationTermsInput from "./authentication-form-terms-input";
 import AuthenticationAgeInput from "./authentication-form-age-input";
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
+import { ArrowRight } from "lucide-react";
 
 const signUpPasswordAgeTermsFormSchema = z
   .object({
@@ -40,12 +41,10 @@ export default function SignUpPasswordAgeTermsForm({
   setDialogState,
   setSignUpState,
   setSignUpPasswordAgeTerms,
-  triggerSignUp,
 }: {
   setDialogState: Function;
   setSignUpState: Function;
   setSignUpPasswordAgeTerms: Function;
-  triggerSignUp: Function;
 }) {
   const form = useForm<z.infer<typeof signUpPasswordAgeTermsFormSchema>>({
     resolver: zodResolver(signUpPasswordAgeTermsFormSchema),
@@ -54,7 +53,7 @@ export default function SignUpPasswordAgeTermsForm({
     values: z.infer<typeof signUpPasswordAgeTermsFormSchema>
   ) {
     setSignUpPasswordAgeTerms(values);
-    triggerSignUp();
+    setSignUpState("finalCheck");
   }
   return (
     <div>
@@ -81,7 +80,7 @@ export default function SignUpPasswordAgeTermsForm({
           <AuthenticationAgeInput form={form} />
           <AuthenticationTermsInput form={form} />
           <Button type="submit" variant={"default"} className="w-full">
-            Sign Up
+            Next <ArrowRight />
           </Button>
           <div className="text-xs text-center mt-2">
             <span>Have an account? </span>
