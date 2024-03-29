@@ -157,7 +157,7 @@ def start_face_detection(key):
     return response["JobId"]
 
 
-def check_submission_status(job_id):
+def check_job_status(job_id):
     print("Checking submission status...")
     while True:
         response = rekognition.get_face_detection(JobId=job_id)
@@ -279,7 +279,7 @@ async def root():
 
 
 @app.post("/process-video/")
-async def handle_process_video(request: Request, background_tasks: BackgroundTasks):
+async def handle_process_vide(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
     submission_id = data.get("submissionId")
     file_extension = data.get("file_extension")
@@ -294,7 +294,7 @@ async def process_video_background(submission_id, file_extension):
     try:
         key = f"{submission_id}.{file_extension}"
         job_id = start_face_detection(key)
-        job_response = check_submission_status(job_id)
+        job_response = check_job_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
         process_video(timestamps, job_response, submission_id, file_extension)
         update_status("COMPLETED", submission_id)

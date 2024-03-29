@@ -219,7 +219,7 @@ export default function SiteStack({ stack }: StackContext) {
       API_URL: api.url,
       WS_API_URL: wsApi.url,
     },
-    permissions: ["s3", rekognitionPolicyStatement],
+    permissions: ["s3", rekognitionPolicyStatement, "rds-data", rds, wsApi, api, chumBucket],
     cpu: "4 vCPU",
     memory: "8 GB",
   });
