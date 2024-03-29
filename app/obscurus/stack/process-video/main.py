@@ -22,7 +22,7 @@ import subprocess
 rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 print("init")
-#ENVIRONMENT VARIABLES
+# ENVIRONMENT VARIABLES
 bucket_name = os.environ["BUCKET_NAME"]
 api_url = os.environ["API_URL"]
 ws_api_url = os.environ["WS_API_URL"]
@@ -148,7 +148,6 @@ def integrate_audio(original_video, output_video, audio_path="/tmp/audio.mp3"):
     print("Complete")
 
 
-
 def start_face_detection(key):
     print("Running face detection...")
     response = rekognition.start_face_detection(
@@ -193,6 +192,7 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     print("Complete")
     return final_timestamps, response
 
+
 def convert_to_mp4(input_video, output_video):
     """
     Converts any video format to MP4 using FFmpeg.
@@ -219,9 +219,11 @@ def convert_to_mp4(input_video, output_video):
         output_video,
     ]
     subprocess.run(cmd, check=True)
-def process_video(timestamps, response, submission_id, file_extension):
+
+
+def process_video(timestamps, response, submission_id):
     print("Processing video...")
-    input_name = f"{submission_id}.{file_extension}"
+    input_name = f"{submission_id}.mp4"
     output_name = f"{submission_id}-processed.mp4"
     local_filename = "/tmp/{}".format(input_name)
     temp_output_filename = "/tmp/{}-temp.mp4".format(submission_id)
@@ -234,11 +236,7 @@ def process_video(timestamps, response, submission_id, file_extension):
         timestamps, local_filename, temp_output_filename, response["VideoMetadata"]
     )
 
-    if file_extension.lower() != "mp4":
-        print("Converting video to MP4 format...")
-        convert_to_mp4(temp_output_filename, final_output_filename)
-    else:
-        os.rename(temp_output_filename, final_output_filename)
+    os.rename(temp_output_filename, final_output_filename)
 
     print("Integrating audio with video...")
     integrate_audio(local_filename, final_output_filename)
@@ -269,7 +267,6 @@ def update_status(status, submission_id):
         print("Error updating status:", error)
 
 
-
 app = FastAPI()
 
 
@@ -284,19 +281,32 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
     submission_id = data.get("submissionId")
     file_extension = data.get("file_extension")
     if not submission_id or not file_extension:
-        raise HTTPException(status_code=400, detail="Missing submissionId or file_extension")
+        raise HTTPException(
+            status_code=400, detail="Missing submissionId or file_extension"
+        )
     print(f"SubmissionId: {submission_id}, File Extension: {file_extension}")
     update_status("PROCESSING", submission_id)
     background_tasks.add_task(process_video_background, submission_id, file_extension)
     return {"message": "Video processing started"}
 
+
 async def process_video_background(submission_id, file_extension):
     try:
-        key = f"{submission_id}.{file_extension}"
-        job_id = start_face_detection(key)
+        original_key = f"{submission_id}.{file_extension}"
+        converted_key = original_key
+        if file_extension.lower() == "webm":
+            converted_key = f"{submission_id}.mp4"
+            local_webm_path = f"/tmp/{original_key}"
+            s3.download_file(bucket_name, original_key, local_webm_path)
+            local_mp4_path = f"/tmp/{converted_key}"
+            convert_to_mp4(local_webm_path, local_mp4_path)
+            s3.upload_file(local_mp4_path, bucket_name, converted_key)
+            os.remove(local_webm_path)
+            os.remove(local_mp4_path)
+        job_id = start_face_detection(converted_key)
         job_response = check_job_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-        process_video(timestamps, job_response, submission_id, file_extension)
+        process_video(timestamps, job_response, submission_id)
         update_status("COMPLETED", submission_id)
     except Exception as e:
         print(f"Error during video processing: {e}")
