@@ -34,7 +34,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
     }
   );
 
-  console.log("Enriched submissions:", enrichedSubmissions);
   return {
     statusCode: 200,
     body: JSON.stringify({ submissions: enrichedSubmissions }),

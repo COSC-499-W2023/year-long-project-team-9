@@ -82,7 +82,9 @@ export default function SubmitDisplay({
     }
   });
 
-  const selected = submissions?.find((sub) => sub.submissionId === submission.submissionId);
+  const selected = submissions?.find(
+    (sub) => sub.submissionId === submission.submissionId
+  );
 
   const associatedSubmission =
     submissions &&
@@ -127,7 +129,7 @@ export default function SubmitDisplay({
     setLoading(true); // Show loading indicator during upload
 
     // Extract file extension and prepare the key
-    const fileExt = file.name.split(".").pop() || 'mp4'; // Default to mp4 if extension is not found
+    const fileExt = file.name.split(".").pop() || "mp4"; // Default to mp4 if extension is not found
     const key = `${submission.submissionId}.${fileExt}`;
 
     if (getPresignedUrl) {
@@ -166,7 +168,6 @@ export default function SubmitDisplay({
     }
   };
 
-
   const handleSubmit = (e: any) => {
     e.preventDefault(); // Prevent form submission if it's being used within a form
     const selectedFile = e.target.files[0]; // Assuming this is triggered by a file input change
@@ -181,7 +182,6 @@ export default function SubmitDisplay({
     setObjectURL(URL.createObjectURL(selectedFile)); // For preview purposes
     setUpload(true); // Assuming this indicates that a file is ready for confirmation
   };
-
 
   // useEffect(() => {
   //   if (!requestId) {
@@ -279,7 +279,7 @@ export default function SubmitDisplay({
   const handleTrash = async (requestId: string) => {
     console.log("Removing request");
     const submission = getAssociatedSubmission(requestId);
-  }
+  };
 
   const handleChooseAnotherFile = () => {
     setFile(undefined);
@@ -405,9 +405,7 @@ export default function SubmitDisplay({
 
   const Upload = () => {
     return (
-      <form
-        className="flex flex-col w-full h-full p-10"
-      >
+      <form className="flex flex-col w-full h-full p-10">
         <div className="flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5">
           <div className="w-full h-[50%] flex flex-col items-center ">
             <LucideUploadCloud className="w-48 h-48 " />
@@ -604,7 +602,7 @@ export default function SubmitDisplay({
         {upload ? <Back /> : <Toolbar />}
       </div>
       <Separator />
-      {selected ? (
+      {submissions ? (
         <div className="flex h-full flex-1 flex-col">
           {/*Show video */}
 
@@ -655,8 +653,10 @@ export default function SubmitDisplay({
                 )}
               </div>
             </div>
-          ) : (
+          ) : selected ? (
             <ShowRequest selected={selected.requestDetails} />
+          ) : (
+            submissions[0] && <ShowRequest selected={submissions[0].requestDetails} />
           )}
         </div>
       ) : (
