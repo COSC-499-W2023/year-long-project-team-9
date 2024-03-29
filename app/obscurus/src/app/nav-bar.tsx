@@ -46,33 +46,22 @@ const NavBar = ({
   notificationsRead,
   deleteNotifications,
   getNotificationsViaEmail,
-  signedIn,
   signOutUser,
-  userEmail,
-  userName,
+  signedIn,
+  email,
+  name,
 }: {
   notificationsRead: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
-  signedIn: boolean;
   signOutUser: Function;
-  userEmail: string;
-  userName: string;
+  signedIn: boolean;
+  email: string;
+  name: string;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
-  const [showSignInDialog, setShowSignInDialog] = useState(false);
-  const handleAuth = (route: string) => {
-    if (signedIn) {
-      router.push(route);
-    } else {
-      setShowSignInDialog(true);
-    }
-  };
-
-  const [currentTab, selectCurrentTab] = useState("/");
-  const [userSignedIn, setUserSignedIn] = useState(signedIn);
 
   const ThemeSwitcher = () => {
     return (
@@ -155,7 +144,7 @@ const NavBar = ({
   return (
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
-      <div>
+      <div className="flex flex-row">
         <Notifications
           notificationsRead={notificationsRead}
           deleteNotifications={deleteNotifications}
@@ -163,10 +152,10 @@ const NavBar = ({
         />
         <ThemeSwitcher />
         <Authentication
-          signedIn={signedIn}
           signOutUser={signOutUser}
-          userEmail={userEmail}
-          userName={userName}
+          signedIn={signedIn}
+          email={email}
+          name={name}
         />
       </div>
     </div>

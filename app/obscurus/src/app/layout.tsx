@@ -2,25 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import NavBar from "./nav-bar";
+import NavBarServerWrapper from "./nav-bar-server-wrapper";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
-import deleteNotifications from "./functions/deleteNotifications";
-import notificationsRead from "./functions/notificationsRead";
-import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
-import {
-  isSignedIn,
-  signOutUser,
-  getEmail,
-} from "./functions/authenticationMethods";
-import { getUserNames } from "./functions/getUserNames";
 
 const inter = Inter({ subsets: ["latin"] });
-
-type UserNames = {
-  email: string;
-  fullName: string;
-};
 
 export const metadata: Metadata = {
   title: "obscurus",
@@ -32,21 +18,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const getUserName = async (userEmail: string) => {
-    const userNames: UserNames[] = await getUserNames();
-    const filUserNames = userNames.filter((user) => user.email === userEmail);
-    if (filUserNames.length > 0) {
-      return filUserNames[0].fullName;
-    } else {
-      return "";
-    }
-  };
-
-  // const signedIn = await isSignedIn();
-  const signedIn = false;
-  const userEmail = await getEmail();
-  const userName = await getUserName(userEmail);
-
   return (
     <html lang="en">
       <body className={`${GeistSans.className}`}>
@@ -56,15 +27,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className=" flex-col md:flex min-h-screen h-screen">
-            <NavBar
-              notificationsRead={notificationsRead}
-              deleteNotifications={deleteNotifications}
-              getNotificationsViaEmail={getNotificationsViaEmail}
-              signedIn={signedIn}
-              signOutUser={signOutUser}
-              userEmail={userEmail}
-              userName={userName}
-            />
+            <NavBarServerWrapper />
             <Toaster />
             {children}
 
