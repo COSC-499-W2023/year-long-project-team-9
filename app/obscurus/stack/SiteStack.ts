@@ -9,6 +9,7 @@ import {
   Cognito,
   Config,
   WebSocketApi,
+  Service,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 
@@ -201,28 +202,6 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
-  // const processVideo = new Service(stack, "ProcessVideo", {
-  //   path: "stack/process-video",
-  //   port: 8080,
-  //   bind: [chumBucket, chumBucket, api],
-  //   cdk: {
-  //     fargateService: {
-  //       circuitBreaker: { rollback: true },
-  //     },
-
-  //   },
-  //   environment: {
-  //     INPUT_BUCKET: chumBucket.bucketName,
-  //     OUTPUT_BUCKET: chumBucket.bucketName,
-  //     INPUT_NAME: "test3.mp4",
-  //     OUTPUT_NAME: "processed.mp4",
-  //     API_URL: api.url,
-  //   },
-  //   permissions: ["s3", rekognitionPolicyStatement],
-  //   cpu: "4 vCPU",
-  //   memory: "8 GB",
-  // });
-
   const wsApi = new WebSocketApi(stack, "WSApi", {
     defaults: {
       function: {
@@ -237,24 +216,44 @@ export default function SiteStack({ stack }: StackContext) {
     },
   });
 
-  const steveJobs = new Job(stack, "SteveJobs", {
-    runtime: "container",
-    handler: "stack/process-video",
-    container: {
-      cmd: ["python3", "/var/task/app.py"],
+  const processVideo = new Service(stack, "ProcessVideo", {
+    path: "stack/process-video",
+    port: 8080,
+    bind: [chumBucket, api, wsApi, rds],
+    cdk: {
+      fargateService: {
+        circuitBreaker: { rollback: true },
+      },
     },
-    bind: [chumBucket],
     environment: {
       BUCKET_NAME: chumBucket.bucketName,
       API_URL: api.url,
       WS_API_URL: wsApi.url,
-
     },
-    memorySize: "15 GB",
-    timeout: "8 hours",
-    permissions: [rekognitionPolicyStatement],
+    permissions: ["s3", rekognitionPolicyStatement],
+    cpu: "4 vCPU",
+    memory: "8 GB",
   });
-  steveJobs.bind([api]);
+
+
+
+  // const steveJobs = new Job(stack, "SteveJobs", {
+  //   runtime: "container",
+  //   handler: "stack/process-video",
+  //   container: {
+  //     cmd: ["python3", "/var/task/app.py"],
+  //   },
+  //   bind: [chumBucket],
+  //   environment: {
+  //     BUCKET_NAME: chumBucket.bucketName,
+  //     API_URL: api.url,
+  //     WS_API_URL: wsApi.url,
+  //   },
+  //   memorySize: "15 GB",
+  //   timeout: "8 hours",
+  //   permissions: [rekognitionPolicyStatement],
+  // });
+  // steveJobs.bind([api]);
 
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
@@ -277,12 +276,10 @@ export default function SiteStack({ stack }: StackContext) {
 
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-
-
   api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [chumBucket, chumBucket, rds, api, steveJobs, wsApi],
+    bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],
     permissions: [rekognitionPolicyStatement, wsApi],
     environment: { NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url },
   });
