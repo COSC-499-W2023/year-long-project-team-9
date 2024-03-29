@@ -249,19 +249,14 @@ def process_video(timestamps, response, submission_id):
 
 
 def update_status(status, submission_id):
-    print("In update status")
-    print("status", status)
-    print("submission_id", submission_id)
     try:
-        response = requests.post(
+        requests.post(
             f"{api_url}/updateStatus",
             json={
                 "submissionId": submission_id,
                 "status": status,
             },
         )
-        print("Response", response)
-        print("Status updated")
 
     except Exception as error:
         print("Error updating status:", error)
@@ -278,7 +273,7 @@ async def root():
 @app.post("/process-video/")
 async def handle_process_vide(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
-    submission_id = data.get("submissionId")
+    submission_id = data.get("submission_id")
     file_extension = data.get("file_extension")
     if not submission_id or not file_extension:
         raise HTTPException(
@@ -294,7 +289,7 @@ async def process_video_background(submission_id, file_extension):
     try:
         original_key = f"{submission_id}.{file_extension}"
         converted_key = original_key
-        if file_extension.lower() == "webm":
+        if file_extension.lower() != "mp4":
             converted_key = f"{submission_id}.mp4"
             local_webm_path = f"/tmp/{original_key}"
             s3.download_file(bucket_name, original_key, local_webm_path)
