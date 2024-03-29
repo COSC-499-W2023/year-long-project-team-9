@@ -20,10 +20,8 @@ export default function AuthenticationSignedIn({
   userEmail: string;
   userName: string;
 }) {
-  const router = useRouter();
-  function handleLogOut() {
-    // signOutUser();
-    router.push("/");
+  async function handleLogOut() {
+    await signOutUser();
   }
 
   return (
