@@ -246,6 +246,7 @@ export default function SiteStack({ stack }: StackContext) {
     environment: {
       NEXT_PUBLIC_REGION: stack.region,
       NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
+      NEXT_PUBLIC_IDENTITY_POOL_ID: auth.cognitoIdentityPoolId ?? "",
       NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID: auth.userPoolClientId,
       NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
     },
