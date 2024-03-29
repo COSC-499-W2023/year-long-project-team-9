@@ -24,6 +24,7 @@ print("submission_id: ", submission_id)
 input_name = f"{submission_id}.{payload['fileExt']}"  # Keep original file extension here for input purposes.
 output_name = f"{submission_id.split('.')[0]}-processed.{file_ext}"  # Output is always .mp4
 api_url = os.environ["API_URL"]
+ws_api_url = os.environ["WS_API_URL"]
 print("API_URL", api_url)
 
 
@@ -275,6 +276,7 @@ def main():
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
         process_video(timestamps, job_response)
         print("API_URL", api_url)
+        print("WS_API_URL", ws_api_url)
         update_status("COMPLETED", submission_id)
 
         print("Video processing completed")

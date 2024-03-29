@@ -7,6 +7,7 @@ import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
 import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
+import { getUserViaEmail } from "../functions/getUserData";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -23,6 +24,7 @@ async function Submit() {
   console.log("getPresignedUrl", getPresignedUrl);
   console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
   console.log("getRequestsAndSubmissions", getRequestsAndSubmissionsByEmail);
+  console.log("getUserViaEmail", getUserViaEmail);
 
   const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
 
@@ -39,6 +41,7 @@ async function Submit() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       websocketApiEndpoint={wsApi as string}
+      getUserViaEmail={getUserViaEmail}
 
     />
   );

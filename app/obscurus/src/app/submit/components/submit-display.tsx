@@ -43,6 +43,7 @@ import substring from "@/app/functions/substring";
 import Loading from "./loading";
 import PanelLoader from "./panel-2-loader";
 import { useSubmission } from "@/app/hooks/use-submission";
+import { useUpload } from "@/app/hooks/use-upload";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -52,6 +53,7 @@ export default function SubmitDisplay({
   getStatus,
   updateSubmissionStatus,
   updateRequests,
+  getUserViaEmail,
 }: {
   fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -60,12 +62,15 @@ export default function SubmitDisplay({
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
+  getUserViaEmail?: (email: string) => Promise<string>;
 }) {
-  const [submission] = useSubmission();
-  const [upload, setUpload] = useState(false);
+  const [submission, setSubmission] = useSubmission();
+  const [upload, setUpload] = useUpload();
   const [showingVideo, setShowingVideo] = useState(false);
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
+
+  console.log("getUserViaEmail", getUserViaEmail);
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -126,16 +131,14 @@ export default function SubmitDisplay({
       return;
     }
 
-    setLoading(true); // Show loading indicator during upload
+    setLoading(true);
 
-    // Extract file extension and prepare the key
-    const fileExt = file.name.split(".").pop() || "mp4"; // Default to mp4 if extension is not found
+    const fileExt = file.name.split(".").pop() || "mp4";
     const key = `${submission.submissionId}.${fileExt}`;
 
-    if (getPresignedUrl) {
+    if (getPresignedUrl && triggerJob && updateSubmissionStatus) {
       try {
         const url = await getPresignedUrl(key);
-        // Perform the upload to the pre-signed URL
         const response = await fetch(url, {
           method: "PUT",
           headers: {
@@ -146,10 +149,17 @@ export default function SubmitDisplay({
 
         if (response.ok) {
           console.log("Upload successful");
+          triggerJob &&
+            submission.submissionId &&
+            triggerJob(submission.submissionId, fileExt);
           toast({
             title: "Success",
             description: "Your video has been uploaded successfully.",
           });
+          await updateSubmissionStatus("PROCESSING", submission.submissionId);
+          console.log("Updated submission status");
+          updateRequests && updateRequests();
+          await fetchUserData();
         } else {
           throw new Error("Upload failed");
         }
@@ -160,34 +170,26 @@ export default function SubmitDisplay({
           description: "There was an issue with the video upload.",
         });
       } finally {
-        setLoading(false); // Hide loading indicator
-        setUpload(false); // Reset upload state
-        setFile(undefined); // Clear selected file
-        setObjectURL(null); // Clear object URL
+        setLoading(false);
+        setUpload({ upload: false });
+        setFile(undefined);
+        setObjectURL(null);
       }
     }
   };
 
   const handleSubmit = (e: any) => {
-    e.preventDefault(); // Prevent form submission if it's being used within a form
-    const selectedFile = e.target.files[0]; // Assuming this is triggered by a file input change
+    e.preventDefault();
+    const selectedFile = e.target.files[0];
 
     if (!selectedFile) {
       console.error("No file selected");
       return;
     }
-
-    // Just set the file, do not upload yet
     setFile(selectedFile);
-    setObjectURL(URL.createObjectURL(selectedFile)); // For preview purposes
-    setUpload(true); // Assuming this indicates that a file is ready for confirmation
+    setObjectURL(URL.createObjectURL(selectedFile));
+    setUpload({ upload: true });
   };
-
-  // useEffect(() => {
-  //   if (!requestId) {
-  //     setRequestId(requests && requests[0].requestId);
-  //   }
-  // }, []);
 
   const [record, setRecord] = useState(false);
 
@@ -222,9 +224,9 @@ export default function SubmitDisplay({
 
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, { type: "video/mp4" });
-      const fileName = `${submission}.mp4`;
-      const file = new File([blob], fileName, { type: "video/mp4" });
+      const blob = new Blob(recordedChunks, { type: "video/webm" });
+      const fileName = `${submission}.webm`;
+      const file = new File([blob], fileName, { type: "video/webm" });
 
       setFile(file);
 
@@ -254,6 +256,7 @@ export default function SubmitDisplay({
       console.error("No recorded chunks");
     }
   };
+
 
   const router = useRouter();
 
@@ -290,7 +293,7 @@ export default function SubmitDisplay({
   const Back = () => {
     return (
       <div className="flex flex-row justify-between w-full items-center gap-2">
-        <Button variant={"ghost"} onClick={() => setUpload(false)}>
+        <Button variant={"ghost"} onClick={() => setUpload({ upload: false })}>
           <Tooltip>
             <TooltipTrigger asChild>
               <ArrowLeft className="w-4 h-4 " />
@@ -523,18 +526,14 @@ export default function SubmitDisplay({
               </Avatar>
               <div className="grid gap-1">
                 <div className="font-semibold">
-                  {substring(selected?.requestTitle, 30)}
+                  {selected?.requestTitle}
                 </div>
-                <div className="line-clamp-1 text-xs">
+                {/* <div className="line-clamp-3 text-xs">
                   <span className="font-medium">From:</span>{" "}
-                  <div>{substring(selected?.requestTitle, 50)}</div>
-                </div>
+                  {getUserViaEmail && (await getUserViaEmail(selected?.requesterEmail))}
+                </div> */}
                 <div className="line-clamp-3 text-xs">
-                  <span className="font-medium">From:</span> Jan Dhillon
-                </div>
-
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Reply-To:</span>{" "}
+                  <span className="font-medium">Email:</span>{" "}
                   {substring(selected?.requesterEmail, 50)}
                 </div>
                 <div className="line-clamp-1 text-xs">
@@ -562,7 +561,7 @@ export default function SubmitDisplay({
             <TooltipTrigger asChild>
               <Button
                 size="lg"
-                onClick={() => setUpload(true)}
+                onClick={() => setUpload({ upload: true })}
                 disabled={!canUpload}
                 variant={"ghost"}
                 style={{ display: "flex" }}
@@ -599,7 +598,7 @@ export default function SubmitDisplay({
       {/* <Toggle/> */}
       <div className="flex items-center p-2">
         {/* Toolbar states */}
-        {upload ? <Back /> : <Toolbar />}
+        {upload.upload ? <Back /> : <Toolbar />}
       </div>
       <Separator />
       {submissions ? (
@@ -623,8 +622,7 @@ export default function SubmitDisplay({
                 </div>
               </div>
             </>
-          ) : upload && getPresignedUrl && triggerJob && submission ? (
-            // Upload or record video
+          ) : upload.upload && getPresignedUrl && triggerJob && submission ? (
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
@@ -656,7 +654,12 @@ export default function SubmitDisplay({
           ) : selected ? (
             <ShowRequest selected={selected.requestDetails} />
           ) : (
-            submissions[0] && <ShowRequest selected={submissions[0].requestDetails} />
+            submissions[0] && (
+              <>
+                <ShowRequest selected={submissions[0].requestDetails} />
+                {setSubmission(submissions[0])}
+              </>
+            )
           )}
         </div>
       ) : (

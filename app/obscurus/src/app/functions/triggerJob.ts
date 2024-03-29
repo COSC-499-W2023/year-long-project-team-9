@@ -16,6 +16,7 @@ const triggerJob = async (submissionId: string, fileExt: string) => {
       },
     });
 
+    updateStatus("PROCESSING", submissionId);
 
     return("Video jobbed successfully");
   } catch {

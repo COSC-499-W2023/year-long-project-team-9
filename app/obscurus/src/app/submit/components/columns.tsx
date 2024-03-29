@@ -1,22 +1,19 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
-import { statuses } from "../statuses"
-import { SubmissionSchema } from "../schema"
-import { DataTableColumnHeader } from "./data-table-column-header"
-import { DataTableRowActions } from "./data-table-row-actions"
-import { Submissions } from "@obscurus/database/src/sql.generated"
+import { statuses } from "../statuses";
+import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
+import { Submissions } from "@obscurus/database/src/sql.generated";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { ComponentProps } from "react";
+import { getBadgeVariantFromStatus } from "./submit-list";
 
-
-const substring = (str: string, len: number) => {
-  return str.substring(0, len) && str.length > len ? str + "..." : str;
-}
-
-export const columns: ColumnDef<Submissions>[] = [
+export const columns: ColumnDef<EnrichedSubmissions>[] = [
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -42,7 +39,7 @@ export const columns: ColumnDef<Submissions>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: "title",
+    accessorKey: "requestTitle",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
@@ -52,19 +49,26 @@ export const columns: ColumnDef<Submissions>[] = [
       return (
         <div className="flex space-x-2">
           {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title") || "No title"}
+          <span className="max-w-[200px] truncate font-medium">
+            {(row.getValue("requestDetails") as { requestTitle: string })
+              ?.requestTitle || "No title"}
           </span>
         </div>
-      )
+      );
     },
   },
   {
-    accessorKey: "requesteeEmail",
+    accessorKey: "requestDetails.requesterEmail",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Requestee Email" />
+      <DataTableColumnHeader column={column} title="Requester Email" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{substring(row.getValue("requesteeEmail"), 30)}</div>,
+    cell: ({ row }) => (
+      <div className="w-[80px] space-x-2">
+        <span className="max-w-[200px] truncate font-medium">
+          {row.getValue("requestDetails.requesterEmail") || "No email"}
+        </span>
+      </div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
@@ -75,23 +79,34 @@ export const columns: ColumnDef<Submissions>[] = [
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status"))
+        (status) => status.value === row.getValue("status")
+      );
 
       if (!status) {
-        return "Not Started"
+        return (
+          <Badge variant="outline" className="w-[100px]">
+            {row.getValue("status")}
+          </Badge>
+        );
+
       }
 
       return (
         <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
+          <Badge variant={getBadgeVariantFromStatus(status.value)}>
+            {status.value
+              .split(" ")
+              .map(
+                (word) =>
+                  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              )
+              .join(" ")}
+          </Badge>
         </div>
-      )
+      );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      return value.includes(row.getValue(id));
     },
   },
   {
@@ -106,12 +121,13 @@ export const columns: ColumnDef<Submissions>[] = [
         <div className="flex space-x-2">
           {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("submittedDate") || "No date submitted"}
+            {row.getValue("submittedDate") || "-"}
           </span>
         </div>
-      )
+      );
     },
   },
+
   // {
   //   accessorKey: "priority",
   //   header: ({ column }) => (
@@ -135,8 +151,29 @@ export const columns: ColumnDef<Submissions>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Link" />
+      <DataTableColumnHeader
+        column={column}
+        title="Link"
+        className="text-center"
+      />
     ),
     cell: ({ row }) => <DataTableRowActions row={row} />,
   },
-]
+];
+
+const getLabelVariantFromStatus = (status: string) => {
+  switch (status.toLowerCase()) {
+    case "completed":
+      return "success";
+    case "processing":
+      return "warning";
+    case "archived":
+      return "outline";
+    case "failed":
+      return "destructive";
+    case "todo":
+      return "default";
+    default:
+      return "secondary";
+  }
+};

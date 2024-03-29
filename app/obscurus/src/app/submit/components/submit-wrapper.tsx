@@ -21,6 +21,7 @@ export const SubmitWrapper = ({
   defaultLayout,
   defaultCollapsed,
   websocketApiEndpoint,
+  getUserViaEmail,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -31,6 +32,7 @@ export const SubmitWrapper = ({
   defaultLayout: number[];
   defaultCollapsed: boolean;
   websocketApiEndpoint: string;
+  getUserViaEmail?: (email: string) => Promise<string>;
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
 
@@ -132,6 +134,7 @@ export const SubmitWrapper = ({
           triggerJob={triggerJob}
           getStatus={getStatus}
           updateSubmissionStatus={updateSubmissionStatus}
+          getUserViaEmail={getUserViaEmail}
         />
       }
     />

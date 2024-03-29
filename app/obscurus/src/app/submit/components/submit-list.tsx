@@ -187,12 +187,13 @@ export default function SubmitList({
                     addSuffix: true,
                   })}
                 </Badge>
-                <Badge variant={getBadgeVariantFromLabel("status")}>
+                <Badge variant={getBadgeVariantFromStatus(item.status)}>
                   {item.status
                     .split(" ")
                     .map(
                       (word) =>
-                        word[0].toUpperCase() + word.substring(1).toLowerCase()
+                        word.charAt(0).toUpperCase() +
+                        word.slice(1).toLowerCase()
                     )
                     .join(" ")}
                 </Badge>
@@ -216,7 +217,7 @@ export default function SubmitList({
           <span className="sr-only">View Processing</span>
           <Tooltip>
             <DrawerTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" disabled={submissions && submissions.length === 0}>
                 <TooltipTrigger asChild>
                   <ListVideo className="h-4 w-4" />
                 </TooltipTrigger>
@@ -301,7 +302,7 @@ function getBadgeVariantFromLabel(
   label: string
 ): ComponentProps<typeof Badge>["variant"] {
   if (["status"].includes(label.toLowerCase())) {
-    return "default";
+    return "secondary";
   }
 
   if (["due-date"].includes(label.toLowerCase())) {
@@ -309,4 +310,25 @@ function getBadgeVariantFromLabel(
   }
 
   return "secondary";
+}
+
+export function getBadgeVariantFromStatus(
+  status: string
+): ComponentProps<typeof Badge>["variant"] {
+  switch (status.toLowerCase()) {
+    case "completed":
+      return "success";
+    case "processing":
+      return "warning";
+    case "in progress":
+      return "warning";
+    case "archived":
+      return "outline";
+    case "failed":
+      return "destructive";
+    case "todo":
+      return "default";
+    default:
+      return "secondary";
+  }
 }

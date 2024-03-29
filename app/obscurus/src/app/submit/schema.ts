@@ -1,17 +1,24 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { Status } from "stack/database/src/types/status";
-import { GroupingState } from "@tanstack/react-table";
-
-export const SubmissionSchema = z.object({
+export const EnrichedSubmissionsSchema = z.object({
   submissionId: z.string(),
-  requesteeEmail: z.string().default("NULL"),
-  status: z.custom<Status>().default("TODO"),
   title: z.string().nullable(),
+  grouping: z.string().nullable(),
+  requesteeEmail: z.string(),
+  status: z.enum(['IN PROGRESS', 'COMPLETED', 'FAILED', 'TODO', 'PROCESSING', 'ARCHIVED']),
   isRead: z.boolean(),
-  grouping: z.custom<GroupingState>(),
-  submittedDate:  z.date().nullable().or(z.string().nullable()),
+  submittedDate: z.date().nullable().or(z.string().nullable()),
   requestId: z.string(),
+  requestDetails: z.object({
+    requestId: z.string(),
+    requestTitle: z.string(),
+    requesterEmail: z.string(),
+    description: z.string(),
+    blurred: z.boolean(),
+    grouping: z.string().nullable(),
+    creationDate: z.date().or(z.string()),
+    dueDate: z.date().or(z.string()),
+  }),
 });
 
-export type SubmissionsZodType = z.infer<typeof SubmissionSchema>;
+export type SubmissionsZodType = z.infer<typeof EnrichedSubmissionsSchema>;

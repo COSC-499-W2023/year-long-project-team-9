@@ -223,6 +223,20 @@ export default function SiteStack({ stack }: StackContext) {
   //   memory: "8 GB",
   // });
 
+  const wsApi = new WebSocketApi(stack, "WSApi", {
+    defaults: {
+      function: {
+        bind: [rds],
+      },
+    },
+    routes: {
+      $connect: "stack/lambdas/chat/connect.main",
+      $disconnect: "stack/lambdas/chat/disconnect.main",
+      sendmessage: "stack/lambdas/chat/sendMessage.main",
+      updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
+    },
+  });
+
   const steveJobs = new Job(stack, "SteveJobs", {
     runtime: "container",
     handler: "stack/process-video",
@@ -233,6 +247,8 @@ export default function SiteStack({ stack }: StackContext) {
     environment: {
       BUCKET_NAME: chumBucket.bucketName,
       API_URL: api.url,
+      WS_API_URL: wsApi.url,
+
     },
     memorySize: "15 GB",
     timeout: "8 hours",
@@ -261,19 +277,7 @@ export default function SiteStack({ stack }: StackContext) {
 
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  const wsApi = new WebSocketApi(stack, "WSApi", {
-    defaults: {
-      function: {
-        bind: [rds],
-      },
-    },
-    routes: {
-      $connect: "stack/lambdas/chat/connect.main",
-      $disconnect: "stack/lambdas/chat/disconnect.main",
-      sendmessage: "stack/lambdas/chat/sendMessage.main",
-      updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
-    },
-  });
+
 
   api.bind([wsApi]);
 
