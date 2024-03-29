@@ -29,10 +29,42 @@ export function get(request: Requests) {
     .execute();
 }
 
+// export async function getRequestsAndSubmissionsByEmail(email: string) {
+//   const submissionsByUserWithRequests = await SQL.DB.selectFrom("submissions")
+//     .innerJoin("requests", "requests.requestId", "submissions.requestId")
+//     .select([
+//       "submissions.submissionId",
+//       "submissions.requesteeEmail",
+//       "submissions.status",
+//       "submissions.title as submissionTitle",
+//       "submissions.grouping as submissionGrouping",
+//       "submissions.isRead",
+//       "submissions.submittedDate",
+//       "submissions.requestId",
+//       "requests.requestId",
+//       "requests.requestTitle",
+//       "requests.requesterEmail",
+//       "requests.grouping",
+//       "requests.description",
+//       "requests.blurred",
+//       "requests.creationDate",
+//       "requests.dueDate",
+//     ])
+//     .where("submissions.requesteeEmail", "=", email)
+//     .execute();
+
+//   return {
+//     submissionsByUserWithRequests,
+//   };
+// }
+
 export async function getRequestsAndSubmissionsByEmail(email: string) {
-  const submissionsByUserWithRequests = await SQL.DB.selectFrom("submissions")
+  const submissionsByUserWithRequestsAndUsers = await SQL.DB.selectFrom("submissions")
     .innerJoin("requests", "requests.requestId", "submissions.requestId")
+    .innerJoin("users as requestee", "requestee.email", "submissions.requesteeEmail")
+    .innerJoin("users as requester", "requester.email", "requests.requesterEmail")
     .select([
+      // Submissions data
       "submissions.submissionId",
       "submissions.requesteeEmail",
       "submissions.status",
@@ -41,19 +73,28 @@ export async function getRequestsAndSubmissionsByEmail(email: string) {
       "submissions.isRead",
       "submissions.submittedDate",
       "submissions.requestId",
+      // Requests data
       "requests.requestId",
       "requests.requestTitle",
       "requests.requesterEmail",
-      "requests.grouping",
       "requests.description",
+      "requests.grouping",
       "requests.blurred",
       "requests.creationDate",
       "requests.dueDate",
+      // Requestee user data
+      "requestee.givenName as requesteeGivenName",
+      "requestee.familyName as requesteeFamilyName",
+      "requestee.profileImage as requesteeProfileImage",
+      // Requester user data
+      "requester.givenName as requesterGivenName",
+      "requester.familyName as requesterFamilyName",
+      "requester.profileImage as requesterProfileImage",
     ])
     .where("submissions.requesteeEmail", "=", email)
     .execute();
 
   return {
-    submissionsByUserWithRequests,
+    submissionsByUserWithRequestsAndUsers,
   };
 }

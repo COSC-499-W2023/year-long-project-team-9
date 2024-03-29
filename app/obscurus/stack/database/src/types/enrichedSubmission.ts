@@ -1,6 +1,11 @@
 import { GroupingState } from "@tanstack/react-table";
-import { Group } from "aws-cdk-lib/aws-iam";
 import { Grouping, Status } from "./status";
+
+export type UserData = {
+  givenName: string;
+  familyName: string;
+  profileImage: string;
+};
 
 export type EnrichedSubmissions = {
   submissionId: string;
@@ -21,4 +26,6 @@ export type EnrichedSubmissions = {
     creationDate: Date;
     dueDate: Date;
   };
+  requestee: UserData;
+  requester: UserData;
 };

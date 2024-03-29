@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+const UserDataSchema = z.object({
+  givenName: z.string(),
+  familyName: z.string(),
+  profileImage: z.string().nullable(),
+});
+
 export const EnrichedSubmissionsSchema = z.object({
   submissionId: z.string(),
   title: z.string().nullable(),
@@ -19,6 +25,8 @@ export const EnrichedSubmissionsSchema = z.object({
     creationDate: z.date().or(z.string()),
     dueDate: z.date().or(z.string()),
   }),
+  requestee: UserDataSchema,
+  requester: UserDataSchema,
 });
 
-export type SubmissionsZodType = z.infer<typeof EnrichedSubmissionsSchema>;
+export type EnrichedSubmissionsZodType = z.infer<typeof EnrichedSubmissionsSchema>;

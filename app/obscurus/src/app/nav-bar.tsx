@@ -101,8 +101,8 @@ const NavBar = ({
             className="min-h-full min-w-full"
             src="/logo.svg"
             alt="obscurus"
-            width={30}
-            height={30}
+            width={40}
+            height={40}
           />
         </Link>
 

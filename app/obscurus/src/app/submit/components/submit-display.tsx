@@ -44,6 +44,7 @@ import Loading from "./loading";
 import PanelLoader from "./panel-2-loader";
 import { useSubmission } from "@/app/hooks/use-submission";
 import { useUpload } from "@/app/hooks/use-upload";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -256,7 +257,6 @@ export default function SubmitDisplay({
       console.error("No recorded chunks");
     }
   };
-
 
   const router = useRouter();
 
@@ -509,49 +509,54 @@ export default function SubmitDisplay({
     );
   };
 
-  const ShowRequest = ({ selected }: { selected: Requests }) => {
+  const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
     return (
       <>
         <div className="h-full">
           <div className="flex items-start p-4">
-            <div className="flex items-start gap-4 text-sm">
+            <div className="flex items-start gap-4 text-sm max-w-[70%]">
               <Avatar>
-                <AvatarImage alt={selected?.requesterEmail} />
+                <AvatarImage alt={selected?.requester.givenName} />
                 <AvatarFallback>
-                  {selected?.requesterEmail
+                  {selected?.requester.givenName
                     .split(" ")
                     .map((chunk) => chunk[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid gap-1">
+              <div className="grid gap-1 text-ellipsis ">
                 <div className="font-semibold">
-                  {selected?.requestTitle}
+                  {selected?.requestDetails.requestTitle}
                 </div>
-                {/* <div className="line-clamp-3 text-xs">
-                  <span className="font-medium">From:</span>{" "}
-                  {getUserViaEmail && (await getUserViaEmail(selected?.requesterEmail))}
-                </div> */}
-                <div className="line-clamp-3 text-xs">
-                  <span className="font-medium">Email:</span>{" "}
-                  {substring(selected?.requesterEmail, 50)}
+                <div className="line-clamp-3 text-xs text-ellipsis ">
+                  <span className="font-medium">From:{" "}</span>
+                  {selected?.requester.givenName}{" "}
+                  {selected?.requester.familyName}{" "}
+                </div>
+                <div className="line-clamp-3 text-xs text-ellipsis  ">
+                  <span className="font-medium ">
+                    Email:{" "}
+                  </span>{selected?.requestDetails.requesterEmail}
                 </div>
                 <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Due:</span>{" "}
-                  {format(new Date(selected.dueDate), "PPpp")}
+                  <span className="font-medium">Due:{" "}</span>
+                  {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
                 </div>
               </div>
             </div>
-            {selected.creationDate && (
+            {selected.requestDetails.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {format(new Date(selected.creationDate), "PPpp")}
+                {format(
+                  new Date(selected.requestDetails.creationDate),
+                  "PPP, p"
+                )}
               </div>
             )}
           </div>
           <Separator />
-          <div className="flex  p-4 overflow-scroll">
-            <div className="flex-1 whitespace-pre-wrap text-sm max-h-[500px] ">
-              {selected?.description}
+          <div className="flex  p-4 overflow-scroll max-h-[65%]">
+            <div className="flex-1 whitespace-pre-wrap text-sm ">
+              {selected?.requestDetails.description}
             </div>
           </div>
         </div>
@@ -652,11 +657,11 @@ export default function SubmitDisplay({
               </div>
             </div>
           ) : selected ? (
-            <ShowRequest selected={selected.requestDetails} />
+            <ShowRequest selected={selected} />
           ) : (
             submissions[0] && (
               <>
-                <ShowRequest selected={submissions[0].requestDetails} />
+                <ShowRequest selected={submissions[0]} />
                 {setSubmission(submissions[0])}
               </>
             )

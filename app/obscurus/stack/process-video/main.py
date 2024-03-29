@@ -11,12 +11,15 @@ from fastapi import (
     File,
     Form,
     HTTPException,
+    WebSocket,
     Request,
     BackgroundTasks,
 )
 import requests
 import json
 import subprocess
+import websockets
+import asyncio
 
 # Configure AWS clients
 rekognition = boto3.client("rekognition")
@@ -225,7 +228,7 @@ def process_video(timestamps, response, submission_id):
     print("Processing video...")
     input_name = f"{submission_id}.mp4"
     output_name = f"{submission_id}-processed.mp4"
-    local_filename = "/tmp/{}".format(input_name)
+    local_filename = "/tmp/{}".format(submission_id)
     temp_output_filename = "/tmp/{}-temp.mp4".format(submission_id)
     final_output_filename = "/tmp/{}-processed.mp4".format(submission_id)
 
@@ -270,6 +273,21 @@ async def root():
     return {"message": "Root path"}
 
 
+async def send_ws_message(submission_id: str):
+    message = json.dumps({"submissionId": submission_id, "status": "Completed"})
+    async with websockets.connect(ws_api_url) as websocket:
+        await websocket.send(message)
+        # Optionally wait for a response
+        response = await websocket.recv()
+        print(f"WebSocket response: {response}")
+
+@app.post("/notify-completion/")
+async def notify_completion(submission_id: str, background_tasks: BackgroundTasks):
+    background_tasks.add_task(send_ws_message, submission_id)
+    return {"message": "Notification task started"}
+
+
+
 @app.post("/process-video/")
 async def handle_process_vide(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
@@ -287,6 +305,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 
 async def process_video_background(submission_id, file_extension):
     try:
+
         original_key = f"{submission_id}.{file_extension}"
         converted_key = original_key
         if file_extension.lower() != "mp4":
