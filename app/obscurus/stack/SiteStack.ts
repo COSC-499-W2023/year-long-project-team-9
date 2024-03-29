@@ -118,11 +118,6 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getRequestsViaEmail.handler",
         },
       },
-      "POST /getSubmissionsViaEmail": {
-        function: {
-          handler: "stack/lambdas/getSubmissionsViaEmail.handler",
-        },
-      },
       "POST /getUserViaEmail": {
         function: {
           handler: "stack/lambdas/getUserViaEmail.handler",
@@ -186,11 +181,6 @@ export default function SiteStack({ stack }: StackContext) {
       "GET /getUserNames": {
         function: {
           handler: "stack/lambdas/getUserNames.handler",
-        },
-      },
-      "GET /getWebsocketApiEndpoint": {
-        function: {
-          handler: "stack/lambdas/getWebsocketApiEndpoint.handler",
         },
       },
       "POST /order": "stack/lambdas/order.handler",
