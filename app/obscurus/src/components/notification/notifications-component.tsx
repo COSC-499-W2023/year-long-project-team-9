@@ -41,7 +41,7 @@ export default function NotificationsComponent({
           </Button>
         </div>
       </DropdownMenuTrigger>
-      <div>
+      <Card>
         <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto p-4shadow-lg rounded-lg">
           <CardTitle>
             <div className="font-semibold text-base my-2 p-4">Notifications</div>
@@ -110,7 +110,7 @@ export default function NotificationsComponent({
             ))
           )}
         </DropdownMenuContent>
-      </div>
+      </Card>
     </DropdownMenu>
   );
 }

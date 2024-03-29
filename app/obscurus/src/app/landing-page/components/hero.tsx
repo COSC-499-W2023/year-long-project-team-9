@@ -8,10 +8,11 @@ const Mascot = ({ isBlurred }: any) => {
   const cloudVariants = {
     visible: {
       opacity: 1,
+      rotate: [0, 30],
       scale: [0.95, 0.9, 0.95],
       transition: {
         opacity: { duration: 0.5, delay: 1 },
-        // rotate: { repeat: Infinity, duration: 100, ease: "linear", delay: 1 },
+        rotate: { repeat: Infinity, duration: 100, ease: "linear", delay: 1 },
         scale: { repeat: Infinity, duration: 3, ease: "linear" },
       },
     },
