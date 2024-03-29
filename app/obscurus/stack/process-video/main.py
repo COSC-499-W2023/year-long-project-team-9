@@ -18,6 +18,8 @@ from fastapi import (
 import requests
 import json
 import subprocess
+import websockets
+import asyncio
 
 # Configure AWS clients
 rekognition = boto3.client("rekognition")
@@ -245,7 +247,7 @@ def process_video(timestamps, response, submission_id):
     print("Uploading processed video to S3...")
     s3.upload_file(final_output_filename, bucket_name, output_name)
     print("Output file uploaded to S3")
-    update_status("COMPLETED", submission_id)
+    update_submission_status("COMPLETED", submission_id)
     return "Completed processing!"
 
 
@@ -263,27 +265,57 @@ def update_status(status, submission_id):
         print("Error updating status:", error)
 
 
+
+
 app = FastAPI()
 
+async def update_submission_status(submission_id: str, status: str):
+    async with websockets.connect(ws_api_url) as websocket:
+        message = json.dumps({
+            "action": "updateSubmissionStatus",
+            "data": {"status": status, "submissionId": submission_id},
+        })
+        await websocket.send(message)
+        print(f"WebSocket message sent for submission {submission_id} with status {status}")
 
-@app.get("/")
-async def root():
-    return {"message": "Root path"}
+async def send_email_notification(email: str, subject: str, body: str):
+    ses_client = boto3.client("ses", region_name="us-west-2")
+    ses_client.send_email(
+        Source="no-reply@obscurus.me",
+        Destination={"ToAddresses": [email]},
+        Message={
+            "Subject": {"Data": subject},
+            "Body": {"Html": {"Data": body}}
+        }
+    )
+    print(f"Email notification sent to {email}")
 
 
 @app.post("/process-video/")
 async def handle_process_vide(request: Request, background_tasks: BackgroundTasks):
-    data = await request.json()
-    submission_id = data.get("submission_id")
-    file_extension = data.get("file_extension")
-    if not submission_id or not file_extension:
-        raise HTTPException(
-            status_code=400, detail="Missing submissionId or file_extension"
-        )
-    print(f"SubmissionId: {submission_id}, File Extension: {file_extension}")
-    update_status("PROCESSING", submission_id)
-    background_tasks.add_task(process_video_background, submission_id, file_extension)
-    return {"message": "Video processing started"}
+    try:
+        data = await request.json()
+        submission_id = data.get("submission_id")
+        file_extension = data.get("file_extension")
+        recipient_email = "imightbejan@gmail.com"
+        if not submission_id or not file_extension:
+            raise HTTPException(
+                status_code=400, detail="Missing submission_id or file_extension"
+            )
+        print(f"SubmissionId: {submission_id}, File Extension: {file_extension}")
+        await update_submission_status("PROCESSING", submission_id)
+        await send_email_notification(submission_id, recipient_email, "Your video is being processed")
+        background_tasks.add_task(process_video_background, submission_id, file_extension)
+        return {"message": "Video processing started"}
+    except Exception as e:
+        print(f"Error processing video: {e}")
+        try:
+            await update_submission_status("FAILED", submission_id)
+            await send_email_notification(submission_id, recipient_email, "Error processing video")
+            return {"message": "Error processing video"}
+        except Exception as error:
+            print("Error updating status:", error)
+            return {"message": "Error processing video"}
 
 
 async def process_video_background(submission_id, file_extension):
@@ -304,7 +336,6 @@ async def process_video_background(submission_id, file_extension):
         job_response = check_job_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
         process_video(timestamps, job_response, submission_id)
-        update_status("COMPLETED", submission_id)
+        await update_submission_status("COMPLETED", submission_id)
     except Exception as e:
-        print(f"Error during video processing: {e}")
-        update_status("FAILED", submission_id)
+        raise e
