@@ -1,25 +1,10 @@
 "use client";
 
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { EnrichedSubmissionsSchema } from "../schema";
-import { Download, DownloadCloud, ExternalLink } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -29,15 +14,10 @@ import { useQueryState } from "nuqs";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import VideoPlayer from "./video-player";
+import { Separator } from "@/components/ui/separator";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -51,10 +31,10 @@ export function DataTableRowActions<TData>({
   const [showingVideo, setShowingVideo] = useQueryState("video");
   console.log("submissionId", task.submissionId);
   return (
-    <div className="flex justify-center ">
+    <div className="flex justify-center items-center ">
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"ghost"} onClick={() => setShowingVideo("true")}>
+          <Button variant={"outline"} onClick={() => setShowingVideo("true")}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <ExternalLink className="w-4 h-4 " />
@@ -71,7 +51,8 @@ export function DataTableRowActions<TData>({
           />
         </DialogContent>
       </Dialog>
-      <Button variant={"ghost"} onClick={() => setShowingVideo("true")}>
+      <Separator orientation="vertical" className="mx-2 h-8" />
+      <Button variant={"outline"} onClick={() => setShowingVideo("true")}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Download className="w-4 h-4 " />

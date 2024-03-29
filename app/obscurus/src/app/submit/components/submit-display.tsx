@@ -334,7 +334,7 @@ export default function SubmitDisplay({
             <TooltipContent>Move to trash</TooltipContent>
           </Tooltip>
         </div>
-        <div className="flex ml-auto pr-1.5">
+        <div className="flex ml-auto pr-1">
           <Button
             variant={"ghost"}
             onClick={() => setShowingVideo(!showingVideo)}
