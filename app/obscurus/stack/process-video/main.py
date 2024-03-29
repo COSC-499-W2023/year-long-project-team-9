@@ -279,7 +279,7 @@ async def root():
 
 
 @app.post("/process-video/")
-async def process_video(request: Request, background_tasks: BackgroundTasks):
+async def handle_process_video(request: Request, background_tasks: BackgroundTasks):
     data = await request.json()
     submission_id = data.get("submissionId")
     file_extension = data.get("file_extension")
