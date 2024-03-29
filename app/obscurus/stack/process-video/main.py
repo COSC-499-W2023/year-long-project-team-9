@@ -296,7 +296,7 @@ async def process_video_background(submission_id, file_extension):
         job_id = start_face_detection(key)
         job_response = check_submission_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-        await process_video(timestamps, job_response, submission_id, file_extension)
+        process_video(timestamps, job_response, submission_id, file_extension)
         update_status("COMPLETED", submission_id)
     except Exception as e:
         print(f"Error during video processing: {e}")

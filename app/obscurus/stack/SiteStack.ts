@@ -15,12 +15,12 @@ import * as cdk from "aws-cdk-lib";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
-    cdk: {
-      bucket: {
-        autoDeleteObjects: true,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    },
+    // cdk: {
+    //   bucket: {
+    //     autoDeleteObjects: true,
+    //     removalPolicy: cdk.RemovalPolicy.DESTROY,
+    //   },
+    // },
   });
 
   const rekognitionPolicyStatement = new PolicyStatement({
@@ -224,8 +224,6 @@ export default function SiteStack({ stack }: StackContext) {
     memory: "8 GB",
   });
 
-
-
   // const steveJobs = new Job(stack, "SteveJobs", {
   //   runtime: "container",
   //   handler: "stack/process-video",
@@ -270,7 +268,10 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],
     permissions: [rekognitionPolicyStatement, wsApi],
-    environment: { NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url },
+    environment: {
+      NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
+      NEXT_PUBLIC_SERVICE_URL: processVideo.url ? processVideo.url : "",
+    },
   });
 
   stack.addOutputs({
@@ -280,5 +281,6 @@ export default function SiteStack({ stack }: StackContext) {
     IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
     WebSocketApiEndpoint: wsApi.url,
+    ServiceUrl: processVideo.url,
   });
 }
