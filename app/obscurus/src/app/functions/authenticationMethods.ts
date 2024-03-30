@@ -39,33 +39,3 @@ export async function getEmail() {
     return "";
   }
 }
-
-// export async function getIDToken() {
-//   try {
-//     const session = await Auth.currentSession();
-//     const idToken = session.getIdToken();
-//     return idToken.getJwtToken();
-//   } catch {
-//     return "";
-//   }
-// }
-
-// export async function getAccessToken() {
-//   try {
-//     const session = await Auth.currentSession();
-//     const accessToken = session.getAccessToken();
-//     return accessToken.getJwtToken();
-//   } catch {
-//     return "";
-//   }
-// }
-
-// export async function getRefreshToken() {
-//   try {
-//     const session = await Auth.currentSession();
-//     const refreshToken = session.getRefreshToken();
-//     return refreshToken.getToken();
-//   } catch (error) {
-//     return "";
-//   }
-// }
