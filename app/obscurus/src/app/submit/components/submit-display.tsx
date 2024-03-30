@@ -158,8 +158,8 @@ export default function SubmitDisplay({
             description: "Your video has been uploaded successfully.",
           });
           // console.log("Updated submission status");
-          // updateRequests && updateRequests();
-          // await fetchUserData();
+          updateRequests && updateRequests();
+          await fetchUserData();
         } else {
           throw new Error("Upload failed");
         }
