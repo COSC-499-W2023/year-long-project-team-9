@@ -9,7 +9,6 @@ export async function up(db) {
     .addColumn("email", "varchar", (col) => col.primaryKey())
     .addColumn("givenName", "varchar", (col) => col.notNull())
     .addColumn("familyName", "varchar", (col) => col.notNull())
-    .addColumn("isAdmin", "boolean", (col) => col.notNull().defaultTo(false))
     .addColumn("profileImage", "varchar")
     .addColumn("joinedDate", "date", (col) => col.notNull().defaultTo("now()"))
     .execute();
