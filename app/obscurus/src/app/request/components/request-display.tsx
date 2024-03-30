@@ -26,7 +26,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Value } from "@radix-ui/react-select";
-import { useState } from "react";
+import { ComponentProps, useState } from "react";
 import {
   Table,
   TableBody,
@@ -173,43 +173,58 @@ export default function RequestDisplay({
             <Separator />
 
             {showVideoList === true ? (
-              <div className="px-4 py-4">
-                <Table className="rounded-lg border">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Video</TableHead>{" "}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {submissions
-                      .filter(
-                        (value) => value.requestId === selected?.requestId
-                      )
-                      .map((value, index) => (
-                        <TableRow key={index}>
-                          <TableCell>
-                            <Badge>{value.status}</Badge>
-                          </TableCell>
-                          <TableCell>{value.requesteeEmail}</TableCell>
-                          <TableCell>
-                            {value.status === "COMPLETED" ? (
-                              <Button>
-                                Video
-                                <ChevronRightIcon className="h-4 w-4" />
-                              </Button>
-                            ) : (
-                              <Button disabled>
-                                Video
-                                <ChevronRightIcon className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
+              <div className="mx-4 my-4 overflow-scroll max-h-[55%]">
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Video</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {submissions
+                        .filter(
+                          (value) => value.requestId === selected?.requestId
+                        )
+                        .map((value, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Badge
+                                variant={getBadgeVariantFromStatus(
+                                  value.status
+                                )}
+                              >
+                                {value.status
+                                  .split(" ")
+                                  .map(
+                                    (word) =>
+                                      word.charAt(0).toUpperCase() +
+                                      word.slice(1).toLowerCase()
+                                  )
+                                  .join(" ")}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>{value.requesteeEmail}</TableCell>
+                            <TableCell>
+                              {value.status === "COMPLETED" ? (
+                                <Button>
+                                  Video
+                                  <ChevronRightIcon className="h-4 w-4" />
+                                </Button>
+                              ) : (
+                                <Button disabled>
+                                  Video
+                                  <ChevronRightIcon className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             ) : (
               <div className="flex p-4 overflow-scroll max-h-[65%]">
@@ -227,4 +242,25 @@ export default function RequestDisplay({
       )}
     </div>
   );
+}
+
+export function getBadgeVariantFromStatus(
+  status: string
+): ComponentProps<typeof Badge>["variant"] {
+  switch (status.toLowerCase()) {
+    case "completed":
+      return "success";
+    case "processing":
+      return "warning";
+    case "in progress":
+      return "warning";
+    case "archived":
+      return "outline";
+    case "failed":
+      return "destructive";
+    case "todo":
+      return "default";
+    default:
+      return "secondary";
+  }
 }
