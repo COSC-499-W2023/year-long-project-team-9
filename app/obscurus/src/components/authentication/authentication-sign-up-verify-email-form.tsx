@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { Auth } from "aws-amplify";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

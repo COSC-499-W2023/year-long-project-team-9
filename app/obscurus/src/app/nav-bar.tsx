@@ -48,6 +48,8 @@ const NavBar = ({
   getNotificationsViaEmail,
   signInUser,
   signOutUser,
+  signUpUser,
+  confirmSignUpUser,
   signedIn,
   email,
   name,
@@ -57,6 +59,8 @@ const NavBar = ({
   getNotificationsViaEmail: Function;
   signInUser: Function;
   signOutUser: Function;
+  signUpUser: Function;
+  confirmSignUpUser: Function;
   signedIn: boolean;
   email: string;
   name: string;
@@ -156,6 +160,8 @@ const NavBar = ({
         <Authentication
           signInUser={signInUser}
           signOutUser={signOutUser}
+          signUpUser={signUpUser}
+          confirmSignUpUser={confirmSignUpUser}
           signedIn={signedIn}
           email={email}
           name={name}

@@ -8,6 +8,8 @@ import {
   signInUser,
   signOutUser,
   getEmail,
+  signUpUser,
+  confirmSignUpUser,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
 import amplifyConfig from "@/app/utils/amplifyConfig";
@@ -41,6 +43,8 @@ export default async function NavBarServerWrapper() {
       getNotificationsViaEmail={getNotificationsViaEmail}
       signInUser={signInUser}
       signOutUser={signOutUser}
+      signUpUser={signUpUser}
+      confirmSignUpUser={confirmSignUpUser}
       signedIn={signedIn}
       email={email}
       name={name}

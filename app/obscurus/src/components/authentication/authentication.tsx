@@ -5,12 +5,16 @@ import AuthenticationSignedOut from "./authentication-signed-out";
 export default function Authentication({
   signInUser,
   signOutUser,
+  signUpUser,
+  confirmSignUpUser,
   signedIn,
   email,
   name,
 }: {
   signInUser: Function;
   signOutUser: Function;
+  signUpUser: Function;
+  confirmSignUpUser: Function;
   signedIn: boolean;
   email: string;
   name: string;
@@ -22,6 +26,10 @@ export default function Authentication({
       userName={name}
     />
   ) : (
-    <AuthenticationSignedOut signInUser={signInUser} />
+    <AuthenticationSignedOut
+      signInUser={signInUser}
+      signUpUser={signUpUser}
+      confirmSignUpUser={confirmSignUpUser}
+    />
   );
 }

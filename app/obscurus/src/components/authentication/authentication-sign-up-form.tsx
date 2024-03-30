@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Auth } from "aws-amplify";
 import { z } from "zod";
 import SignUpEmailNamesForm from "./authentication-sign-up-email-names-form";
 import SignUpPasswordAgeTermsForm from "./authentication-sign-up-password-age-terms-form";
@@ -56,8 +55,12 @@ const signUpPasswordAgeTermsFormSchema = z
   });
 
 export default function SignUpForm({
+  signUpUser,
+  confirmSignUpUser,
   setDialogState,
 }: {
+  signUpUser: Function;
+  confirmSignUpUser: Function;
   setDialogState: Function;
 }) {
   const [signUpState, setSignUpState] = useState("emailNames");
@@ -79,35 +82,35 @@ export default function SignUpForm({
 
   async function triggerSignUp() {
     setLoading(true);
-    await Auth.signUp({
-      username: signUpEmailNames.email,
-      password: signUpPasswordAgeTerms.password,
-    })
-      .then(() => [setSignUpState("verifyEmail"), setLoading(false)])
-      .catch((e) => [
-        setLoading(false),
-        setFailedSignUp(true),
-        setSignUpState("emailNames"),
-      ]);
+    // await Auth.signUp({
+    //   username: signUpEmailNames.email,
+    //   password: signUpPasswordAgeTerms.password,
+    // })
+    //   .then(() => [setSignUpState("verifyEmail"), setLoading(false)])
+    //   .catch((e) => [
+    //     setLoading(false),
+    //     setFailedSignUp(true),
+    //     setSignUpState("emailNames"),
+    //   ]);
   }
 
   async function triggerVerifyEmail(code: string) {
     setLoading(true);
-    await Auth.confirmSignUp(signUpEmailNames.email, code)
-      .then(() =>
-        Auth.signIn(signUpEmailNames.email, signUpPasswordAgeTerms.password)
-          .then(() => window.location.reload())
-          .catch((e) => [
-            setLoading(false),
-            setFailedSignUp(true),
-            setSignUpState("emailNames"),
-          ])
-      )
-      .catch((e) => [
-        setLoading(false),
-        setFailedSignUp(true),
-        setSignUpState("emailNames"),
-      ]);
+    // await Auth.confirmSignUp(signUpEmailNames.email, code)
+    //   .then(() =>
+    //     Auth.signIn(signUpEmailNames.email, signUpPasswordAgeTerms.password)
+    //       .then(() => window.location.reload())
+    //       .catch((e) => [
+    //         setLoading(false),
+    //         setFailedSignUp(true),
+    //         setSignUpState("emailNames"),
+    //       ])
+    //   )
+    //   .catch((e) => [
+    //     setLoading(false),
+    //     setFailedSignUp(true),
+    //     setSignUpState("emailNames"),
+    //   ]);
   }
 
   useEffect(() => {
