@@ -4,6 +4,9 @@ import {
   signIn,
   type SignInInput,
   signOut,
+  signUp,
+  confirmSignUp,
+  type ConfirmSignUpInput,
 } from "aws-amplify/auth";
 
 export async function isSignedIn() {
@@ -37,5 +40,48 @@ export async function getEmail() {
     }
   } catch (error) {
     return "";
+  }
+}
+
+type SignUpParameters = {
+  username: string;
+  password: string;
+  givenName: string;
+  familyName: string;
+};
+
+export async function signUpUser({
+  username,
+  password,
+  givenName,
+  familyName,
+}: SignUpParameters) {
+  try {
+    const { isSignUpComplete, userId, nextStep } = await signUp({
+      username,
+      password,
+      options: {
+        userAttributes: {
+          givenName,
+          familyName,
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function confirmSignUpUser({
+  username,
+  confirmationCode,
+}: ConfirmSignUpInput) {
+  try {
+    const { isSignUpComplete, nextStep } = await confirmSignUp({
+      username,
+      confirmationCode,
+    });
+  } catch (error) {
+    console.log(error);
   }
 }
