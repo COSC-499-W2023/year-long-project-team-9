@@ -48,7 +48,7 @@
     "aos": "^2.3.4",
     "async_hooks": "^1.0.0",
     "aws": "^0.0.3-2",
-    "aws-amplify": "^5.3.18",
+    "aws-amplify": "^6.0.25",
     "aws-lambda": "^1.0.7",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
