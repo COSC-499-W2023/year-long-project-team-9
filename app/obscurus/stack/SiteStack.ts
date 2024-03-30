@@ -219,17 +219,9 @@ export default function SiteStack({ stack }: StackContext) {
     login: ["email"],
     cdk: {
       userPool: {
-        customAttributes: {
-          givenName: new StringAttribute({
-            minLen: 1,
-            maxLen: 100,
-            mutable: true,
-          }),
-          familyName: new StringAttribute({
-            minLen: 1,
-            maxLen: 100,
-            mutable: true,
-          }),
+        standardAttributes: {
+          givenName: { required: true, mutable: true },
+          familyName: { required: true, mutable: true },
         },
       },
     },

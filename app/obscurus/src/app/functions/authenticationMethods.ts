@@ -66,8 +66,8 @@ export async function signUpUser({
       password,
       options: {
         userAttributes: {
-          givenName,
-          familyName,
+          given_name: givenName,
+          family_name: familyName,
         },
       },
     });

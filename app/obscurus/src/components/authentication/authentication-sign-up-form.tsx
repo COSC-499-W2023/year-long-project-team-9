@@ -96,13 +96,15 @@ export default function SignUpForm({
       givenName: signUpEmailNames.firstName,
       familyName: signUpEmailNames.lastName,
     };
-    await signUpUser(userSignUpInput)
-      .then(() => [setSignUpState("verifyEmail"), setLoading(false)])
-      .catch((e: Error) => [
-        setLoading(false),
-        setFailedSignUp(true),
-        setSignUpState("emailNames"),
-      ]);
+    const signUpSuccess = await signUpUser(userSignUpInput);
+    if (signUpSuccess) {
+      setSignUpState("verifyEmail");
+      setLoading(false);
+    } else {
+      setLoading(false);
+      setFailedSignUp(true);
+      setSignUpState("emailNames");
+    }
   }
 
   async function triggerVerifyEmail(code: string) {
