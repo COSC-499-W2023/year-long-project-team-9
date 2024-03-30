@@ -11,6 +11,7 @@ import {
   WebSocketApi,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
+import { StringAttribute } from "aws-cdk-lib/aws-cognito";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
@@ -216,6 +217,22 @@ export default function SiteStack({ stack }: StackContext) {
   // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
+    cdk: {
+      userPool: {
+        customAttributes: {
+          givenName: new StringAttribute({
+            minLen: 1,
+            maxLen: 100,
+            mutable: true,
+          }),
+          familyName: new StringAttribute({
+            minLen: 1,
+            maxLen: 100,
+            mutable: true,
+          }),
+        },
+      },
+    },
     // triggers: {
     //   preAuthentication: "stack/database/src/preAuthentication.main",
     //   postAuthentication: "stack/database/src/postAuthentication.main",
