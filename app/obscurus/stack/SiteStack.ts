@@ -244,9 +244,7 @@ export default function SiteStack({ stack }: StackContext) {
     bind: [chumBucket, chumBucket, rds, api, steveJobs, wsApi],
     permissions: [rekognitionPolicyStatement, wsApi],
     environment: {
-      NEXT_PUBLIC_REGION: stack.region,
       NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
-      NEXT_PUBLIC_IDENTITY_POOL_ID: auth.cognitoIdentityPoolId ?? "",
       NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID: auth.userPoolClientId,
       NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
     },
@@ -255,9 +253,7 @@ export default function SiteStack({ stack }: StackContext) {
   stack.addOutputs({
     Site: site.customDomainUrl || site.url,
     ApiEndpoint: api.url,
-    Region: stack.region,
     UserPoolId: auth.userPoolId,
-    IdentityPoolId: auth.cognitoIdentityPoolId,
     UserPoolClientId: auth.userPoolClientId,
     WebSocketApiEndpoint: wsApi.url,
   });
