@@ -46,7 +46,7 @@ export const SubmitWrapper = ({
     if (getRequestsAndSubmissionsByEmail) {
       getRequestsAndSubmissionsByEmail("imightbejan@gmail.com")
         .then((data: any) => {
-          console.log("User data:", data);
+          // console.log("User data:", data);
           setSubmissions(data.submissions);
         })
     }

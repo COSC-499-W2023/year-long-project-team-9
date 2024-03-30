@@ -6,6 +6,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
   const email = data.email;
   const subject = data.subject;
   const text = data.text;
-  await sendEmailTextBlockViaNoReply(email, subject, text);
+  const res = await sendEmailTextBlockViaNoReply(email, subject, text);
+  console.log("Email sent to", email, "successfully!");
   return { statusCode: 200, body: `Email sent to ${email} successfully!` };
 };

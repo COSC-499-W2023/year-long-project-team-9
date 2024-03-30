@@ -275,8 +275,7 @@ async def update_submission_status(status: str, submission_id: str):
                 "data": {"status": status, "submissionId": submission_id},
             }
         )
-        await websocket.send(message)
-        response = await websocket.recv()
+        response = await websocket.send(message)
         print(f"Response: {response}")
         print(f"Status updated to {status} for submission {submission_id}")
 
