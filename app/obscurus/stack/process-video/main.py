@@ -267,7 +267,7 @@ def update_status(status, submission_id):
 app = FastAPI()
 
 
-async def update_submission_status(submission_id: str, status: str):
+async def update_submission_status(status: str, submission_id: str):
     async with websockets.connect(ws_api_url) as websocket:
         message = json.dumps(
             {
