@@ -276,14 +276,14 @@ async def update_submission_status(submission_id: str, status: str):
             }
         )
         await websocket.send(message)
-        print(
-            f"WebSocket message sent for submission {submission_id} with status {status}"
-        )
+        response = await websocket.recv()
+        print(f"Response: {response}")
+        print(f"Status updated to {status} for submission {submission_id}")
 
 
 async def send_email_notification(email: str, subject: str, body: str):
     try:
-        requests.post(
+        res = requests.post(
             f"{api_url}/sendEmail",
             json={
                 "email": email,
@@ -292,10 +292,11 @@ async def send_email_notification(email: str, subject: str, body: str):
             },
         )
 
+        print(f"Email sent to {email}")
+        print(res.json())
+
     except Exception as error:
         print("Error updating status:", error)
-
-    print(f"Email notification sent to {email}")
 
 
 @app.get("/")
@@ -314,13 +315,17 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             raise HTTPException(
                 status_code=400, detail="Missing submission_id or file_extension"
             )
-        print(f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}")
-        await update_submission_status("PROCESSING", submission_id)
-        await send_email_notification(
+        print(
+            f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}"
+        )
+        res = await update_submission_status("PROCESSING", submission_id)
+        res2 = await send_email_notification(
             recipient_email,
             "obscurus - New Submission Request",
             "Your video is being processed",
         )
+        print(res)
+        print(res2)
         background_tasks.add_task(
             process_video_background, submission_id, file_extension
         )
