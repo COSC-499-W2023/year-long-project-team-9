@@ -8,6 +8,14 @@ import SignUpFinalCheckForm from "./authentication-sign-up-final-check-form";
 import SignUpVerifyEmailForm from "./authentication-sign-up-verify-email-form";
 import { LucideLoader2 } from "lucide-react";
 import { Label } from "../ui/label";
+import { type ConfirmSignUpInput } from "aws-amplify/auth";
+
+type SignUpParameters = {
+  username: string;
+  password: string;
+  givenName: string;
+  familyName: string;
+};
 
 const signUpEmailNamesFormSchema = z.object({
   email: z
@@ -82,35 +90,34 @@ export default function SignUpForm({
 
   async function triggerSignUp() {
     setLoading(true);
-    // await Auth.signUp({
-    //   username: signUpEmailNames.email,
-    //   password: signUpPasswordAgeTerms.password,
-    // })
-    //   .then(() => [setSignUpState("verifyEmail"), setLoading(false)])
-    //   .catch((e) => [
-    //     setLoading(false),
-    //     setFailedSignUp(true),
-    //     setSignUpState("emailNames"),
-    //   ]);
+    const userSignUpInput: SignUpParameters = {
+      username: signUpEmailNames.email,
+      password: signUpPasswordAgeTerms.password,
+      givenName: signUpEmailNames.firstName,
+      familyName: signUpEmailNames.lastName,
+    };
+    await signUpUser(userSignUpInput)
+      .then(() => [setSignUpState("verifyEmail"), setLoading(false)])
+      .catch((e: Error) => [
+        setLoading(false),
+        setFailedSignUp(true),
+        setSignUpState("emailNames"),
+      ]);
   }
 
   async function triggerVerifyEmail(code: string) {
     setLoading(true);
-    // await Auth.confirmSignUp(signUpEmailNames.email, code)
-    //   .then(() =>
-    //     Auth.signIn(signUpEmailNames.email, signUpPasswordAgeTerms.password)
-    //       .then(() => window.location.reload())
-    //       .catch((e) => [
-    //         setLoading(false),
-    //         setFailedSignUp(true),
-    //         setSignUpState("emailNames"),
-    //       ])
-    //   )
-    //   .catch((e) => [
-    //     setLoading(false),
-    //     setFailedSignUp(true),
-    //     setSignUpState("emailNames"),
-    //   ]);
+    const userConfirmSignUpInput: ConfirmSignUpInput = {
+      username: signUpEmailNames.email,
+      confirmationCode: code,
+    };
+    await confirmSignUpUser(userConfirmSignUpInput)
+      .then(() => setDialogState("signIn"))
+      .catch((e: Error) => [
+        setLoading(false),
+        setFailedSignUp(true),
+        setSignUpState("emailNames"),
+      ]);
   }
 
   useEffect(() => {
