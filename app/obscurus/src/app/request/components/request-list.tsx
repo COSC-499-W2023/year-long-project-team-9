@@ -1,5 +1,5 @@
 "use client";
-import { ComponentProps, useEffect } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 import { cn } from "@/app/functions/utils";
@@ -55,9 +55,9 @@ export default function RequestList({
   submissions,
 }: RequestsListProps) {
   const [requestId, setRequestId] = useQueryState("requestId");
-  const [search, setSearch] = useQueryState("search");
-  const [sort, setSort] = useQueryState("sort");
-  const [tab, setTab] = useQueryState("tab");
+  const [search, setSearch] = useState<string>("");
+  const [sort, setSort] = useState<string>("sort");
+  const [tab, setTab] = useState<string>("tab");
 
   const getAssociatedSubmission = (requestId: string | null) => {
     if (requestId) {
@@ -67,7 +67,7 @@ export default function RequestList({
   };
 
   useEffect(() => {
-    !tab && setTab("todo");
+    !tab && setTab("all");
   }),
     [requests, submissions, tab, setTab];
 
@@ -76,7 +76,7 @@ export default function RequestList({
     console.log("Selected RequestID to list", requestId);
   };
 
-  const statuses = ["todo", "processing", "completed", "archived"];
+  const statuses = ["all", "todo", "processing", "completed", "archived"];
 
   const tabsTriggers = statuses.map((status) => (
     <TabsTrigger key={status} value={status} className="text-xs">
@@ -104,42 +104,42 @@ export default function RequestList({
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRequests.map((item) => (
             <button
-              key={item.requestId}
+              key={item.requestId} // Use submissionId for key as requestId could be duplicated in filteredRequests
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                requestId === item.requestId && "bg-muted"
+                requestId === item.requestId // Use condition based on submission state
+                  ? "bg-accent text-foreground"
+                  : "bg-background border-muted-border"
               )}
               onClick={() => handleClick(item)}
             >
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold">
-                      {item.requestTitle || item.requesterEmail}
+                    <div className="font-semibold text-ellipsis">
+                      {item.requestTitle.length > 30
+                        ? item.requestTitle.substring(0, 30) + "..."
+                        : item.requestTitle}
                     </div>
-                    {getAssociatedSubmission(item.requestId)?.isRead && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600" />
-                    )}
                   </div>
 
-                  <div
-                    className={cn(
-                      "ml-auto text-xs w-full flex justify-end",
-                      requestId === item.requestId
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    {" "}
+                  <div className="ml-auto text-xs w-full flex justify-end">
                     {formatDistanceToNow(new Date(item.creationDate), {
                       addSuffix: true,
                     })}
                   </div>
                 </div>
-                <div className="text-xs font-medium">{item.requesterEmail}</div>
+                <div className="text-xs font-medium text-ellipsis line-clamp-1">
+                  {/* {item.requester.givenName} {item.requester.familyName} */}
+                </div>
+                <div className="text-xs">
+                  {item.requesterEmail.length > 30
+                    ? item.requesterEmail.substring(0, 30) + "..."
+                    : item.requesterEmail}
+                </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.description?.substring(0, 300)}
+                {item.description}
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel("due-date")}>
@@ -148,15 +148,21 @@ export default function RequestList({
                     addSuffix: true,
                   })}
                 </Badge>
-                <Badge variant={getBadgeVariantFromLabel("status")}>
-                  {getAssociatedSubmission(item.requestId)
-                    ?.status.split(" ")
-                    .map(
-                      (word) =>
-                        word[0].toUpperCase() + word.substring(1).toLowerCase()
-                    )
-                    .join(" ")}{" "}
-                </Badge>
+                {/* <Badge variant={getBadgeVariantFromStatus(item.status)}>
+                {item.status
+                  .split(" ")
+                  .map(
+                    (word) =>
+                      word.charAt(0).toUpperCase() +
+                      word.slice(1).toLowerCase()
+                  )
+                  .join(" ")}
+              </Badge> */}
+                {item.grouping === "ARCHIVED" ? (
+                  <Badge variant={"outline"}>Archived</Badge>
+                ) : (
+                  <></>
+                )}
               </div>
             </button>
           ))}
@@ -167,64 +173,64 @@ export default function RequestList({
 
   return (
     <div>
-      <Tabs defaultValue="todo" className="h-screen" onValueChange={setTab}>
+      <Tabs defaultValue="all" className="h-screen pt-2" onValueChange={setTab}>
         <div className="px-4">
           <RequestHeader></RequestHeader>
         </div>
-        {requests.length >= 1 && submissions.length >= 1 ? (
-          <div>
-            <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <form>
-                <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder={search || "Search"}
-                    className="pl-8"
-                    onChange={(e) => setSearch(e.target.value || null)}
-                    value={search || undefined}
-                  />
-                </div>
-              </form>
-            </div>
-            <div>
-              <div className="flex flex-row items-center justify-between mx-4">
-                <TabsList>{tabsTriggers}</TabsList>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <SortDescIcon className="size-4" />
-                            <span className="sr-only">Filter Results</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => setSort("newest")}>
-                            Newest
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => setSort("oldest")}>
-                            Oldest
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => setSort("due")}>
-                            Due
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </>
-                  </TooltipTrigger>
-                  <TooltipContent>Filter</TooltipContent>
-                </Tooltip>
-              </div>
 
-              {tabsContent}
+        <div>
+          <div className="bg-background/95 px-4 pt-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <form>
+              <div className="relative">
+                <Search className="absolute left-2 top-2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder={search || "Search"}
+                  className="pl-8"
+                  onChange={(e) => setSearch(e.target.value || "")}
+                  value={search || undefined}
+                />
+              </div>
+            </form>
+          </div>
+
+          <div>
+            <div className="flex flex-row items-center justify-between mx-4 my-3">
+              <TabsList>{tabsTriggers}</TabsList>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="">
+                        <SortDescIcon className="w-4 h-4  " />
+                        <span className="sr-only">Filter Results</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setSort("newest")}>
+                        Newest
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setSort("oldest")}>
+                        Oldest
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setSort("due")}>
+                        Due
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TooltipTrigger>
+                <TooltipContent>Filter</TooltipContent>
+              </Tooltip>
             </div>
+            <div className="pb-3">
+              <Separator />
+            </div>
+            {tabsContent}
           </div>
-        ) : (
-          <div className="flex justify-center items-center h-screen">
+        </div>
+
+        {/* <div className="flex justify-center items-center h-screen">
             <RequestListAlert></RequestListAlert>
-          </div>
-        )}
+          </div> */}
       </Tabs>
     </div>
   );
@@ -236,11 +242,9 @@ function getBadgeVariantFromLabel(
   if (["status"].includes(label.toLowerCase())) {
     return "default";
   }
-
   if (["due-date"].includes(label.toLowerCase())) {
     return "outline";
   }
-
   return "secondary";
 }
 
