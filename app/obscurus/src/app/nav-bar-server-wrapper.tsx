@@ -5,10 +5,15 @@ import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import { getUserNames } from "./functions/getUserNames";
 import {
   isSignedIn,
+  signInUser,
   signOutUser,
   getEmail,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
+import amplifyConfig from "@/app/utils/amplifyConfig";
+import { Amplify } from "aws-amplify";
+
+Amplify.configure(amplifyConfig);
 
 type UserNames = {
   email: string;
@@ -34,6 +39,7 @@ export default async function NavBarServerWrapper() {
       notificationsRead={notificationsRead}
       deleteNotifications={deleteNotifications}
       getNotificationsViaEmail={getNotificationsViaEmail}
+      signInUser={signInUser}
       signOutUser={signOutUser}
       signedIn={signedIn}
       email={email}
