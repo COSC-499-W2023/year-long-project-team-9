@@ -21,7 +21,11 @@ export async function isSignedIn() {
 export async function signInUser({ username, password }: SignInInput) {
   try {
     const { isSignedIn, nextStep } = await signIn({ username, password });
-  } catch (error) {}
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 }
 
 export async function signOutUser() {
@@ -67,8 +71,10 @@ export async function signUpUser({
         },
       },
     });
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 }
 
@@ -81,7 +87,9 @@ export async function confirmSignUpUser({
       username,
       confirmationCode,
     });
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 }
