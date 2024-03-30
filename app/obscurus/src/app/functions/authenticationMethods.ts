@@ -1,30 +1,45 @@
 "use server";
-import { Auth } from "aws-amplify";
+import {
+  getCurrentUser,
+  signIn,
+  type SignInInput,
+  signOut,
+} from "aws-amplify/auth";
 
 export async function isSignedIn() {
   try {
-    await Auth.currentAuthenticatedUser();
+    const { username, userId, signInDetails } = await getCurrentUser();
+    console.log(`The username: ${username}`);
+    console.log(`The userId: ${userId}`);
+    console.log(`The signInDetails: ${signInDetails}`);
     return true;
   } catch {
     return false;
+  }
+}
+
+export async function signInUser({ username, password }: SignInInput) {
+  try {
+    const { isSignedIn, nextStep } = await signIn({ username, password });
+  } catch (error) {
+    console.log(error);
   }
 }
 
 export async function signOutUser() {
   try {
-    await Auth.signOut();
+    await signOut();
     window.location.reload();
-    return true;
-  } catch {
-    return false;
+  } catch (error) {
+    console.log(error);
   }
 }
 
-// Please update "" to the email for the particular user
 export async function getEmail() {
   try {
-    const user = await Auth.currentAuthenticatedUser();
-    return user.email;
+    // const user = await Auth.currentAuthenticatedUser();
+    // return user.email;
+    return "soren.is@hotmail.ca";
   } catch {
     return "";
   }
