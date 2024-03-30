@@ -66,10 +66,26 @@ export default function RequestList({
     return null;
   };
 
-  useEffect(() => {
-    !tab && setTab("all");
-  }),
-    [requests, submissions, tab, setTab];
+  const sortRequests = (a: Requests, b: Requests) => {
+    switch (sort) {
+      case "newest":
+        return (
+          new Date(b.creationDate).getTime() -
+          new Date(a.creationDate).getTime()
+        );
+      case "oldest":
+        return (
+          new Date(a.creationDate).getTime() -
+          new Date(b.creationDate).getTime()
+        );
+      case "due":
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      default:
+        return 0;
+    }
+  };
+
+  const sortedRequests = requests?.sort(sortRequests);
 
   const handleClick = (item: Requests) => {
     setRequestId(item.requestId);
@@ -85,12 +101,10 @@ export default function RequestList({
   ));
 
   const tabsContent = statuses.map((status) => {
-    const filteredRequests = requests.filter((request) => {
-      const submission = getAssociatedSubmission(request.requestId);
-      const matchesStatus =
-        submission && submission.status.toUpperCase() === status.toUpperCase();
+    const filteredRequests = sortedRequests?.filter((request) => {
+      const matchesStatus = status === "all";
 
-      const searchTerm = search?.toLowerCase();
+      const searchTerm = search;
       const matchesSearch =
         !searchTerm ||
         request.requestTitle.toLowerCase().includes(searchTerm) ||
