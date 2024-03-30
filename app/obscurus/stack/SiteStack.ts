@@ -223,8 +223,6 @@ export default function SiteStack({ stack }: StackContext) {
       WS_API_URL: wsApi.url,
     },
     permissions: ["s3", rekognitionPolicyStatement, "rds-data", rds, wsApi, api, chumBucket, sesPolicyStatement],
-    cpu: "16 vCPU",
-    memory: "32 GB",
   });
 
   // const steveJobs = new Job(stack, "SteveJobs", {
