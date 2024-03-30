@@ -162,16 +162,7 @@ export default function RequestList({
                     addSuffix: true,
                   })}
                 </Badge>
-                {/* <Badge variant={getBadgeVariantFromStatus(item.status)}>
-                {item.status
-                  .split(" ")
-                  .map(
-                    (word) =>
-                      word.charAt(0).toUpperCase() +
-                      word.slice(1).toLowerCase()
-                  )
-                  .join(" ")}
-              </Badge> */}
+
                 {item.grouping === "ARCHIVED" ? (
                   <Badge variant={"outline"}>Archived</Badge>
                 ) : (
@@ -262,8 +253,43 @@ function getBadgeVariantFromLabel(
   return "secondary";
 }
 
-{
-  /* <div className="h-full flex flex-col justify-center items-center">
-      Failed to load data :({" "}
-    </div> */
+export function getStatus(submissions: Submissions[]) {
+  let allCompleted = true;
+  for (let i = 0; i < submissions.length; i++) {
+    if (
+      submissions[i].status === "FAILED" ||
+      submissions[i].status === "PROCESSING"
+    ) {
+      return "in progress";
+    }
+    if (submissions[i].status !== "COMPLETED") {
+      allCompleted = false;
+    }
+  }
+  if (allCompleted === true) {
+    return "completed";
+  } else {
+    return "not started";
+  }
+}
+
+export function getBadgeVariantFromStatus(
+  status: string
+): ComponentProps<typeof Badge>["variant"] {
+  switch (status.toLowerCase()) {
+    case "completed":
+      return "success";
+    case "processing":
+      return "warning";
+    case "in progress":
+      return "warning";
+    case "archived":
+      return "outline";
+    case "failed":
+      return "destructive";
+    case "not started":
+      return "default";
+    default:
+      return "secondary";
+  }
 }
