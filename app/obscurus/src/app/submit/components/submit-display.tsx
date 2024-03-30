@@ -157,10 +157,9 @@ export default function SubmitDisplay({
             title: "Success",
             description: "Your video has been uploaded successfully.",
           });
-          await updateSubmissionStatus("PROCESSING", submission.submissionId);
-          console.log("Updated submission status");
-          updateRequests && updateRequests();
-          await fetchUserData();
+          // console.log("Updated submission status");
+          // updateRequests && updateRequests();
+          // await fetchUserData();
         } else {
           throw new Error("Upload failed");
         }
