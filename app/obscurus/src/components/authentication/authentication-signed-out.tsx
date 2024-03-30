@@ -11,13 +11,17 @@ import {
 } from "../modified-shadcn-ui-components/modified-alert-dialog";
 import { Button } from "../ui/button";
 import SignInForm from "./authentication-sign-in-form";
-import SignUpForm from "./authentication-sign-up-form";
-import RecoverPasswordForm from "./authentication-recover-password-form";
+// import SignUpForm from "./authentication-sign-up-form";
+// import RecoverPasswordForm from "./authentication-recover-password-form";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
 import { X } from "lucide-react";
 
-export default function AuthenticationSignedOut() {
+export default function AuthenticationSignedOut({
+  signInUser,
+}: {
+  signInUser: Function;
+}) {
   const [dialogState, setDialogState] = useState<string>("signIn");
   return (
     <AlertDialog onOpenChange={() => setDialogState("signIn")}>
@@ -39,10 +43,13 @@ export default function AuthenticationSignedOut() {
                 Sign In
               </Label>
               <Separator className="mt-1 mb-2" />
-              <SignInForm setDialogState={setDialogState} />
+              <SignInForm
+                signInUser={signInUser}
+                setDialogState={setDialogState}
+              />
             </div>
           )}
-          {dialogState === "signUp" && (
+          {/* {dialogState === "signUp" && (
             <div>
               <Label className="flex justify-start text-2xl font-black">
                 Sign Up
@@ -59,7 +66,7 @@ export default function AuthenticationSignedOut() {
               <Separator className="mt-1 mb-2" />
               <RecoverPasswordForm setDialogState={setDialogState} />
             </div>
-          )}
+          )} */}
         </AlertDialogDescription>
       </AlertDialogContent>
     </AlertDialog>
