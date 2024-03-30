@@ -275,19 +275,18 @@ async def update_submission_status(status: str, submission_id: str):
                 "data": {"status": status, "submissionId": submission_id},
             }
         )
-        response = await websocket.send(message)
-        print(f"Response: {response}")
+        await websocket.send(message)
         print(f"Status updated to {status} for submission {submission_id}")
 
 
-async def send_email_notification(email: str, subject: str, body: str):
+async def send_email_notification(email: str, subject: str, text: str):
     try:
         res = requests.post(
             f"{api_url}/sendEmail",
             json={
                 "email": email,
                 "subject": subject,
-                "body": body,
+                "text": text,
             },
         )
 
@@ -317,14 +316,12 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         print(
             f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}"
         )
-        res = await update_submission_status("PROCESSING", submission_id)
-        res2 = await send_email_notification(
+        await update_submission_status("PROCESSING", submission_id)
+        await send_email_notification(
             recipient_email,
             "obscurus - New Submission Request",
             "Your video is being processed",
         )
-        print(res)
-        print(res2)
         background_tasks.add_task(
             process_video_background, submission_id, file_extension
         )
@@ -343,23 +340,19 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 
 
 async def process_video_background(submission_id, file_extension):
-    try:
-
-        original_key = f"{submission_id}.{file_extension}"
-        converted_key = original_key
-        if file_extension.lower() != "mp4":
-            converted_key = f"{submission_id}.mp4"
-            local_webm_path = f"/tmp/{original_key}"
-            s3.download_file(bucket_name, original_key, local_webm_path)
-            local_mp4_path = f"/tmp/{converted_key}"
-            convert_to_mp4(local_webm_path, local_mp4_path)
-            s3.upload_file(local_mp4_path, bucket_name, converted_key)
-            os.remove(local_webm_path)
-            os.remove(local_mp4_path)
-        job_id = start_face_detection(converted_key)
-        job_response = check_job_status(job_id)
-        timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-        process_video(timestamps, job_response, submission_id)
-        await update_submission_status("COMPLETED", submission_id)
-    except Exception as e:
-        raise e
+    original_key = f"{submission_id}.{file_extension}"
+    converted_key = original_key
+    if file_extension.lower() != "mp4":
+        converted_key = f"{submission_id}.mp4"
+        local_webm_path = f"/tmp/{original_key}"
+        s3.download_file(bucket_name, original_key, local_webm_path)
+        local_mp4_path = f"/tmp/{converted_key}"
+        convert_to_mp4(local_webm_path, local_mp4_path)
+        s3.upload_file(local_mp4_path, bucket_name, converted_key)
+        os.remove(local_webm_path)
+        os.remove(local_mp4_path)
+    job_id = start_face_detection(converted_key)
+    job_response = check_job_status(job_id)
+    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
+    process_video(timestamps, job_response, submission_id)
+    await update_submission_status("COMPLETED", submission_id)
