@@ -48,7 +48,7 @@ export default function SiteStack({ stack }: StackContext) {
     defaults: {
       function: {
         timeout: 20,
-        permissions: [rds, chumBucket],
+        permissions: [rds, chumBucket, sesPolicyStatement],
         bind: [rds, chumBucket],
         environment: { DB_NAME: rds.clusterArn },
       },
@@ -82,7 +82,6 @@ export default function SiteStack({ stack }: StackContext) {
       "POST /createRequest": {
         function: {
           handler: "stack/lambdas/createRequest.handler",
-          permissions: [sesPolicyStatement],
         },
       },
       "POST /createUser": {
@@ -183,6 +182,11 @@ export default function SiteStack({ stack }: StackContext) {
       "POST /getRequestsAndSubmissionsByEmail": {
         function: {
           handler: "stack/lambdas/getRequestsAndSubmissionsByEmail.handler",
+        },
+      },
+      "POST /sendEmail": {
+        function: {
+          handler: "stack/lambdas/sendEmail.handler",
         },
       },
     },

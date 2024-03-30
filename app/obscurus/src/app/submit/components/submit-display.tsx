@@ -50,7 +50,7 @@ export default function SubmitDisplay({
   fetchUserData,
   getPresignedUrl,
   getDownloadPresignedUrl,
-  triggerJob,
+  sendToService,
   getStatus,
   updateSubmissionStatus,
   updateRequests,
@@ -59,7 +59,7 @@ export default function SubmitDisplay({
   fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
+  sendToService?: (submissionId: string, fileExt: string, email: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
@@ -137,7 +137,7 @@ export default function SubmitDisplay({
     const fileExt = file.name.split(".").pop() || "mp4";
     const key = `${submission.submissionId}.${fileExt}`;
 
-    if (getPresignedUrl && triggerJob && updateSubmissionStatus) {
+    if (getPresignedUrl && sendToService && updateSubmissionStatus) {
       try {
         const url = await getPresignedUrl(key);
         const response = await fetch(url, {
@@ -150,9 +150,9 @@ export default function SubmitDisplay({
 
         if (response.ok) {
           console.log("Upload successful");
-          triggerJob &&
+          sendToService && selected &&
             submission.submissionId &&
-            triggerJob(submission.submissionId, fileExt);
+            sendToService(submission.submissionId, fileExt, selected?.requesteeEmail);
           toast({
             title: "Success",
             description: "Your video has been uploaded successfully.",
@@ -612,7 +612,7 @@ export default function SubmitDisplay({
           {showingVideo &&
           getPresignedUrl &&
           getDownloadPresignedUrl &&
-          triggerJob &&
+          sendToService &&
           submission ? (
             <>
               <div className="flex flex-col w-fit h-full">
@@ -626,7 +626,7 @@ export default function SubmitDisplay({
                 </div>
               </div>
             </>
-          ) : upload.upload && getPresignedUrl && triggerJob && submission ? (
+          ) : upload.upload && getPresignedUrl && sendToService && submission ? (
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">

@@ -14,7 +14,7 @@ import { c } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
 export const SubmitWrapper = ({
   getPresignedUrl,
   getDownloadPresignedUrl,
-  triggerJob,
+  sendToService,
   updateStatus,
   getStatus,
   getRequestsAndSubmissionsByEmail,
@@ -25,7 +25,7 @@ export const SubmitWrapper = ({
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
+  sendToService?: (submissionId: string, fileExt: string, email: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   getRequestsAndSubmissionsByEmail?: Function;
@@ -131,7 +131,7 @@ export const SubmitWrapper = ({
           fetchUserData={fetchUserData}
           getPresignedUrl={getPresignedUrl}
           getDownloadPresignedUrl={getDownloadPresignedUrl}
-          triggerJob={triggerJob}
+          sendToService={sendToService}
           getStatus={getStatus}
           updateSubmissionStatus={updateSubmissionStatus}
           getUserViaEmail={getUserViaEmail}

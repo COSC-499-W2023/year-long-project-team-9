@@ -1,10 +1,22 @@
-"use server"
-import { Job } from "sst/node/job";
+"use server";
 
-const sendToService = async (submissionId: string) => {
-  console.log("In job, received submissionId " + submissionId);
+const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
-
+const sendToService = async (submissionId: string, fileExt: string, email: string) => {
+  if (!url) {
+    throw new Error("Service URL is not defined");
+  }
+  const res = await fetch(url, {
+    method: "post",
+    body: JSON.stringify({
+      submission_id: submissionId,
+      file_extension: fileExt,
+      email: email,
+    }),
+  });
+  if (res.ok) {
+    return res.json();
+  }
 };
 
 export { sendToService };

@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import getPresignedUrl from "../functions/getPresignedUrl";
-import { triggerJob } from "../functions/triggerJob";
+import { sendToService } from "../functions/sendToService";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import getStatus from "../functions/getStatus";
@@ -18,7 +18,7 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  console.log("triggerJob", triggerJob);
+  console.log("sendToService", sendToService);
   console.log("updateStatus", updateStatus);
   console.log("getStatus", getStatus);
   console.log("getPresignedUrl", getPresignedUrl);
@@ -34,7 +34,7 @@ async function Submit() {
     <SubmitWrapper
       getPresignedUrl={getPresignedUrl}
       getDownloadPresignedUrl={getDownloadPresignedUrl}
-      triggerJob={triggerJob}
+      sendToService={sendToService}
       updateStatus={updateStatus}
       getStatus={getStatus}
       getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
