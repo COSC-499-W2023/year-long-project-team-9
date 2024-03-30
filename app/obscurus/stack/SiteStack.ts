@@ -15,12 +15,6 @@ import * as cdk from "aws-cdk-lib";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
-    // cdk: {
-    //   bucket: {
-    //     autoDeleteObjects: true,
-    //     removalPolicy: cdk.RemovalPolicy.DESTROY,
-    //   },
-    // },
   });
 
   const rekognitionPolicyStatement = new PolicyStatement({
@@ -225,41 +219,8 @@ export default function SiteStack({ stack }: StackContext) {
     permissions: ["s3", rekognitionPolicyStatement, "rds-data", rds, wsApi, api, chumBucket, sesPolicyStatement],
   });
 
-  // const steveJobs = new Job(stack, "SteveJobs", {
-  //   runtime: "container",
-  //   handler: "stack/process-video",
-  //   container: {
-  //     cmd: ["python3", "/var/task/app.py"],
-  //   },
-  //   bind: [chumBucket],
-  //   environment: {
-  //     BUCKET_NAME: chumBucket.bucketName,
-  //     API_URL: api.url,
-  //     WS_API_URL: wsApi.url,
-  //   },
-  //   memorySize: "15 GB",
-  //   timeout: "8 hours",
-  //   permissions: [rekognitionPolicyStatement],
-  // });
-  // steveJobs.bind([api]);
-
-  // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
-    // cdk: {
-    //   userPool: {
-    //     standardAttributes: {
-    //       email: { required: true, mutable: false },
-    //       givenName: { required: true, mutable: true },
-    //       familyName: { required: true, mutable: true },
-    //       birthdate: { required: true, mutable: false },
-    //     },
-    //   },
-    // },
-    // triggers: {
-    //   preAuthentication: "stack/database/src/preAuthentication.main",
-    //   postAuthentication: "stack/database/src/postAuthentication.main",
-    // },
   });
 
   auth.attachPermissionsForAuthUsers(stack, [api]);

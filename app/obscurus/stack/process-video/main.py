@@ -343,6 +343,6 @@ async def process_video_background(submission_id, file_extension):
         job_response = check_job_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
         process_video(timestamps, job_response, submission_id)
-        await update_submission_status("COMPLETED", submission_id)
+        update_status("COMPLETED", submission_id)
     except Exception as e:
         raise e
