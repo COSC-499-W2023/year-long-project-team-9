@@ -41,9 +41,13 @@ export default function SignInForm({
       username: values.email,
       password: values.password,
     };
-    await signInUser(userSignInInput)
-      .then(() => window.location.reload())
-      .catch((e: Error) => [setLoading(false), setFailedLogin(true)]);
+    const signInSuccess = await signInUser(userSignInInput);
+    if (signInSuccess) {
+      window.location.reload();
+    } else {
+      setLoading(false);
+      setFailedLogin(true);
+    }
   }
 
   return (
