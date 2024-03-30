@@ -27,6 +27,7 @@ async function Submit() {
   console.log("getUserViaEmail", getUserViaEmail);
 
   const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
+  const serviceUrl = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   console.log("wsApi", wsApi);
 

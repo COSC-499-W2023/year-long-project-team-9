@@ -238,7 +238,7 @@ export default function SiteStack({ stack }: StackContext) {
     permissions: [rekognitionPolicyStatement, wsApi],
     environment: {
       NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
-      NEXT_PUBLIC_SERVICE_URL: processVideo.url ? processVideo.url : "",
+      NEXT_PUBLIC_SERVICE_URL: processVideo.url as string,
     },
   });
 
