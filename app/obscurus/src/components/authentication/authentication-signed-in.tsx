@@ -21,7 +21,7 @@ export default function AuthenticationSignedIn({
   userName: string;
 }) {
   async function handleLogOut() {
-    await signOutUser();
+    await signOutUser().then(() => window.location.reload());
   }
 
   return (
