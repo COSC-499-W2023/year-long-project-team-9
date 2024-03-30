@@ -61,7 +61,7 @@ export default function RequestDisplay({
     ? requests.find((item) => item.requestId === requestId)
     : null;
 
-  const [showVideoList, setShowVideoList] = useQueryState("showVideoList");
+  const [showVideoList, setShowVideoList] = useState<boolean>(false);
   console.log(selected?.description);
   console.log("Selected requestId to display", requestId);
   console.log(
@@ -96,10 +96,10 @@ export default function RequestDisplay({
               </div>
               <div className="ml-auto">
                 <Tooltip>
-                  {showVideoList?.toLocaleLowerCase() === "true" ? (
+                  {showVideoList === true ? (
                     <Button
                       variant={"destructive"}
-                      onClick={() => setShowVideoList("false")}
+                      onClick={() => setShowVideoList(false)}
                     >
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -114,9 +114,9 @@ export default function RequestDisplay({
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => setShowVideoList("true")}
+                          onClick={() => setShowVideoList(true)}
                         >
-                          <ListVideo className="h-5 w-5" />
+                          <ListVideo className="h-4 w-4" />
                           <span className="sr-only">Show video list</span>
                         </Button>
                       </TooltipTrigger>
@@ -128,104 +128,96 @@ export default function RequestDisplay({
             </div>
             <Separator />
           </div>
-          <div className="flex h-full flex-1 flex-col">
+          <div className="h-full">
             <div className="flex items-start p-4">
-              <Avatar>
-                <AvatarImage />
-                <AvatarFallback>
-                  {userData.email
-                    .split(" ")
-                    .map((chunk) => chunk[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col items-start mx-4 break-all gap-1">
-                <div className="text-sm">{selected.requestTitle}</div>
-                <div className="text-xs line-clamp-1">
-                  From: {userData.givenName} {userData.familyName} (
-                  {userData.email})
-                </div>
-                <div className="text-xs">
-                  <HoverCard>
-                    <HoverCardTrigger className="text-xs line-clamp-1">
-                      To:{" "}
-                      {submissions
-                        .filter(
-                          (value) => value.requestId === selected?.requestId
-                        )
-                        .map((value) => value.requesteeEmail)
-                        .join(", ")}
-                    </HoverCardTrigger>
-                    <HoverCardContent>
-                      <div>To: </div>
-                      <div className="overflow-auto ml-1">
-                        {submissions
-                          .filter(
-                            (value) => value.requestId === selected?.requestId
-                          )
-                          .map((value, index) => (
-                            <div key={index}>• {value.requesteeEmail}</div>
-                          ))}
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-                <div className="text-xs line-clamp-1">
-                  Processing: {selected.blurred === true ? "Blurred" : "Normal"}{" "}
-                  | Due Date: {format(new Date(selected.dueDate), "PPpp")}
+              <div className="flex items-start gap-4 text-sm max-w-[70%]">
+                <Avatar>
+                  <AvatarImage alt={userData.givenName} />
+                  <AvatarFallback>
+                    {userData.givenName
+                      .split(" ")
+                      .map((chunk) => chunk[0])
+                      .join("")}
+                    {userData.familyName
+                      .split(" ")
+                      .map((chunk) => chunk[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid gap-1 text-ellipsis ">
+                  <div className="font-semibold">{selected?.requestTitle}</div>
+                  <div className="line-clamp-3 text-xs text-ellipsis ">
+                    <span className="font-medium">From: </span>
+                    {userData.givenName} {userData.familyName}{" "}
+                  </div>
+                  <div className="line-clamp-3 text-xs text-ellipsis  ">
+                    <span className="font-medium ">Email: </span>
+                    {selected?.requesterEmail}
+                  </div>
+                  <div className="line-clamp-1 text-xs">
+                    <span className="font-medium">Processing: </span>
+                    {selected.blurred === true
+                      ? "Blurred"
+                      : "Not Blurred"}|{" "}
+                    <span className="font-medium">Due: </span>
+                    {format(new Date(selected?.dueDate), "PPP, p")}
+                  </div>
                 </div>
               </div>
-              <div className="ml-auto text-xs text-muted-foreground">
-                {format(new Date(selected.creationDate), "PPpp")}
-              </div>
-            </div>
-            <Separator />
-            <div className="overflow-auto">
-              {showVideoList?.toLocaleLowerCase() === "true" ? (
-                <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
-                  <Table className="rounded-lg border">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Video</TableHead>{" "}
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {submissions
-                        .filter(
-                          (value) => value.requestId === selected?.requestId
-                        )
-                        .map((value, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              <Badge>{value.status}</Badge>
-                            </TableCell>
-                            <TableCell>{value.requesteeEmail}</TableCell>
-                            <TableCell>
-                              {value.status === "COMPLETED" ? (
-                                <Button>
-                                  Video
-                                  <ChevronRightIcon className="h-4 w-4" />
-                                </Button>
-                              ) : (
-                                <Button disabled>
-                                  Video
-                                  <ChevronRightIcon className="h-4 w-4" />
-                                </Button>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              ) : (
-                <div className="overflow-y-auto h-full flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
-                  {selected.description}
+              {selected.creationDate && (
+                <div className="ml-auto text-xs text-muted-foreground">
+                  {format(new Date(selected.creationDate), "PPP, p")}
                 </div>
               )}
             </div>
+            <Separator />
+
+            {showVideoList === true ? (
+              <div className="px-4 py-4">
+                <Table className="rounded-lg border">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Video</TableHead>{" "}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {submissions
+                      .filter(
+                        (value) => value.requestId === selected?.requestId
+                      )
+                      .map((value, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Badge>{value.status}</Badge>
+                          </TableCell>
+                          <TableCell>{value.requesteeEmail}</TableCell>
+                          <TableCell>
+                            {value.status === "COMPLETED" ? (
+                              <Button>
+                                Video
+                                <ChevronRightIcon className="h-4 w-4" />
+                              </Button>
+                            ) : (
+                              <Button disabled>
+                                Video
+                                <ChevronRightIcon className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <div className="flex p-4 overflow-scroll max-h-[65%]">
+                <div className="flex-1 whitespace-pre-wrap text-sm">
+                  {selected?.description}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : (
