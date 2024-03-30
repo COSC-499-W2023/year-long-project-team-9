@@ -13,37 +13,33 @@ export async function up(db) {
         email: "imightbejan@gmail.com",
         givenName: "Jan-Yaeger",
         familyName: "Dhillon",
-        isLoggedInWithSocialIdentityProvider: false,
         isAdmin: true,
         profileImage: null,
-        preference: "{}",
+        joinedDate: new Date("2023-12-12"),
       },
       {
         email: "soren.is@hotmail.ca",
         givenName: "Soren",
         familyName: "Stenback",
-        isLoggedInWithSocialIdentityProvider: false,
         isAdmin: true,
         profileImage: null,
-        preference: "{}",
+        joinedDate: new Date("2023-11-02"),
       },
       {
         email: "ansivana@gmail.com",
         givenName: "Baz",
         familyName: "Sivakua",
-        isLoggedInWithSocialIdentityProvider: false,
         isAdmin: true,
         profileImage: null,
-        preference: "{}",
+        joinedDate: new Date("2024-01-01"),
       },
       {
         email: "bakar.a.muhammad@gmail.com",
         givenName: "Muhammad",
         familyName: "Bakar",
-        isLoggedInWithSocialIdentityProvider: false,
         isAdmin: false,
         profileImage: null,
-        preference: "{}",
+        joinedDate: new Date("2024-02-15"),
       },
       {
         email:
@@ -52,10 +48,9 @@ export async function up(db) {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque varius tellus et est porttitor nam.",
         familyName:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque varius tellus et est porttitor nam.",
-        isLoggedInWithSocialIdentityProvider: true,
         isAdmin: false,
         profileImage: null,
-        preference: "{}",
+        joinedDate: new Date("2024-02-02"),
       },
     ])
     .execute();
