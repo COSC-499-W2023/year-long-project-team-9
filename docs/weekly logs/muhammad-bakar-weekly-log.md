@@ -316,4 +316,4 @@ HashMap:
 
 ### Picture of Week 12
 
-![Week 12 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-11-T-2-survey)
+![Week 12 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-11-T-2-survey.png)
