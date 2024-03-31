@@ -102,15 +102,16 @@ export default function RequestList({
 
   const tabsContent = statuses.map((status) => {
     const filteredRequests = sortedRequests?.filter((request) => {
-      const matchesStatus = status === "all";
+      const matchesStatus =
+        status === "all" || request.grouping?.toLowerCase() === status;
 
-      const searchTerm = search;
+      const searchTerm = search.toLowerCase();
       const matchesSearch =
         !searchTerm ||
         request.requestTitle.toLowerCase().includes(searchTerm) ||
         request.requesterEmail.toLowerCase().includes(searchTerm);
 
-      return matchesStatus && matchesSearch;
+      return matchesStatus && matchesSearch && request.grouping != "TRASHED";
     });
 
     return (
@@ -164,7 +165,7 @@ export default function RequestList({
                 </Badge>
 
                 {item.grouping === "ARCHIVED" ? (
-                  <Badge variant={"outline"}>Archived</Badge>
+                  <Badge variant={"default"}>Archived</Badge>
                 ) : (
                   <></>
                 )}
