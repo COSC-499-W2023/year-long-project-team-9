@@ -50,11 +50,17 @@ export default function RequestDisplay({
   submissions,
   userData,
   setRequests,
+  archiveRequest,
+  unarchiveRequest,
+  trashRequest,
 }: {
   requests: Requests[];
   submissions: Submissions[];
   userData: Users;
   setRequests: Function;
+  archiveRequest: Function;
+  unarchiveRequest: Function;
+  trashRequest: Function;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const { toast } = useToast();
@@ -76,6 +82,7 @@ export default function RequestDisplay({
     requests: Requests[]
   ) {
     if (selected !== null && selected !== undefined) {
+      archiveRequest(selected.requestId);
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = "ARCHIVED";
       setRequests(newRequests);
@@ -87,6 +94,7 @@ export default function RequestDisplay({
     requests: Requests[]
   ) {
     if (selected !== null && selected !== undefined) {
+      unarchiveRequest(selected.requestId);
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = null;
       setRequests(newRequests);
@@ -95,6 +103,7 @@ export default function RequestDisplay({
 
   function trash(selected: Requests | null | undefined, requests: Requests[]) {
     if (selected !== null && selected !== undefined) {
+      trashRequest(selected.requestId);
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = "TRASHED";
       setRequests(newRequests);

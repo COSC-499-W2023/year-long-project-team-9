@@ -16,12 +16,18 @@ export default function RequestWeapper({
   request,
   submissions,
   userData,
+  archiveRequest,
+  unarchiveRequest,
+  trashRequest,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   request: Requests[];
   submissions: Submissions[];
   userData: Users;
+  archiveRequest: Function;
+  unarchiveRequest: Function;
+  trashRequest: Function;
 }) {
   const [requests, setRequests] = useState<Requests[]>(request);
   return (
@@ -36,6 +42,9 @@ export default function RequestWeapper({
           submissions={submissions}
           userData={userData}
           setRequests={setRequests}
+          archiveRequest={archiveRequest}
+          unarchiveRequest={unarchiveRequest}
+          trashRequest={trashRequest}
         />
       }
     />
