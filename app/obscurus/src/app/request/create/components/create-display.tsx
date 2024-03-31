@@ -83,7 +83,11 @@ export default function CreateDisplay({
           <Avatar>
             <AvatarImage />
             <AvatarFallback>
-              {userData.email
+              {userData.givenName
+                .split(" ")
+                .map((chunk) => chunk[0])
+                .join("")}
+              {userData.familyName
                 .split(" ")
                 .map((chunk) => chunk[0])
                 .join("")}
@@ -139,7 +143,7 @@ export default function CreateDisplay({
               Due Date:{" "}
               {form.watch("dueDate") === undefined
                 ? "Due Date"
-                : format(form.watch("dueDate"), "PPpp")}
+                : format(new Date(form.watch("dueDate")), "PPpp")}
             </div>
           </div>
           <div className="ml-auto text-xs text-muted-foreground">
