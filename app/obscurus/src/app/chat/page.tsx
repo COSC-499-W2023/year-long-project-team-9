@@ -68,7 +68,7 @@ async function Chat() {
       websocketApiEndpoint={
         process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string
       }
-      rooms={[]}
+      rooms={rooms}
       userNames={userNames}
       messages={messages}
       createMessage={createMessage}
