@@ -117,6 +117,13 @@ export default function RequestList({
     return (
       <TabsContent key={status} value={status}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
+          {filteredRequests?.length === 0 && (
+            <div className="flex flex-col w-full h-full justify-center items-center">
+              <div className=" text-muted-foreground font-semibold">
+                No requests.
+              </div>
+            </div>
+          )}
           {filteredRequests.map((item) => (
             <button
               key={item.requestId} // Use submissionId for key as requestId could be duplicated in filteredRequests
@@ -237,9 +244,7 @@ export default function RequestList({
         </Tooltip>
       </div>
       <Separator />
-      <div className="h-full overflow-y-scroll">
-        {tabsContent || <div>No requests.</div>}
-      </div>
+      <div className="h-full overflow-y-scroll">{tabsContent}</div>
     </Tabs>
   );
 }

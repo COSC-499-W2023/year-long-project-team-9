@@ -266,8 +266,9 @@ export default function RequestDisplay({
           </div>
         </div>
       ) : (
-        <div className="flex justify-center items-center h-screen">
-          <RequestDisplayAlert></RequestDisplayAlert>
+        <div className="flex flex-col w-full h-full justify-center items-center space-y-3  text-muted-foreground">
+          <FileText className="w-20 h-20" />
+          <div className="font-semibold">No request selected.</div>
         </div>
       )}
     </div>
