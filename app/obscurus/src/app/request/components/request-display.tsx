@@ -18,6 +18,7 @@ import {
   XSquare,
   ExternalLink,
   Download,
+  PlaySquare,
 } from "lucide-react";
 import { format } from "date-fns";
 import { RequestDisplayAlert } from "./request-display-alert";
@@ -40,6 +41,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import VideoPlayer from "@/app/submit/components/video-player";
+import { RequestTable } from "./request-table";
 
 export default function RequestDisplay({
   requests,
@@ -71,111 +73,110 @@ export default function RequestDisplay({
   console.log(
     submissions.filter((value) => value.requestId === selected?.requestId)
   );
+
+  const Toolbar = () => {
+    return (
+      <div className="flex flex-row justify-between w-full items-center gap-2">
+        <div className="flex">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!selected}
+                // onClick={() => handleArchive(selected?.requestId || "")}
+              >
+                <Archive className="h-4 w-4" />
+                <span className="sr-only">Archive</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Archive</TooltipContent>
+          </Tooltip>
+          <Separator orientation="vertical" className="mx-2 h-8" />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" disabled={!selected}>
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Move to trash</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Move to trash</TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="flex ml-auto pr-1">
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              setShowVideoList(!showVideoList);
+            }}
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                {showVideoList ? (
+                  <XSquare className="w-4 h-4" />
+                ) : (
+                  <ListVideo className="w-4 h-4" />
+                )}
+              </TooltipTrigger>
+              <TooltipContent>
+                {showVideoList ? "Hide Video List" : "View Video List"}
+              </TooltipContent>
+            </Tooltip>
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-full flex-col">
+      {/* <Toggle/> */}
+      <div className="flex items-center p-2">
+        {/* Toolbar states */}
+        {<Toolbar />}
+      </div>
+      <Separator />
       {selected ? (
-        <div>
-          <div>
-            <div className="flex items-center p-2">
-              <div className="flex items-center gap-2">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Archive className="h-4 w-4" />
-                      <span className="sr-only">Archive</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Archive</TooltipContent>
-                </Tooltip>
-                <Separator orientation="vertical" className="mx-2 h-6" />
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Trash2 className="h-4 w-4" />
-                      <span className="sr-only">Move to trash</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Move to trash</TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="ml-auto">
-                <Tooltip>
-                  {showVideoList === true ? (
-                    <Button
-                      variant={"destructive"}
-                      onClick={() => setShowVideoList(false)}
-                    >
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <XSquare className="w-4 h-4 " />
-                        </TooltipTrigger>
-                        <TooltipContent>Hide Video List</TooltipContent>
-                      </Tooltip>
-                    </Button>
-                  ) : (
-                    <div>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setShowVideoList(true)}
-                        >
-                          <ListVideo className="h-4 w-4" />
-                          <span className="sr-only">Show video list</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Show video list</TooltipContent>
-                    </div>
-                  )}
-                </Tooltip>
+        <div className="h-full">
+          <div className="flex items-start p-4">
+            <div className="flex items-start gap-4 text-sm max-w-[70%]">
+              <Avatar>
+                <AvatarImage alt={userData.givenName} />
+                <AvatarFallback>
+                  {userData.givenName
+                    .split(" ")
+                    .map((chunk) => chunk[0])
+                    .join("")}
+                  {userData.familyName
+                    .split(" ")
+                    .map((chunk) => chunk[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1 text-ellipsis ">
+                <div className="font-semibold">{selected?.requestTitle}</div>
+                <div className="line-clamp-3 text-xs text-ellipsis ">
+                  <span className="font-medium">From: </span>
+                  {userData.givenName} {userData.familyName}{" "}
+                </div>
+                <div className="line-clamp-3 text-xs text-ellipsis  ">
+                  <span className="font-medium ">Email: </span>
+                  {selected?.requesterEmail}
+                </div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Due: </span>
+                  {format(new Date(selected?.dueDate), "PPP, p")}
+                </div>
               </div>
             </div>
-            <Separator />
+            {selected.creationDate && (
+              <div className="ml-auto text-xs text-muted-foreground">
+                {format(new Date(selected?.creationDate), "PPP, p")}
+              </div>
+            )}
           </div>
-          <div className="h-full">
-            <div className="flex items-start p-4">
-              <div className="flex items-start gap-4 text-sm max-w-[70%]">
-                <Avatar>
-                  <AvatarImage alt={userData.givenName} />
-                  <AvatarFallback>
-                    {userData.givenName
-                      .split(" ")
-                      .map((chunk) => chunk[0])
-                      .join("")}
-                    {userData.familyName
-                      .split(" ")
-                      .map((chunk) => chunk[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1 text-ellipsis ">
-                  <div className="font-semibold">{selected?.requestTitle}</div>
-                  <div className="line-clamp-3 text-xs text-ellipsis ">
-                    <span className="font-medium">From: </span>
-                    {userData.givenName} {userData.familyName}{" "}
-                  </div>
-                  <div className="line-clamp-3 text-xs text-ellipsis  ">
-                    <span className="font-medium ">Email: </span>
-                    {selected?.requesterEmail}
-                  </div>
-                  <div className="line-clamp-1 text-xs">
-                    <span className="font-medium">Processing: </span>
-                    {selected.blurred === true
-                      ? "Blurred"
-                      : "Not Blurred"}|{" "}
-                    <span className="font-medium">Due: </span>
-                    {format(new Date(selected?.dueDate), "PPP, p")}
-                  </div>
-                </div>
-              </div>
-              {selected.creationDate && (
-                <div className="ml-auto text-xs text-muted-foreground">
-                  {format(new Date(selected.creationDate), "PPP, p")}
-                </div>
-              )}
-            </div>
-            <Separator />
-
+          <Separator />
+          <div className="p-4 overflow-y-auto grow h-[65%]">
             {showVideoList === true ? (
               <div className="mx-4 my-4">
                 <div className="rounded-md border">
@@ -212,7 +213,7 @@ export default function RequestDisplay({
                             </TableCell>
                             <TableCell>{value.requesteeEmail}</TableCell>
                             <TableCell>
-                              <div className="flex justify-left items-center ">
+                              <div className="flex justify-center items-center ">
                                 <Dialog>
                                   <DialogTrigger asChild>
                                     <Button
@@ -263,10 +264,8 @@ export default function RequestDisplay({
                 </div>
               </div>
             ) : (
-              <div className="flex  p-4 overflow-scroll max-h-[65%]">
-                <div className="flex-1 whitespace-pre-wrap text-sm ">
-                  {selected?.description}
-                </div>
+              <div className="flex-1 whitespace-pre-wrap text-sm ">
+                {selected?.description}
               </div>
             )}
           </div>

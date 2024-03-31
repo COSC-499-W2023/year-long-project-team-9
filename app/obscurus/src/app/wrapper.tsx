@@ -130,7 +130,7 @@ export function Wrapper({
         <ResizableHandle withHandle />
         <ResizablePanel
           defaultSize={(defaultLayout && defaultLayout[2]) || 50}
-          minSize={20}
+          minSize={25}
         >
           <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
