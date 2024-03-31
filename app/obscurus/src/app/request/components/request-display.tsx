@@ -19,6 +19,7 @@ import {
   ExternalLink,
   Download,
   PlaySquare,
+  ArchiveX,
 } from "lucide-react";
 import { format } from "date-fns";
 import { RequestDisplayAlert } from "./request-display-alert";
@@ -42,6 +43,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import VideoPlayer from "@/app/submit/components/video-player";
 import { RequestTable } from "./request-table";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function RequestDisplay({
   requests,
@@ -55,6 +57,7 @@ export default function RequestDisplay({
   setRequests: Function;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
+  const { toast } = useToast();
 
   console.log("RequestId", requestId);
   const selected = requests
@@ -68,6 +71,37 @@ export default function RequestDisplay({
     submissions.filter((value) => value.requestId === selected?.requestId)
   );
 
+  function archive(
+    selected: Requests | null | undefined,
+    requests: Requests[]
+  ) {
+    if (selected !== null && selected !== undefined) {
+      let newRequests = [...requests];
+      newRequests[newRequests.indexOf(selected)].grouping = "ARCHIVED";
+      setRequests(newRequests);
+    }
+  }
+
+  function unarchive(
+    selected: Requests | null | undefined,
+    requests: Requests[]
+  ) {
+    if (selected !== null && selected !== undefined) {
+      let newRequests = [...requests];
+      newRequests[newRequests.indexOf(selected)].grouping = null;
+      setRequests(newRequests);
+    }
+  }
+
+  function trash(selected: Requests | null | undefined, requests: Requests[]) {
+    if (selected !== null && selected !== undefined) {
+      let newRequests = [...requests];
+      newRequests[newRequests.indexOf(selected)].grouping = "TRASHED";
+      setRequests(newRequests);
+      setRequestId(null);
+    }
+  }
+
   const Toolbar = () => {
     return (
       <div className="flex flex-row justify-between w-full items-center gap-2">
@@ -78,18 +112,41 @@ export default function RequestDisplay({
                 variant="ghost"
                 size="icon"
                 disabled={!selected}
-                // onClick={() => handleArchive(selected || "")}
+                onClick={() => {
+                  selected?.grouping === null
+                    ? archive(selected, requests)
+                    : unarchive(selected, requests);
+                }}
               >
-                <Archive className="h-4 w-4" />
+                {selected?.grouping === null ? (
+                  <div>
+                    <Archive className="h-4 w-4" />
+                    <span className="sr-only">Archive</span>
+                  </div>
+                ) : (
+                  <div>
+                    <ArchiveX className="h-4 w-4" />
+                    <span className="sr-only">Archive</span>
+                  </div>
+                )}
                 <span className="sr-only">Archive</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Archive</TooltipContent>
+            {selected?.grouping === null ? (
+              <TooltipContent>Archive</TooltipContent>
+            ) : (
+              <TooltipContent>Unarchive</TooltipContent>
+            )}
           </Tooltip>
           <Separator orientation="vertical" className="mx-2 h-8" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!selected}
+                onClick={() => trash(selected, requests)}
+              >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
