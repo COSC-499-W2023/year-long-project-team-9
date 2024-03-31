@@ -17,11 +17,6 @@ export async function createRequest(data: any) {
     console.log(validData.success);
     return false;
   }
-  const rest = await sendEmailTextBlockViaNoReply(
-    "bakar.a.muhammad@gmail.com",
-    "test",
-    "hello wrold"
-  );
   try {
     const requestID = uuidv7();
     console.log();
