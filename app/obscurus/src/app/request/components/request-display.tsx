@@ -134,7 +134,7 @@ export default function RequestDisplay({
       {selected ? (
         <div className="h-full">
           <div className="flex items-start p-4">
-            <div className="flex items-start gap-4 text-sm max-w-[70%]">
+            <div className="flex items-start gap-4 text-sm">
               <Avatar>
                 <AvatarImage alt={userData.givenName} />
                 <AvatarFallback>
@@ -148,7 +148,7 @@ export default function RequestDisplay({
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid gap-1 text-ellipsis ">
+              <div className="flex flex-col items-start gap-1 break-all">
                 <div className="font-semibold">{selected?.requestTitle}</div>
                 <div className="line-clamp-3 text-xs text-ellipsis ">
                   <span className="font-medium">From: </span>
@@ -158,8 +158,30 @@ export default function RequestDisplay({
                   <span className="font-medium ">Email: </span>
                   {selected?.requesterEmail}
                 </div>
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium ">To:</span>
+                <div className="text-xs">
+                  <HoverCard>
+                    <HoverCardTrigger className="text-xs line-clamp-1">
+                      To:{" "}
+                      {submissions
+                        .filter(
+                          (value) => value.requestId === selected?.requestId
+                        )
+                        .map((item, index: number) => item.requesteeEmail)
+                        .join(", ")}
+                    </HoverCardTrigger>
+                    <HoverCardContent className="max-h-48 overflow-y-auto">
+                      <div>To: </div>
+                      <div className="ml-1">
+                        {submissions
+                          .filter(
+                            (value) => value.requestId === selected?.requestId
+                          )
+                          .map((item, index: number) => (
+                            <div key={index}>• {item.requesteeEmail}</div>
+                          ))}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </div>
                 <div className="line-clamp-1 text-xs">
                   <span className="font-medium">Processing: </span>
