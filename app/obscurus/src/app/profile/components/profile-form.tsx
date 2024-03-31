@@ -95,7 +95,7 @@ export default function ProfileForm({
             placeHolder={"Last Name"}
           ></LastNameInput>
           {/* TODO: ProfileImageInput */}
-          <ProfileImageInput form={form}></ProfileImageInput>
+          <ProfileImageInput form={form} isDisabled={false}></ProfileImageInput>
           <div className="text-right gap-2">
             <AccountCancel></AccountCancel>
             <Button

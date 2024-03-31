@@ -9,8 +9,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FileUp } from "lucide-react";
+import { Suspense, useEffect, useRef, useState, ChangeEvent } from "react";
 
 export default function ProfileImageInput({ form }: any) {
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
+  const [objectURL, setObjectURL] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: any) => {
+    setLoading(true);
+    e.preventDefault();
+    // setUpload(true);
+    const file = fileInputRef.current?.files?.[0];
+    setFile(file);
+    if (!file) {
+      console.error("No file selected");
+      // setUpload(false);
+      return;
+    }
+    // const fileExt = file.name.split(".").pop();
+    console.log("File extension", file);
+    setFileExt(fileExt);
+  };
+
   return (
     <FormItem>
       <FormLabel>Profile Image</FormLabel>
@@ -34,7 +58,9 @@ export default function ProfileImageInput({ form }: any) {
           id="profileImageInput"
           accept="image/png, image/jpg, image/jpeg"
           hidden
-          {...form.register("profileImage")}
+          ref={fileInputRef}
+          onChange={handleSubmit}
+        // {...form.register("profileImage")}
         />
       </div>
       <FormDescription className="text-justify">
