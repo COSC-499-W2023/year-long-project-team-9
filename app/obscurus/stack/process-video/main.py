@@ -266,6 +266,8 @@ async def update_submission_status(status: str, submission_id: str):
 
 
 async def send_email_notification(email: str, subject: str, text: str):
+    print("Sending email notification...")
+    print(f"Email: {email}, Subject: {subject}, Text: {text}")
     try:
         res = requests.post(
             f"{api_url}/sendEmail",
@@ -275,12 +277,12 @@ async def send_email_notification(email: str, subject: str, text: str):
                 "text": text,
             },
         )
-
-        print(f"Email sent to {email}")
-        print(res.json())
+        if res.status_code != 200:
+            raise Exception("Error sending email")
+        print("Email sent")
 
     except Exception as error:
-        print("Error updating status:", error)
+        print("Error sending email:", error)
 
 
 @app.get("/")
