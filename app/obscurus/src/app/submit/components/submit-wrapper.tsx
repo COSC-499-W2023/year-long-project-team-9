@@ -25,7 +25,6 @@ export const SubmitWrapper = ({
   getRequestsAndSubmissionsByEmail,
   defaultLayout,
   defaultCollapsed,
-  websocketApiEndpoint,
   getUserViaEmail,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -40,7 +39,6 @@ export const SubmitWrapper = ({
   getRequestsAndSubmissionsByEmail?: Function;
   defaultLayout: number[];
   defaultCollapsed: boolean;
-  websocketApiEndpoint: string;
   getUserViaEmail?: (email: string) => Promise<string>;
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
@@ -80,7 +78,7 @@ export const SubmitWrapper = ({
           setSubmissions(data.submissions);
           break;
         default:
-          console.log("Unhandled WebSocket action:", action);
+          break;
       }
     };
 
@@ -96,7 +94,6 @@ export const SubmitWrapper = ({
     submissionId: string
   ) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
-      console.log("Sending updateSubmissionStatus message");
       const message = JSON.stringify({
         action: "updateSubmissionStatus",
         data: { status, submissionId },
@@ -105,8 +102,7 @@ export const SubmitWrapper = ({
 
       if (updateStatus) {
         await updateStatus(status, submissionId);
-        console.log("Updated submission status");
-        ws.send(
+        status !== "TRASHED" && status != "ARCHIVED" && ws.send(
           JSON.stringify({
             action: "newNotification",
             data: {
