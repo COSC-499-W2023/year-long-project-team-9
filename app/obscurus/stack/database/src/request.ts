@@ -50,10 +50,10 @@ export async function createRequest(data: any) {
         .values({
           notificationId: uuidv7(),
           userEmail: validData.data.clientEmail[i].email,
-          type: "REQUEST",
+          type: "SUBMIT",
           referenceId: newSubmissionID,
           creationDate: new Date(),
-          content: `New request from ${validData.data.userEmail}`,
+          content: `New request from ${validData.data.firstName} ${validData.data.lastName}`,
           isRead: false,
           isTrashed: false,
         })
