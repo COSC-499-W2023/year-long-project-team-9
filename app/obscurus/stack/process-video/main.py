@@ -132,9 +132,6 @@ def integrate_audio(original_video, output_video, audio_path="/tmp/audio.mp3"):
     my_clip = VideoFileClip(original_video)
     my_clip.audio.write_audiofile(audio_path)
     temp_location = "{}-processed.mp4".format(original_video)
-
-    # Join output video with extracted audio
-
     print("output_video", output_video)
     print("temp_location", temp_location)
     videoclip = VideoFileClip("{}".format(output_video))
@@ -177,13 +174,11 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     while next_token or first_round:
         print(".", end="")
         first_round = False
-        # Query Rekognition for face detection results
         response = reko_client.get_face_detection(
             JobId=job_id,
             MaxResults=100,
             NextToken=next_token if next_token else "",
         )
-        # Iterate over each face detected and organize by timestamp
         for face in response["Faces"]:
             f = face["Face"]["BoundingBox"]
             t = str(face["Timestamp"])
@@ -198,30 +193,31 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def convert_to_mp4(input_video, output_video):
     """
-    Converts any video format to MP4 using FFmpeg.
+    Converts any video format to MP4 using FFmpeg, ensuring compatibility with
+    a wide range of devices by specifying codecs and streamlining for fast start.
+
     Args:
         input_video (str): Path to the source video.
         output_video (str): Path where the output (MP4) video will be saved.
     """
     cmd = [
         "ffmpeg",
-        "-i",
-        input_video,
-        "-c:v",
-        "libx264",
-        "-crf",
-        "23",
-        "-preset",
-        "medium",
-        "-c:a",
-        "aac",
-        "-strict",
-        "-2",
-        "-movflags",
-        "+faststart",
-        output_video,
+        "-i", input_video,
+        "-c:v", "libx264"
+        "-crf", "23",
+        "-preset", "medium",
+        "-c:a", "aac",
+        "-b:a", "128k",
+        "-strict", "experimental",
+        "-movflags", "+faststart",
+        output_video
     ]
-    subprocess.run(cmd, check=True)
+
+    try:
+        subprocess.run(cmd, check=True)
+        print(f"Conversion to MP4 successful: {output_video}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during conversion: {e}")
 
 
 def process_video(timestamps, response, submission_id, file_extension):
@@ -311,7 +307,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         await update_submission_status("PROCESSING", submission_id)
         await send_email_notification(
             recipient_email,
-            "obscurus - New Submission Request",
+            "obscurus",
             "Your video is being processed",
         )
         await create_notification("PROCESSING", submission_id, recipient_email)
@@ -336,7 +332,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 async def process_video_background(submission_id, file_extension, recipient_email):
     original_key = f"{submission_id}.{file_extension}"
     converted_key = original_key
-    if file_extension.lower() != "mp4":
+    if file_extension.lower() == "mp4":
         converted_key = f"{submission_id}.mp4"
         local_webm_path = f"/tmp/{original_key}"
         s3.download_file(bucket_name, original_key, local_webm_path)
@@ -352,7 +348,7 @@ async def process_video_background(submission_id, file_extension, recipient_emai
     await update_submission_status("COMPLETED", submission_id)
     await send_email_notification(
         recipient_email,
-        "obscurus - New Submission Request",
+        "obscurus",
         "Your video has been processed",
     )
     await create_notification("COMPLETED", submission_id, recipient_email)

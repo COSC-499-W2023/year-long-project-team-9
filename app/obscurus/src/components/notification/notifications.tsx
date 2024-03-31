@@ -29,12 +29,10 @@ import { set } from "date-fns";
 export default function Notifications({
   readNotification,
   deleteNotifications,
-  websocketApiEndpoint,
   getNotificationsViaEmail,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
-  websocketApiEndpoint: string;
   getNotificationsViaEmail: Function;
 }) {
   const [notifcations, setNotifications] = useNotifications();

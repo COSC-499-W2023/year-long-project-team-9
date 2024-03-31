@@ -34,9 +34,6 @@ export default async function RootLayout({
   // Muhammad
   // deleteNotifications;
   // notificationsRead;
-  const email = await getEmail();
-  const notifications = await getNotificationsViaEmail(email);
-  console.log("Notifications", notifications);
 
   return (
     <html lang="en">
@@ -51,8 +48,6 @@ export default async function RootLayout({
               <NavBar
                 readNotification={readNotification}
                 deleteNotifications={deleteNotification}
-                initialNotifications={notifications}
-                wsUrl={wsUrl}
                 getNotificationsViaEmail={getNotificationsViaEmail}
               />
               <Toaster />

@@ -24,14 +24,10 @@ import { useNotifications } from "./hooks/use-notifications";
 const NavBar = ({
   readNotification,
   deleteNotifications,
-  initialNotifications,
-  wsUrl,
   getNotificationsViaEmail,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
-  initialNotifications: any;
-  wsUrl: string;
   getNotificationsViaEmail: Function;
 }) => {
   const { theme, setTheme } = useTheme();
@@ -135,7 +131,6 @@ const NavBar = ({
         <Notifications
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
-          websocketApiEndpoint={wsUrl}
           getNotificationsViaEmail={getNotificationsViaEmail}
         />
         <ThemeSwitcher />
