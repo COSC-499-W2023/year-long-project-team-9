@@ -71,22 +71,21 @@ export default function SubmitDisplay({
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
-  console.log("getUserViaEmail", getUserViaEmail);
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
   // }
 
   const [submissions] = useSubmissions();
-  useEffect(() => {
-    {
-      async () => {
-        const res = await fetchUserData();
-        console.log("RES", res);
-        return res;
-      };
-    }
-  });
+  // useEffect(() => {
+  //   {
+  //     async () => {
+  //       const res = await fetchUserData();
+  //       console.log("RES", res);
+  //       return res;
+  //     };
+  //   }
+  // });
 
   const selected = submissions?.find(
     (sub) => sub.submissionId === submission.submissionId
@@ -158,8 +157,8 @@ export default function SubmitDisplay({
             description: "Your video has been uploaded successfully.",
           });
           // console.log("Updated submission status");
-          updateRequests && updateRequests();
-          await fetchUserData();
+          // updateRequests && updateRequests();
+          // await fetchUserData();
         } else {
           throw new Error("Upload failed");
         }
@@ -263,10 +262,10 @@ export default function SubmitDisplay({
     console.log("Archiving");
     if (submission && updateSubmissionStatus) {
       if (submission && updateSubmissionStatus) {
-        await updateSubmissionStatus("ARCHIVED", submission.submissionId);
-        console.log("Updated submission status");
-        updateRequests && updateRequests();
-        await fetchUserData();
+        await updateSubmissionStatus("TODO", submission.submissionId);
+        //console.log("Updated submission status");
+        // updateRequests && updateRequests();
+        // await fetchUserData();
 
         toast({
           title: "Archived",

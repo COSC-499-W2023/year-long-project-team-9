@@ -190,15 +190,15 @@ export default function SubmitList({
                     addSuffix: true,
                   })}
                 </Badge>
-                <Badge variant={getBadgeVariantFromStatus(item.status)}>
-                  {item.status
+                <Badge variant={getBadgeVariantFromStatus(item.status || "TODO")}>
+                  {item && item.status
                     .split(" ")
                     .map(
                       (word) =>
                         word.charAt(0).toUpperCase() +
                         word.slice(1).toLowerCase()
                     )
-                    .join(" ")}
+                    .join(" ") || "TODO"}
                 </Badge>
               </div>
             </button>

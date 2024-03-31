@@ -250,20 +250,6 @@ def process_video(timestamps, response, submission_id):
     return "Completed processing!"
 
 
-def update_status(status, submission_id):
-    try:
-        requests.post(
-            f"{api_url}/updateStatus",
-            json={
-                "submissionId": submission_id,
-                "status": status,
-            },
-        )
-
-    except Exception as error:
-        print("Error updating status:", error)
-
-
 app = FastAPI()
 
 
