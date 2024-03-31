@@ -127,14 +127,14 @@ export default function RequestDisplay({
                     : unarchive(selected, requests);
                 }}
               >
-                {selected?.grouping === null ? (
+                {selected?.grouping === "ARCHIVED" ? (
                   <div>
-                    <Archive className="h-4 w-4" />
+                    <ArchiveX className="h-4 w-4" />
                     <span className="sr-only">Archive</span>
                   </div>
                 ) : (
                   <div>
-                    <ArchiveX className="h-4 w-4" />
+                    <Archive className="h-4 w-4" />
                     <span className="sr-only">Archive</span>
                   </div>
                 )}
