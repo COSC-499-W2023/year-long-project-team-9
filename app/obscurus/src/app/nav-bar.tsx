@@ -81,14 +81,14 @@ const NavBar = ({
 
   const Navigation = () => {
     return (
-      <NavigationMenu className="flex flex-row space-x-6 ">
+      <NavigationMenu className="flex flex-row space-x-4 ">
         <Link href="/" className="">
           <Image
             className="min-h-full min-w-full"
             src="/logo.svg"
             alt="obscurus"
-            width={40}
-            height={40}
+            width={30}
+            height={30}
           />
         </Link>
 

@@ -18,8 +18,13 @@ import Link from "next/link";
 import { Card, CardContent, CardTitle } from "../ui/card";
 import { useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
-import { useNotifications } from "@/app/hooks/use-notifications";
+import {
+  useHasUnreadNotifications,
+  useNotifications,
+} from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
+import { all } from "axios";
+import { set } from "date-fns";
 
 export default function Notifications({
   readNotification,
@@ -33,6 +38,8 @@ export default function Notifications({
   getNotificationsViaEmail: Function;
 }) {
   const [notifcations, setNotifications] = useNotifications();
+  const [hasUnreadNotifications, setHasUnreadNotifications] =
+    useHasUnreadNotifications();
   const ws = useWebSocket();
 
   useEffect(() => {
@@ -40,6 +47,11 @@ export default function Notifications({
       try {
         const data = await getNotificationsViaEmail("imightbejan@gmail.com");
         setNotifications(data.notifications);
+        setHasUnreadNotifications(
+          data.notifications.some(
+            (notification: Notifications) => !notification.isRead
+          )
+        );
       } catch (error) {
         console.error("Error fetching initial notifications:", error);
       }
@@ -55,6 +67,7 @@ export default function Notifications({
           newNotification,
           ...prevNotifications,
         ]);
+        setHasUnreadNotifications(true);
       }
     };
 
@@ -71,9 +84,15 @@ export default function Notifications({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="p-0 m-0">
             <Bell size={20} />
           </Button>
+          {hasUnreadNotifications && (
+            <div
+              className="absolute top-3 right-16 mt-2 h-2 w-2 rounded-full bg-blue-600  "
+              aria-label="Unread Notification"
+            ></div>
+          )}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80  shadow-lg rounded-lg">
