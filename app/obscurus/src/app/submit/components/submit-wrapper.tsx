@@ -64,7 +64,7 @@ export const SubmitWrapper = ({
       // Fetch initial data
       if (getRequestsAndSubmissionsByEmail) {
         getRequestsAndSubmissionsByEmail("imightbejan@gmail.com").then((data:any) => {
-          setSubmissions(data.submissions);
+          setSubmissions(data.submissions.filter((submission: any) => submission.status !== 'TRASHED'));
           console.log("Initial data fetched");
         });
       }
