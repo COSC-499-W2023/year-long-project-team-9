@@ -212,7 +212,7 @@ export default function RequestDisplay({
                             </TableCell>
                             <TableCell>{value.requesteeEmail}</TableCell>
                             <TableCell>
-                              <div className="flex justify-center items-center ">
+                              <div className="flex justify-left items-center ">
                                 <Dialog>
                                   <DialogTrigger asChild>
                                     <Button
@@ -263,8 +263,8 @@ export default function RequestDisplay({
                 </div>
               </div>
             ) : (
-              <div className="flex p-4 overflow-scroll max-h-[65%]">
-                <div className="flex-1 whitespace-pre-wrap text-sm">
+              <div className="flex  p-4 overflow-scroll max-h-[65%]">
+                <div className="flex-1 whitespace-pre-wrap text-sm ">
                   {selected?.description}
                 </div>
               </div>
