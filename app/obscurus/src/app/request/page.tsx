@@ -24,14 +24,14 @@ async function Request() {
   const userData: Users = await getUserViaEmail(userEmail);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
-  const requests: Requests[] = requestPageData.request;
+  const request: Requests[] = requestPageData.request;
   const submissions: Submissions[] = requestPageData.submissions;
 
   return (
     <RequestWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      requests={requests}
+      request={request}
       submissions={submissions}
       userData={userData}
     />

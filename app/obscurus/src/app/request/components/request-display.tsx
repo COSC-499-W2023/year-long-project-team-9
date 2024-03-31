@@ -45,16 +45,14 @@ import { RequestTable } from "./request-table";
 
 export default function RequestDisplay({
   requests,
-  searchParams,
   submissions,
   userData,
+  setRequests,
 }: {
   requests: Requests[];
-  searchParams?: {
-    counter?: string | null[];
-  };
   submissions: Submissions[];
   userData: Users;
+  setRequests: Function;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
 
@@ -84,7 +82,7 @@ export default function RequestDisplay({
                 variant="ghost"
                 size="icon"
                 disabled={!selected}
-                // onClick={() => handleArchive(selected?.requestId || "")}
+                // onClick={() => handleArchive(selected || "")}
               >
                 <Archive className="h-4 w-4" />
                 <span className="sr-only">Archive</span>

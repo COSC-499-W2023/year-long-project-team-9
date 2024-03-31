@@ -8,20 +8,22 @@ import Wrapper from "@/app/wrapper";
 import RequestList from "./request-list";
 import hello from "@/app/functions/hello";
 import RequestDisplay from "./request-display";
+import { useState } from "react";
 
 export default function RequestWeapper({
   defaultLayout,
   defaultCollapsed,
-  requests,
+  request,
   submissions,
   userData,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
-  requests: Requests[];
+  request: Requests[];
   submissions: Submissions[];
   userData: Users;
 }) {
+  const [requests, setRequests] = useState<Requests[]>(request);
   return (
     <Wrapper
       defaultLayout={defaultLayout}
@@ -33,6 +35,7 @@ export default function RequestWeapper({
           requests={requests}
           submissions={submissions}
           userData={userData}
+          setRequests={setRequests}
         />
       }
     />

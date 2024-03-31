@@ -92,7 +92,7 @@ export default function RequestList({
     console.log("Selected RequestID to list", requestId);
   };
 
-  const statuses = ["all", "todo", "processing", "completed", "archived"];
+  const statuses = ["all", "archived"];
 
   const tabsTriggers = statuses.map((status) => (
     <TabsTrigger key={status} value={status} className="text-xs">
@@ -251,45 +251,4 @@ function getBadgeVariantFromLabel(
     return "outline";
   }
   return "secondary";
-}
-
-export function getStatus(submissions: Submissions[]) {
-  let allCompleted = true;
-  for (let i = 0; i < submissions.length; i++) {
-    if (
-      submissions[i].status === "FAILED" ||
-      submissions[i].status === "PROCESSING"
-    ) {
-      return "in progress";
-    }
-    if (submissions[i].status !== "COMPLETED") {
-      allCompleted = false;
-    }
-  }
-  if (allCompleted === true) {
-    return "completed";
-  } else {
-    return "not started";
-  }
-}
-
-export function getBadgeVariantFromStatus(
-  status: string
-): ComponentProps<typeof Badge>["variant"] {
-  switch (status.toLowerCase()) {
-    case "completed":
-      return "success";
-    case "processing":
-      return "warning";
-    case "in progress":
-      return "warning";
-    case "archived":
-      return "outline";
-    case "failed":
-      return "destructive";
-    case "not started":
-      return "default";
-    default:
-      return "secondary";
-  }
 }
