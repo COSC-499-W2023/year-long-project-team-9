@@ -9,6 +9,7 @@ import {
   Users,
 } from "./sql.generated";
 import { uuidv7 } from "uuidv7";
+import { sendEmailTextBlockViaNoReply } from "@obscurus/ses/src/sendEmailTextBlockViaNoReply";
 
 export async function createRequest(data: any) {
   const validData = createFormSchema.safeParse(data);
@@ -16,6 +17,11 @@ export async function createRequest(data: any) {
     console.log(validData.success);
     return false;
   }
+  const rest = await sendEmailTextBlockViaNoReply(
+    "bakar.a.muhammad@gmail.com",
+    "test",
+    "hello wrold"
+  );
   try {
     const requestID = uuidv7();
     console.log();
