@@ -77,6 +77,7 @@ export default function SubmitList({
         (submission) => submission.submissionId === item.submissionId
       );
       if (submission) {
+        console.log("Selected submission", submission);
         setSubmission({ ...submission, submissionId: submission.submissionId });
       }
 
@@ -138,16 +139,9 @@ export default function SubmitList({
       return matchesStatus && matchesSearch && submission.status != "TRASHED";
     });
 
-    return submissions ? (
+    return (
       <TabsContent key={status} value={status}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
-        {filteredRequests?.length === 0 && (
-            <div className="flex flex-col w-full h-full justify-center items-center">
-              <div className=" text-muted-foreground font-semibold">
-                No requests to submit.
-              </div>
-            </div>
-          )}
           {filteredRequests?.map((item) => (
             <button
               key={item.submissionId}
@@ -216,9 +210,7 @@ export default function SubmitList({
           ))}
         </div>
       </TabsContent>
-    ) : (
-      <PanelLoader />
-    )
+    );
   });
 
   return (
@@ -310,6 +302,7 @@ export default function SubmitList({
         </Tooltip>
       </div>
       <Separator />
+
       <div className="h-full overflow-y-scroll">
         {tabsContent || <div>No requests.</div>}
       </div>

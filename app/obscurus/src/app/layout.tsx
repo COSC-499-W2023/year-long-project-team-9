@@ -11,7 +11,10 @@ import { getEmail } from "./functions/authenticationMethods";
 import { Notifications } from "@obscurus/database/src/sql.generated";
 import readNotification from "./functions/readNotification";
 import deleteNotification from "./functions/deleteNotification";
-import Footer  from "./footer";
+import Footer from "./footer";
+import { Provider } from "jotai";
+import { create } from "domain";
+import { WebSocketProvider } from "./ws-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +37,6 @@ export default async function RootLayout({
   const email = await getEmail();
   const notifications = await getNotificationsViaEmail(email);
   console.log("Notifications", notifications);
-  //
 
   return (
     <html lang="en">
@@ -44,25 +46,27 @@ export default async function RootLayout({
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <div className=" flex-col md:flex h-screen ">
-            <NavBar
-              readNotification={readNotification}
-              deleteNotifications={deleteNotification}
-              initialNotifications={notifications}
-              wsUrl={wsUrl}
-              getNotificationsViaEmail={getNotificationsViaEmail}
-            />
-            <Toaster />
-            {children}
+          <WebSocketProvider url={wsUrl}>
+            <div className=" flex-col md:flex h-screen ">
+              <NavBar
+                readNotification={readNotification}
+                deleteNotifications={deleteNotification}
+                initialNotifications={notifications}
+                wsUrl={wsUrl}
+                getNotificationsViaEmail={getNotificationsViaEmail}
+              />
+              <Toaster />
+              {children}
 
-            {/*If not signed in*/}
+              {/*If not signed in*/}
 
-            {/* <div className="h-screen w-full flex flex-col items-center justify-center">
+              {/* <div className="h-screen w-full flex flex-col items-center justify-center">
             <div className="absolute z-100 top-36 left-56">Top</div>
             <Home />
           </div> */}
-          {/* <Footer /> */}
-          </div>
+              {/* <Footer /> */}
+            </div>
+          </WebSocketProvider>
         </ThemeProvider>
       </body>
     </html>

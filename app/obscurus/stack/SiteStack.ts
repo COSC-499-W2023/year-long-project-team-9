@@ -10,6 +10,7 @@ import {
   Config,
   WebSocketApi,
   Service,
+  Topic,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 
@@ -233,6 +234,15 @@ export default function SiteStack({ stack }: StackContext) {
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
   api.bind([wsApi]);
+
+  // const requestSubmitted = new Topic(stack, "SubmissionCompleted", {
+  //   subscribers: {
+  //     sendEmails: "stack/lambdas/sendEmails.main",
+  //     createNotification: "stack/lambdas/shipping.main",
+  //   },
+  // });
+
+  // api.bind([requestSubmitted]);
 
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],

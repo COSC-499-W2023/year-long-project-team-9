@@ -265,24 +265,28 @@ async def update_submission_status(status: str, submission_id: str):
         print(f"Status updated to {status} for submission {submission_id}")
 
 
-async def send_email_notification(email: str, subject: str, text: str):
-    print("Sending email notification...")
-    print(f"Email: {email}, Subject: {subject}, Text: {text}")
-    try:
-        res = requests.post(
-            f"{api_url}/sendEmail",
-            json={
-                "email": email,
-                "subject": subject,
-                "text": text,
-            },
-        )
-        if res.status_code != 200:
-            raise Exception("Error sending email")
-        print("Email sent")
+async def send_email_notification(email: str, subject: str, body: str):
+    ses_client = boto3.client("ses", region_name="us-west-2")
+    ses_client.send_email(
+        Source="no-reply@obscurus.me",
+        Destination={"ToAddresses": [email]},
+        Message={
+            "Subject": {"Data": subject},
+            "Body": {"Html": {"Data": body}}
+        }
+    )
+    print(f"Email notification sent to {email}")
 
-    except Exception as error:
-        print("Error sending email:", error)
+async def create_notification(status: str, submission_id: str, email: str):
+    async with websockets.connect(ws_api_url) as websocket:
+        message = json.dumps(
+            {
+                "action": "newNotification",
+                "data": {"notification": { "referenceId": submission_id, "type": "SUBMIT", "content": f"Submission status updated to {status}", "email": email} },
+            }
+        )
+        await websocket.send(message)
+        print(f"Status updated to {status} for submission {submission_id}")
 
 
 @app.get("/")
@@ -310,8 +314,9 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             "obscurus - New Submission Request",
             "Your video is being processed",
         )
+        await create_notification("PROCESSING", submission_id, recipient_email)
         background_tasks.add_task(
-            process_video_background, submission_id, file_extension
+            process_video_background, submission_id, file_extension, recipient_email
         )
         return {"message": "Video processing started"}
     except Exception as e:
@@ -321,13 +326,14 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             await send_email_notification(
                 recipient_email, submission_id, "Error processing video"
             )
+            await create_notification("FAILED", submission_id, recipient_email)
             return {"message": "Error processing video"}
         except Exception as error:
             print("Error updating status:", error)
             return {"message": "Error processing video"}
 
 
-async def process_video_background(submission_id, file_extension):
+async def process_video_background(submission_id, file_extension, recipient_email):
     original_key = f"{submission_id}.{file_extension}"
     converted_key = original_key
     if file_extension.lower() != "mp4":
@@ -344,3 +350,9 @@ async def process_video_background(submission_id, file_extension):
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
     process_video(timestamps, job_response, submission_id)
     await update_submission_status("COMPLETED", submission_id)
+    await send_email_notification(
+        recipient_email,
+        "obscurus - New Submission Request",
+        "Your video has been processed",
+    )
+    await create_notification("COMPLETED", submission_id, recipient_email)
