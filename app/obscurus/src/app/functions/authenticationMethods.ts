@@ -6,7 +6,9 @@ import {
   signOut,
   signUp,
   confirmSignUp,
+  resendSignUpCode,
   type ConfirmSignUpInput,
+  type ResendSignUpCodeInput,
   AuthError,
 } from "aws-amplify/auth";
 
@@ -96,6 +98,18 @@ export async function confirmSignUpUser({
       username,
       confirmationCode,
     });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export async function resendConfirmSignUpUser({
+  username,
+}: ResendSignUpCodeInput) {
+  try {
+    await resendSignUpCode({ username });
     return true;
   } catch (error) {
     console.log(error);
