@@ -36,13 +36,15 @@ export default function SignUpEmailNamesForm({
   setSignUpState,
   setSignUpEmailNames,
   setSignUpRefBoolean,
-  setFailedSignUp,
+  setFailedSignUpGeneric,
+  setFailedSignUpUsernameExists,
 }: {
   setDialogState: Function;
   setSignUpState: Function;
   setSignUpEmailNames: Function;
   setSignUpRefBoolean: Function;
-  setFailedSignUp: Function;
+  setFailedSignUpGeneric: Function;
+  setFailedSignUpUsernameExists: Function;
 }) {
   const form = useForm<z.infer<typeof signUpEmailNamesFormSchema>>({
     resolver: zodResolver(signUpEmailNamesFormSchema),
@@ -50,7 +52,8 @@ export default function SignUpEmailNamesForm({
   function onSubmit(values: z.infer<typeof signUpEmailNamesFormSchema>) {
     setSignUpEmailNames(values);
     setSignUpState("passwordAgeTerms");
-    setFailedSignUp(false);
+    setFailedSignUpGeneric(false);
+    setFailedSignUpUsernameExists(false);
     setSignUpRefBoolean(true);
   }
   return (

@@ -86,7 +86,9 @@ export default function SignUpForm({
   const [signUpRefBoolean, setSignUpRefBoolean] = useState(false);
   const signUpRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
-  const [failedSignUp, setFailedSignUp] = useState(false);
+  const [failedSignUpGeneric, setFailedSignUpGeneric] = useState(false);
+  const [failedSignUpUsernameExists, setFailedSignUpUsernameExists] =
+    useState(false);
 
   async function triggerSignUp() {
     setLoading(true);
@@ -96,13 +98,17 @@ export default function SignUpForm({
       givenName: signUpEmailNames.firstName,
       familyName: signUpEmailNames.lastName,
     };
-    const signUpSuccess = await signUpUser(userSignUpInput);
+    const { signUpSuccess, message } = await signUpUser(userSignUpInput);
     if (signUpSuccess) {
       setSignUpState("verifyEmail");
       setLoading(false);
     } else {
+      if (message === "UsernameExistsException") {
+        setFailedSignUpUsernameExists(true);
+      } else {
+        setFailedSignUpGeneric(true);
+      }
       setLoading(false);
-      setFailedSignUp(true);
       setSignUpState("emailNames");
     }
   }
@@ -117,7 +123,7 @@ export default function SignUpForm({
       .then(() => setDialogState("signIn"))
       .catch((e: Error) => [
         setLoading(false),
-        setFailedSignUp(true),
+        setFailedSignUpGeneric(true),
         setSignUpState("emailNames"),
       ]);
   }
@@ -135,10 +141,17 @@ export default function SignUpForm({
           <LucideLoader2 className="animate-spin text-primary" size={75} />
         </div>
       )}
-      {failedSignUp && !loading && (
+      {failedSignUpGeneric && !loading && (
         <div className="flex justify-center border border-red-500 rounded p-2">
           <Label className="text-red-500 text-xs">
             Failed To Sign Up, Please Try Again
+          </Label>
+        </div>
+      )}
+      {failedSignUpUsernameExists && !loading && (
+        <div className="flex justify-center border border-red-500 rounded p-2">
+          <Label className="text-red-500 text-xs">
+            An Account With That Email Already Exists
           </Label>
         </div>
       )}
@@ -148,7 +161,8 @@ export default function SignUpForm({
           setSignUpState={setSignUpState}
           setSignUpEmailNames={setSignUpEmailNames}
           setSignUpRefBoolean={setSignUpRefBoolean}
-          setFailedSignUp={setFailedSignUp}
+          setFailedSignUpGeneric={setFailedSignUpGeneric}
+          setFailedSignUpUsernameExists={setFailedSignUpUsernameExists}
         />
       )}
       {signUpState === "passwordAgeTerms" && !loading && (

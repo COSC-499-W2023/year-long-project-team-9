@@ -7,6 +7,7 @@ import {
   signUp,
   confirmSignUp,
   type ConfirmSignUpInput,
+  AuthError,
 } from "aws-amplify/auth";
 
 export async function isSignedIn() {
@@ -71,10 +72,18 @@ export async function signUpUser({
         },
       },
     });
-    return true;
+    return { signUpSuccess: true, message: "" };
   } catch (error) {
-    console.log(error);
-    return false;
+    if (
+      error instanceof AuthError &&
+      error.name === "UsernameExistsException"
+    ) {
+      console.log(error.name);
+      return { signUpSuccess: false, message: error.name };
+    } else {
+      console.log(error);
+      return { signUpSuccess: false, message: "" };
+    }
   }
 }
 

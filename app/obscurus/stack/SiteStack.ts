@@ -11,7 +11,7 @@ import {
   WebSocketApi,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
-import { StringAttribute } from "aws-cdk-lib/aws-cognito";
+import { UserPoolEmail, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
@@ -222,6 +222,23 @@ export default function SiteStack({ stack }: StackContext) {
         standardAttributes: {
           givenName: { required: true, mutable: true },
           familyName: { required: true, mutable: true },
+        },
+        userVerification: {
+          emailStyle: VerificationEmailStyle.CODE,
+        },
+        email: UserPoolEmail.withSES({
+          fromEmail: "no-reply@obscurus.me",
+          sesRegion: stack.region,
+          sesVerifiedDomain: "obscurus.me",
+        }),
+        deviceTracking: {
+          challengeRequiredOnNewDevice: true,
+          deviceOnlyRememberedOnUserPrompt: false,
+        },
+        userInvitation: {
+          emailSubject: "domain Invitation",
+          emailBody:
+            "Your username is {username} and temporary password is {####}.",
         },
       },
     },
