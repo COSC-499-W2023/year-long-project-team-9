@@ -16,28 +16,72 @@ import { Button } from "../ui/button";
 import { Notifications } from "@obscurus/database/src/sql.generated";
 import Link from "next/link";
 import { Card, CardTitle } from "../ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
+import { useNotifications } from "@/app/hooks/use-notifications";
 
-export default function NotificationsComponent({
+export default function Notifications({
   readNotification,
   deleteNotifications,
-  notifications,
+  websocketApiEndpoint,
+  getNotificationsViaEmail,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
-  notifications: Notifications[];
+  websocketApiEndpoint: string;
+  getNotificationsViaEmail: Function;
 }) {
-  const [notificationsArray, setNotificationsArray] =
-    useState<Notifications[]>(notifications);
-  let allRead = notificationsArray.every((notification) => notification.isRead);
+  const [notifcations, setNotifications] = useNotifications();
+
+  useEffect(() => {
+    const ws = new WebSocket(websocketApiEndpoint);
+
+    ws.onopen = () => {
+      console.log("WebSocket connection established");
+      if (getNotificationsViaEmail) {
+        getNotificationsViaEmail("imightbejan@gmail.com").then(
+          (data: any) => {
+            console.log("Data:", data);
+            setNotifications(
+              data.notifications
+            );
+            console.log("Initial data fetched");
+          }
+        );
+      }
+    };
+
+    ws.onmessage = (event) => {
+      console.log("notification websocket message received:", event.data);
+      const data = JSON.parse(event.data);
+      console.log("Data:", data);
+      if (data.action === "newNotification") {
+        const newNotification = data.data.notification;
+        console.log("New notification:", newNotification);
+        setNotifications((notifications) => [data.data.notification, ...notifications || []]);
+      }
+      console.log("Notifications:", notifcations);
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [websocketApiEndpoint]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
           <Button variant="ghost" size="icon">
-            {allRead ? <Bell size={20} /> : <BellPlus size={20} />}
+            <Bell size={20} />
           </Button>
         </div>
       </DropdownMenuTrigger>
@@ -46,28 +90,25 @@ export default function NotificationsComponent({
           <CardTitle>
             <div className="font-semibold text-base my-2 p-4">Notifications</div>
           </CardTitle>
-          <Separator className="my-2" />
-          {notificationsArray.length <= 0 ? (
+          {!notifcations ? (
             <div className="h-full flex flex-col space-y-4 justify-center items-center">
               <Bell className="h-6 w-6" />
               <p>No notifications</p>
             </div>
           ) : (
-            notificationsArray.map((value, index) => (
-              <div
+            notifcations.map((value, index) => (
+              <><div
                 className="flex items-center gap-4 p-2 rounded-lg transition-all w-full justify-between"
                 key={value.notificationId}
               >
                 <Link
-                  href={
-                    value.type === "REQUEST"
-                      ? `/request?requestId=${value.referenceId}`
-                      : value.type === "SUBMIT"
+                  href={value.type === "REQUEST"
+                    ? `/request?requestId=${value.referenceId}`
+                    : value.type === "SUBMIT"
                       ? `/submit?submissionId=${value.referenceId}`
                       : value.type === "CHAT"
-                      ? `/chat?roomId=${value.referenceId}`
-                      : `/profile`
-                  }
+                        ? `/chat?roomId=${value.referenceId}`
+                        : `/profile`}
                   passHref
                 >
                   <div
@@ -99,14 +140,14 @@ export default function NotificationsComponent({
                   variant={"outline"}
                   onClick={() => {
                     deleteNotifications(value.notificationId);
-                    let newNotificationsArray = [...notificationsArray];
+                    let newNotificationsArray = [...notifcations as any];
                     newNotificationsArray.splice(index, 1);
-                    setNotificationsArray(newNotificationsArray);
-                  }}
+                    setNotifications(newNotificationsArray);
+                  } }
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
-              </div>
+              </div><Separator className="my-2" /></>
             ))
           )}
         </DropdownMenuContent>

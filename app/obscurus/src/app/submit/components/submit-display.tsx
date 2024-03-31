@@ -26,7 +26,7 @@ import {
 import { format, set, sub } from "date-fns";
 import Webcam from "react-webcam";
 import VideoPlayer from "./video-player";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DotLoader } from "react-spinners";
 import { el } from "date-fns/locale";
 import { Label } from "@/components/ui/label";
@@ -74,6 +74,7 @@ export default function SubmitDisplay({
   const [showingVideo, setShowingVideo] = useState(false);
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -81,12 +82,20 @@ export default function SubmitDisplay({
 
   const [submissions] = useSubmissions();
   useEffect(() => {
+    if (submissions) {
+      setSubmission({
+        submissionId:
+          submissions.find(
+            (sub) => sub.submissionId === searchParams.get("submissionId")
+          )?.submissionId || ""
+      });
+    }
     setSelected(
       submissions?.find((sub) => sub.submissionId === submission.submissionId) ||
         null
     );
 
-  });
+  }, [submissions]);
 
   const [selected, setSelected] = useState<EnrichedSubmissions | null>(null);
 

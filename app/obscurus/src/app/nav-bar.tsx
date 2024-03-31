@@ -18,35 +18,21 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
-import NotificationsComponent from "@/components/notification/notifications-component";
-import { Notifications } from "@obscurus/database/src/sql.generated";
-
-export function Notifications({
-  notificationsRead,
-  deleteNotifications,
-  getNotificationsViaEmail,
-}: {
-  notificationsRead: Function;
-  deleteNotifications: Function;
-  getNotificationsViaEmail: Function;
-}) {
-  return (
-    <>
-      <Button variant="ghost" size="icon">
-        <Bell size={20} className="stroke-primary" />
-      </Button>
-    </>
-  );
-}
+import Notifications from "@/components/notification/notifications";
+import { useNotifications } from "./hooks/use-notifications";
 
 const NavBar = ({
   readNotification,
   deleteNotifications,
-  notifications,
+  initialNotifications,
+  wsUrl,
+  getNotificationsViaEmail,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
-  notifications: Notifications[];
+  initialNotifications: any;
+  wsUrl: string;
+  getNotificationsViaEmail: Function;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -146,10 +132,11 @@ const NavBar = ({
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
       <div className="flex gap-2">
-        <NotificationsComponent
+        <Notifications
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
-          notifications={notifications}
+          websocketApiEndpoint={wsUrl}
+          getNotificationsViaEmail={getNotificationsViaEmail}
         />
         <ThemeSwitcher />
       </div>

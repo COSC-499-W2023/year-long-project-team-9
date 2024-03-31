@@ -11,32 +11,33 @@ export default function NotificationSummary({
   content: string;
 }) {
   return (
-    <div className="flex flex-col-3 items-start w-full gap-2 rounded-lg border p-3 text-left text-sm">
-      <a href="/request" className="flex w-full flex-col-3 gap-1">
-        <div className="flex items-center">
+    <div className="flex flex-col items-start w-full gap-4 rounded-lg border p-2 text-left bg-white shadow-sm hover:shadow-lg transition-shadow duration-200 ease-in-out">
+      <a href="/request" className="flex w-full items-center justify-between text-sm">
+        <div className="flex items-center gap-2">
+          <FileText className="w-5 h-5 text-gray-600" />
           <div>
-            <div className="line-clamp-2 text-xs text-ellipsis">{content}</div>
-            <div className="line-clamp-2 text-xs text-muted-foreground text-ellipsis">
-              {date}
-            </div>
-          </div>
-          <div className="ml-auto content-normal">
-            {isRead === false ? (
-              <span className="flex h-2 w-2 rounded-full bg-blue-600"></span>
-            ) : null}
+            <div>{content}</div>
+            <div className="text-xs text-gray-500">{date}</div>
           </div>
         </div>
+
+        {!isRead && (
+          <span className="flex h-2 w-2 rounded-full bg-blue-600" aria-label="Unread Notification"></span>
+        )}
       </a>
-      <div>
+
+      <div className="p-2">
         <Button
           type="button"
-          variant="ghost"
+          variant="outline"
+          className="p-2"
           onClick={(event) => {
-            event.stopPropagation();
-            alert("Hello world");
+            event.preventDefault();
+            console.log("Action for notification");
           }}
+          aria-label="Delete Notification"
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash2 className="h-5 w-5 text-gray-600" />
         </Button>
       </div>
     </div>

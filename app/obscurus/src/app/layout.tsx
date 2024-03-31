@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Blur faces automatically",
 };
 
+const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -30,14 +32,8 @@ export default async function RootLayout({
   // deleteNotifications;
   // notificationsRead;
   const email = await getEmail();
-  const notificationCall: { notifications: Notifications[] } =
-    await getNotificationsViaEmail(email);
-  let notifications: Notifications[];
-  if (!notificationCall?.notifications) {
-    notifications = [];
-  } else {
-    notifications = notificationCall.notifications;
-  }
+  const notifications = await getNotificationsViaEmail(email);
+  console.log("Notifications", notifications);
   //
 
   return (
@@ -52,7 +48,9 @@ export default async function RootLayout({
             <NavBar
               readNotification={readNotification}
               deleteNotifications={deleteNotification}
-              notifications={notifications}
+              initialNotifications={notifications}
+              wsUrl={wsUrl}
+              getNotificationsViaEmail={getNotificationsViaEmail}
             />
             <Toaster />
             {children}

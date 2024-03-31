@@ -203,6 +203,7 @@ export default function SiteStack({ stack }: StackContext) {
       $disconnect: "stack/lambdas/chat/disconnect.main",
       sendmessage: "stack/lambdas/chat/sendMessage.main",
       updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
+      newNotification: "stack/lambdas/newNotification.main",
     },
   });
 

@@ -10,6 +10,7 @@ import { set } from "date-fns";
 import Loading from "./loading";
 import { Provider } from "jotai";
 import { c } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
+import { useSearchParams } from "next/navigation";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -25,7 +26,11 @@ export const SubmitWrapper = ({
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  sendToService?: (submissionId: string, fileExt: string, email: string) => Promise<string>;
+  sendToService?: (
+    submissionId: string,
+    fileExt: string,
+    email: string
+  ) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   getRequestsAndSubmissionsByEmail?: Function;
@@ -36,6 +41,11 @@ export const SubmitWrapper = ({
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
 
+
+  const searchParams = useSearchParams();
+
+
+
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -44,29 +54,34 @@ export const SubmitWrapper = ({
     setLoading(true);
     console.log("Fetching user data");
     if (getRequestsAndSubmissionsByEmail) {
-      getRequestsAndSubmissionsByEmail("imightbejan@gmail.com")
-        .then((data: any) => {
+      getRequestsAndSubmissionsByEmail("imightbejan@gmail.com").then(
+        (data: any) => {
           console.log("User data:", data);
           setSubmissions(data.submissions);
-        })
+        }
+      );
     }
     setLoading(false);
   };
 
   useEffect(() => {
-
     // Initialize WebSocket connection
     const ws = new WebSocket(websocketApiEndpoint);
     setSocket(ws);
 
     ws.onopen = () => {
       console.log("Connected to WebSocket");
-      // Fetch initial data
       if (getRequestsAndSubmissionsByEmail) {
-        getRequestsAndSubmissionsByEmail("imightbejan@gmail.com").then((data:any) => {
-          setSubmissions(data.submissions.filter((submission: any) => submission.status !== 'TRASHED'));
-          console.log("Initial data fetched");
-        });
+        getRequestsAndSubmissionsByEmail("imightbejan@gmail.com").then(
+          (data: any) => {
+            setSubmissions(
+              data.submissions.filter(
+                (submission: any) => submission.status !== "TRASHED"
+              )
+            );
+            console.log("Initial data fetched");
+          }
+        );
       }
     };
 
@@ -74,16 +89,17 @@ export const SubmitWrapper = ({
       console.log("Received message:", event.data);
       const { action, data } = JSON.parse(event.data);
 
-      if (action === 'updateSubmissionStatus') {
+      if (action === "updateSubmissionStatus") {
         console.log("Updating submission status");
         console.log("Data:", data);
         setSubmissions((currentSubmissions: any) =>
           currentSubmissions.map((submission: any) =>
-            submission.submissionId === data.submissionId ? { ...submission, status: data.newStatus } : submission
+            submission.submissionId === data.submissionId
+              ? { ...submission, status: data.newStatus }
+              : submission
           )
         );
-
-      } else if (action === 'updateSubmissions') {
+      } else if (action === "updateSubmissions") {
         setSubmissions(data.submissions);
       }
     };
@@ -101,18 +117,35 @@ export const SubmitWrapper = ({
     };
   }, [getRequestsAndSubmissionsByEmail, websocketApiEndpoint]);
 
-
   const updateSubmissionStatus = (status: string, submissionId: string) => {
     if (socket) {
       console.log("Sending updateSubmissionStatus message");
       console.log("Status:", status);
       console.log("Submission ID:", submissionId);
-      socket.send(JSON.stringify({ action: "updateSubmissionStatus", data: { status, submissionId }}));
+      socket.send(
+        JSON.stringify({
+          action: "updateSubmissionStatus",
+          data: { status, submissionId },
+        })
+      );
       console.log("Sent updateSubmissionStatus message");
       if (updateStatus) {
         updateStatus(status, submissionId);
       }
       console.log("Updated submission status");
+      socket.send(
+        JSON.stringify({
+          action: "newNotification",
+          data: {
+            notification: {
+              referenceId: submissionId,
+              type: "SUBMIT",
+              content: `Submission status updated to ${status}`,
+              email: "imightbejan@gmail.com"
+            },
+          },
+        })
+      );
     } else {
       console.error("WebSocket not connected");
     }
@@ -124,13 +157,7 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-        loading ? (
-          <Loading />
-        ) : (
-          <SubmitList
-            submissions={submissions || []}
-          />
-        )
+        loading ? <Loading /> : <SubmitList submissions={submissions || []} />
       }
       secondPanel={
         <SubmitDisplay
