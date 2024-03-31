@@ -11,7 +11,7 @@ export const EnrichedSubmissionsSchema = z.object({
   title: z.string().nullable(),
   grouping: z.string().nullable(),
   requesteeEmail: z.string(),
-  status: z.enum(['IN PROGRESS', 'COMPLETED', 'FAILED', 'TODO', 'PROCESSING', 'ARCHIVED']),
+  status: z.enum(['IN PROGRESS', 'COMPLETED', 'FAILED', 'TODO', 'PROCESSING', 'ARCHIVED', 'TRASHED']),
   isRead: z.boolean(),
   submittedDate: z.date().nullable().or(z.string().nullable()),
   requestId: z.string(),

@@ -54,28 +54,37 @@ export const SubmitWrapper = ({
   };
 
   useEffect(() => {
+
+    // Initialize WebSocket connection
     const ws = new WebSocket(websocketApiEndpoint);
     setSocket(ws);
-    // const handleBeforeUnload = () => {
-    //   console.log("Page reloading or closing, disconnecting WebSocket");
-    //   ws.close();
-    // };
 
     ws.onopen = () => {
-      fetchUserData();
       console.log("Connected to WebSocket");
+      // Fetch initial data
+      if (getRequestsAndSubmissionsByEmail) {
+        getRequestsAndSubmissionsByEmail("imightbejan@gmail.com").then((data:any) => {
+          setSubmissions(data.submissions.filter((submission: any) => submission.status !== 'TRASHED'));
+          console.log("Initial data fetched");
+        });
+      }
     };
-    // window.addEventListener("beforeunload", handleBeforeUnload);
-
-
-
 
     ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
+      console.log("Received message:", event.data);
+      const { action, data } = JSON.parse(event.data);
+
+      if (action === 'updateSubmissionStatus') {
+        console.log("Updating submission status");
+        console.log("Data:", data);
+        setSubmissions((currentSubmissions: any) =>
+          currentSubmissions.map((submission: any) =>
+            submission.submissionId === data.submissionId ? { ...submission, status: data.newStatus } : submission
+          )
+        );
+
+      } else if (action === 'updateSubmissions') {
         setSubmissions(data.submissions);
-      } catch {
-        console.log("Message data is not valid JSON");
       }
     };
 
@@ -89,19 +98,16 @@ export const SubmitWrapper = ({
 
     return () => {
       ws.close();
-      console.log("WebSocket connection closed");
     };
-  }, []);
+  }, [getRequestsAndSubmissionsByEmail, websocketApiEndpoint]);
+
 
   const updateSubmissionStatus = (status: string, submissionId: string) => {
     if (socket) {
       console.log("Sending updateSubmissionStatus message");
-      socket.send(
-        JSON.stringify({
-          action: "updateSubmissionStatus",
-          data: { status, submissionId },
-        })
-      );
+      console.log("Status:", status);
+      console.log("Submission ID:", submissionId);
+      socket.send(JSON.stringify({ action: "updateSubmissionStatus", data: { status, submissionId }}));
       console.log("Sent updateSubmissionStatus message");
       if (updateStatus) {
         updateStatus(status, submissionId);

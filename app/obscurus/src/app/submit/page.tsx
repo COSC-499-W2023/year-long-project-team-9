@@ -18,17 +18,17 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  console.log("sendToService", sendToService);
-  console.log("updateStatus", updateStatus);
-  console.log("getStatus", getStatus);
-  console.log("getPresignedUrl", getPresignedUrl);
-  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
-  console.log("getRequestsAndSubmissions", getRequestsAndSubmissionsByEmail);
-  console.log("getUserViaEmail", getUserViaEmail);
+  // console.log("sendToService", sendToService);
+  // console.log("updateStatus", updateStatus);
+  // console.log("getStatus", getStatus);
+  // console.log("getPresignedUrl", getPresignedUrl);
+  // console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+  // console.log("getRequestsAndSubmissions", getRequestsAndSubmissionsByEmail);
+  // console.log("getUserViaEmail", getUserViaEmail);
 
   const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
 
-  console.log("wsApi", wsApi);
+  // console.log("wsApi", wsApi);
 
   return (
     <SubmitWrapper

@@ -59,7 +59,11 @@ export default function SubmitDisplay({
   fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  sendToService?: (submissionId: string, fileExt: string, email: string) => Promise<string>;
+  sendToService?: (
+    submissionId: string,
+    fileExt: string,
+    email: string
+  ) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
@@ -71,26 +75,21 @@ export default function SubmitDisplay({
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
-  console.log("getUserViaEmail", getUserViaEmail);
-
   // if (!request) {
   //   setRequest(requests && requests[0]);
   // }
 
   const [submissions] = useSubmissions();
   useEffect(() => {
-    {
-      async () => {
-        const res = await fetchUserData();
-        console.log("RES", res);
-        return res;
-      };
-    }
+    setSelected(
+      submissions?.find((sub) => sub.submissionId === submission.submissionId) ||
+        null
+    );
+
   });
 
-  const selected = submissions?.find(
-    (sub) => sub.submissionId === submission.submissionId
-  );
+  const [selected, setSelected] = useState<EnrichedSubmissions | null>(null);
+
 
   const associatedSubmission =
     submissions &&
@@ -150,9 +149,14 @@ export default function SubmitDisplay({
 
         if (response.ok) {
           console.log("Upload successful");
-          sendToService && selected &&
+          sendToService &&
+            selected &&
             submission.submissionId &&
-            sendToService(submission.submissionId, fileExt, selected?.requesteeEmail);
+            sendToService(
+              submission.submissionId,
+              fileExt,
+              selected?.requesteeEmail
+            );
           toast({
             title: "Success",
             description: "Your video has been uploaded successfully.",
@@ -259,14 +263,14 @@ export default function SubmitDisplay({
 
   const router = useRouter();
 
-  const handleArchive = async (requestId: string) => {
+  const handleArchive = async () => {
     console.log("Archiving");
     if (submission && updateSubmissionStatus) {
       if (submission && updateSubmissionStatus) {
         await updateSubmissionStatus("ARCHIVED", submission.submissionId);
-        console.log("Updated submission status");
-        updateRequests && updateRequests();
-        await fetchUserData();
+        //console.log("Updated submission status");
+        // updateRequests && updateRequests();
+        // await fetchUserData();
 
         toast({
           title: "Archived",
@@ -278,9 +282,21 @@ export default function SubmitDisplay({
     }
   };
 
-  const handleTrash = async (requestId: string) => {
-    console.log("Removing request");
-    const submission = getAssociatedSubmission(requestId);
+  const handleTrash = async () => {
+    console.log("Trashing request");
+    if (submission && updateSubmissionStatus && submissions) {
+      if (submission && updateSubmissionStatus) {
+        await updateSubmissionStatus("TRASHED", submission.submissionId);
+        toast({
+          title: "Trashed",
+          description: "Request has been trashed",
+        });
+        setSubmission({ submissionId: "" });
+        setSelected(null);
+      }
+    } else {
+      console.error("Failed to update status");
+    }
   };
 
   const handleChooseAnotherFile = () => {
@@ -314,7 +330,7 @@ export default function SubmitDisplay({
                 variant="ghost"
                 size="icon"
                 disabled={!selected}
-                onClick={() => handleArchive(selected?.requestId || "")}
+                onClick={handleArchive}
               >
                 <Archive className="h-4 w-4" />
                 <span className="sr-only">Archive</span>
@@ -325,7 +341,12 @@ export default function SubmitDisplay({
           <Separator orientation="vertical" className="mx-2 h-8" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!selected}
+                onClick={handleTrash}
+              >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
@@ -528,17 +549,16 @@ export default function SubmitDisplay({
                   {selected?.requestDetails.requestTitle}
                 </div>
                 <div className="line-clamp-3 text-xs text-ellipsis ">
-                  <span className="font-medium">From:{" "}</span>
+                  <span className="font-medium">From: </span>
                   {selected?.requester.givenName}{" "}
                   {selected?.requester.familyName}{" "}
                 </div>
                 <div className="line-clamp-3 text-xs text-ellipsis  ">
-                  <span className="font-medium ">
-                    Email:{" "}
-                  </span>{selected?.requestDetails.requesterEmail}
+                  <span className="font-medium ">Email: </span>
+                  {selected?.requestDetails.requesterEmail}
                 </div>
                 <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Due:{" "}</span>
+                  <span className="font-medium">Due: </span>
                   {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
                 </div>
               </div>
@@ -605,7 +625,6 @@ export default function SubmitDisplay({
         {upload.upload ? <Back /> : <Toolbar />}
       </div>
       <Separator />
-      {submissions ? (
         <div className="flex h-full flex-1 flex-col">
           {/*Show video */}
 
@@ -626,7 +645,10 @@ export default function SubmitDisplay({
                 </div>
               </div>
             </>
-          ) : upload.upload && getPresignedUrl && sendToService && submission ? (
+          ) : upload.upload &&
+            getPresignedUrl &&
+            sendToService &&
+            submission ? (
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
@@ -658,17 +680,12 @@ export default function SubmitDisplay({
           ) : selected ? (
             <ShowRequest selected={selected} />
           ) : (
-            submissions[0] && (
-              <>
-                <ShowRequest selected={submissions[0]} />
-                {setSubmission(submissions[0])}
-              </>
-            )
+            <div className="flex flex-col w-full h-full justify-center items-center space-y-3  text-muted-foreground">
+              <FileText className="w-20 h-20" />
+              <div className="font-semibold">No request selected.</div>
+            </div>
           )}
         </div>
-      ) : (
-        <PanelLoader />
-      )}
     </div>
   );
 }

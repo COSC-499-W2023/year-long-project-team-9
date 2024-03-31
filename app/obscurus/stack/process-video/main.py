@@ -250,24 +250,10 @@ def process_video(timestamps, response, submission_id):
     return "Completed processing!"
 
 
-def update_status(status, submission_id):
-    try:
-        requests.post(
-            f"{api_url}/updateStatus",
-            json={
-                "submissionId": submission_id,
-                "status": status,
-            },
-        )
-
-    except Exception as error:
-        print("Error updating status:", error)
-
-
 app = FastAPI()
 
 
-async def update_submission_status(submission_id: str, status: str):
+async def update_submission_status(status: str, submission_id: str):
     async with websockets.connect(ws_api_url) as websocket:
         message = json.dumps(
             {
@@ -276,26 +262,27 @@ async def update_submission_status(submission_id: str, status: str):
             }
         )
         await websocket.send(message)
-        print(
-            f"WebSocket message sent for submission {submission_id} with status {status}"
-        )
+        print(f"Status updated to {status} for submission {submission_id}")
 
 
-async def send_email_notification(email: str, subject: str, body: str):
+async def send_email_notification(email: str, subject: str, text: str):
+    print("Sending email notification...")
+    print(f"Email: {email}, Subject: {subject}, Text: {text}")
     try:
-        requests.post(
+        res = requests.post(
             f"{api_url}/sendEmail",
             json={
                 "email": email,
                 "subject": subject,
-                "body": body,
+                "text": text,
             },
         )
+        if res.status_code != 200:
+            raise Exception("Error sending email")
+        print("Email sent")
 
     except Exception as error:
-        print("Error updating status:", error)
-
-    print(f"Email notification sent to {email}")
+        print("Error sending email:", error)
 
 
 @app.get("/")
@@ -314,7 +301,9 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             raise HTTPException(
                 status_code=400, detail="Missing submission_id or file_extension"
             )
-        print(f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}")
+        print(
+            f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}"
+        )
         await update_submission_status("PROCESSING", submission_id)
         await send_email_notification(
             recipient_email,
@@ -339,23 +328,19 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 
 
 async def process_video_background(submission_id, file_extension):
-    try:
-
-        original_key = f"{submission_id}.{file_extension}"
-        converted_key = original_key
-        if file_extension.lower() != "mp4":
-            converted_key = f"{submission_id}.mp4"
-            local_webm_path = f"/tmp/{original_key}"
-            s3.download_file(bucket_name, original_key, local_webm_path)
-            local_mp4_path = f"/tmp/{converted_key}"
-            convert_to_mp4(local_webm_path, local_mp4_path)
-            s3.upload_file(local_mp4_path, bucket_name, converted_key)
-            os.remove(local_webm_path)
-            os.remove(local_mp4_path)
-        job_id = start_face_detection(converted_key)
-        job_response = check_job_status(job_id)
-        timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-        process_video(timestamps, job_response, submission_id)
-        await update_submission_status("COMPLETED", submission_id)
-    except Exception as e:
-        raise e
+    original_key = f"{submission_id}.{file_extension}"
+    converted_key = original_key
+    if file_extension.lower() != "mp4":
+        converted_key = f"{submission_id}.mp4"
+        local_webm_path = f"/tmp/{original_key}"
+        s3.download_file(bucket_name, original_key, local_webm_path)
+        local_mp4_path = f"/tmp/{converted_key}"
+        convert_to_mp4(local_webm_path, local_mp4_path)
+        s3.upload_file(local_mp4_path, bucket_name, converted_key)
+        os.remove(local_webm_path)
+        os.remove(local_mp4_path)
+    job_id = start_face_detection(converted_key)
+    job_response = check_job_status(job_id)
+    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
+    process_video(timestamps, job_response, submission_id)
+    await update_submission_status("COMPLETED", submission_id)

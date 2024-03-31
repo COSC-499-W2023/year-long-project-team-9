@@ -135,18 +135,25 @@ export default function SubmitList({
           .toLowerCase()
           .includes(searchTerm);
 
-      return matchesStatus && matchesSearch;
+      return matchesStatus && matchesSearch && submission.status != "TRASHED";
     });
 
-    return (
+    return submissions ? (
       <TabsContent key={status} value={status}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
+        {filteredRequests?.length === 0 && (
+            <div className="flex flex-col w-full h-full justify-center items-center">
+              <div className=" text-muted-foreground font-semibold">
+                No requests to submit.
+              </div>
+            </div>
+          )}
           {filteredRequests?.map((item) => (
             <button
-              key={item.submissionId} // Use submissionId for key as requestId could be duplicated in filteredRequests
+              key={item.submissionId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                submission?.submissionId === item.submissionId // Use condition based on submission state
+                submission?.submissionId === item.submissionId
                   ? "bg-accent text-foreground"
                   : "bg-background border-muted-border"
               )}
@@ -190,22 +197,28 @@ export default function SubmitList({
                     addSuffix: true,
                   })}
                 </Badge>
-                <Badge variant={getBadgeVariantFromStatus(item.status)}>
-                  {item.status
-                    .split(" ")
-                    .map(
-                      (word) =>
-                        word.charAt(0).toUpperCase() +
-                        word.slice(1).toLowerCase()
-                    )
-                    .join(" ")}
+                <Badge
+                  variant={getBadgeVariantFromStatus(item.status || "TODO")}
+                >
+                  {(item &&
+                    item.status
+                      .split(" ")
+                      .map(
+                        (word) =>
+                          word.charAt(0).toUpperCase() +
+                          word.slice(1).toLowerCase()
+                      )
+                      .join(" ")) ||
+                    "TODO"}
                 </Badge>
               </div>
             </button>
           ))}
         </div>
       </TabsContent>
-    );
+    ) : (
+      <PanelLoader />
+    )
   });
 
   return (
@@ -220,7 +233,11 @@ export default function SubmitList({
           <span className="sr-only">Submissions</span>
           <Tooltip>
             <DrawerTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={submissions && submissions.length === 0}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={submissions && submissions.length === 0}
+              >
                 <TooltipTrigger asChild>
                   <ListVideo className="h-4 w-4" />
                 </TooltipTrigger>
@@ -294,7 +311,6 @@ export default function SubmitList({
       </div>
       <Separator />
       <div className="h-full overflow-y-scroll">
-        {submissions && submissions.length === 0 && <PanelLoader />}
         {tabsContent || <div>No requests.</div>}
       </div>
     </Tabs>

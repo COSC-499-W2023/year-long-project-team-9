@@ -1,12 +1,14 @@
 "use server";
 
-const url = process.env.NEXT_PUBLIC_SERVICE_URL;
+const url = process.env.NEXT_PUBLIC_SERVICE_URL as string;
 
-const sendToService = async (submissionId: string, fileExt: string, email: string) => {
-  if (!url) {
-    throw new Error("Service URL is not defined");
-  }
-  const res = await fetch(url, {
+const sendToService = async (
+  submissionId: string,
+  fileExt: string,
+  email: string
+) => {
+  console.log("sendToService", url);
+  const res = await fetch(url + "/process-video", {
     method: "post",
     body: JSON.stringify({
       submission_id: submissionId,
