@@ -117,3 +117,24 @@ export async function getRequestsViaEmail(email: string) {
     .execute();
   return [requests, submissions];
 }
+
+export async function archive(id: string) {
+  const archive = await SQL.DB.updateTable("requests")
+    .set({ grouping: "ARCHIVED" })
+    .where("requestId", "=", id)
+    .execute();
+}
+
+export async function unarchive(id: string) {
+  const unarchive = await SQL.DB.updateTable("requests")
+    .set({ grouping: null })
+    .where("requestId", "=", id)
+    .execute();
+}
+
+export async function trash(id: string) {
+  const trash = await SQL.DB.updateTable("requests")
+    .set({ grouping: "TRASHED" })
+    .where("requestId", "=", id)
+    .execute();
+}
