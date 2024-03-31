@@ -10,12 +10,14 @@ import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { useRouter } from "next/navigation";
 import {
   Filter,
+  Link,
   Megaphone,
   RocketIcon,
   Search,
   Send,
   SortAscIcon,
   SortDescIcon,
+  XCircle,
 } from "lucide-react";
 import Nav from "../../../components/nav";
 import { request } from "@playwright/test";
@@ -78,8 +80,6 @@ export default function RequestList({
           new Date(a.creationDate).getTime() -
           new Date(b.creationDate).getTime()
         );
-      case "due":
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       default:
         return 0;
     }
@@ -177,67 +177,69 @@ export default function RequestList({
   });
 
   return (
-    <div>
-      <Tabs defaultValue="all" className="h-screen pt-2" onValueChange={setTab}>
-        <div className="px-4">
-          <RequestHeader></RequestHeader>
-        </div>
-
-        <div>
-          <div className="bg-background/95 px-4 pt-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2 top-2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder={search || "Search"}
-                  className="pl-8"
-                  onChange={(e) => setSearch(e.target.value || "")}
-                  value={search || undefined}
-                />
-              </div>
-            </form>
+    <Tabs
+      defaultValue="all"
+      className="h-full flex flex-col gap-3 pt-2"
+      onValueChange={(newValue) => setTab(newValue)}
+    >
+      <div className="flex justify-between items-center px-4">
+        <h1 className="text-xl font-semibold">Request</h1>
+        <a href="/request/create">
+          <Button variant="ghost">
+            <Send className="mr-2 h-4 w-4" />
+            Create
+          </Button>
+        </a>
+      </div>
+      <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
+        <form>
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search"
+              className="pl-8"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search || ""}
+            />
+            {search && (
+              <XCircle
+                className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                onClick={() => setSearch("")}
+                visibility={search ? "visible" : "hidden"}
+              />
+            )}
           </div>
-
-          <div>
-            <div className="flex flex-row items-center justify-between mx-4 my-3">
-              <TabsList>{tabsTriggers}</TabsList>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="">
-                        <SortDescIcon className="w-4 h-4  " />
-                        <span className="sr-only">Filter Results</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => setSort("newest")}>
-                        Newest
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setSort("oldest")}>
-                        Oldest
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setSort("due")}>
-                        Due
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TooltipTrigger>
-                <TooltipContent>Filter</TooltipContent>
-              </Tooltip>
-            </div>
-            <div className="pb-3">
-              <Separator />
-            </div>
-            {tabsContent}
-          </div>
-        </div>
-
-        {/* <div className="flex justify-center items-center h-screen">
-            <RequestListAlert></RequestListAlert>
-          </div> */}
-      </Tabs>
-    </div>
+        </form>
+      </div>
+      <div className="flex flex-row items-center justify-between px-4">
+        <TabsList>{tabsTriggers}</TabsList>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="">
+                  <SortDescIcon className="w-4 h-4  " />
+                  <span className="sr-only">Filter Results</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setSort("newest")}>
+                  Newest
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSort("oldest")}>
+                  Oldest
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TooltipTrigger>
+          <TooltipContent>Filter</TooltipContent>
+        </Tooltip>
+      </div>
+      <Separator />
+      <div className="h-full overflow-y-scroll">
+        {tabsContent || <div>No requests.</div>}
+      </div>
+    </Tabs>
   );
 }
 

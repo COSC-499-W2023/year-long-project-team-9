@@ -140,7 +140,7 @@ export async function up(db) {
         requestId: "7b6f2f94-03b0-4730-a017-46d36d3a5f17",
         requestTitle: "New English Assignment",
         requesterEmail: "imightbejan@gmail.com",
-        grouping: null,
+        grouping: "ARCHIVED",
         description: "Please prepare an essay on the impact of social media.",
         blurred: false,
         creationDate: new Date("2024-03-20"),

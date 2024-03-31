@@ -56,10 +56,6 @@ export default function RequestDisplay({
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
 
-  if (!requestId) {
-    setRequestId(requests && requests[0].requestId);
-  }
-
   console.log("RequestId", requestId);
   const selected = requests
     ? requests.find((item) => item.requestId === requestId)
@@ -104,6 +100,7 @@ export default function RequestDisplay({
         <div className="flex ml-auto pr-1">
           <Button
             variant={"ghost"}
+            disabled={!selected}
             onClick={() => {
               setShowVideoList(!showVideoList);
             }}
