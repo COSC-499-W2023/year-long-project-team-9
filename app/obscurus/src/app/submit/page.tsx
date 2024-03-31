@@ -26,8 +26,6 @@ async function Submit() {
   // console.log("getRequestsAndSubmissions", getRequestsAndSubmissionsByEmail);
   // console.log("getUserViaEmail", getUserViaEmail);
 
-  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
-
   // console.log("wsApi", wsApi);
 
   return (
@@ -40,7 +38,6 @@ async function Submit() {
       getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      websocketApiEndpoint={wsApi as string}
       getUserViaEmail={getUserViaEmail}
 
     />

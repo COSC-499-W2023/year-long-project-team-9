@@ -133,9 +133,9 @@ export const SubmitWrapper = ({
       firstPanel={
         loading ? (
           <PanelLoader1 />
-        ) : (
-          <SubmitList submissions={submissions || []} />
-        )
+        ) :  submissions ? (
+          <SubmitList submissions={submissions} />
+        ) : ( <PanelLoader1 />)
       }
       secondPanel={
         loading ? (

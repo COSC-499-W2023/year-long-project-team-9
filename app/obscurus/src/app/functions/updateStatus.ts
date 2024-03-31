@@ -13,6 +13,10 @@ const updateStatus = async (status: string, submissionId: string) => {
       }),
     });
 
+    if (response.ok) {
+      return response.json();
+    }
+
   } catch (error) {
     console.error("Error updating status:", error);
     return "Error updating status";
