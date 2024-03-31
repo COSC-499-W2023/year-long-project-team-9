@@ -8,29 +8,32 @@ import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { set } from "date-fns";
 import Loading from "./loading";
+import { Provider } from "jotai";
+import { c } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
   getDownloadPresignedUrl,
-  triggerJob,
+  sendToService,
   updateStatus,
   getStatus,
-  getUserDataByEmail,
+  getRequestsAndSubmissionsByEmail,
   defaultLayout,
   defaultCollapsed,
   websocketApiEndpoint,
+  getUserViaEmail,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
+  sendToService?: (submissionId: string, fileExt: string, email: string) => Promise<string>;
   updateStatus?: (status: string, submissionId: string) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
-  getUserDataByEmail?: (email: string) => Promise<any>;
+  getRequestsAndSubmissionsByEmail?: Function;
   defaultLayout: number[];
   defaultCollapsed: boolean;
   websocketApiEndpoint: string;
+  getUserViaEmail?: (email: string) => Promise<string>;
 }) => {
-  const [requests, setRequests] = useRequests();
   const [submissions, setSubmissions] = useSubmissions();
 
   const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -39,43 +42,49 @@ export const SubmitWrapper = ({
 
   const fetchUserData = async () => {
     setLoading(true);
-    if (getUserDataByEmail) {
-      getUserDataByEmail("imightbejan@gmail.com")
-        .then((data) => {
+    console.log("Fetching user data");
+    if (getRequestsAndSubmissionsByEmail) {
+      getRequestsAndSubmissionsByEmail("imightbejan@gmail.com")
+        .then((data: any) => {
           console.log("User data:", data);
-          setRequests(data.requests);
           setSubmissions(data.submissions);
         })
-        .then(() => {
-          console.log("Requests:", requests);
-          console.log("Submissions:", submissions);
-        });
     }
     setLoading(false);
   };
 
   useEffect(() => {
+
+    // Initialize WebSocket connection
     const ws = new WebSocket(websocketApiEndpoint);
-    // const handleBeforeUnload = () => {
-    //   console.log("Page reloading or closing, disconnecting WebSocket");
-    //   ws.close();
-    // };
+    setSocket(ws);
 
     ws.onopen = () => {
       console.log("Connected to WebSocket");
+      // Fetch initial data
+      if (getRequestsAndSubmissionsByEmail) {
+        getRequestsAndSubmissionsByEmail("imightbejan@gmail.com").then((data:any) => {
+          setSubmissions(data.submissions.filter((submission: any) => submission.status !== 'TRASHED'));
+          console.log("Initial data fetched");
+        });
+      }
     };
-    // window.addEventListener("beforeunload", handleBeforeUnload);
-    setSocket(ws);
-
-    fetchUserData();
-
 
     ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        setRequests(data.requests);
-      } catch {
-        console.log("Message data is not valid JSON");
+      console.log("Received message:", event.data);
+      const { action, data } = JSON.parse(event.data);
+
+      if (action === 'updateSubmissionStatus') {
+        console.log("Updating submission status");
+        console.log("Data:", data);
+        setSubmissions((currentSubmissions: any) =>
+          currentSubmissions.map((submission: any) =>
+            submission.submissionId === data.submissionId ? { ...submission, status: data.newStatus } : submission
+          )
+        );
+
+      } else if (action === 'updateSubmissions') {
+        setSubmissions(data.submissions);
       }
     };
 
@@ -89,19 +98,16 @@ export const SubmitWrapper = ({
 
     return () => {
       ws.close();
-      console.log("WebSocket connection closed");
     };
-  }, []);
+  }, [getRequestsAndSubmissionsByEmail, websocketApiEndpoint]);
+
 
   const updateSubmissionStatus = (status: string, submissionId: string) => {
     if (socket) {
       console.log("Sending updateSubmissionStatus message");
-      socket.send(
-        JSON.stringify({
-          action: "updateSubmissionStatus",
-          data: { status, submissionId },
-        })
-      );
+      console.log("Status:", status);
+      console.log("Submission ID:", submissionId);
+      socket.send(JSON.stringify({ action: "updateSubmissionStatus", data: { status, submissionId }}));
       console.log("Sent updateSubmissionStatus message");
       if (updateStatus) {
         updateStatus(status, submissionId);
@@ -118,17 +124,23 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-        loading ? ( <Loading /> ) :
-        <SubmitList requests={requests || []} submissions={submissions || []} />
+        loading ? (
+          <Loading />
+        ) : (
+          <SubmitList
+            submissions={submissions || []}
+          />
+        )
       }
       secondPanel={
         <SubmitDisplay
           fetchUserData={fetchUserData}
           getPresignedUrl={getPresignedUrl}
           getDownloadPresignedUrl={getDownloadPresignedUrl}
-          triggerJob={triggerJob}
+          sendToService={sendToService}
           getStatus={getStatus}
           updateSubmissionStatus={updateSubmissionStatus}
+          getUserViaEmail={getUserViaEmail}
         />
       }
     />

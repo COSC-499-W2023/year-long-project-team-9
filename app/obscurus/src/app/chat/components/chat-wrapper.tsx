@@ -111,15 +111,15 @@ export default function ChatWrapper({
 
   useEffect(() => {
     const ws = new WebSocket(websocketApiEndpoint);
-    const handleBeforeUnload = () => {
-      console.log("Page reloading or closing, disconnecting WebSocket");
-      ws.close();
-    };
+    // const handleBeforeUnload = () => {
+    //   console.log("Page reloading or closing, disconnecting WebSocket");
+    //   ws.close();
+    // };
 
     ws.onopen = () => {
       console.log("Connected to WebSocket");
     };
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    // window.addEventListener("beforeunload", handleBeforeUnload);
     setSocket(ws);
 
     ws.onmessage = (event) => {
@@ -137,7 +137,7 @@ export default function ChatWrapper({
     };
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      // window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("Disconnecting WebSocket");
       ws.close();
     };

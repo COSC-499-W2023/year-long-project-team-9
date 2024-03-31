@@ -8,11 +8,12 @@ import {
   QuestionMarkCircledIcon,
   StopwatchIcon,
 } from "@radix-ui/react-icons"
+import { Archive } from "lucide-react"
 
 export const statuses = [
   {
-    value: "NOT STARTED",
-    label: "Not Started",
+    value: "TODO",
+    label: "To do",
     icon: CircleIcon,
   },
   {
@@ -29,5 +30,10 @@ export const statuses = [
     value: "FAILED",
     label: "Failed",
     icon: CrossCircledIcon,
+  },
+  {
+    value: "ARCHIVED",
+    label: "Archived",
+    icon: Archive,
   }
 ]

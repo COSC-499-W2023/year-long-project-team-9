@@ -95,7 +95,7 @@ const NavBar = ({
 
   const Navigation = () => {
     return (
-      <NavigationMenu className="flex flex-row space-x-4 ">
+      <NavigationMenu className="flex flex-row space-x-6 ">
         <Link href="/" className="">
           <Image
             className="min-h-full min-w-full"
@@ -145,12 +145,12 @@ const NavBar = ({
   return (
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
-      <div className="flex flex-col-2">
+      <div className="flex gap-2">
         <NotificationsComponent
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
           notifications={notifications}
-        ></NotificationsComponent>
+        />
         <ThemeSwitcher />
       </div>
     </div>

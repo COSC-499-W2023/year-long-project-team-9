@@ -71,7 +71,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground h-[100dvh] w-[100dvw] overflow-x-hidden;
   }
 }
 /* Style for the scroll bar, not a biggest fan, but of well */

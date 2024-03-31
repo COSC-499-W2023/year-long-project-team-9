@@ -11,6 +11,7 @@ import { getEmail } from "./functions/authenticationMethods";
 import { Notifications } from "@obscurus/database/src/sql.generated";
 import readNotification from "./functions/readNotification";
 import deleteNotification from "./functions/deleteNotification";
+import Footer  from "./footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,7 +48,7 @@ export default async function RootLayout({
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <div className=" flex-col md:flex min-h-screen h-screen">
+          <div className=" flex-col md:flex h-screen ">
             <NavBar
               readNotification={readNotification}
               deleteNotifications={deleteNotification}
@@ -62,6 +63,7 @@ export default async function RootLayout({
             <div className="absolute z-100 top-36 left-56">Top</div>
             <Home />
           </div> */}
+          {/* <Footer /> */}
           </div>
         </ThemeProvider>
       </body>
