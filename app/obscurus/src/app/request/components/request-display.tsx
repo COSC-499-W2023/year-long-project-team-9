@@ -159,6 +159,11 @@ export default function RequestDisplay({
                   {selected?.requesterEmail}
                 </div>
                 <div className="line-clamp-1 text-xs">
+                  <span className="font-medium ">To:</span>
+                </div>
+                <div className="line-clamp-1 text-xs">
+                  <span className="font-medium">Processing: </span>
+                  {selected?.blurred ? "Blurred" : "Not Blurred"} |{" "}
                   <span className="font-medium">Due: </span>
                   {format(new Date(selected?.dueDate), "PPP, p")}
                 </div>
