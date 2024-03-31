@@ -21,10 +21,12 @@ export default function AuthenticationSignedOut({
   signInUser,
   signUpUser,
   confirmSignUpUser,
+  resendConfirmSignUpUser,
 }: {
   signInUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
+  resendConfirmSignUpUser: Function;
 }) {
   const [dialogState, setDialogState] = useState<string>("signIn");
   return (
@@ -62,6 +64,7 @@ export default function AuthenticationSignedOut({
               <SignUpForm
                 signUpUser={signUpUser}
                 confirmSignUpUser={confirmSignUpUser}
+                resendConfirmSignUpUser={resendConfirmSignUpUser}
                 setDialogState={setDialogState}
               />
             </div>

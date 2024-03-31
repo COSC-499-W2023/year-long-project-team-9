@@ -22,10 +22,12 @@ export default function SignUpVerifyEmailForm({
   email,
   setDialogState,
   triggerVerifyEmail,
+  triggerResendVerifyEmail,
 }: {
   email: string;
   setDialogState: Function;
   triggerVerifyEmail: Function;
+  triggerResendVerifyEmail: Function;
 }) {
   const form = useForm<z.infer<typeof verifyEmailFormSchema>>({
     resolver: zodResolver(verifyEmailFormSchema),
@@ -51,6 +53,15 @@ export default function SignUpVerifyEmailForm({
               </FormItem>
             )}
           />
+          <div className="text-xs text-center my-2">
+            <span>Did not receive an email? </span>
+            <a
+              onClick={() => triggerResendVerifyEmail()}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Resend Verification Code
+            </a>
+          </div>
           <Button type="submit" variant={"default"} className="w-full">
             Verify
           </Button>

@@ -7,6 +7,7 @@ export default function Authentication({
   signOutUser,
   signUpUser,
   confirmSignUpUser,
+  resendConfirmSignUpUser,
   signedIn,
   email,
   name,
@@ -15,6 +16,7 @@ export default function Authentication({
   signOutUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
+  resendConfirmSignUpUser: Function;
   signedIn: boolean;
   email: string;
   name: string;
@@ -30,6 +32,7 @@ export default function Authentication({
       signInUser={signInUser}
       signUpUser={signUpUser}
       confirmSignUpUser={confirmSignUpUser}
+      resendConfirmSignUpUser={resendConfirmSignUpUser}
     />
   );
 }

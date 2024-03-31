@@ -8,7 +8,10 @@ import SignUpFinalCheckForm from "./authentication-sign-up-final-check-form";
 import SignUpVerifyEmailForm from "./authentication-sign-up-verify-email-form";
 import { LucideLoader2 } from "lucide-react";
 import { Label } from "../ui/label";
-import { type ConfirmSignUpInput } from "aws-amplify/auth";
+import {
+  type ConfirmSignUpInput,
+  ResendSignUpCodeInput,
+} from "aws-amplify/auth";
 
 type SignUpParameters = {
   username: string;
@@ -65,10 +68,12 @@ const signUpPasswordAgeTermsFormSchema = z
 export default function SignUpForm({
   signUpUser,
   confirmSignUpUser,
+  resendConfirmSignUpUser,
   setDialogState,
 }: {
   signUpUser: Function;
   confirmSignUpUser: Function;
+  resendConfirmSignUpUser: Function;
   setDialogState: Function;
 }) {
   const [signUpState, setSignUpState] = useState("emailNames");
@@ -126,6 +131,16 @@ export default function SignUpForm({
         setFailedSignUpGeneric(true),
         setSignUpState("emailNames"),
       ]);
+  }
+
+  async function triggerResendVerifyEmail() {
+    setLoading(true);
+    const userResendConfirmSignUpInput: ResendSignUpCodeInput = {
+      username: signUpEmailNames.email,
+    };
+    await resendConfirmSignUpUser(userResendConfirmSignUpInput).then(() =>
+      setLoading(false)
+    );
   }
 
   useEffect(() => {
@@ -186,6 +201,7 @@ export default function SignUpForm({
           email={signUpEmailNames.email}
           setDialogState={setDialogState}
           triggerVerifyEmail={triggerVerifyEmail}
+          triggerResendVerifyEmail={triggerResendVerifyEmail}
         />
       )}
     </div>
