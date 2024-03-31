@@ -224,13 +224,13 @@ def convert_to_mp4(input_video, output_video):
     subprocess.run(cmd, check=True)
 
 
-def process_video(timestamps, response, submission_id):
+def process_video(timestamps, response, submission_id, file_extension):
     print("Processing video...")
-    input_name = f"{submission_id}.mp4"
+    input_name = f"{submission_id}.{file_extension}"
     output_name = f"{submission_id}-processed.mp4"
-    local_filename = "/tmp/{}".format(submission_id)
+    local_filename = "/tmp/{}".format(input_name)
     temp_output_filename = "/tmp/{}-temp.mp4".format(submission_id)
-    final_output_filename = "/tmp/{}-processed.mp4".format(submission_id)
+    final_output_filename = "/tmp/{}".format(output_name)
 
     s3.download_file(bucket_name, input_name, local_filename)
     print("Job response", response)
@@ -348,7 +348,7 @@ async def process_video_background(submission_id, file_extension, recipient_emai
     job_id = start_face_detection(converted_key)
     job_response = check_job_status(job_id)
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    process_video(timestamps, job_response, submission_id)
+    process_video(timestamps, job_response, submission_id, file_extension)
     await update_submission_status("COMPLETED", submission_id)
     await send_email_notification(
         recipient_email,
