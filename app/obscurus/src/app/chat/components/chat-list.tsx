@@ -138,9 +138,8 @@ export default function ChatList({
         ))}
       </div>
     ) : (
-      <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
-        <MessageCircle className="h-20 w-20" />
-        <p className=" text-lg">No rooms available.</p>
+      <div className="flex flex-col justify-center items-center pt-4">
+        <div className=" text-muted-foreground font-semibold">No Rooms.</div>
       </div>
     );
   };
