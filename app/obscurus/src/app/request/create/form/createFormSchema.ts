@@ -4,6 +4,8 @@ import { z } from "zod";
 export const createFormSchema = z
   .object({
     userEmail: z.string(),
+    firstName: z.string().trim().min(1).max(100),
+    lastName: z.string().trim().min(1).max(100),
     title: z.string().trim().min(1).max(100),
     dueDate: z.date().min(endOfDay(new Date())),
     description: z.string().trim().min(1).max(2000),
