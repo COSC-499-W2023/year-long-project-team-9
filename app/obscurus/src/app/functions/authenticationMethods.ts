@@ -1,6 +1,6 @@
 "use server";
 import {
-  getCurrentUser,
+  fetchAuthSession,
   signIn,
   type SignInInput,
   signOut,
@@ -14,8 +14,12 @@ import {
 
 export async function isSignedIn() {
   try {
-    const { username, userId, signInDetails } = await getCurrentUser();
-    return true;
+    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+    if (idToken != undefined) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     return false;
   }
@@ -39,11 +43,11 @@ export async function signOutUser() {
 
 export async function getEmail() {
   try {
-    const { username, userId, signInDetails } = await getCurrentUser();
-    if (signInDetails?.loginId != undefined) {
-      return signInDetails.loginId;
+    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+    if (idToken?.payload.email != undefined) {
+      return idToken.payload.email as string;
     } else {
-      throw Error;
+      throw new Error();
     }
   } catch (error) {
     return "";
