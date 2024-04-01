@@ -582,3 +582,36 @@ Screenshot from peer eval for Week 10:
 ### Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-23.png)
+
+## Week 12 ##
+
+### Applicable Date Range ###
+March 24 -  March 31, 2024
+
+### Tasks Worked On ###
+
+- I got a lot done this week across the stack. I finally set up my FastAPI microservice on ECS, added real-time notification and status updating, fixed a lot of bugs, and made a lot of UI improvements. I also redisgned how data is fetched so that all the necessary data for a user is fetched when they first go to submit, that way I can avoid additional function calls in the future.
+- This week I basically glued everything together, so now I just need to fix some bugs and standardize things across the app and not just what I worked on.
+- I think I deserve bonus marks for my contributions this week, I really did put in a massive amount of work.
+
+Screenshot from peer eval for Week 12:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-24.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-24.png)
+
+![Completed Tasks 2](./img/jan-yaeger-dhillon/completed/completed-24-2.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-24.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-24.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-24.png)
