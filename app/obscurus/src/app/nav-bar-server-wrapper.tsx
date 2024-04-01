@@ -1,6 +1,5 @@
 "use server";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
-import { Notifications } from "@obscurus/database/src/sql.generated";
 import readNotification from "./functions/readNotification";
 import deleteNotification from "./functions/deleteNotification";
 import { getUserNames } from "./functions/getUserNames";

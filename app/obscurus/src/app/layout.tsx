@@ -5,14 +5,6 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBarServerWrapper from "./nav-bar-server-wrapper";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
-import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
-import { getEmail } from "./functions/authenticationMethods";
-import { Notifications } from "@obscurus/database/src/sql.generated";
-import readNotification from "./functions/readNotification";
-import deleteNotification from "./functions/deleteNotification";
-import Footer from "./footer";
-import { Provider } from "jotai";
-import { create } from "domain";
 import { WebSocketProvider } from "./ws-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 

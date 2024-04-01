@@ -5,7 +5,6 @@ import {
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTrigger,
 } from "../modified-shadcn-ui-components/modified-alert-dialog";
