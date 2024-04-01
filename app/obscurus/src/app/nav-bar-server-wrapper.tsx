@@ -1,7 +1,8 @@
 "use server";
-import deleteNotifications from "./functions/deleteNotifications";
-import notificationsRead from "./functions/notificationsRead";
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
+import { Notifications } from "@obscurus/database/src/sql.generated";
+import readNotification from "./functions/readNotification";
+import deleteNotification from "./functions/deleteNotification";
 import { getUserNames } from "./functions/getUserNames";
 import {
   isSignedIn,
@@ -39,8 +40,8 @@ export default async function NavBarServerWrapper() {
 
   return (
     <NavBar
-      notificationsRead={notificationsRead}
-      deleteNotifications={deleteNotifications}
+      readNotification={readNotification}
+      deleteNotifications={deleteNotification}
       getNotificationsViaEmail={getNotificationsViaEmail}
       signInUser={signInUser}
       signOutUser={signOutUser}
