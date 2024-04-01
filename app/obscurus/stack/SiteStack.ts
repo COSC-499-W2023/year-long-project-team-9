@@ -275,7 +275,11 @@ export default function SiteStack({ stack }: StackContext) {
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],
     permissions: [rekognitionPolicyStatement, wsApi],
-    environment: { NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url },
+    environment: {
+      NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
+      NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
+      NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID: auth.userPoolClientId,
+    },
   });
 
   stack.addOutputs({
