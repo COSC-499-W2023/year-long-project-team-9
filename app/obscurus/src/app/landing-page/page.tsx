@@ -12,11 +12,9 @@ import { useRouter } from "next/navigation";
 import Footer from "../footer";
 
 export default function Home() {
-  const router = useRouter();
   useEffect(() => {
     AOS.init({ once: true });
   });
-  router.refresh();
 
   return (
     <><div className="container flex flex-col w-full items-center justify-between p-20 md:p-36 gap-36">
