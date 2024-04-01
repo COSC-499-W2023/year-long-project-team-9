@@ -1,9 +1,6 @@
 "use server";
 import { Api } from "sst/node/api";
 const updateStatus = async (status: string, submissionId: string) => {
-  console.log("In update status");
-  console.log("status", status);
-  console.log("submissionId", submissionId);
   try {
     const response = await fetch(Api.Api.url + "/updateStatus", {
       method: "POST",
@@ -16,7 +13,10 @@ const updateStatus = async (status: string, submissionId: string) => {
       }),
     });
 
-    return "Updated status successfully!";
+    // if (response.ok) {
+    //   return response.json();
+    // }
+
   } catch (error) {
     console.error("Error updating status:", error);
     return "Error updating status";

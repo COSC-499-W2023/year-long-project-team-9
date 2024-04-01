@@ -9,19 +9,14 @@ import {
   Cognito,
   Config,
   WebSocketApi,
+  Service,
+  Topic,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 import { UserPoolEmail, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
 
 export default function SiteStack({ stack }: StackContext) {
-  const chumBucket = new Bucket(stack, "ChumBucket", {
-    cdk: {
-      bucket: {
-        autoDeleteObjects: true,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    },
-  });
+  const chumBucket = new Bucket(stack, "ChumBucket", {});
 
   const rekognitionPolicyStatement = new PolicyStatement({
     actions: ["rekognition:*", "rekognition:DetectFaces"],
@@ -33,6 +28,7 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "stack/database/migrations/",
+    cdk: {},
   });
 
   const sesPolicyStatement = new PolicyStatement({
@@ -45,7 +41,7 @@ export default function SiteStack({ stack }: StackContext) {
     defaults: {
       function: {
         timeout: 20,
-        permissions: [rds, chumBucket],
+        permissions: [rds, chumBucket, sesPolicyStatement],
         bind: [rds, chumBucket],
         environment: { DB_NAME: rds.clusterArn },
       },
@@ -69,7 +65,6 @@ export default function SiteStack({ stack }: StackContext) {
       "POST /createRequest": {
         function: {
           handler: "stack/lambdas/createRequest.handler",
-          permissions: [sesPolicyStatement],
         },
       },
       "POST /createUser": {
@@ -87,9 +82,9 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getNotificationsViaEmail.handler",
         },
       },
-      "POST /notificationRead": {
+      "POST /readNotification": {
         function: {
-          handler: "stack/lambdas/getNotificationsViaEmail.handler",
+          handler: "stack/lambdas/readNotification.handler",
         },
       },
       "POST /deleteNotification": {
@@ -102,9 +97,19 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getRequestsViaEmail.handler",
         },
       },
-      "POST /getSubmissionsViaEmail": {
+      "POST /archiveRequest": {
         function: {
-          handler: "stack/lambdas/getSubmissionsViaEmail.handler",
+          handler: "stack/lambdas/archiveRequest.handler",
+        },
+      },
+      "POST /unarchiveRequest": {
+        function: {
+          handler: "stack/lambdas/unarchiveRequest.handler",
+        },
+      },
+      "POST /trashRequest": {
+        function: {
+          handler: "stack/lambdas/trashRequest.handler",
         },
       },
       "POST /getUserViaEmail": {
@@ -172,49 +177,67 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/getUserNames.handler",
         },
       },
+      "POST /getRequestsAndSubmissionsByEmail": {
+        function: {
+          handler: "stack/lambdas/getRequestsAndSubmissionsByEmail.handler",
+        },
+      },
+      "POST /sendEmail": {
+        function: {
+          handler: "stack/lambdas/sendEmail.handler",
+        },
+      },
+      "POST /setSubmittedDate": {
+        function: {
+          handler: "stack/lambdas/setSubmittedDate.handler",
+        },
+      },
     },
   });
 
-  // const processVideo = new Service(stack, "ProcessVideo", {
-  //   path: "stack/process-video",
-  //   port: 8080,
-  //   bind: [chumBucket, chumBucket, api],
-  //   cdk: {
-  //     fargateService: {
-  //       circuitBreaker: { rollback: true },
-  //     },
-
-  //   },
-  //   environment: {
-  //     INPUT_BUCKET: chumBucket.bucketName,
-  //     OUTPUT_BUCKET: chumBucket.bucketName,
-  //     INPUT_NAME: "test3.mp4",
-  //     OUTPUT_NAME: "processed.mp4",
-  //     API_URL: api.url,
-  //   },
-  //   permissions: ["s3", rekognitionPolicyStatement],
-  //   cpu: "4 vCPU",
-  //   memory: "8 GB",
-  // });
-
-  const steveJobs = new Job(stack, "SteveJobs", {
-    runtime: "container",
-    handler: "stack/process-video",
-    container: {
-      cmd: ["python3", "/var/task/app.py"],
+  const wsApi = new WebSocketApi(stack, "WSApi", {
+    defaults: {
+      function: {
+        bind: [rds],
+      },
     },
-    bind: [chumBucket],
+    routes: {
+      $connect: "stack/lambdas/chat/connect.main",
+      $disconnect: "stack/lambdas/chat/disconnect.main",
+      sendmessage: "stack/lambdas/chat/sendMessage.main",
+      updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
+      newNotification: "stack/lambdas/newNotification.main",
+    },
+  });
+
+  const processVideo = new Service(stack, "ProcessVideo", {
+    path: "stack/process-video",
+    port: 8080,
+    bind: [chumBucket, api, wsApi, rds],
+    cdk: {
+      fargateService: {
+        circuitBreaker: { rollback: true },
+      },
+    },
     environment: {
       BUCKET_NAME: chumBucket.bucketName,
       API_URL: api.url,
+      WS_API_URL: wsApi.url,
     },
-    memorySize: "15 GB",
-    timeout: "8 hours",
-    permissions: [rekognitionPolicyStatement],
+    permissions: [
+      "s3",
+      rekognitionPolicyStatement,
+      "rds-data",
+      rds,
+      wsApi,
+      api,
+      chumBucket,
+      sesPolicyStatement,
+    ],
+    cpu: "8 vCPU",
+    memory: "32 GB",
   });
-  steveJobs.bind([api]);
 
-  // Create auth provider
   const auth = new Cognito(stack, "Auth", {
     login: ["email"],
     cdk: {
@@ -247,30 +270,12 @@ export default function SiteStack({ stack }: StackContext) {
 
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
-  const wsApi = new WebSocketApi(stack, "WSApi", {
-    defaults: {
-      function: {
-        bind: [rds],
-      },
-    },
-    routes: {
-      $connect: "stack/lambdas/chat/connect.main",
-      $disconnect: "stack/lambdas/chat/disconnect.main",
-      sendmessage: "stack/lambdas/chat/sendMessage.main",
-      updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
-    },
-  });
-
   api.bind([wsApi]);
 
   const site = new NextjsSite(stack, "site", {
-    bind: [chumBucket, chumBucket, rds, api, steveJobs, wsApi],
+    bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],
     permissions: [rekognitionPolicyStatement, wsApi],
-    environment: {
-      NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
-      NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID: auth.userPoolClientId,
-      NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
-    },
+    environment: { NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url },
   });
 
   stack.addOutputs({
@@ -279,5 +284,6 @@ export default function SiteStack({ stack }: StackContext) {
     UserPoolId: auth.userPoolId,
     UserPoolClientId: auth.userPoolClientId,
     WebSocketApiEndpoint: wsApi.url,
+    ServiceUrl: processVideo.url,
   });
 }

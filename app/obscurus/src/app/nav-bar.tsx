@@ -18,32 +18,16 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
+import Notifications from "@/components/notification/notifications";
+import { useNotifications } from "./hooks/use-notifications";
 import Authentication from "@/components/authentication/authentication";
 import amplifyConfig from "@/app/utils/amplifyConfig";
 import { Amplify } from "aws-amplify";
 
 Amplify.configure(amplifyConfig);
 
-export function Notifications({
-  notificationsRead,
-  deleteNotifications,
-  getNotifications,
-}: {
-  notificationsRead: Function;
-  deleteNotifications: Function;
-  getNotifications: Function;
-}) {
-  return (
-    <>
-      <Button variant="ghost" size="icon">
-        <Bell size={20} className="stroke-primary" />
-      </Button>
-    </>
-  );
-}
-
 const NavBar = ({
-  notificationsRead,
+  readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
   signInUser,
@@ -55,7 +39,7 @@ const NavBar = ({
   email,
   name,
 }: {
-  notificationsRead: Function;
+  readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
   signInUser: Function;
@@ -108,8 +92,8 @@ const NavBar = ({
             className="min-h-full min-w-full"
             src="/logo.svg"
             alt="obscurus"
-            width={40}
-            height={40}
+            width={30}
+            height={30}
           />
         </Link>
 
@@ -154,9 +138,9 @@ const NavBar = ({
       <Navigation />
       <div className="flex flex-row">
         <Notifications
-          notificationsRead={notificationsRead}
+          readNotification={readNotification}
           deleteNotifications={deleteNotifications}
-          getNotifications={getNotificationsViaEmail}
+          getNotificationsViaEmail={getNotificationsViaEmail}
         />
         <ThemeSwitcher />
         <Authentication

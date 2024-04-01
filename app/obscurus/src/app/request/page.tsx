@@ -9,6 +9,9 @@ import {
 import { getUserViaEmail } from "../functions/getUserData";
 import RequestWrapper from "./components/request-wrapper";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
+import trashRequest from "../functions/trashRequest";
+import unarchiveRequest from "../functions/unarchiveRequest";
+import archiveRequest from "../functions/archiveRequest";
 import { redirect } from "next/navigation";
 
 async function Request() {
@@ -30,16 +33,19 @@ async function Request() {
   const userData: Users = await getUserViaEmail(userEmail);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
-  const requests: Requests[] = requestPageData.request;
+  const request: Requests[] = requestPageData.request;
   const submissions: Submissions[] = requestPageData.submissions;
 
   return (
     <RequestWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      requests={requests}
+      request={request}
       submissions={submissions}
       userData={userData}
+      archiveRequest={archiveRequest}
+      unarchiveRequest={unarchiveRequest}
+      trashRequest={trashRequest}
     />
   );
 }

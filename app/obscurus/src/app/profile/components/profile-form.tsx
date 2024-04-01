@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useRef, useState, ChangeEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -39,36 +39,35 @@ const profileFormSchema = z.object({
   profileImage: z
     .any()
     .refine((files) => {
-      return files?.[0]?.size <= 10000000;
+      return !files || files?.[0]?.size <= 10000000;
     })
     .refine(
-      (files) => acceptedImageFileTypes.includes(files?.[0]?.type),
-      "wrong type" //
+      (files) => !files || acceptedImageFileTypes.includes(files?.[0]?.type),
+      "wrong type"
     ),
 });
 
 export default function ProfileForm({
-  // toast({
-  //   title: "Profile Updated Successfully",
-  //   description: "",
-  // });
-
   userData,
   form,
   onSubmit,
+  getPresignedUrl,
+  getDownloadPresignedUrl,
 }: {
   userData: Users;
   form: any;
   onSubmit: Function;
+  getPresignedUrl?: (username: string) => Promise<string>;
+  getDownloadPresignedUrl?: (username: string) => Promise<string>;
 }) {
   // TODO: Work in progress
   return (
     <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
-      <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* <form onSubmit={handleSubmit} className="space-y-8"> */}
           <EmailInput
             form={form}
             isDisabled={true}
@@ -96,7 +95,12 @@ export default function ProfileForm({
             placeHolder={"Last Name"}
           ></LastNameInput>
           {/* TODO: ProfileImageInput */}
-          <ProfileImageInput form={form}></ProfileImageInput>
+          <ProfileImageInput
+            form={form}
+            userData={userData}
+            getPresignedUrl={getPresignedUrl}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
+          ></ProfileImageInput>
           <div className="text-right gap-2">
             <AccountCancel></AccountCancel>
             <Button

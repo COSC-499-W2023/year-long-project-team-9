@@ -9,10 +9,12 @@ import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 import { redirect } from "next/navigation";
+import setIsReadTrue from "../functions/setIsReadTrue";
 
 type UserNames = {
   email: string;
-  fullName: string;
+  givenName: string;
+  familyName: string;
 };
 
 async function Chat() {
@@ -77,6 +79,7 @@ async function Chat() {
       messages={messages}
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
+      setIsReadTrue={setIsReadTrue}
     />
   );
 }

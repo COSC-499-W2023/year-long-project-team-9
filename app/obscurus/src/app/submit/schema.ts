@@ -1,19 +1,32 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { Status } from "stack/database/src/types/status";
-import { GroupingState } from "@tanstack/react-table";
-
-// We're keeping a simple non-relational schema here.
-// IRL, you will have a schema for your data models.
-export const SubmissionSchema = z.object({
-  submissionId: z.string(),
-  requesteeEmail: z.string().default("NULL"),
-  status: z.custom<Status>().default("TODO"),
-  title: z.string().nullable(),
-  isRead: z.boolean(),
-  grouping: z.custom<GroupingState>(),
-  submittedDate:  z.date().nullable(),
-  requestId: z.string(),
+const UserDataSchema = z.object({
+  givenName: z.string(),
+  familyName: z.string(),
+  profileImage: z.string().nullable(),
 });
 
-export type SubmissionsZodType = z.infer<typeof SubmissionSchema>;
+export const EnrichedSubmissionsSchema = z.object({
+  submissionId: z.string(),
+  title: z.string().nullable(),
+  grouping: z.string().nullable(),
+  requesteeEmail: z.string(),
+  status: z.enum(['IN PROGRESS', 'COMPLETED', 'FAILED', 'TODO', 'PROCESSING', 'ARCHIVED', 'TRASHED']),
+  isRead: z.boolean(),
+  submittedDate: z.date().nullable().or(z.string().nullable()),
+  requestId: z.string(),
+  requestDetails: z.object({
+    requestId: z.string(),
+    requestTitle: z.string(),
+    requesterEmail: z.string(),
+    description: z.string(),
+    blurred: z.boolean(),
+    grouping: z.string().nullable(),
+    creationDate: z.date().or(z.string()),
+    dueDate: z.date().or(z.string()),
+  }),
+  requestee: UserDataSchema,
+  requester: UserDataSchema,
+});
+
+export type EnrichedSubmissionsZodType = z.infer<typeof EnrichedSubmissionsSchema>;

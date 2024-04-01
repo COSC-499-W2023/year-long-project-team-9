@@ -4,7 +4,7 @@ import type { Notifications as NotificationsType } from "../database/src/sql.gen
 
 export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
   const newNotification: NotificationsType = JSON.parse(event.body);
-  const notifications = await Notifications.insert(newNotification);
+  const notifications = Notifications.insert(newNotification);
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },

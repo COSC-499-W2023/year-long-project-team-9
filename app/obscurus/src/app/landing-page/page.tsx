@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useRouter } from "next/navigation";
+import Footer from "../footer";
 
 export default function Home() {
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function Home() {
   });
 
   return (
-    <div className="container flex flex-col items-center justify-between p-36 gap-36">
+    <><div className="container flex flex-col w-full items-center justify-between p-20 md:p-36 gap-36">
       <Hero />
 
       <div
@@ -24,16 +25,16 @@ export default function Home() {
         className="opacity-0 animate-fadeIn transition-opacity delay-1000 duration-1000"
       >
         <div className="flex flex-row space-x-3 delay-1000" id="features">
-          <div className="text-2xl font-extrabold">Features</div>
+          <div className="text-2xl font-semibold">Features</div>
           <ArrowBigDownIcon
             className="stroke-primary fill-primary animate-bounce mt-1"
-            size={30}
-          />
+            size={30} />
         </div>
       </div>
       <Features />
       <HowTo />
       <About />
-    </div>
+
+    </div><Footer /></>
   );
 }

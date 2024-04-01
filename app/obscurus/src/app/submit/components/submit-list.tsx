@@ -15,9 +15,7 @@ import {
   SortDescIcon,
   XCircle,
 } from "lucide-react";
-import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
-import { useQueryState } from "nuqs";
 import { TabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -46,72 +44,74 @@ import { useRequest } from "@/app/hooks/use-request";
 import { Separator } from "@/components/ui/separator";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
+import { useSubmission } from "@/app/hooks/use-submission";
+import { Skeleton } from "@/components/ui/skeleton";
+import PanelLoader from "./panel-1-loader";
+import { useSearch } from "@/app/hooks/use-search";
+import { useUpload } from "@/app/hooks/use-upload";
+import { useSort } from "@/app/hooks/use-sort";
+import { useTab } from "@/app/hooks/use-tab";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 
 interface RequestsListProps {
   requests?: Requests[];
   submissions?: Submissions[];
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }
 
 export default function SubmitList({
-  requests,
   submissions,
-}: RequestsListProps) {
+  getDownloadPresignedUrl
+}: {
+  submissions: EnrichedSubmissions[];
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
+}) {
   const router = useRouter();
   const pathname = usePathname();
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [request, setRequest] = useRequest();
-  const [search, setSearch] = useQueryState("search");
-  const [upload] = useQueryState("upload");
-  const [sort, setSort] = useQueryState("sort");
-  const [tab, setTab] = useQueryState("tab");
+  const [submission, setSubmission] = useSubmission();
+  const [search, setSearch] = useSearch();
+  const [upload] = useUpload();
+  const [sort, setSort] = useSort();
+  const [tab, setTab] = useTab();
 
-  const getAssociatedSubmission = (requestId: string | null) => {
-    if (requestId && submissions) {
-      return submissions.find((item) => requestId === item.requestId);
-    }
-    return null;
-  };
-
-  const handleClick = (item: Requests) => {
-    if (!upload) {
-      setRequest({
-        ...request,
-        selected: item.requestId,
-      });
-      const submission = getAssociatedSubmission(item.requestId);
-      console.log("Assoc. submission", submission);
+  const handleClick = (item: EnrichedSubmissions) => {
+    if (!upload.upload) {
+      const submission = submissions.find(
+        (submission) => submission.submissionId === item.submissionId
+      );
       if (submission) {
-        setSubmissionId(submission?.submissionId);
+        setSubmission({ ...submission, submissionId: submission.submissionId });
       }
-
-      console.log("Selected RequestID to list", item.requestId);
     }
   };
 
   const clearSearch = () => {
-    setSearch(null);
+    setSearch({ ...search, search: null });
   };
 
-  const sortRequests = (a: Requests, b: Requests) => {
-    switch (sort) {
+  const sortRequests = (a: EnrichedSubmissions, b: EnrichedSubmissions) => {
+    switch (sort.sort) {
       case "newest":
         return (
-          new Date(b.creationDate).getTime() -
-          new Date(a.creationDate).getTime()
+          new Date(b.requestDetails.creationDate).getTime() -
+          new Date(a.requestDetails.creationDate).getTime()
         );
       case "oldest":
         return (
-          new Date(a.creationDate).getTime() -
-          new Date(b.creationDate).getTime()
+          new Date(a.requestDetails.creationDate).getTime() -
+          new Date(b.requestDetails.creationDate).getTime()
         );
       case "due":
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+        return (
+          new Date(a.requestDetails.dueDate).getTime() -
+          new Date(b.requestDetails.dueDate).getTime()
+        );
       default:
         return 0;
     }
   };
 
-  const sortedRequests = requests?.sort(sortRequests);
+  const sortedRequests = submissions?.sort(sortRequests);
 
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
@@ -122,20 +122,21 @@ export default function SubmitList({
   ));
 
   const tabsContent = statuses.map((status) => {
-    const filteredRequests = sortedRequests?.filter((request) => {
-      const submission = getAssociatedSubmission(request.requestId);
+    const filteredRequests = sortedRequests?.filter((submission) => {
       const matchesStatus =
-        submission && submission.status.toUpperCase() === status.toUpperCase();
+        status === "all" || submission.status.toLowerCase() === status;
 
-      const searchTerm = search?.toLowerCase();
+      const searchTerm = search.search?.toLowerCase();
       const matchesSearch =
         !searchTerm ||
-        request.requestTitle.toLowerCase().includes(searchTerm) ||
-        request.requesterEmail.toLowerCase().includes(searchTerm);
+        submission.requestDetails.requestTitle
+          .toLowerCase()
+          .includes(searchTerm) ||
+        submission.requestDetails.requesterEmail
+          .toLowerCase()
+          .includes(searchTerm);
 
-      return tab === "all" || tab === null
-        ? matchesSearch
-        : matchesStatus && matchesSearch;
+      return matchesStatus && matchesSearch && submission.status != "TRASHED";
     });
 
     return (
@@ -143,69 +144,66 @@ export default function SubmitList({
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRequests?.map((item) => (
             <button
-              key={item.requestId}
+              key={item.submissionId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                request.selected === item.requestId && "bg-muted"
+                submission?.submissionId === item.submissionId
+                  ? "bg-accent text-foreground"
+                  : "bg-background border-muted-border"
               )}
               onClick={() => handleClick(item)}
             >
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold">
-                      {(item.requestTitle.length > 30 &&
-                        item.requestTitle?.substring(0, 30) + "...") ||
-                        item.requestTitle}
+                    <div className="font-semibold text-ellipsis">
+                      {item.requestDetails.requestTitle.length > 30
+                        ? item.requestDetails.requestTitle.substring(0, 30) +
+                          "..."
+                        : item.requestDetails.requestTitle}
                     </div>
-                    {getAssociatedSubmission(item.requestId)?.isRead && (
-                      <span className="flex h-2 w-2 rounded-full bg-blue-600 min-h-full" />
-                    )}
                   </div>
 
-                  <div
-                    className={cn(
-                      "ml-auto text-xs w-full flex justify-end",
-                      request.selected === item.requestId
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  >
-                    {" "}
+                  <div className="ml-auto text-xs w-full flex justify-end">
                     {formatDistanceToNow(
-                      new Date(item.creationDate || "2024/03/21"),
-                      {
-                        addSuffix: true,
-                      }
+                      new Date(item.requestDetails.creationDate),
+                      { addSuffix: true }
                     )}
                   </div>
                 </div>
-                <div className="text-xs font-medium">
-                  <div className="text-xs font-medium">
-                    {(item.requesterEmail.length > 30 &&
-                      item.requesterEmail.substring(0, 30) + "...") ||
-                      item.requesterEmail}
-                  </div>
+                <div className="text-xs font-medium text-ellipsis line-clamp-1">
+                  {item.requester.givenName} {item.requester.familyName}
+                </div>
+                <div className="text-xs">
+                  {item.requestDetails.requesterEmail.length > 30
+                    ? item.requestDetails.requesterEmail.substring(0, 30) +
+                      "..."
+                    : item.requestDetails.requesterEmail}
                 </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
-                {item.description}
+                {item.requestDetails.description}
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel("due-date")}>
                   Due{" "}
-                  {formatDistanceToNow(new Date(item.dueDate || "2024/03/21"), {
+                  {formatDistanceToNow(new Date(item.requestDetails.dueDate), {
                     addSuffix: true,
                   })}
                 </Badge>
-                <Badge variant={getBadgeVariantFromLabel("status")}>
-                  {getAssociatedSubmission(item.requestId)
-                    ?.status.split(" ")
-                    .map(
-                      (word) =>
-                        word[0].toUpperCase() + word.substring(1).toLowerCase()
-                    )
-                    .join(" ")}{" "}
+                <Badge
+                  variant={getBadgeVariantFromStatus(item.status || "TODO")}
+                >
+                  {(item &&
+                    item.status
+                      .split(" ")
+                      .map(
+                        (word) =>
+                          word.charAt(0).toUpperCase() +
+                          word.slice(1).toLowerCase()
+                      )
+                      .join(" ")) ||
+                    "TODO"}
                 </Badge>
               </div>
             </button>
@@ -215,39 +213,38 @@ export default function SubmitList({
     );
   });
 
-  return !requests ? (
-    <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
-      <List className="h-20 w-20" />
-      <p className=" text-lg">No requests.</p>
-    </div>
-  ) : (
+  return (
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
-      onValueChange={setTab}
+      onValueChange={(newValue) => setTab({ ...tab, tab: newValue })}
     >
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Submit</h1>
         <Drawer>
-          <span className="sr-only">View Processing</span>
+          <span className="sr-only">Submissions</span>
           <Tooltip>
             <DrawerTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={submissions && submissions.length === 0}
+              >
                 <TooltipTrigger asChild>
                   <ListVideo className="h-4 w-4" />
                 </TooltipTrigger>
               </Button>
             </DrawerTrigger>
-            <TooltipContent> All Videos</TooltipContent>
+            <TooltipContent>Submissions</TooltipContent>
           </Tooltip>
           <DrawerContent>
             <div className="w-full ">
               <DrawerHeader>
-                <DrawerTitle>All Videos</DrawerTitle>
-                <DrawerDescription>View your uploaded videos</DrawerDescription>
+                <DrawerTitle>Submissions</DrawerTitle>
+                <DrawerDescription>View all submissions</DrawerDescription>
               </DrawerHeader>
-              <div className=" pb-5">
-                <div className="mt-3 h-[600px] overflow-y-scroll ">
+              <div className=" md:pb-10 md:mb-24">
+                <div className="mt-3 overflow-y-scroll ">
                   <ResponsiveContainer width="100%" height="100%">
                     <DataTable columns={columns} data={submissions || []} />
                   </ResponsiveContainer>
@@ -264,13 +261,14 @@ export default function SubmitList({
             <Input
               placeholder="Search"
               className="pl-8"
-              onChange={(e) => setSearch(e.target.value)}
-              value={search || ""}
+              onChange={(e) => setSearch({ search: e.target.value })}
+              value={search.search || ""}
             />
             {search && (
               <XCircle
-                className="absolute right-4 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+                className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
                 onClick={clearSearch}
+                visibility={search.search ? "visible" : "hidden"}
               />
             )}
           </div>
@@ -288,13 +286,13 @@ export default function SubmitList({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setSort("newest")}>
+                <DropdownMenuItem onClick={() => setSort({ sort: "newest" })}>
                   Newest
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort("oldest")}>
+                <DropdownMenuItem onClick={() => setSort({ sort: "oldest" })}>
                   Oldest
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort("due")}>
+                <DropdownMenuItem onClick={() => setSort({ sort: "due" })}>
                   Due
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -304,11 +302,10 @@ export default function SubmitList({
         </Tooltip>
       </div>
       <Separator />
-      <Suspense fallback={<List className="h-20 w-20" />}>
-        <div className="h-full overflow-y-scroll">
-          {tabsContent || <div>No requests.</div>}
-        </div>
-      </Suspense>
+
+      <div className="h-full overflow-y-scroll">
+        {tabsContent || <div>No requests.</div>}
+      </div>
     </Tabs>
   );
 }
@@ -317,7 +314,7 @@ function getBadgeVariantFromLabel(
   label: string
 ): ComponentProps<typeof Badge>["variant"] {
   if (["status"].includes(label.toLowerCase())) {
-    return "default";
+    return "secondary";
   }
 
   if (["due-date"].includes(label.toLowerCase())) {
@@ -325,4 +322,25 @@ function getBadgeVariantFromLabel(
   }
 
   return "secondary";
+}
+
+export function getBadgeVariantFromStatus(
+  status: string
+): ComponentProps<typeof Badge>["variant"] {
+  switch (status.toLowerCase()) {
+    case "completed":
+      return "success";
+    case "processing":
+      return "warning";
+    case "in progress":
+      return "warning";
+    case "archived":
+      return "outline";
+    case "failed":
+      return "destructive";
+    case "todo":
+      return "default";
+    default:
+      return "secondary";
+  }
 }

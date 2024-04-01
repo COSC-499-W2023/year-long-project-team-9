@@ -1,12 +1,14 @@
 "use server";
 import { cookies } from "next/headers";
 import getPresignedUrl from "../functions/getPresignedUrl";
-import { triggerJob } from "../functions/triggerJob";
+import { sendToService } from "../functions/sendToService";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
-import getUserDataByEmail from "../functions/getUserDataByEmail";
 import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
+import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
+import { getUserViaEmail } from "../functions/getUserData";
+import setSubmittedDate from "../functions/setSubmittedDate";
 import { isSignedIn } from "../functions/authenticationMethods";
 import { redirect } from "next/navigation";
 
@@ -38,13 +40,14 @@ async function Submit() {
     <SubmitWrapper
       getPresignedUrl={getPresignedUrl}
       getDownloadPresignedUrl={getDownloadPresignedUrl}
-      triggerJob={triggerJob}
+      sendToService={sendToService}
       updateStatus={updateStatus}
       getStatus={getStatus}
-      getUserDataByEmail={getUserDataByEmail}
+      getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      websocketApiEndpoint={wsApi as string}
+      getUserViaEmail={getUserViaEmail}
+      setSubmittedDate={setSubmittedDate}
     />
   );
 }

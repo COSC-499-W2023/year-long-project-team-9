@@ -3,11 +3,11 @@ import { Requests } from "@obscurus/database/src/sql.generated"
 
 
 type Config = {
-  selected: Requests["requestId"] | null
+  requestId: Requests["requestId"] | null
 }
 
 const configAtom = atom<Config>({
-  selected: null,
+  requestId: null,
 })
 
 export function useRequest() {

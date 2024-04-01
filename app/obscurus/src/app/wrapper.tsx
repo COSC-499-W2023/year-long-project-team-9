@@ -19,7 +19,7 @@ import {
   UploadCloudIcon,
 } from "lucide-react";
 import Nav from "@/components/nav";
-import { Children, ReactNode, Suspense, useState } from "react";
+import { Children, ReactNode, Suspense, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
 import { useQueryState } from "nuqs";
@@ -49,14 +49,28 @@ export function Wrapper({
     "/profile": "Profile",
   };
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+        setIsMobile(true)
+    } else {
+        setIsMobile(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  })
+
   const getLinkVariant = (title: string) => {
     const currentRoute = pathname;
     return routeToLinkVariant[currentRoute] === title ? "default" : "ghost";
   };
   return (
-    <TooltipProvider delayDuration={0}>
+
       <ResizablePanelGroup
-        direction="horizontal"
+        direction={isMobile ? "vertical" : "horizontal"}
         onLayout={(sizes: number[]) => {
           document.cookie = `react-resizable-panels:layout=${JSON.stringify(
             sizes
@@ -130,12 +144,12 @@ export function Wrapper({
         <ResizableHandle withHandle />
         <ResizablePanel
           defaultSize={(defaultLayout && defaultLayout[2]) || 50}
-          minSize={20}
+          minSize={25}
         >
           <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>
-    </TooltipProvider>
+
   );
 }
 

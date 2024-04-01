@@ -13,8 +13,8 @@ const Features = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <div className="text-2xl py-10 font-semibold">Features</div>
-        <div className="flex flex-col md:flex-row space-x-4">
+        {/* <div className="text-2xl py-10 font-semibold">Features</div> */}
+        <div className="flex flex-col md:flex-row space-y-5 md:space-x-5">
           <Card
             className="w-[300px] h-[300px] justify-center justify-items-center drop-shadow-md bg-card"
             data-aos="flip-left"
@@ -47,7 +47,7 @@ const Features = () => {
                 Respondents can easily record and submit their videos, ensuring
                 a smooth and user-friendly experience.
               </CardDescription>
-              <CardContent className="flex justify-center justify-items-center justify-self-center pt-12">
+              <CardContent className="flex justify-center justify-items-center justify-self-center pt-5">
                 <Video size={50} className="stroke-primary" />
               </CardContent>
             </CardHeader>

@@ -8,13 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { useQueryState } from "nuqs";
-import {
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import {
   Archive,
   Trash2,
@@ -27,89 +21,107 @@ import {
   LucideLoader2,
   ArrowBigDown,
   FileText,
+  UploadIcon,
+  UploadCloud,
+  Download,
+  DownloadCloud,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
 import Webcam from "react-webcam";
 import VideoPlayer from "./video-player";
-import { useRouter } from "next/navigation";
-import { DotLoader } from "react-spinners";
-import { el } from "date-fns/locale";
-import { Label } from "@/components/ui/label";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { useRequest } from "@/app/hooks/use-request";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDropzone } from "react-dropzone";
 import { useAtom } from "jotai";
 import { atomWithToggle } from "../../atoms/atomWithToggle";
-import { get } from "http";
 import { useSubmissions } from "@/app/hooks/use-submissions";
-import { useRequests } from "@/app/hooks/use-requests";
-import substring from "@/app/functions/substring";
+import PanelLoader from "./panel-2-loader";
+import { useSubmission } from "@/app/hooks/use-submission";
+import { useUpload } from "@/app/hooks/use-upload";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function SubmitDisplay({
   fetchUserData,
   getPresignedUrl,
   getDownloadPresignedUrl,
-  triggerJob,
+  sendToService,
   getStatus,
   updateSubmissionStatus,
   updateRequests,
+  getUserViaEmail,
+  setSubmittedDate,
 }: {
   fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
+  sendToService?: (
+    submissionId: string,
+    fileExt: string,
+    email: string
+  ) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
+  getUserViaEmail?: (email: string) => Promise<string>;
+  setSubmittedDate?: Function;
 }) {
-  const [request, setRequest] = useRequest();
-  const [submissionId, setSubmissionId] = useQueryState("submissionId");
-  const [upload, setUpload] = useState(false);
+  const [submission, setSubmission] = useSubmission();
+  const [upload, setUpload] = useUpload();
   const [showingVideo, setShowingVideo] = useState(false);
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
+
+  const submissionIdFromQuery = useSearchParams().get("submissionId");
+
+  console.log("Submission ID from query:", submissionIdFromQuery);
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
   // }
 
-  const [requests] = useRequests();
   const [submissions] = useSubmissions();
+  const selected = submissions?.find(
+    (sub) => sub.submissionId === submission.submissionId
+  );
   useEffect(() => {
-    {
-      async () => {
-        const res = await fetchUserData();
-        console.log("RES", res);
-        return res;
-      };
+    if (submissionIdFromQuery) {
+      setSubmission({ submissionId: submissionIdFromQuery });
     }
-    if (!request.selected && requests) {
-      setRequest({
-        ...request,
-        selected: requests[0].requestId,
-      });
-    }
-  });
+    const fetchProcessedVideo = async () => {
+      console.log("Selected:", selected);
+      if (
+        selected?.status === "COMPLETED" &&
+        getDownloadPresignedUrl &&
+        selected.submissionId
+      ) {
+        console.log("Fetching processed video");
+        try {
+          const videoUrl = await getDownloadPresignedUrl(selected.submissionId);
+          setProcessedVideo(videoUrl);
+        } catch (error) {
+          console.error("Error fetching processed video:", error);
+          toast({
+            title: "Error",
+            description: "Failed to load processed video.",
+          });
+        }
+      }
+    };
 
-  const selected =
-    requests && requests.find((item) => item.requestId === request.selected);
-
-  const associatedSubmission =
-    submissions &&
-    submissions.find((sub) => sub.requestId === selected?.requestId);
+    fetchProcessedVideo();
+  }, [submissionIdFromQuery, selected, getDownloadPresignedUrl]);
 
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   // console.log("URL", url);
 
   const canShowVideo =
-    associatedSubmission &&
-    associatedSubmission.status === "COMPLETED" &&
-    processedVideo;
+    selected && selected.status === "COMPLETED" && processedVideo;
 
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [fileExt, setFileExt] = useState<string | "mp4">("mp4");
+  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -129,80 +141,78 @@ export default function SubmitDisplay({
 
   const reset = () => {};
 
-  const handleProcessVideo = async (e: any) => {
-    setLoading(true);
-    const submission = getAssociatedSubmission(request?.selected || "");
-    if (submission && triggerJob) {
-      const res = await triggerJob(submission.submissionId, fileExt);
-      if (res === "Video jobbed successfully" && updateSubmissionStatus) {
-        await updateSubmissionStatus("PROCESSING", submission.submissionId);
-        console.log("Updated submission status");
-        updateRequests && updateRequests();
-        await fetchUserData();
-      }
-
-      setUpload(false);
-      setLoading(false);
-      setObjectURL(null);
-      setFile(undefined);
-      toast({
-        title: "Processing Video",
-        description: "Your video is being processed",
-      });
-
-      return;
-    } else {
-      setLoading(false);
-      setObjectURL(null);
-      return "Failed to run Job";
-    }
-  };
-
-  const handleSubmit = async (e: any) => {
-    setLoading(true);
-    e.preventDefault();
-    setUpload(true);
-    const file = fileInputRef.current?.files?.[0];
-    setFile(file);
+  const handleProcessVideo = async () => {
     if (!file) {
-      console.error("No file selected");
-      setUpload(false);
+      console.error("No file to upload");
       return;
     }
-    const fileExt = file.name.split(".").pop();
-    setFileExt(fileExt || "mp4");
 
-    const key = `${submissionId}.${fileExt}`;
+    setLoading(true);
 
-    if (submissionId && getPresignedUrl) {
+    const fileExt = file.name.split(".").pop() || "mp4";
+    const key = `${submission.submissionId}.${fileExt}`;
+
+    if (getPresignedUrl && sendToService && updateSubmissionStatus) {
       try {
         const url = await getPresignedUrl(key);
         const response = await fetch(url, {
           method: "PUT",
           headers: {
             "Content-Type": file.type,
-            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
-              key
-            )}`,
           },
           body: file,
         });
-        setObjectURL(URL.createObjectURL(file));
-        console.log("Upload successful");
-        setLoading(false);
-        return;
+
+        if (response.ok) {
+          console.log("Upload successful");
+          sendToService &&
+            selected &&
+            submission.submissionId &&
+            sendToService(
+              submission.submissionId,
+              fileExt,
+              selected?.requesteeEmail
+            );
+          setSubmittedDate &&
+            submission.submissionId &&
+            setSubmittedDate(submission.submissionId);
+          toast({
+            title: "Success",
+            description: "Your video has been uploaded successfully.",
+          });
+          // console.log("Updated submission status");
+          // updateRequests && updateRequests();
+          // await fetchUserData();
+        } else {
+          throw new Error("Upload failed");
+        }
       } catch (error) {
-        console.error("Upload failed:", error);
+        console.error("Upload error:", error);
+        toast({
+          title: "Error",
+          description: "There was an issue with the video upload.",
+        });
+      } finally {
         setLoading(false);
+        setUpload({ upload: false });
+        setFile(undefined);
+        setObjectURL(null);
       }
     }
   };
 
-  // useEffect(() => {
-  //   if (!requestId) {
-  //     setRequestId(requests && requests[0].requestId);
-  //   }
-  // }, []);
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) {
+      console.error("No file selected");
+      return;
+    }
+    setFile(selectedFile);
+    setObjectURL(URL.createObjectURL(selectedFile));
+    setUpload({ upload: true });
+  };
 
   const [record, setRecord] = useState(false);
 
@@ -238,18 +248,18 @@ export default function SubmitDisplay({
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const fileName = `${submissionId}.webm`;
+      const fileName = `${submission}.webm`;
       const file = new File([blob], fileName, { type: "video/webm" });
 
       setFile(file);
 
-      if (submissionId && getPresignedUrl) {
+      if (submission.submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
 
         const response = await fetch(presignedUrl, {
           method: "PUT",
           headers: {
-            "Content-Type": "video/webm",
+            "Content-Type": "video/mp4",
           },
           body: file,
         });
@@ -272,20 +282,35 @@ export default function SubmitDisplay({
 
   const router = useRouter();
 
-  const handleArchive = async (requestId: string) => {
+  const handleArchive = async () => {
     console.log("Archiving");
-    if (requests && requestId) {
-      const submission = getAssociatedSubmission(requestId);
+    if (submission && updateSubmissionStatus) {
       if (submission && updateSubmissionStatus) {
-        await updateSubmissionStatus("ARCHIVED", submission.submissionId);
-        console.log("Updated submission status");
-        updateRequests && updateRequests();
-        await fetchUserData();
+        await updateSubmissionStatus("COMPLETED", submission.submissionId);
+        //console.log("Updated submission status");
+        // updateRequests && updateRequests();
+        // await fetchUserData();
 
         toast({
           title: "Archived",
           description: "Request has been archived",
         });
+      }
+    } else {
+      console.error("Failed to update status");
+    }
+  };
+
+  const handleTrash = async () => {
+    console.log("Trashing request");
+    if (submission && updateSubmissionStatus && submissions) {
+      if (submission && updateSubmissionStatus) {
+        await updateSubmissionStatus("TRASHED", submission.submissionId);
+        toast({
+          title: "Trashed",
+          description: "Request has been trashed",
+        });
+        setSubmission({ submissionId: "" });
       }
     } else {
       console.error("Failed to update status");
@@ -301,7 +326,7 @@ export default function SubmitDisplay({
   const Back = () => {
     return (
       <div className="flex flex-row justify-between w-full items-center gap-2">
-        <Button variant={"ghost"} onClick={() => setUpload(false)}>
+        <Button variant={"ghost"} onClick={() => setUpload({ upload: false })}>
           <Tooltip>
             <TooltipTrigger asChild>
               <ArrowLeft className="w-4 h-4 " />
@@ -323,7 +348,7 @@ export default function SubmitDisplay({
                 variant="ghost"
                 size="icon"
                 disabled={!selected}
-                onClick={() => handleArchive(selected?.requestId || "")}
+                onClick={handleArchive}
               >
                 <Archive className="h-4 w-4" />
                 <span className="sr-only">Archive</span>
@@ -334,7 +359,12 @@ export default function SubmitDisplay({
           <Separator orientation="vertical" className="mx-2 h-8" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!selected}
+                onClick={handleTrash}
+              >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
@@ -342,9 +372,9 @@ export default function SubmitDisplay({
             <TooltipContent>Move to trash</TooltipContent>
           </Tooltip>
         </div>
-        <div className="flex ml-auto pr-1.5">
+        <div className="flex ml-auto pr-1">
           <Button
-            variant={"ghost"}
+            variant={showingVideo ? "destructive" : "ghost"}
             onClick={() => setShowingVideo(!showingVideo)}
             disabled={!canShowVideo}
           >
@@ -394,7 +424,7 @@ export default function SubmitDisplay({
               {objectURL && !loading && file && (
                 <>
                   <VideoPlayer videoUrl={objectURL} filename={file?.name} />
-                  <div className="flex w-full  justify-between p-3">
+                  <div className="flex w-full  justify-between py-4">
                     <Button
                       onClick={handleChooseAnotherFile}
                       variant={"outline"}
@@ -414,46 +444,86 @@ export default function SubmitDisplay({
     );
   };
 
+  // const uploadVariants = {
+  //   true: { opacity: 1, x: 0 },
+  //   false: { opacity: 0, x: "-100%" },
+  // };
+
   const Upload = () => {
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+      const f: File = acceptedFiles[0];
+
+      console.log("File:", f);
+      setFile(f);
+      setObjectURL(URL.createObjectURL(f));
+      setUpload({ upload: true });
+    }, []);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      noClick: true,
+      onDrop,
+      accept: {
+        "video/mp4": ["video/mp4"],
+        "video/quicktime": ["video/quicktime"],
+      },
+    });
     return (
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col w-full h-full p-10"
-      >
-        <div className="flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5">
-          <div className="w-full h-[50%] flex flex-col items-center ">
-            <LucideUploadCloud className="w-48 h-48 " />
+      <>
+        <form className="flex flex-col w-full h-full p-10 space-y-2">
+          <div className="flex w-full justify-start ">
+            <h2 className=" font-semibold">
+              Select or record a video to submit
+            </h2>
           </div>
+          <Separator className="text-muted-foreground my-2" />
+          <div
+            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg space-y-5 ${
+              isDragActive ? "border-2 border-dashed border-primary" : ""
+            }`}
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} style={{ display: "none" }} />
 
-          <div className="flex flex-row gap-3 w-full justify-center pr-7">
-            <input
-              id="file-input"
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleSubmit}
-              accept="video/mp4, video/quicktime"
-            />
-            <div className=" flex justify-center">
-              <Button onClick={handleUploadClick} className="">
-                Choose File
-              </Button>
-            </div>
-            <div className="flex justify-center">
-              <Button onClick={() => setRecord(true)}>Record</Button>
-            </div>
-          </div>
-          <Separator />
-          <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
-            <div className="font-semibold text-base">Accepted filetypes:</div>
+            {isDragActive ? (
+              <div>Drop your video here</div>
+            ) : (
+              <div className="flex flex-col space-y-5">
+                <div className="w-full flex flex-col items-center ">
+                  <LucideUploadCloud className="w-48 h-48 " />
+                </div>
+                <div className="flex flex-row gap-3 w-full justify-center">
+                  <input
+                    id="file-input"
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleSubmit}
+                    accept="video/mp4, video/quicktime"
+                  />
 
-            <div className="text-sm text-center text-muted-foreground">
-              {" "}
-              MP4, MOV
-            </div>
+                  <div className="flex flex-col space-y-4 ">
+                    <div className=" flex justify-center space-x-4 pr-7">
+                      <Button onClick={handleUploadClick} className="">
+                        Choose File
+                      </Button>
+                      <Button onClick={() => setRecord(true)}>Record</Button>
+                    </div>
+                    <div className="font-semibold text-center">
+                      ...or drag and drop a video here
+                    </div>
+                    <div className=" text-center">Accepted filetypes:</div>
+
+                    <div className="text-sm text-center text-muted-foreground">
+                      {" "}
+                      MP4, MOV
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      </form>
+        </form>
+      </>
     );
   };
 
@@ -520,66 +590,73 @@ export default function SubmitDisplay({
     );
   };
 
-  const ShowRequest = ({ selected }: { selected: Requests }) => {
+  const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
     return (
       <>
         <div className="h-full">
           <div className="flex items-start p-4">
-            <div className="flex items-start gap-4 text-sm">
+            <div className="flex items-start gap-4 text-sm max-w-[70%]">
               <Avatar>
-                <AvatarImage alt={selected?.requesterEmail} />
+                <AvatarImage alt={selected?.requester.givenName} />
                 <AvatarFallback>
-                  {selected?.requesterEmail
+                  {selected?.requester.givenName
                     .split(" ")
                     .map((chunk) => chunk[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid gap-1">
+              <div className="grid gap-1 text-ellipsis ">
                 <div className="font-semibold">
-                  {substring(selected?.requestTitle, 30)}
+                  {selected?.requestDetails.requestTitle}
+                </div>
+                <div className="line-clamp-3 text-xs text-ellipsis ">
+                  <span className="font-medium">From: </span>
+                  {selected?.requester.givenName}{" "}
+                  {selected?.requester.familyName}{" "}
+                </div>
+                <div className="line-clamp-3 text-xs text-ellipsis  ">
+                  <span className="font-medium ">Email: </span>
+                  {selected?.requestDetails.requesterEmail}
                 </div>
                 <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">From:</span>{" "}
-                  <div>{substring(selected?.requestTitle, 50)}</div>
-                </div>
-                <div className="line-clamp-3 text-xs">
-                  <span className="font-medium">From:</span> Jan Dhillon
-                </div>
-
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Reply-To:</span>{" "}
-                  {substring(selected?.requesterEmail, 50)}
-                </div>
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Due:</span>{" "}
-                  {format(new Date(selected.dueDate), "PPpp")}
+                  <span className="font-medium">Due: </span>
+                  {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
                 </div>
               </div>
             </div>
-            {selected.creationDate && (
+            {selected.requestDetails.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {format(new Date(selected.creationDate), "PPpp")}
+                {format(
+                  new Date(selected.requestDetails.creationDate),
+                  "PPP, p"
+                )}
               </div>
             )}
           </div>
           <Separator />
-          <div className="flex  p-4 overflow-scroll">
-            <div className="flex-1 whitespace-pre-wrap text-sm max-h-[400px] ">
-              {selected?.description}
+          <div className="flex  p-4 overflow-scroll max-h-[65%]">
+            <div className="flex-1 whitespace-pre-wrap text-sm ">
+              {selected?.requestDetails.description}
             </div>
           </div>
         </div>
-        <Separator />
-        <div className=" flex justify-end w-full p-5 pt-7">
-          <Button
-            size="lg"
-            className=" mb-16"
-            onClick={() => setUpload(true)}
-            disabled={!canUpload}
-          >
-            <p className="font-semibold">Upload</p>
-          </Button>
+
+        <div className="absolute bottom-10 right-10">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="lg"
+                onClick={() => setUpload({ upload: true })}
+                disabled={!canUpload}
+                variant={"ghost"}
+                style={{ display: "flex" }}
+                className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+              >
+                <UploadIcon className="h-8 w-8 " />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Upload Video</TooltipContent>
+          </Tooltip>
         </div>
       </>
     );
@@ -601,37 +678,111 @@ export default function SubmitDisplay({
     );
   };
 
+  const ViewProcessedVideo = ({
+    selected,
+  }: {
+    selected: EnrichedSubmissions;
+  }) => {
+    return (
+      <div className="h-full w-full">
+        <div className="flex items-start p-4">
+          <div className="flex items-start gap-4 text-sm max-w-[70%]">
+            <Avatar>
+              <AvatarImage alt={selected?.requester.givenName} />
+              <AvatarFallback>
+                {selected?.requester.givenName
+                  .split(" ")
+                  .map((chunk) => chunk[0])
+                  .join("")}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid gap-1 text-ellipsis ">
+              <div className="font-semibold">
+                {selected?.requestDetails.requestTitle}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis ">
+                <span className="font-medium">From: </span>
+                {selected?.requester.givenName} {selected?.requester.familyName}{" "}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis  ">
+                <span className="font-medium ">Email: </span>
+                {selected?.requestDetails.requesterEmail}
+              </div>
+              <div className="line-clamp-1 text-xs">
+                <span className="font-medium">Due: </span>
+                {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
+              </div>
+            </div>
+          </div>
+          {selected.requestDetails.creationDate && (
+            <div className="ml-auto text-xs text-muted-foreground">
+              {format(new Date(selected.requestDetails.creationDate), "PPP, p")}
+            </div>
+          )}
+        </div>
+        <Separator />
+
+        <div className="flex flex-col container pt-5">
+          <div>
+            <VideoPlayer videoUrl={processedVideo} />
+          </div>
+
+          <div className="flex justify-start items-center space-x-3 p-3">
+            <div className="absolute bottom-10 right-10">
+              <Link href={processedVideo || ""}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="lg"
+                      disabled={!processedVideo}
+                      variant={"ghost"}
+                      style={{ display: "flex" }}
+                      className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+                    >
+                      <DownloadCloud className="h-8 w-8 " />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Download Video</TooltipContent>
+                </Tooltip>
+              </Link>
+            </div>
+            {selected.submittedDate && (
+              <div className="text-sm">
+                Submitted on: {selected?.submittedDate.toISOString()}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-full flex-col">
       {/* <Toggle/> */}
       <div className="flex items-center p-2">
         {/* Toolbar states */}
-        {upload ? <Back /> : <Toolbar />}
+        {upload.upload ? <Back /> : <Toolbar />}
       </div>
       <Separator />
-      {selected ? (
+      {submissions ? (
         <div className="flex h-full flex-1 flex-col">
           {/*Show video */}
 
           {showingVideo &&
           getPresignedUrl &&
           getDownloadPresignedUrl &&
-          triggerJob &&
-          submissionId ? (
+          sendToService &&
+          submission &&
+          selected ? (
             <>
-              <div className="flex flex-col w-fit h-full">
-                <div className="flex p-3 flex-col">
-                  <div className="flex flex-col w-full h-full">
-                    <VideoPlayer
-                      videoUrl={processedVideo}
-                      filename={"Processed Video"}
-                    />
-                  </div>
-                </div>
-              </div>
+              {" "}
+              <ViewProcessedVideo selected={selected} />
             </>
-          ) : upload && getPresignedUrl && triggerJob && submissionId ? (
-            // Upload or record video
+          ) : upload.upload &&
+            getPresignedUrl &&
+            sendToService &&
+            submission ? (
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
@@ -656,19 +807,28 @@ export default function SubmitDisplay({
                 ) : file ? (
                   <DisplayUploadedVideo />
                 ) : (
+                  // <motion.nav
+                  //   animate={upload.upload ? true : false}
+                  //   variants={uploadVariants}
+                  // >
                   <Upload />
+                  // </motion.nav>
                 )}
               </div>
             </div>
-          ) : (
+          ) : selected ? (
             <ShowRequest selected={selected} />
+          ) : (
+            <div className="flex flex-col w-full h-full justify-center items-center space-y-3  text-muted-foreground">
+              <UploadCloud className="w-20 h-20" />
+              <div className="font-semibold">
+                No request selected to submit.
+              </div>
+            </div>
           )}
         </div>
       ) : (
-        <div className="h-full flex flex-col space-y-4 justify-center items-center text-muted-foreground">
-          <FileText className="h-20 w-20" />
-          <p className=" text-lg">No request selected.</p>
-        </div>
+        <PanelLoader />
       )}
     </div>
   );
