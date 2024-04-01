@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useRef, useState, ChangeEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,7 +43,7 @@ const profileFormSchema = z.object({
     })
     .refine(
       (files) => !files || acceptedImageFileTypes.includes(files?.[0]?.type),
-      "wrong type" 
+      "wrong type"
     ),
 });
 
@@ -56,12 +56,68 @@ export default function ProfileForm({
   userData,
   form,
   onSubmit,
+  getPresignedUrl,
+  getDownloadPresignedUrl,
 }: {
   userData: Users;
   form: any;
   onSubmit: Function;
+  getPresignedUrl?: (username: string) => Promise<string>;
+  getDownloadPresignedUrl?: (username: string) => Promise<string>;
 }) {
   // TODO: Work in progress
+  const email = userData.email;
+  // const email = "imightbejan@gmail.com";
+  const [username, extention] = email.split('.');
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
+  const [objectURL, setObjectURL] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: any) => {
+    setLoading(true);
+    e.preventDefault();
+    // setUpload(true);
+    const file = fileInputRef.current?.files?.[0];
+    setFile(file);
+    if (!file) {
+      console.error("No file selected");
+      // setUpload(false);
+      return;
+    }
+    const fileExt = file.name.split(".").pop();
+    console.log("File extension", fileExt);
+    setFileExt(fileExt);
+
+    const key = `${username}.${fileExt}`;
+    console.log(key);
+
+    if (username && getPresignedUrl) {
+      try {
+        const url = await getPresignedUrl(key);
+        const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
+              key
+            )}`,
+          },
+          body: file,
+        });
+        setObjectURL(URL.createObjectURL(file));
+        console.log("Upload successful");
+        setLoading(false);
+        return;
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
@@ -95,7 +151,13 @@ export default function ProfileForm({
             placeHolder={"Last Name"}
           ></LastNameInput>
           {/* TODO: ProfileImageInput */}
-          <ProfileImageInput form={form} isDisabled={false}></ProfileImageInput>
+          <ProfileImageInput
+            form={form}
+            userData={userData}
+            getPresignedUrl={getPresignedUrl}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
+            // onChange={handleSubmit}
+          ></ProfileImageInput>
           <div className="text-right gap-2">
             <AccountCancel></AccountCancel>
             <Button

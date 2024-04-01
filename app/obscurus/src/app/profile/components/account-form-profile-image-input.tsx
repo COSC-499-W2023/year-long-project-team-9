@@ -1,23 +1,39 @@
 import { Button } from "@/components/ui/button";
+import { Users } from "@obscurus/database/src/sql.generated";
 import {
   FormDescription,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useQueryState } from "nuqs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FileUp } from "lucide-react";
 import { Suspense, useEffect, useRef, useState, ChangeEvent } from "react";
 
-export default function ProfileImageInput({ form }: any) {
+export default function ProfileImageInput({
+  userData,
+  form,
+  getPresignedUrl,
+  getDownloadPresignedUrl,
+}: {
+  userData: Users;
+  form: any;
+  getPresignedUrl?: (username: string) => Promise<string>;
+  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+}) {
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const email = userData.email;
+  // const email = "imightbejan@gmail.com";
+  const [username, extention] = email.split('.');
 
   const handleSubmit = async (e: any) => {
     setLoading(true);
@@ -30,9 +46,36 @@ export default function ProfileImageInput({ form }: any) {
       // setUpload(false);
       return;
     }
-    // const fileExt = file.name.split(".").pop();
-    console.log("File extension", file);
+    const fileExt = file.name.split(".").pop();
+    console.log("File extension", fileExt);
     setFileExt(fileExt);
+
+    const key = `${username}.${fileExt}`;
+    console.log(key);
+
+    if (username && getPresignedUrl) {
+      try {
+        const url = await getPresignedUrl(key);
+        const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
+              key
+            )}`,
+          },
+          body: file,
+        });
+        setObjectURL(URL.createObjectURL(file));
+        console.log("Upload successful");
+        setLoading(false);
+        form.register("profileImage")(e.target.files[0]);
+        return;
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setLoading(false);
+      }
+    }
   };
 
   return (

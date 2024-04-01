@@ -17,6 +17,13 @@ async function Account() {
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);
   console.log("Collapsed", collapsed?.value);
+  console.log("getPresignedUrl", getPresignedUrl);
+  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+
+  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
+
+  console.log("wsApi", wsApi);
+
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
     collapsed && collapsed.value !== "undefined"
@@ -36,6 +43,9 @@ async function Account() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userData={userData}
+      getPresignedUrl={getPresignedUrl}
+      getDownloadPresignedUrl={getDownloadPresignedUrl}
+      websocketApiEndpoint={wsApi as string}
     />
   );
 }

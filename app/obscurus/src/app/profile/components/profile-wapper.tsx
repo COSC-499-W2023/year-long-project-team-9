@@ -24,7 +24,7 @@ const profileFormSchema = z.object({
     })
     .refine(
       (files) => !files || acceptedImageFileTypes.includes(files?.[0]?.type),
-      "wrong type" 
+      "wrong type"
     ),
 });
 
@@ -32,10 +32,16 @@ export default function ProfileWrapper({
   defaultLayout,
   defaultCollapsed,
   userData,
+  getPresignedUrl,
+  getDownloadPresignedUrl,
+  websocketApiEndpoint,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userData: Users;
+  getPresignedUrl?: (username: string) => Promise<string>;
+  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+  websocketApiEndpoint: string;
 }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
@@ -59,6 +65,8 @@ export default function ProfileWrapper({
           userData={userData}
           form={form}
           onSubmit={onSubmit}
+          getPresignedUrl={getPresignedUrl}
+          getDownloadPresignedUrl={getDownloadPresignedUrl}
         ></ProfileForm>
       }
       secondPanel={<ProfileDisplay form={form}></ProfileDisplay>}
