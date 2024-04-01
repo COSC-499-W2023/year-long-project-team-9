@@ -8,6 +8,7 @@ import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
 import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
 import { getUserViaEmail } from "../functions/getUserData";
+import setSubmittedDate from "../functions/setSubmittedDate";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -18,17 +19,6 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  // console.log("sendToService", sendToService);
-  // console.log("updateStatus", updateStatus);
-  // console.log("getStatus", getStatus);
-  // console.log("getPresignedUrl", getPresignedUrl);
-  // console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
-  // console.log("getRequestsAndSubmissions", getRequestsAndSubmissionsByEmail);
-  // console.log("getUserViaEmail", getUserViaEmail);
-
-  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
-
-  // console.log("wsApi", wsApi);
 
   return (
     <SubmitWrapper
@@ -40,8 +30,8 @@ async function Submit() {
       getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      websocketApiEndpoint={wsApi as string}
       getUserViaEmail={getUserViaEmail}
+      setSubmittedDate={setSubmittedDate}
 
     />
   );

@@ -3,11 +3,11 @@ import { Submissions } from "../database/src/submissions";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
   const data = JSON.parse(event.body);
-  console.log("Updating submission status:", data);
-  await Submissions.setStatus(data.status, data.submissionId);
+  console.log("Setting submitted date:", data);
+  await Submissions.setSubmittedDate(data.submissionId);
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
-    body: "Updated submission status successfully!",
+    body: "Submitted date set successfully!",
   };
 };

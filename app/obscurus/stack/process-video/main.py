@@ -132,9 +132,6 @@ def integrate_audio(original_video, output_video, audio_path="/tmp/audio.mp3"):
     my_clip = VideoFileClip(original_video)
     my_clip.audio.write_audiofile(audio_path)
     temp_location = "{}-processed.mp4".format(original_video)
-
-    # Join output video with extracted audio
-
     print("output_video", output_video)
     print("temp_location", temp_location)
     videoclip = VideoFileClip("{}".format(output_video))
@@ -177,13 +174,11 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     while next_token or first_round:
         print(".", end="")
         first_round = False
-        # Query Rekognition for face detection results
         response = reko_client.get_face_detection(
             JobId=job_id,
             MaxResults=100,
             NextToken=next_token if next_token else "",
         )
-        # Iterate over each face detected and organize by timestamp
         for face in response["Faces"]:
             f = face["Face"]["BoundingBox"]
             t = str(face["Timestamp"])
@@ -199,38 +194,35 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 def convert_to_mp4(input_video, output_video):
     """
     Converts any video format to MP4 using FFmpeg.
-    Args:
-        input_video (str): Path to the source video.
-        output_video (str): Path where the output (MP4) video will be saved.
     """
     cmd = [
         "ffmpeg",
-        "-i",
-        input_video,
-        "-c:v",
-        "libx264",
-        "-crf",
-        "23",
-        "-preset",
-        "medium",
-        "-c:a",
-        "aac",
-        "-strict",
-        "-2",
-        "-movflags",
-        "+faststart",
-        output_video,
+        "-i", input_video,
+        "-c:v", "libx264",
+        "-crf", "23",
+        "-preset", "medium",
+        "-c:a", "aac",
+        "-b:a", "128k",
+        "-strict", "experimental",
+        "-movflags", "+faststart",
+        output_video
     ]
-    subprocess.run(cmd, check=True)
+
+    try:
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(f"Conversion to MP4 successful: {output_video}")
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error during conversion: {e}\nOutput: {e.output}\nError: {e.stderr}")
 
 
-def process_video(timestamps, response, submission_id):
+def process_video(timestamps, response, submission_id, file_extension):
     print("Processing video...")
-    input_name = f"{submission_id}.mp4"
+    input_name = f"{submission_id}.{file_extension}"
     output_name = f"{submission_id}-processed.mp4"
-    local_filename = "/tmp/{}".format(submission_id)
+    local_filename = "/tmp/{}".format(input_name)
     temp_output_filename = "/tmp/{}-temp.mp4".format(submission_id)
-    final_output_filename = "/tmp/{}-processed.mp4".format(submission_id)
+    final_output_filename = "/tmp/{}".format(output_name)
 
     s3.download_file(bucket_name, input_name, local_filename)
     print("Job response", response)
@@ -265,24 +257,28 @@ async def update_submission_status(status: str, submission_id: str):
         print(f"Status updated to {status} for submission {submission_id}")
 
 
-async def send_email_notification(email: str, subject: str, text: str):
-    print("Sending email notification...")
-    print(f"Email: {email}, Subject: {subject}, Text: {text}")
-    try:
-        res = requests.post(
-            f"{api_url}/sendEmail",
-            json={
-                "email": email,
-                "subject": subject,
-                "text": text,
-            },
-        )
-        if res.status_code != 200:
-            raise Exception("Error sending email")
-        print("Email sent")
+async def send_email_notification(email: str, subject: str, body: str):
+    ses_client = boto3.client("ses", region_name="us-west-2")
+    ses_client.send_email(
+        Source="no-reply@obscurus.me",
+        Destination={"ToAddresses": [email]},
+        Message={
+            "Subject": {"Data": subject},
+            "Body": {"Html": {"Data": body}}
+        }
+    )
+    print(f"Email notification sent to {email}")
 
-    except Exception as error:
-        print("Error sending email:", error)
+async def create_notification(status: str, submission_id: str, email: str):
+    async with websockets.connect(ws_api_url) as websocket:
+        message = json.dumps(
+            {
+                "action": "newNotification",
+                "data": {"notification": { "referenceId": submission_id, "type": "SUBMIT", "content": f"Submission status updated to {status}", "email": email} },
+            }
+        )
+        await websocket.send(message)
+        print(f"Status updated to {status} for submission {submission_id}")
 
 
 @app.get("/")
@@ -307,11 +303,12 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         await update_submission_status("PROCESSING", submission_id)
         await send_email_notification(
             recipient_email,
-            "obscurus - New Submission Request",
+            "obscurus",
             "Your video is being processed",
         )
+        await create_notification("PROCESSING", submission_id, recipient_email)
         background_tasks.add_task(
-            process_video_background, submission_id, file_extension
+            process_video_background, submission_id, file_extension, recipient_email
         )
         return {"message": "Video processing started"}
     except Exception as e:
@@ -321,15 +318,15 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             await send_email_notification(
                 recipient_email, submission_id, "Error processing video"
             )
+            await create_notification("FAILED", submission_id, recipient_email)
             return {"message": "Error processing video"}
         except Exception as error:
             print("Error updating status:", error)
             return {"message": "Error processing video"}
 
 
-async def process_video_background(submission_id, file_extension):
+async def process_video_background(submission_id, file_extension, recipient_email):
     original_key = f"{submission_id}.{file_extension}"
-    converted_key = original_key
     if file_extension.lower() != "mp4":
         converted_key = f"{submission_id}.mp4"
         local_webm_path = f"/tmp/{original_key}"
@@ -342,5 +339,11 @@ async def process_video_background(submission_id, file_extension):
     job_id = start_face_detection(converted_key)
     job_response = check_job_status(job_id)
     timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-    process_video(timestamps, job_response, submission_id)
+    process_video(timestamps, job_response, submission_id, file_extension)
     await update_submission_status("COMPLETED", submission_id)
+    await send_email_notification(
+        recipient_email,
+        "obscurus",
+        "Your video has been processed",
+    )
+    await create_notification("COMPLETED", submission_id, recipient_email)

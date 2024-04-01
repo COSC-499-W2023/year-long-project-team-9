@@ -10,6 +10,7 @@ import {
   Config,
   WebSocketApi,
   Service,
+  Topic,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 
@@ -201,6 +202,11 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/sendEmail.handler",
         },
       },
+      "POST /setSubmittedDate": {
+        function: {
+          handler: "stack/lambdas/setSubmittedDate.handler",
+        },
+      },
     },
   });
 
@@ -215,6 +221,7 @@ export default function SiteStack({ stack }: StackContext) {
       $disconnect: "stack/lambdas/chat/disconnect.main",
       sendmessage: "stack/lambdas/chat/sendMessage.main",
       updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
+      newNotification: "stack/lambdas/newNotification.main",
     },
   });
 
@@ -253,6 +260,15 @@ export default function SiteStack({ stack }: StackContext) {
   auth.attachPermissionsForAuthUsers(stack, [api]);
 
   api.bind([wsApi]);
+
+  // const requestSubmitted = new Topic(stack, "SubmissionCompleted", {
+  //   subscribers: {
+  //     sendEmails: "stack/lambdas/sendEmails.main",
+  //     createNotification: "stack/lambdas/shipping.main",
+  //   },
+  // });
+
+  // api.bind([requestSubmitted]);
 
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],
