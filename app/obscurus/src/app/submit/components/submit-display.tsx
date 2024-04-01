@@ -734,9 +734,6 @@ export default function SubmitDisplay({
                   <TooltipTrigger asChild>
                     <Button
                       size="lg"
-                      onClick={() => {
-                        processedVideo && window.open(processedVideo, "_blank");
-                      }}
                       disabled={!processedVideo}
                       variant={"ghost"}
                       style={{ display: "flex" }}
