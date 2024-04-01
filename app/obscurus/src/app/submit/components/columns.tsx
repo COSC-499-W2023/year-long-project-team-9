@@ -7,6 +7,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { getBadgeVariantFromStatus } from "./submit-list";
+import getDownloadPresignedUrl from "@/app/functions/getDownloadPresignedUrl";
 
 export const columns: ColumnDef<EnrichedSubmissions>[] = [
   {
@@ -100,10 +101,10 @@ export const columns: ColumnDef<EnrichedSubmissions>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Link"
+        title="Actions"
         className="text-center"
       />
     ),
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => <DataTableRowActions row={row}  getDownloadPresignedUrl={getDownloadPresignedUrl}/>,
   },
 ];

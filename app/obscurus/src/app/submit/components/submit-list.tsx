@@ -56,12 +56,15 @@ import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmis
 interface RequestsListProps {
   requests?: Requests[];
   submissions?: Submissions[];
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }
 
 export default function SubmitList({
   submissions,
+  getDownloadPresignedUrl
 }: {
   submissions: EnrichedSubmissions[];
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -77,11 +80,8 @@ export default function SubmitList({
         (submission) => submission.submissionId === item.submissionId
       );
       if (submission) {
-        console.log("Selected submission", submission);
         setSubmission({ ...submission, submissionId: submission.submissionId });
       }
-
-      console.log("Selected submission to list", submission);
     }
   };
 

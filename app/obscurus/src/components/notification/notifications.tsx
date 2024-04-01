@@ -23,8 +23,9 @@ import {
   useNotifications,
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
-import { all } from "axios";
-import { set } from "date-fns";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { motion } from 'framer-motion';
+
 
 export default function Notifications({
   readNotification,
@@ -58,6 +59,7 @@ export default function Notifications({
     if (!ws) return;
 
     ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
       const data = JSON.parse(event.data);
       if (data.action === "newNotification") {
         const newNotification = data.data.notification;
@@ -66,6 +68,9 @@ export default function Notifications({
           ...prevNotifications,
         ]);
         setHasUnreadNotifications(true);
+      } else {
+        console.log("Unknown action:", data.action);
+        return;
       }
     };
 
@@ -93,16 +98,16 @@ export default function Notifications({
           )}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80  shadow-lg rounded-lg">
+      <DropdownMenuContent className="w-80  shadow-lg rounded-lg bg-card p-0">
         <CardTitle>
           <div className="font-semibold text-base p-4">Notifications</div>
-          <Separator />
+          <Separator className="bg-accent w-full" />
         </CardTitle>
         <div className="overflow-y-auto max-h-96">
           {!notifcations ? (
             <div className="h-full p-4 flex flex-col space-y-4 justify-center items-center text-muted-foreground text-sm">
               <Bell size={20} />
-              <Separator />
+              <Separator className="bg-muted-foreground" />
               <div>No notifications</div>
             </div>
           ) : (
@@ -126,7 +131,7 @@ export default function Notifications({
                   >
                     <Button
                       variant={"ghost"}
-                      className="flex items-center justify-between w-full gap-3"
+                      className="flex items-center justify-between w-full gap-4 p-2"
                       onClick={() => readNotification(value.notificationId)}
                     >
                       <div>
@@ -140,7 +145,7 @@ export default function Notifications({
                           <User size={15} />
                         )}
                       </div>
-                      <div className="text-left w-full text-xs line-clamp-2">
+                      <div className="text-left w-full text-xs line-clamp-2 font-medium">
                         {value.content}
                       </div>
                       {!value.isRead && (
@@ -148,19 +153,29 @@ export default function Notifications({
                       )}
                     </Button>
                   </Link>
-                  <Button
-                    variant={"outline"}
-                    onClick={() => {
-                      deleteNotifications(value.notificationId);
-                      let newNotificationsArray = [...(notifcations as any)];
-                      newNotificationsArray.splice(index, 1);
-                      setNotifications(newNotificationsArray);
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Button
+                        variant={"outline"}
+                        className="hover:bg-destructive"
+                        onClick={() => {
+                          deleteNotifications(value.notificationId);
+                          let newNotificationsArray = [
+                            ...(notifcations as any),
+                          ];
+                          newNotificationsArray.splice(index, 1);
+                          setNotifications(newNotificationsArray);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Delete</TooltipContent>
+                  </Tooltip>
                 </div>
-                {index !== notifcations.length - 1 && <Separator />}
+                {index !== notifcations.length - 1 && (
+                  <Separator className=" bg-accent border-muted-foreground w-full" />
+                )}
               </>
             ))
           )}

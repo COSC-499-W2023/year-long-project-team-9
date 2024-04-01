@@ -15,7 +15,7 @@ export default function VideoPlayer({ videoUrl, filename }: any) {
       <Label htmlFor="video" className=" text-left text-base ">
         {filename}
       </Label>
-      <Separator className="text-muted-foreground" />
+      <Separator className="text-muted-foreground my-2" />
       <ReactPlayer
         url={videoUrl}
         controls={true}

@@ -1,6 +1,6 @@
 "use server";
 
-const url = process.env.NEXT_PUBLIC_SERVICE_URL || "https://d2eo40huyu1afd.cloudfront.net";
+const url = process.env.NEXT_PUBLIC_SERVICE_URL as string;
 
 const sendToService = async (
   submissionId: string,

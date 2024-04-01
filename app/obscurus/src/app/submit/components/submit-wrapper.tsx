@@ -26,6 +26,7 @@ export const SubmitWrapper = ({
   defaultLayout,
   defaultCollapsed,
   getUserViaEmail,
+  setSubmittedDate
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -34,16 +35,19 @@ export const SubmitWrapper = ({
     fileExt: string,
     email: string
   ) => Promise<string>;
-  updateStatus?: (status: string, submissionId: string) => Promise<string>;
+  updateStatus?: Function;
   getStatus?: (submissionId: string) => Promise<string>;
   getRequestsAndSubmissionsByEmail?: Function;
   defaultLayout: number[];
   defaultCollapsed: boolean;
   getUserViaEmail?: (email: string) => Promise<string>;
+  setSubmittedDate?: Function;
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
   const [loading, setLoading] = useState(false);
+
+  console.log(setSubmittedDate);
 
   const fetchUserData = async () => {
     setLoading(true);
@@ -101,8 +105,9 @@ export const SubmitWrapper = ({
       ws.send(message);
 
       if (updateStatus) {
+        console.log("Updating submission status:", status, submissionId);
         await updateStatus(status, submissionId);
-        status !== "TRASHED" && status != "ARCHIVED" && ws.send(
+        status !== "TRASHED" && status !== "ARCHIVED" && ws.send(
           JSON.stringify({
             action: "newNotification",
             data: {
@@ -134,7 +139,7 @@ export const SubmitWrapper = ({
         loading ? (
           <PanelLoader1 />
         ) :  submissions ? (
-          <SubmitList submissions={submissions} />
+          <SubmitList submissions={submissions} getDownloadPresignedUrl={getDownloadPresignedUrl} />
         ) : ( <PanelLoader1 />)
       }
       secondPanel={
@@ -149,6 +154,7 @@ export const SubmitWrapper = ({
             getStatus={getStatus}
             updateSubmissionStatus={updateSubmissionStatus}
             getUserViaEmail={getUserViaEmail}
+            setSubmittedDate={setSubmittedDate}
           />
         )
       }

@@ -15,6 +15,7 @@ import Footer from "./footer";
 import { Provider } from "jotai";
 import { create } from "domain";
 import { WebSocketProvider } from "./ws-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +45,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <WebSocketProvider url={wsUrl}>
+          <TooltipProvider delayDuration={0}>
             <div className=" flex-col md:flex h-screen ">
               <NavBar
                 readNotification={readNotification}
@@ -61,6 +63,7 @@ export default async function RootLayout({
           </div> */}
               {/* <Footer /> */}
             </div>
+            </TooltipProvider>
           </WebSocketProvider>
         </ThemeProvider>
       </body>

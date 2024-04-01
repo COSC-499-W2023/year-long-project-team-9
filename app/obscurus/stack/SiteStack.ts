@@ -190,6 +190,11 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/sendEmail.handler",
         },
       },
+      "POST /setSubmittedDate": {
+        function: {
+          handler: "stack/lambdas/setSubmittedDate.handler",
+        },
+      },
     },
   });
 

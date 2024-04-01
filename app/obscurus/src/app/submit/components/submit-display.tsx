@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import {
   Archive,
   Trash2,
@@ -22,29 +22,22 @@ import {
   ArrowBigDown,
   FileText,
   UploadIcon,
+  UploadCloud,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
 import Webcam from "react-webcam";
 import VideoPlayer from "./video-player";
 import { useRouter, useSearchParams } from "next/navigation";
-import { DotLoader } from "react-spinners";
-import { el } from "date-fns/locale";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { useRequest } from "@/app/hooks/use-request";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDropzone } from "react-dropzone";
 import { useAtom } from "jotai";
 import { atomWithToggle } from "../../atoms/atomWithToggle";
-import { get } from "http";
 import { useSubmissions } from "@/app/hooks/use-submissions";
-import { useRequests } from "@/app/hooks/use-requests";
-import substring from "@/app/functions/substring";
-import Loading from "./loading";
 import PanelLoader from "./panel-2-loader";
 import { useSubmission } from "@/app/hooks/use-submission";
 import { useUpload } from "@/app/hooks/use-upload";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { motion } from "framer-motion";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -55,15 +48,21 @@ export default function SubmitDisplay({
   updateSubmissionStatus,
   updateRequests,
   getUserViaEmail,
+  setSubmittedDate,
 }: {
   fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  sendToService?: (submissionId: string, fileExt: string, email: string) => Promise<string>;
+  sendToService?: (
+    submissionId: string,
+    fileExt: string,
+    email: string
+  ) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
   getUserViaEmail?: (email: string) => Promise<string>;
+  setSubmittedDate?: Function;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [upload, setUpload] = useUpload();
@@ -73,6 +72,7 @@ export default function SubmitDisplay({
 
   const submissionIdFromQuery = useSearchParams().get("submissionId");
 
+  console.log("Submission ID from query:", submissionIdFromQuery);
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -87,7 +87,12 @@ export default function SubmitDisplay({
       setSubmission({ submissionId: submissionIdFromQuery });
     }
     const fetchProcessedVideo = async () => {
-      if (selected?.status === "COMPLETED" && getDownloadPresignedUrl && selected.submissionId) {
+      console.log("Selected:", selected);
+      if (
+        selected?.status === "COMPLETED" &&
+        getDownloadPresignedUrl &&
+        selected.submissionId
+      ) {
         console.log("Fetching processed video");
         try {
           const videoUrl = await getDownloadPresignedUrl(selected.submissionId);
@@ -103,19 +108,14 @@ export default function SubmitDisplay({
     };
 
     fetchProcessedVideo();
-  }, [submissionIdFromQuery]);
-
-
-
+  }, [submissionIdFromQuery, selected, getDownloadPresignedUrl]);
 
   // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
 
   // console.log("URL", url);
 
   const canShowVideo =
-    selected &&
-    selected.status === "COMPLETED" &&
-    processedVideo;
+    selected && selected.status === "COMPLETED" && processedVideo;
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
@@ -162,9 +162,15 @@ export default function SubmitDisplay({
 
         if (response.ok) {
           console.log("Upload successful");
-          sendToService && selected &&
+          sendToService &&
+            selected &&
             submission.submissionId &&
-            sendToService(submission.submissionId, fileExt, selected?.requesteeEmail);
+            sendToService(
+              submission.submissionId,
+              fileExt,
+              selected?.requesteeEmail
+            );
+          setSubmittedDate && submission.submissionId && setSubmittedDate(submission.submissionId);
           toast({
             title: "Success",
             description: "Your video has been uploaded successfully.",
@@ -275,7 +281,7 @@ export default function SubmitDisplay({
     console.log("Archiving");
     if (submission && updateSubmissionStatus) {
       if (submission && updateSubmissionStatus) {
-        await updateSubmissionStatus("ARCHIVED", submission.submissionId);
+        await updateSubmissionStatus("COMPLETED", submission.submissionId);
         //console.log("Updated submission status");
         // updateRequests && updateRequests();
         // await fetchUserData();
@@ -301,7 +307,6 @@ export default function SubmitDisplay({
         });
         setSubmission({ submissionId: "" });
       }
-
     } else {
       console.error("Failed to update status");
     }
@@ -349,7 +354,12 @@ export default function SubmitDisplay({
           <Separator orientation="vertical" className="mx-2 h-8" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!selected} onClick={handleTrash}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!selected}
+                onClick={handleTrash}
+              >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
@@ -359,7 +369,7 @@ export default function SubmitDisplay({
         </div>
         <div className="flex ml-auto pr-1">
           <Button
-            variant={"ghost"}
+            variant={showingVideo ? "destructive" : "ghost"}
             onClick={() => setShowingVideo(!showingVideo)}
             disabled={!canShowVideo}
           >
@@ -429,43 +439,88 @@ export default function SubmitDisplay({
     );
   };
 
+  // const uploadVariants = {
+  //   true: { opacity: 1, x: 0 },
+  //   false: { opacity: 0, x: "-100%" },
+  // };
+
   const Upload = () => {
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+      const f: File = acceptedFiles[0];
+
+      console.log("File:", f);
+      setFile(f);
+      setObjectURL(URL.createObjectURL(f));
+      setUpload({ upload: true });
+    }, []);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      noClick: true,
+      onDrop,
+      accept: {
+        "video/mp4": ["video/mp4"],
+        "video/quicktime": ["video/quicktime"],
+      }
+    });
     return (
-      <form className="flex flex-col w-full h-full p-10">
-        <div className="flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5">
-          <div className="w-full h-[50%] flex flex-col items-center ">
-            <LucideUploadCloud className="w-48 h-48 " />
+      <>
+        <form className="flex flex-col w-full h-full p-10 space-y-2">
+          <div className="flex w-full justify-start ">
+            <h2 className=" font-semibold">
+              Select or record a video to submit
+            </h2>
           </div>
+          <Separator className="text-muted-foreground my-2" />
+          <div
+            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5 ${isDragActive ? "border-2 border-dashed border-primary" : ""}`}
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} style={{ display: "none" }} />
 
-          <div className="flex flex-row gap-3 w-full justify-center pr-7">
-            <input
-              id="file-input"
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleSubmit}
-              accept="video/mp4, video/quicktime"
-            />
-            <div className=" flex justify-center">
-              <Button onClick={handleUploadClick} className="">
-                Choose File
-              </Button>
-            </div>
-            <div className="flex justify-center">
-              <Button onClick={() => setRecord(true)}>Record</Button>
-            </div>
-          </div>
-          <Separator />
-          <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
-            <div className="font-semibold text-base">Accepted filetypes:</div>
+            {isDragActive ? (
+              <div>Drop your video here</div>
+            ) : (
+              <>
+                <div className="w-full h-[50%] flex flex-col items-center ">
+                  <LucideUploadCloud className="w-48 h-48 " />
+                </div>
+                <div className="flex flex-row gap-3 w-full justify-center pr-7 ">
+                  <input
+                    id="file-input"
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleSubmit}
+                    accept="video/mp4, video/quicktime"
+                  />
 
-            <div className="text-sm text-center text-muted-foreground">
-              {" "}
-              MP4, MOV
-            </div>
+                  <div className="flex flex-col space-y-4">
+                    <div className=" flex justify-center space-x-4">
+                      <Button onClick={handleUploadClick} className="">
+                        Choose File
+                      </Button>
+                      <Button onClick={() => setRecord(true)}>Record</Button>
+                    </div>
+                    <div>...or drag and drop a video here</div>
+                  </div>
+                </div>
+
+                <Separator />
+                <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
+                  <div className="font-semibold text-base">
+                    Accepted filetypes:
+                  </div>
+
+                  <div className="text-sm text-center text-muted-foreground">
+                    {" "}
+                    MP4, MOV
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-        </div>
-      </form>
+        </form>
+      </>
     );
   };
 
@@ -552,17 +607,16 @@ export default function SubmitDisplay({
                   {selected?.requestDetails.requestTitle}
                 </div>
                 <div className="line-clamp-3 text-xs text-ellipsis ">
-                  <span className="font-medium">From:{" "}</span>
+                  <span className="font-medium">From: </span>
                   {selected?.requester.givenName}{" "}
                   {selected?.requester.familyName}{" "}
                 </div>
                 <div className="line-clamp-3 text-xs text-ellipsis  ">
-                  <span className="font-medium ">
-                    Email:{" "}
-                  </span>{selected?.requestDetails.requesterEmail}
+                  <span className="font-medium ">Email: </span>
+                  {selected?.requestDetails.requesterEmail}
                 </div>
                 <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Due:{" "}</span>
+                  <span className="font-medium">Due: </span>
                   {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
                 </div>
               </div>
@@ -650,7 +704,10 @@ export default function SubmitDisplay({
                 </div>
               </div>
             </>
-          ) : upload.upload && getPresignedUrl && sendToService && submission ? (
+          ) : upload.upload &&
+            getPresignedUrl &&
+            sendToService &&
+            submission ? (
             <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
@@ -675,19 +732,24 @@ export default function SubmitDisplay({
                 ) : file ? (
                   <DisplayUploadedVideo />
                 ) : (
+                  // <motion.nav
+                  //   animate={upload.upload ? true : false}
+                  //   variants={uploadVariants}
+                  // >
                   <Upload />
+                  // </motion.nav>
                 )}
               </div>
             </div>
           ) : selected ? (
             <ShowRequest selected={selected} />
-          )
-          : (
+          ) : (
             <div className="flex flex-col w-full h-full justify-center items-center space-y-3  text-muted-foreground">
-              <FileText className="w-20 h-20" />
-              <div className="font-semibold">No request selected.</div>
+              <UploadCloud className="w-20 h-20" />
+              <div className="font-semibold">
+                No request selected to submit.
+              </div>
             </div>
-
           )}
         </div>
       ) : (

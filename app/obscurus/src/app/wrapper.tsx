@@ -54,7 +54,7 @@ export function Wrapper({
     return routeToLinkVariant[currentRoute] === title ? "default" : "ghost";
   };
   return (
-    <TooltipProvider delayDuration={0}>
+
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
@@ -135,7 +135,7 @@ export function Wrapper({
           <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
         </ResizablePanel>
       </ResizablePanelGroup>
-    </TooltipProvider>
+
   );
 }
 
