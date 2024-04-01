@@ -751,7 +751,8 @@ export default function SubmitDisplay({
             </div>
             {selected.submittedDate && (
               <div className="text-sm">
-                Submitted on: {selected?.submittedDate.toISOString()}
+                Submitted on:
+                {format(new Date(selected?.submittedDate), "PPP, p")}
               </div>
             )}
           </div>
