@@ -7,8 +7,15 @@ import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import getUserDataByEmail from "../functions/getUserDataByEmail";
 import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
+import { isSignedIn } from "../functions/authenticationMethods";
+import { redirect } from "next/navigation";
 
 async function Submit() {
+  const signedIn = await isSignedIn();
+  if (!signedIn) {
+    redirect("/");
+  }
+
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
@@ -27,21 +34,18 @@ async function Submit() {
 
   console.log("wsApi", wsApi);
 
-
   return (
-
-      <SubmitWrapper
-        getPresignedUrl={getPresignedUrl}
-        getDownloadPresignedUrl={getDownloadPresignedUrl}
-        triggerJob={triggerJob}
-        updateStatus={updateStatus}
-        getStatus={getStatus}
-        getUserDataByEmail={getUserDataByEmail}
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        websocketApiEndpoint={wsApi as string}
-      />
-
+    <SubmitWrapper
+      getPresignedUrl={getPresignedUrl}
+      getDownloadPresignedUrl={getDownloadPresignedUrl}
+      triggerJob={triggerJob}
+      updateStatus={updateStatus}
+      getStatus={getStatus}
+      getUserDataByEmail={getUserDataByEmail}
+      defaultLayout={defaultLayout}
+      defaultCollapsed={defaultCollapsed}
+      websocketApiEndpoint={wsApi as string}
+    />
   );
 }
 
