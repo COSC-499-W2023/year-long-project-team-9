@@ -23,6 +23,8 @@ import {
   FileText,
   UploadIcon,
   UploadCloud,
+  Download,
+  DownloadCloud,
 } from "lucide-react";
 import { format, set, sub } from "date-fns";
 import Webcam from "react-webcam";
@@ -170,7 +172,9 @@ export default function SubmitDisplay({
               fileExt,
               selected?.requesteeEmail
             );
-          setSubmittedDate && submission.submissionId && setSubmittedDate(submission.submissionId);
+          setSubmittedDate &&
+            submission.submissionId &&
+            setSubmittedDate(submission.submissionId);
           toast({
             title: "Success",
             description: "Your video has been uploaded successfully.",
@@ -460,7 +464,7 @@ export default function SubmitDisplay({
       accept: {
         "video/mp4": ["video/mp4"],
         "video/quicktime": ["video/quicktime"],
-      }
+      },
     });
     return (
       <>
@@ -472,7 +476,9 @@ export default function SubmitDisplay({
           </div>
           <Separator className="text-muted-foreground my-2" />
           <div
-            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg p-16 space-y-5 ${isDragActive ? "border-2 border-dashed border-primary" : ""}`}
+            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg space-y-5 ${
+              isDragActive ? "border-2 border-dashed border-primary" : ""
+            }`}
             {...getRootProps()}
           >
             <input {...getInputProps()} style={{ display: "none" }} />
@@ -480,11 +486,11 @@ export default function SubmitDisplay({
             {isDragActive ? (
               <div>Drop your video here</div>
             ) : (
-              <>
-                <div className="w-full h-[50%] flex flex-col items-center ">
+              <div className="flex flex-col space-y-5">
+                <div className="w-full flex flex-col items-center ">
                   <LucideUploadCloud className="w-48 h-48 " />
                 </div>
-                <div className="flex flex-row gap-3 w-full justify-center pr-7 ">
+                <div className="flex flex-row gap-3 w-full justify-center">
                   <input
                     id="file-input"
                     type="file"
@@ -494,29 +500,25 @@ export default function SubmitDisplay({
                     accept="video/mp4, video/quicktime"
                   />
 
-                  <div className="flex flex-col space-y-4">
-                    <div className=" flex justify-center space-x-4">
+                  <div className="flex flex-col space-y-4 ">
+                    <div className=" flex justify-center space-x-4 pr-7">
                       <Button onClick={handleUploadClick} className="">
                         Choose File
                       </Button>
                       <Button onClick={() => setRecord(true)}>Record</Button>
                     </div>
-                    <div>...or drag and drop a video here</div>
+                    <div className="font-semibold text-center">
+                      ...or drag and drop a video here
+                    </div>
+                    <div className=" text-center">Accepted filetypes:</div>
+
+                    <div className="text-sm text-center text-muted-foreground">
+                      {" "}
+                      MP4, MOV
+                    </div>
                   </div>
                 </div>
-
-                <Separator />
-                <div className="flex flex-col space-y-2 items-center text-sm justify-center w-full">
-                  <div className="font-semibold text-base">
-                    Accepted filetypes:
-                  </div>
-
-                  <div className="text-sm text-center text-muted-foreground">
-                    {" "}
-                    MP4, MOV
-                  </div>
-                </div>
-              </>
+              </div>
             )}
           </div>
         </form>
@@ -675,6 +677,84 @@ export default function SubmitDisplay({
     );
   };
 
+  const ViewProcessedVideo = ({
+    selected,
+  }: {
+    selected: EnrichedSubmissions;
+  }) => {
+    return (
+      <div className="h-full w-full">
+        <div className="flex items-start p-4">
+          <div className="flex items-start gap-4 text-sm max-w-[70%]">
+            <Avatar>
+              <AvatarImage alt={selected?.requester.givenName} />
+              <AvatarFallback>
+                {selected?.requester.givenName
+                  .split(" ")
+                  .map((chunk) => chunk[0])
+                  .join("")}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid gap-1 text-ellipsis ">
+              <div className="font-semibold">
+                {selected?.requestDetails.requestTitle}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis ">
+                <span className="font-medium">From: </span>
+                {selected?.requester.givenName} {selected?.requester.familyName}{" "}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis  ">
+                <span className="font-medium ">Email: </span>
+                {selected?.requestDetails.requesterEmail}
+              </div>
+              <div className="line-clamp-1 text-xs">
+                <span className="font-medium">Due: </span>
+                {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
+              </div>
+            </div>
+          </div>
+          {selected.requestDetails.creationDate && (
+            <div className="ml-auto text-xs text-muted-foreground">
+              {format(new Date(selected.requestDetails.creationDate), "PPP, p")}
+            </div>
+          )}
+        </div>
+        <Separator />
+
+        <div className="flex flex-col container pt-5">
+          <div>
+            <VideoPlayer videoUrl={processedVideo} />
+          </div>
+
+          <div className="flex justify-start items-center space-x-3 p-3">
+            <div className="absolute bottom-10 right-10">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="lg"
+                    onClick={() => { processedVideo && window.open(processedVideo, "_blank")}}
+                    disabled={!processedVideo}
+                    variant={"ghost"}
+                    style={{ display: "flex" }}
+                    className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+                  >
+                    <DownloadCloud className="h-8 w-8 " />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download Video</TooltipContent>
+              </Tooltip>
+            </div>
+            {selected.submittedDate && (
+              <div className="text-sm">
+                Submitted on: {selected?.submittedDate.toISOString()}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-full flex-col">
       {/* <Toggle/> */}
@@ -691,18 +771,11 @@ export default function SubmitDisplay({
           getPresignedUrl &&
           getDownloadPresignedUrl &&
           sendToService &&
-          submission ? (
+          submission &&
+          selected ? (
             <>
-              <div className="flex flex-col w-fit h-full">
-                <div className="flex p-3 flex-col">
-                  <div className="flex flex-col w-full h-full">
-                    <VideoPlayer
-                      videoUrl={processedVideo}
-                      filename={"Processed Video"}
-                    />
-                  </div>
-                </div>
-              </div>
+              {" "}
+              <ViewProcessedVideo selected={selected} />
             </>
           ) : upload.upload &&
             getPresignedUrl &&

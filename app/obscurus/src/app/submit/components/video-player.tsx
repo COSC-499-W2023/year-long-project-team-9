@@ -7,15 +7,18 @@ import { Label } from "@/components/ui/label";
 import { LucideLoader2 } from "lucide-react";
 import { cn } from "../../functions/utils";
 
-export default function VideoPlayer({ videoUrl, filename }: any) {
+export default function VideoPlayer({
+  videoUrl,
+  filename,
+}: any) {
   console.log("videoUrl in video-player", videoUrl);
   console.log("filename in video-player", filename);
   return (
-    <div className="flex h-full flex-col rounded-md ">
+    <div className="flex h-full flex-col ">
       <Label htmlFor="video" className=" text-left text-base ">
         {filename}
       </Label>
-      <Separator className="text-muted-foreground my-2" />
+      {filename && <Separator className="text-muted-foreground my-2" />}
       <ReactPlayer
         url={videoUrl}
         controls={true}
