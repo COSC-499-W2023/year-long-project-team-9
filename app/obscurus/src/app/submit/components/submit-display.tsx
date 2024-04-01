@@ -40,6 +40,7 @@ import { useSubmission } from "@/app/hooks/use-submission";
 import { useUpload } from "@/app/hooks/use-upload";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -728,21 +729,25 @@ export default function SubmitDisplay({
 
           <div className="flex justify-start items-center space-x-3 p-3">
             <div className="absolute bottom-10 right-10">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="lg"
-                    onClick={() => { processedVideo && window.open(processedVideo, "_blank")}}
-                    disabled={!processedVideo}
-                    variant={"ghost"}
-                    style={{ display: "flex" }}
-                    className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
-                  >
-                    <DownloadCloud className="h-8 w-8 " />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Download Video</TooltipContent>
-              </Tooltip>
+              <Link href={processedVideo || ""}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="lg"
+                      onClick={() => {
+                        processedVideo && window.open(processedVideo, "_blank");
+                      }}
+                      disabled={!processedVideo}
+                      variant={"ghost"}
+                      style={{ display: "flex" }}
+                      className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+                    >
+                      <DownloadCloud className="h-8 w-8 " />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Download Video</TooltipContent>
+                </Tooltip>
+              </Link>
             </div>
             {selected.submittedDate && (
               <div className="text-sm">
