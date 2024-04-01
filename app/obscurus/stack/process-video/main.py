@@ -331,8 +331,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 
 async def process_video_background(submission_id, file_extension, recipient_email):
     original_key = f"{submission_id}.{file_extension}"
-    converted_key = original_key
-    if file_extension.lower() == "mp4":
+    if file_extension.lower() == "webm":
         converted_key = f"{submission_id}.mp4"
         local_webm_path = f"/tmp/{original_key}"
         s3.download_file(bucket_name, original_key, local_webm_path)
