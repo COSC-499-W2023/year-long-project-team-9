@@ -48,11 +48,6 @@ const profileFormSchema = z.object({
 });
 
 export default function ProfileForm({
-  // toast({
-  //   title: "Profile Updated Successfully",
-  //   description: "",
-  // });
-
   userData,
   form,
   onSubmit,
