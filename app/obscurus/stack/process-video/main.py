@@ -193,17 +193,12 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def convert_to_mp4(input_video, output_video):
     """
-    Converts any video format to MP4 using FFmpeg, ensuring compatibility with
-    a wide range of devices by specifying codecs and streamlining for fast start.
-
-    Args:
-        input_video (str): Path to the source video.
-        output_video (str): Path where the output (MP4) video will be saved.
+    Converts any video format to MP4 using FFmpeg.
     """
     cmd = [
         "ffmpeg",
         "-i", input_video,
-        "-c:v", "libx264"
+        "-c:v", "libx264",
         "-crf", "23",
         "-preset", "medium",
         "-c:a", "aac",
@@ -214,10 +209,11 @@ def convert_to_mp4(input_video, output_video):
     ]
 
     try:
-        subprocess.run(cmd, check=True)
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(f"Conversion to MP4 successful: {output_video}")
+        print(result.stdout)
     except subprocess.CalledProcessError as e:
-        print(f"Error during conversion: {e}")
+        print(f"Error during conversion: {e}\nOutput: {e.output}\nError: {e.stderr}")
 
 
 def process_video(timestamps, response, submission_id, file_extension):
@@ -331,7 +327,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 
 async def process_video_background(submission_id, file_extension, recipient_email):
     original_key = f"{submission_id}.{file_extension}"
-    if file_extension.lower() == "webm":
+    if file_extension.lower() != "mp4":
         converted_key = f"{submission_id}.mp4"
         local_webm_path = f"/tmp/{original_key}"
         s3.download_file(bucket_name, original_key, local_webm_path)
