@@ -66,58 +66,6 @@ export default function ProfileForm({
   getDownloadPresignedUrl?: (username: string) => Promise<string>;
 }) {
   // TODO: Work in progress
-  const email = userData.email;
-  const [username, extention] = email.split('.');
-  const [file, setFile] = useState<File | undefined>(undefined);
-  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
-  const [objectURL, setObjectURL] = useState<string | null>(null);
-
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleSubmit = async (e: any) => {
-    setLoading(true);
-    e.preventDefault();
-    // setUpload(true);
-    // const file = fileInputRef.current?.files?.[0];
-    const file = form.profileImage;
-    setFile(file);
-    if (!file) {
-      console.error("No file selected");
-      // setUpload(false);
-      return;
-    }
-    const fileExt = file.name.split(".").pop();
-    console.log("File extension", fileExt);
-    setFileExt(fileExt);
-
-    const key = `${username}.${fileExt}`;
-    console.log(key);
-
-    if (username && getPresignedUrl) {
-      try {
-        const url = await getPresignedUrl(key);
-        const response = await fetch(url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": file.type,
-            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
-              key
-            )}`,
-          },
-          body: file,
-        });
-        setObjectURL(URL.createObjectURL(file));
-        console.log("Upload successful");
-        setLoading(false);
-        return;
-      } catch (error) {
-        console.error("Upload failed:", error);
-        setLoading(false);
-      }
-    }
-  };
-
   return (
     <div className="overflow-auto p-4">
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
