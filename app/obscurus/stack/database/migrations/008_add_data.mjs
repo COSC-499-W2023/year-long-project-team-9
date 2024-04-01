@@ -140,7 +140,7 @@ export async function up(db) {
         requestId: "7b6f2f94-03b0-4730-a017-46d36d3a5f17",
         requestTitle: "New English Assignment",
         requesterEmail: "imightbejan@gmail.com",
-        grouping: null,
+        grouping: "ARCHIVED",
         description: "Please prepare an essay on the impact of social media.",
         blurred: false,
         creationDate: new Date("2024-03-20"),
@@ -313,7 +313,7 @@ export async function up(db) {
         submissionId: "45d06ee3-7cdc-4530-a78d-a1a93cf2c0de",
         requesteeEmail:
           "1wWfnvBJbh6e8R5W8XBkEBp6omQViOAy4HI69QBa07o964Q1G70DSF2tHArTr3HCdoUvfoqcMyfaBm4Wbkc8s6bZhd3cevF7Mk86MsOADZGJv5Da8CStRXcrDWAPYcAwtoxaDJDM40S2Es04r3xL3hYYa23Xi4WqPMJhoemULqSatXImQql49GIg7GQMo1vy4E7cx6Kri668zEzUseSfR6VbMCngNEBTe82nyPzRjcdyBy1eK2QDWsWtt35aYY1uI2Asw3TiebVTMu2GHGbMJipODnKqB5eC0NVkDrzHf990S7UOquu2@example.com",
-        status: "TODO",
+        status: "ARCHIVED",
         isRead: true,
         submittedDate: null,
         requestId: "af45472d-21c4-4b1a-b536-74704418e17b",
@@ -412,7 +412,7 @@ export async function up(db) {
         isRead: false,
         submittedDate: null, // Still in progress
         requestId: "c36871fd-6baf-40f3-b932-acb433da5d52",
-      }
+      },
     ])
     .execute();
 

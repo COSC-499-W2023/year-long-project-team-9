@@ -28,6 +28,8 @@ export default function CreateWrapper({
       userEmail: userData.email,
       videoProcessing: true,
       clientEmail: [{ email: "" }],
+      firstName: userData.givenName,
+      lastName: userData.familyName,
     },
   });
 

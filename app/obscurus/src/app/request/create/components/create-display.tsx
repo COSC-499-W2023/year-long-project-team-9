@@ -79,11 +79,15 @@ export default function CreateDisplay({
       </div>
       <Separator />
       <div className="flex h-full flex-1 flex-col">
-        <div className="flex items-start p-4">
+        <div className="flex items-start p-4 gap-2">
           <Avatar>
             <AvatarImage />
             <AvatarFallback>
-              {userData.email
+              {userData.givenName
+                .split(" ")
+                .map((chunk) => chunk[0])
+                .join("")}
+              {userData.familyName
                 .split(" ")
                 .map((chunk) => chunk[0])
                 .join("")}
@@ -96,6 +100,9 @@ export default function CreateDisplay({
             <div className="text-xs line-clamp-1">
               From: {userData.givenName} {userData.familyName} ({userData.email}
               )
+            </div>
+            <div className="text-xs line-clamp-1">
+              Email: ({userData.email})
             </div>
             <div className="text-xs">
               <HoverCard>
@@ -139,7 +146,7 @@ export default function CreateDisplay({
               Due Date:{" "}
               {form.watch("dueDate") === undefined
                 ? "Due Date"
-                : format(form.watch("dueDate"), "PPpp")}
+                : format(new Date(form.watch("dueDate")), "PPpp")}
             </div>
           </div>
           <div className="ml-auto text-xs text-muted-foreground">
@@ -147,14 +154,14 @@ export default function CreateDisplay({
           </div>
         </div>
         <Separator />
-        <ScrollArea>
+        <div>
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm mb-20 break-all">
             {/* <p>
               {form.getValues("description") === ""
                 ? "description"
                 : form.getValues("description")}
             </p> */}
-            <div className="overflow-auto text-sm">
+            <div className="overflow-y-auto text-sm">
               {form.watch("description") ? (
                 form.getValues("description") === "" ? (
                   "Description"
@@ -166,7 +173,7 @@ export default function CreateDisplay({
               )}
             </div>
           </div>
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );
