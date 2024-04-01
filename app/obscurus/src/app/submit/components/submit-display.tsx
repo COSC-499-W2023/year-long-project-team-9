@@ -655,7 +655,7 @@ export default function SubmitDisplay({
                 style={{ display: "flex" }}
                 className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
               >
-                <UploadIcon className="h-8 w-8 " />
+                <UploadCloud className="h-8 w-8 " />
               </Button>
             </TooltipTrigger>
             <TooltipContent>Upload Video</TooltipContent>
@@ -704,7 +704,7 @@ export default function SubmitDisplay({
                 {selected?.requestDetails.requestTitle}
               </div>
               <div className="line-clamp-3 text-xs text-ellipsis ">
-                <span className="font-medium">From: </span>
+                <span className="font-medium">To: </span>
                 {selected?.requester.givenName} {selected?.requester.familyName}{" "}
               </div>
               <div className="line-clamp-3 text-xs text-ellipsis  ">
@@ -717,15 +717,15 @@ export default function SubmitDisplay({
               </div>
             </div>
           </div>
-          {selected.requestDetails.creationDate && (
+          {selected.submittedDate && (
             <div className="ml-auto text-xs text-muted-foreground">
-              {format(new Date(selected.requestDetails.creationDate), "PPP, p")}
+             Submitted: {format(new Date(selected.submittedDate), "PPP, p")}
             </div>
           )}
         </div>
         <Separator />
 
-        <div className="flex flex-col container pt-5">
+        <div className="flex flex-col container p-10">
           <div>
             <VideoPlayer videoUrl={processedVideo} />
           </div>
@@ -749,12 +749,12 @@ export default function SubmitDisplay({
                 </Tooltip>
               </Link>
             </div>
-            {selected.submittedDate && (
+            {/* {selected.submittedDate && (
               <div className="text-sm">
                 Submitted on:
                 {format(new Date(selected?.submittedDate), "PPP, p")}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
