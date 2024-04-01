@@ -24,8 +24,7 @@ import {
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { motion } from 'framer-motion';
-
+import { motion } from "framer-motion";
 
 export default function Notifications({
   readNotification,
@@ -92,7 +91,7 @@ export default function Notifications({
           </Button>
           {hasUnreadNotifications && (
             <div
-              className="absolute top-3 right-16 mt-2 h-2 w-2 rounded-full bg-blue-600  "
+              className="absolute top-3 right-32 mt-2 h-2 w-2 rounded-full bg-blue-600  "
               aria-label="Unread Notification"
             ></div>
           )}
