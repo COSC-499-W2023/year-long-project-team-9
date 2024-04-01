@@ -38,3 +38,12 @@ export function getStatus(submissionId: string) {
     .where("submissionId", "=", submissionId)
     .executeTakeFirst();
 }
+
+export function setSubmittedDate(submissionId: string) {
+  return SQL.DB.updateTable("submissions")
+    .set({
+      submittedDate: new Date(),
+    })
+    .where("submissionId", "=", submissionId)
+    .executeTakeFirst();
+}

@@ -1,12 +1,14 @@
 "use server";
 import { cookies } from "next/headers";
 import getPresignedUrl from "../functions/getPresignedUrl";
-import { triggerJob } from "../functions/triggerJob";
+import { sendToService } from "../functions/sendToService";
 import updateStatus from "../functions/updateStatus";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
-import getUserDataByEmail from "../functions/getUserDataByEmail";
 import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
+import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
+import { getUserViaEmail } from "../functions/getUserData";
+import setSubmittedDate from "../functions/setSubmittedDate";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -17,31 +19,21 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  console.log("triggerJob", triggerJob);
-  console.log("updateStatus", updateStatus);
-  console.log("getStatus", getStatus);
-  console.log("getPresignedUrl", getPresignedUrl);
-  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
-
-  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
-
-  console.log("wsApi", wsApi);
-
 
   return (
+    <SubmitWrapper
+      getPresignedUrl={getPresignedUrl}
+      getDownloadPresignedUrl={getDownloadPresignedUrl}
+      sendToService={sendToService}
+      updateStatus={updateStatus}
+      getStatus={getStatus}
+      getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
+      defaultLayout={defaultLayout}
+      defaultCollapsed={defaultCollapsed}
+      getUserViaEmail={getUserViaEmail}
+      setSubmittedDate={setSubmittedDate}
 
-      <SubmitWrapper
-        getPresignedUrl={getPresignedUrl}
-        getDownloadPresignedUrl={getDownloadPresignedUrl}
-        triggerJob={triggerJob}
-        updateStatus={updateStatus}
-        getStatus={getStatus}
-        getUserDataByEmail={getUserDataByEmail}
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        websocketApiEndpoint={wsApi as string}
-      />
-
+    />
   );
 }
 

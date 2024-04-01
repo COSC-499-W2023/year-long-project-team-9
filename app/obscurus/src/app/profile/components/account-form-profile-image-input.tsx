@@ -1,16 +1,29 @@
 import { Button } from "@/components/ui/button";
+import { Users } from "@obscurus/database/src/sql.generated";
 import {
   FormDescription,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useQueryState } from "nuqs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FileUp } from "lucide-react";
+import { Suspense, useEffect, useRef, useState, ChangeEvent } from "react";
 
-export default function ProfileImageInput({ form }: any) {
+export default function ProfileImageInput({
+  userData,
+  form,
+  getPresignedUrl,
+  getDownloadPresignedUrl,
+}: {
+  userData: Users;
+  form: any;
+  getPresignedUrl?: (username: string) => Promise<string>;
+  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+}) {
   return (
     <FormItem>
       <FormLabel>Profile Image</FormLabel>
@@ -34,7 +47,7 @@ export default function ProfileImageInput({ form }: any) {
           id="profileImageInput"
           accept="image/png, image/jpg, image/jpeg"
           hidden
-          {...form.register("profileImage")}
+        {...form.register("profileImage")}
         />
       </div>
       <FormDescription className="text-justify">

@@ -1,6 +1,3 @@
-import json
-import requests
-import json
 import boto3
 import os
 import time
@@ -8,23 +5,32 @@ import cv2
 import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
+from fastapi import (
+    FastAPI,
+    UploadFile,
+    File,
+    Form,
+    HTTPException,
+    WebSocket,
+    Request,
+    BackgroundTasks,
+)
+import requests
+import json
 import subprocess
-
+import websockets
+import asyncio
 
 # Configure AWS clients
 rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 print("init")
-# Environment Variables
+# ENVIRONMENT VARIABLES
 bucket_name = os.environ["BUCKET_NAME"]
-payload = json.loads(os.getenv("SST_PAYLOAD"))
-submission_id = payload["submissionId"]
-file_ext = "mp4"  # Set the expected file extension for all output files.
-print("submission_id: ", submission_id)
-input_name = f"{submission_id}.{payload['fileExt']}"  # Keep original file extension here for input purposes.
-output_name = f"{submission_id.split('.')[0]}-processed.{file_ext}"  # Output is always .mp4
 api_url = os.environ["API_URL"]
-print("API_URL", api_url)
+ws_api_url = os.environ["WS_API_URL"]
+rekognition = boto3.client("rekognition")
+s3 = boto3.client("s3")
 
 
 def anonymize_face_pixelate(image, blocks=10):
@@ -125,10 +131,7 @@ def integrate_audio(original_video, output_video, audio_path="/tmp/audio.mp3"):
     print("original_video", original_video)
     my_clip = VideoFileClip(original_video)
     my_clip.audio.write_audiofile(audio_path)
-    temp_location = "{}-processed.{}".format(original_video, file_ext)
-
-    # Join output video with extracted audio
-
+    temp_location = "{}-processed.mp4".format(original_video)
     print("output_video", output_video)
     print("temp_location", temp_location)
     videoclip = VideoFileClip("{}".format(output_video))
@@ -145,20 +148,16 @@ def integrate_audio(original_video, output_video, audio_path="/tmp/audio.mp3"):
     print("Complete")
 
 
-# payload = os.environ['SST_PAYLOAD']
-
-
-def start_face_detection():
+def start_face_detection(key):
     print("Running face detection...")
-    print("Bucket: " + bucket_name + ", Input Name: " + input_name)
     response = rekognition.start_face_detection(
-        Video={"S3Object": {"Bucket": bucket_name, "Name": input_name}},
+        Video={"S3Object": {"Bucket": bucket_name, "Name": key}},
     )
     return response["JobId"]
 
 
 def check_job_status(job_id):
-    print("Checking job status...")
+    print("Checking submission status...")
     while True:
         response = rekognition.get_face_detection(JobId=job_id)
         status = response["JobStatus"]
@@ -175,11 +174,11 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     while next_token or first_round:
         print(".", end="")
         first_round = False
-        # Query Rekognition for face detection results
         response = reko_client.get_face_detection(
-            JobId=job_id, MaxResults=100, NextToken=next_token if next_token else ""
+            JobId=job_id,
+            MaxResults=100,
+            NextToken=next_token if next_token else "",
         )
-        # Iterate over each face detected and organize by timestamp
         for face in response["Faces"]:
             f = face["Face"]["BoundingBox"]
             t = str(face["Timestamp"])
@@ -192,58 +191,38 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     return final_timestamps, response
 
 
-def update_status(status, submission_id):
-    print("In update status")
-    print("status", status)
-    print("submission_id", submission_id)
-    try:
-        response = requests.post(
-            f"{api_url}/updateStatus",
-            json={
-                "submissionId": submission_id,
-                "status": status,
-            },
-        )
-        print("Response", response)
-        print("Status updated")
-
-    except Exception as error:
-        print("Error updating status:", error)
-
-
 def convert_to_mp4(input_video, output_video):
     """
     Converts any video format to MP4 using FFmpeg.
-    Args:
-        input_video (str): Path to the source video.
-        output_video (str): Path where the output (MP4) video will be saved.
     """
     cmd = [
         "ffmpeg",
-        "-i",
-        input_video,
-        "-c:v",
-        "libx264",
-        "-crf",
-        "23",
-        "-preset",
-        "medium",
-        "-c:a",
-        "aac",
-        "-strict",
-        "-2",
-        "-movflags",
-        "+faststart",
-        output_video,
+        "-i", input_video,
+        "-c:v", "libx264",
+        "-crf", "23",
+        "-preset", "medium",
+        "-c:a", "aac",
+        "-b:a", "128k",
+        "-strict", "experimental",
+        "-movflags", "+faststart",
+        output_video
     ]
-    subprocess.run(cmd, check=True)
+
+    try:
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(f"Conversion to MP4 successful: {output_video}")
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error during conversion: {e}\nOutput: {e.output}\nError: {e.stderr}")
 
 
-def process_video(timestamps, response):
+def process_video(timestamps, response, submission_id, file_extension):
     print("Processing video...")
+    input_name = f"{submission_id}.{file_extension}"
+    output_name = f"{submission_id}-processed.mp4"
     local_filename = "/tmp/{}".format(input_name)
     temp_output_filename = "/tmp/{}-temp.mp4".format(submission_id)
-    final_output_filename = "/tmp/{}-processed.mp4".format(submission_id)
+    final_output_filename = "/tmp/{}".format(output_name)
 
     s3.download_file(bucket_name, input_name, local_filename)
     print("Job response", response)
@@ -252,11 +231,7 @@ def process_video(timestamps, response):
         timestamps, local_filename, temp_output_filename, response["VideoMetadata"]
     )
 
-    if file_ext.lower() != "mp4":
-        print("Converting video to MP4 format...")
-        convert_to_mp4(temp_output_filename, final_output_filename)
-    else:
-        os.rename(temp_output_filename, final_output_filename)
+    os.rename(temp_output_filename, final_output_filename)
 
     print("Integrating audio with video...")
     integrate_audio(local_filename, final_output_filename)
@@ -264,25 +239,111 @@ def process_video(timestamps, response):
     print("Uploading processed video to S3...")
     s3.upload_file(final_output_filename, bucket_name, output_name)
     print("Output file uploaded to S3")
+    return "Completed processing!"
 
 
-def main():
-    print("Running...")
-    update_status("PROCESSING", submission_id)
+app = FastAPI()
+
+
+async def update_submission_status(status: str, submission_id: str):
+    async with websockets.connect(ws_api_url) as websocket:
+        message = json.dumps(
+            {
+                "action": "updateSubmissionStatus",
+                "data": {"status": status, "submissionId": submission_id},
+            }
+        )
+        await websocket.send(message)
+        print(f"Status updated to {status} for submission {submission_id}")
+
+
+async def send_email_notification(email: str, subject: str, body: str):
+    ses_client = boto3.client("ses", region_name="us-west-2")
+    ses_client.send_email(
+        Source="no-reply@obscurus.me",
+        Destination={"ToAddresses": [email]},
+        Message={
+            "Subject": {"Data": subject},
+            "Body": {"Html": {"Data": body}}
+        }
+    )
+    print(f"Email notification sent to {email}")
+
+async def create_notification(status: str, submission_id: str, email: str):
+    async with websockets.connect(ws_api_url) as websocket:
+        message = json.dumps(
+            {
+                "action": "newNotification",
+                "data": {"notification": { "referenceId": submission_id, "type": "SUBMIT", "content": f"Submission status updated to {status}", "email": email} },
+            }
+        )
+        await websocket.send(message)
+        print(f"Status updated to {status} for submission {submission_id}")
+
+
+@app.get("/")
+async def root():
+    return {"message": "Root path"}
+
+
+@app.post("/process-video/")
+async def handle_process_vide(request: Request, background_tasks: BackgroundTasks):
     try:
-        job_id = start_face_detection()
-        job_response = check_job_status(job_id)
-        timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-        process_video(timestamps, job_response)
-        print("API_URL", api_url)
-        update_status("COMPLETED", submission_id)
-
-        print("Video processing completed")
+        data = await request.json()
+        submission_id = data.get("submission_id")
+        file_extension = data.get("file_extension")
+        recipient_email = data.get("email")
+        if not submission_id or not file_extension:
+            raise HTTPException(
+                status_code=400, detail="Missing submission_id or file_extension"
+            )
+        print(
+            f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}"
+        )
+        await update_submission_status("PROCESSING", submission_id)
+        await send_email_notification(
+            recipient_email,
+            "obscurus",
+            "Your video is being processed",
+        )
+        await create_notification("PROCESSING", submission_id, recipient_email)
+        background_tasks.add_task(
+            process_video_background, submission_id, file_extension, recipient_email
+        )
+        return {"message": "Video processing started"}
     except Exception as e:
-        print("Error", e)
-        update_status("FAILED", submission_id)
-        print("Failed to process video")
+        print(f"Error processing video: {e}")
+        try:
+            await update_submission_status("FAILED", submission_id)
+            await send_email_notification(
+                recipient_email, submission_id, "Error processing video"
+            )
+            await create_notification("FAILED", submission_id, recipient_email)
+            return {"message": "Error processing video"}
+        except Exception as error:
+            print("Error updating status:", error)
+            return {"message": "Error processing video"}
 
 
-if __name__ == "__main__":
-    main()
+async def process_video_background(submission_id, file_extension, recipient_email):
+    original_key = f"{submission_id}.{file_extension}"
+    if file_extension.lower() != "mp4":
+        converted_key = f"{submission_id}.mp4"
+        local_webm_path = f"/tmp/{original_key}"
+        s3.download_file(bucket_name, original_key, local_webm_path)
+        local_mp4_path = f"/tmp/{converted_key}"
+        convert_to_mp4(local_webm_path, local_mp4_path)
+        s3.upload_file(local_mp4_path, bucket_name, converted_key)
+        os.remove(local_webm_path)
+        os.remove(local_mp4_path)
+    job_id = start_face_detection(converted_key)
+    job_response = check_job_status(job_id)
+    timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
+    process_video(timestamps, job_response, submission_id, file_extension)
+    await update_submission_status("COMPLETED", submission_id)
+    await send_email_notification(
+        recipient_email,
+        "obscurus",
+        "Your video has been processed",
+    )
+    await create_notification("COMPLETED", submission_id, recipient_email)

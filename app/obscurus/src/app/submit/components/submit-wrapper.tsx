@@ -8,109 +8,127 @@ import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
 import { set } from "date-fns";
 import Loading from "./loading";
+import { Provider } from "jotai";
+import { c } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
+import { useSearchParams } from "next/navigation";
+import { useWebSocket } from "@/app/ws-provider";
+import PanelLoader from "./panel-1-loader";
+import PanelLoader1 from "./panel-1-loader";
+import PanelLoader2 from "./panel-2-loader";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
   getDownloadPresignedUrl,
-  triggerJob,
+  sendToService,
   updateStatus,
   getStatus,
-  getUserDataByEmail,
+  getRequestsAndSubmissionsByEmail,
   defaultLayout,
   defaultCollapsed,
-  websocketApiEndpoint,
+  getUserViaEmail,
+  setSubmittedDate
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-  triggerJob?: (submissionId: string, fileExt: string) => Promise<string>;
-  updateStatus?: (status: string, submissionId: string) => Promise<string>;
+  sendToService?: (
+    submissionId: string,
+    fileExt: string,
+    email: string
+  ) => Promise<string>;
+  updateStatus?: Function;
   getStatus?: (submissionId: string) => Promise<string>;
-  getUserDataByEmail?: (email: string) => Promise<any>;
+  getRequestsAndSubmissionsByEmail?: Function;
   defaultLayout: number[];
   defaultCollapsed: boolean;
-  websocketApiEndpoint: string;
+  getUserViaEmail?: (email: string) => Promise<string>;
+  setSubmittedDate?: Function;
 }) => {
-  const [requests, setRequests] = useRequests();
   const [submissions, setSubmissions] = useSubmissions();
-
-  const [socket, setSocket] = useState<WebSocket | null>(null);
-
+  const ws = useWebSocket();
   const [loading, setLoading] = useState(false);
+
+  console.log(setSubmittedDate);
 
   const fetchUserData = async () => {
     setLoading(true);
-    if (getUserDataByEmail) {
-      getUserDataByEmail("imightbejan@gmail.com")
-        .then((data) => {
-          console.log("User data:", data);
-          setRequests(data.requests);
-          setSubmissions(data.submissions);
-        })
-        .then(() => {
-          console.log("Requests:", requests);
-          console.log("Submissions:", submissions);
-        });
+    console.log("Fetching user data");
+    if (getRequestsAndSubmissionsByEmail) {
+      const data = await getRequestsAndSubmissionsByEmail(
+        "imightbejan@gmail.com"
+      );
+      console.log("User data:", data);
+      setSubmissions(data.submissions);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    const ws = new WebSocket(websocketApiEndpoint);
-    // const handleBeforeUnload = () => {
-    //   console.log("Page reloading or closing, disconnecting WebSocket");
-    //   ws.close();
-    // };
+    if (!ws) return;
 
-    ws.onopen = () => {
-      console.log("Connected to WebSocket");
-    };
-    // window.addEventListener("beforeunload", handleBeforeUnload);
-    setSocket(ws);
+    const handleWebSocketMessages = (event: any) => {
+      const { action, data } = JSON.parse(event.data);
 
-    fetchUserData();
-
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        setRequests(data.requests);
-      } catch {
-        console.log("Message data is not valid JSON");
+      switch (action) {
+        case "updateSubmissionStatus":
+          setSubmissions((currentSubmissions: any) =>
+            currentSubmissions.map((submission: any) =>
+              submission.submissionId === data.submissionId
+                ? { ...submission, status: data.newStatus }
+                : submission
+            )
+          );
+          break;
+        case "updateSubmissions":
+          setSubmissions(data.submissions);
+          break;
+        default:
+          break;
       }
     };
 
-    ws.onerror = (event) => {
-      console.error("WebSocket error:", event);
-    };
-
-    ws.onclose = () => {
-      console.log("Disconnected from WebSocket");
-    };
+    ws.addEventListener("message", handleWebSocketMessages);
 
     return () => {
-      ws.close();
-      console.log("WebSocket connection closed");
+      ws.removeEventListener("message", handleWebSocketMessages);
     };
-  }, []);
+  }, [ws]);
 
-  const updateSubmissionStatus = (status: string, submissionId: string) => {
-    if (socket) {
-      console.log("Sending updateSubmissionStatus message");
-      socket.send(
-        JSON.stringify({
-          action: "updateSubmissionStatus",
-          data: { status, submissionId },
-        })
-      );
-      console.log("Sent updateSubmissionStatus message");
+  const updateSubmissionStatus = async (
+    status: string,
+    submissionId: string
+  ) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
+        action: "updateSubmissionStatus",
+        data: { status, submissionId },
+      });
+      ws.send(message);
+
       if (updateStatus) {
-        updateStatus(status, submissionId);
+        console.log("Updating submission status:", status, submissionId);
+        await updateStatus(status, submissionId);
+        status !== "TRASHED" && status !== "ARCHIVED" && ws.send(
+          JSON.stringify({
+            action: "newNotification",
+            data: {
+              notification: {
+                referenceId: submissionId,
+                type: "SUBMIT",
+                content: `Submission status updated to ${status}`,
+                email: "imightbejan@gmail.com",
+              },
+            },
+          })
+        );
       }
-      console.log("Updated submission status");
     } else {
-      console.error("WebSocket not connected");
+      console.error("WebSocket not connected or not ready");
     }
   };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <Wrapper
@@ -118,19 +136,30 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-        loading ? ( <Loading /> ) :
-        <SubmitList requests={requests || []} submissions={submissions || []} />
+        loading ? (
+          <PanelLoader1 />
+        ) :  submissions ? (
+          <SubmitList submissions={submissions} getDownloadPresignedUrl={getDownloadPresignedUrl} />
+        ) : ( <PanelLoader1 />)
       }
       secondPanel={
-        <SubmitDisplay
-          fetchUserData={fetchUserData}
-          getPresignedUrl={getPresignedUrl}
-          getDownloadPresignedUrl={getDownloadPresignedUrl}
-          triggerJob={triggerJob}
-          getStatus={getStatus}
-          updateSubmissionStatus={updateSubmissionStatus}
-        />
+        loading ? (
+          <PanelLoader2 />
+        ) : (
+          <SubmitDisplay
+            fetchUserData={fetchUserData}
+            getPresignedUrl={getPresignedUrl}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
+            sendToService={sendToService}
+            getStatus={getStatus}
+            updateSubmissionStatus={updateSubmissionStatus}
+            getUserViaEmail={getUserViaEmail}
+            setSubmittedDate={setSubmittedDate}
+          />
+        )
       }
     />
   );
 };
+
+export default SubmitWrapper;

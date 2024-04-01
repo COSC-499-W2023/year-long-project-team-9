@@ -3,7 +3,7 @@ export type Status =
   | "COMPLETED"
   | "FAILED"
   | "TODO"
-  | "TRASH"
+  | "TRASHED"
   | "ARCHIVED";
 
 export type Grouping =
@@ -11,7 +11,7 @@ export type Grouping =
   | "COMPLETED"
   | "FAILED"
   | "TODO"
-  | "TRASH"
+  | "TRASHED"
   | "ARCHIVED";
 
 export type Type = "CHAT" | "REQUEST" | "SUBMIT" | "PROFILE";

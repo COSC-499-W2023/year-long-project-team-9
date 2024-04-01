@@ -11,18 +11,18 @@ export function list() {
 }
 
 export function insert(notification: Notifications) {
-  return "";
-  // return SQL.DB.insertInto("notifications")
-  //   .values({
-  //     notificationId: notification.notificationId,
-  //     userEmail: notification.userEmail,
-  //     type: notification.type,
-  //     creationDate: new Date(notification.creationDate),
-  //     content: notification.content,
-  //     isRead: notification.isRead,
-  //     isTrashed: notification.isTrashed,
-  //   })
-  //   .execute();
+  return SQL.DB.insertInto("notifications")
+    .values({
+      notificationId: notification.notificationId,
+      userEmail: notification.userEmail,
+      type: notification.type,
+      creationDate: new Date(notification.creationDate),
+      content: notification.content,
+      isRead: notification.isRead,
+      isTrashed: notification.isTrashed,
+      referenceId: notification.referenceId,
+    })
+    .execute();
 }
 
 export function updateNotificationDate(notification: Notifications) {

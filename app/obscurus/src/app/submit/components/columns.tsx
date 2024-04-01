@@ -1,97 +1,83 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
+import { statuses } from "../statuses";
+import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { getBadgeVariantFromStatus } from "./submit-list";
+import getDownloadPresignedUrl from "@/app/functions/getDownloadPresignedUrl";
 
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
-
-import { statuses } from "../statuses"
-import { SubmissionSchema } from "../schema"
-import { DataTableColumnHeader } from "./data-table-column-header"
-import { DataTableRowActions } from "./data-table-row-actions"
-import { Submissions } from "@obscurus/database/src/sql.generated"
-
-
-const substring = (str: string, len: number) => {
-  return str.substring(0, len) && str.length > len ? str + "..." : str;
-}
-
-export const columns: ColumnDef<Submissions>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       checked={
-  //         table.getIsAllPageRowsSelected() ||
-  //         (table.getIsSomePageRowsSelected() && "indeterminate")
-  //       }
-  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //       aria-label="Select all"
-  //       className="translate-y-[2px]"
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //       aria-label="Select row"
-  //       className="translate-y-[2px]"
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+export const columns: ColumnDef<EnrichedSubmissions>[] = [
   {
-    accessorKey: "title",
+    accessorKey: "requestTitle",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      // const label = labels.find((label) => label.value === row.original.submissionId)
-
       return (
         <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title") || "No title"}
+          <span className="max-w-[200px] truncate font-medium">
+            {row.original.requestDetails.requestTitle || "-"}
           </span>
         </div>
-      )
+      );
     },
   },
   {
-    accessorKey: "requesteeEmail",
+    accessorKey: "requesterName",
+    accessorFn: (row) => row.requester.givenName + " " + row.requester.familyName,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Requestee Email" />
+      <DataTableColumnHeader column={column} title="Requester" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{substring(row.getValue("requesteeEmail"), 30)}</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[200px] truncate font-medium">
+            {row.getValue("requesterName")}
+          </span>
+        </div>
+      );
+    },
+    sortingFn: (rowA, rowB) => {
+      return rowA.original.requester.givenName.localeCompare(rowB.original.requester.givenName);
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "status",
+    accessorFn: (row) => row.status,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("status"))
+      const status = row.original.status;
 
       if (!status) {
-        return "Not Started"
+        return (
+          <Badge variant="outline" className="w-[100px]">
+            {row.getValue("status")}
+          </Badge>
+        );
       }
-
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
+        <div className="flex w-[100px] items-center truncate">
+          <Badge variant={getBadgeVariantFromStatus(status)}>
+            {status
+              .split(" ")
+              .map(
+                (word) =>
+                  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              )
+              .join(" ")}
+          </Badge>
         </div>
-      )
+      );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      return value.includes(row.getValue(id));
     },
   },
   {
@@ -100,43 +86,25 @@ export const columns: ColumnDef<Submissions>[] = [
       <DataTableColumnHeader column={column} title="Date Submitted" />
     ),
     cell: ({ row }) => {
-      // const label = labels.find((label) => label.value === row.original.submissionId)
-
       return (
         <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("submittedDate") || "No date submitted"}
+            {row.original.submittedDate?.toString() || "-"}
           </span>
         </div>
-      )
+      );
     },
-  },
-  // {
-  //   accessorKey: "priority",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Priority" />
-  //   ),
-  //   cell: ({ row }) => {
 
-  //     return (
-  //       <div className="flex items-center">
-  //         {priority.icon && (
-  //           <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-  //         )}
-  //         <span>{priority.label}</span>
-  //       </div>
-  //     )
-  //   },
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id))
-  //   },
-  // },
+  },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Link" />
+      <DataTableColumnHeader
+        column={column}
+        title="Actions"
+        className="text-center"
+      />
     ),
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => <DataTableRowActions row={row}  getDownloadPresignedUrl={getDownloadPresignedUrl}/>,
   },
-]
+];

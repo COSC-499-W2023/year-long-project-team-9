@@ -18,35 +18,17 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
-import NotificationsComponent from "@/components/notification/notifications-component";
-import { Notifications } from "@obscurus/database/src/sql.generated";
-
-export function Notifications({
-  notificationsRead,
-  deleteNotifications,
-  getNotificationsViaEmail,
-}: {
-  notificationsRead: Function;
-  deleteNotifications: Function;
-  getNotificationsViaEmail: Function;
-}) {
-  return (
-    <>
-      <Button variant="ghost" size="icon">
-        <Bell size={20} className="stroke-primary" />
-      </Button>
-    </>
-  );
-}
+import Notifications from "@/components/notification/notifications";
+import { useNotifications } from "./hooks/use-notifications";
 
 const NavBar = ({
   readNotification,
   deleteNotifications,
-  notifications,
+  getNotificationsViaEmail,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
-  notifications: Notifications[];
+  getNotificationsViaEmail: Function;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -101,8 +83,8 @@ const NavBar = ({
             className="min-h-full min-w-full"
             src="/logo.svg"
             alt="obscurus"
-            width={40}
-            height={40}
+            width={30}
+            height={30}
           />
         </Link>
 
@@ -145,12 +127,12 @@ const NavBar = ({
   return (
     <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
-      <div className="flex flex-col-2">
-        <NotificationsComponent
+      <div className="flex gap-2">
+        <Notifications
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
-          notifications={notifications}
-        ></NotificationsComponent>
+          getNotificationsViaEmail={getNotificationsViaEmail}
+        />
         <ThemeSwitcher />
       </div>
     </div>
