@@ -2458,18 +2458,18 @@ The tasks identified for this week were:
 
 ### Burnup Chart
 
-![screenshot of burnupchart](img/team-weekly-log-img/week-24/burnup-week24.png)
+![screenshot of burnupchart](img/team-weekly-log-img/week-25/burnup-week25.png)
 
 ### Table View of Completed Tasks
 
-![screenshot of completed board tasks](img/team-weekly-log-img/week-24/completed-week24.png)
+![screenshot of completed board tasks](img/team-weekly-log-img/week-25/completed-week25.png)
 
 ### Table View of In Progress Tasks
 
-![screenshot of in progress board tasks](img/team-weekly-log-img/week-24/inprogress-week24.png)
+![screenshot of in progress board tasks](img/team-weekly-log-img/week-25/inprogress-week25.png)
 
 ### Test Report
 
-![test report](img/team-weekly-log-img/week-24/testreport-week24.png)
+![test report](img/team-weekly-log-img/week-25/testreport-week25.png)
 
 ___ 
