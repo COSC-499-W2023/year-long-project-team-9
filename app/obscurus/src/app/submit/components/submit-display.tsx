@@ -248,10 +248,12 @@ export default function SubmitDisplay({
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const fileName = `${submission}.webm`;
+      const fileName = `${submission.submissionId}.webm`;
       const file = new File([blob], fileName, { type: "video/webm" });
 
       setFile(file);
+
+      console.log("File:", file);
 
       if (submission.submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
@@ -259,7 +261,7 @@ export default function SubmitDisplay({
         const response = await fetch(presignedUrl, {
           method: "PUT",
           headers: {
-            "Content-Type": "video/mp4",
+            "Content-Type": "video/webm",
           },
           body: file,
         });
@@ -410,6 +412,7 @@ export default function SubmitDisplay({
   };
 
   const DisplayUploadedVideo = () => {
+    console.log("Displaying uploaded video", file?.name);
     return (
       <div className="flex flex-col w-fit h-full pt-16">
         {loading && (
