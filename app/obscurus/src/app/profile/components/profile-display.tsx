@@ -1,7 +1,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { useRef, useState } from "react";
 
 export default function ProfileDisplay({ form }: { form: any }) {
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const profileImage = form.getValues("profileImage");
+  const fileLength = profileImage ? profileImage.length : 0;
+  // if (fileLength > 0) {
+  //   console.log("test", profileImage[0]);
+  //   setFile(profileImage[0]);
+  // }
+
   return (
     <>
       <div className="flex justify-center">
