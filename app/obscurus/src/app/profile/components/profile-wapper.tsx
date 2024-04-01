@@ -6,6 +6,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileDisplay from "./profile-display";
+import { useRef, useState } from "react";
+import { e } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
 
 const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -51,9 +53,59 @@ export default function ProfileWrapper({
       lastName: userData.familyName,
     },
   });
+  const email = userData.email;
+  const [username, extention] = email.split('.');
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
+  const [objectURL, setObjectURL] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(false);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
+
   function onSubmit(values: z.infer<typeof profileFormSchema>) {
     console.log(values);
+    handleSubmit(values);
   }
+
+  const handleSubmit = async (values: z.infer<typeof profileFormSchema>) => {
+    setLoading(true);
+    const profileImage = values.profileImage;
+    console.log(profileImage[0]);
+    setFile(profileImage[0]);
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+    const fileExt = file.name.split(".").pop();
+    console.log("File extension", fileExt);
+    setFileExt(fileExt);
+
+    const key = `${username}.${fileExt}`;
+    console.log(key);
+
+    if (username && getPresignedUrl) {
+      try {
+        const url = await getPresignedUrl(key);
+        const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(
+              key
+            )}`,
+          },
+          body: file,
+        });
+        setObjectURL(URL.createObjectURL(file));
+        console.log("Upload successful");
+        setLoading(false);
+        return;
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <Wrapper

@@ -67,7 +67,6 @@ export default function ProfileForm({
 }) {
   // TODO: Work in progress
   const email = userData.email;
-  // const email = "imightbejan@gmail.com";
   const [username, extention] = email.split('.');
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
@@ -80,7 +79,8 @@ export default function ProfileForm({
     setLoading(true);
     e.preventDefault();
     // setUpload(true);
-    const file = fileInputRef.current?.files?.[0];
+    // const file = fileInputRef.current?.files?.[0];
+    const file = form.profileImage;
     setFile(file);
     if (!file) {
       console.error("No file selected");
@@ -123,7 +123,8 @@ export default function ProfileForm({
       <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* <form onSubmit={handleSubmit} className="space-y-8"> */}
           <EmailInput
             form={form}
             isDisabled={true}
@@ -156,7 +157,6 @@ export default function ProfileForm({
             userData={userData}
             getPresignedUrl={getPresignedUrl}
             getDownloadPresignedUrl={getDownloadPresignedUrl}
-            // onChange={handleSubmit}
           ></ProfileImageInput>
           <div className="text-right gap-2">
             <AccountCancel></AccountCancel>

@@ -32,7 +32,6 @@ export default function ProfileImageInput({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const email = userData.email;
-  // const email = "imightbejan@gmail.com";
   const [username, extention] = email.split('.');
 
   const handleSubmit = async (e: any) => {
@@ -102,8 +101,7 @@ export default function ProfileImageInput({
           accept="image/png, image/jpg, image/jpeg"
           hidden
           ref={fileInputRef}
-          onChange={handleSubmit}
-        // {...form.register("profileImage")}
+        {...form.register("profileImage")}
         />
       </div>
       <FormDescription className="text-justify">
