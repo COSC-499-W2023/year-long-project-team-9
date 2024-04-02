@@ -11,7 +11,7 @@ import {
 import { Button } from "../ui/button";
 import SignInForm from "./authentication-sign-in-form";
 import SignUpForm from "./authentication-sign-up-form";
-import RecoverPasswordForm from "./authentication-recover-password-form";
+import ForgotPasswordForm from "./authentication-forgot-password-form";
 import VerifyEmailForm from "./authentication-verify-email-form";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
@@ -75,7 +75,7 @@ export default function AuthenticationSignedOut({
                 Forgot Password
               </Label>
               <Separator className="mt-1 mb-2" />
-              <RecoverPasswordForm setDialogState={setDialogState} />
+              <ForgotPasswordForm setDialogState={setDialogState} />
             </div>
           )}
           {dialogState === "verifyEmail" && (
