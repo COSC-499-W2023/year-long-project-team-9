@@ -94,6 +94,7 @@ export default function SignUpForm({
   const [failedSignUpGeneric, setFailedSignUpGeneric] = useState(false);
   const [failedSignUpUsernameExists, setFailedSignUpUsernameExists] =
     useState(false);
+  const [failedConfirmSignUp, setFailedConfirmSignUp] = useState(false);
 
   async function triggerSignUp() {
     setLoading(true);
@@ -124,13 +125,15 @@ export default function SignUpForm({
       username: signUpEmailNames.email,
       confirmationCode: code,
     };
-    await confirmSignUpUser(userConfirmSignUpInput)
-      .then(() => setDialogState("signIn"))
-      .catch((e: Error) => [
-        setLoading(false),
-        setFailedSignUpGeneric(true),
-        setSignUpState("emailNames"),
-      ]);
+    const confirmSignUpSuccess = await confirmSignUpUser(
+      userConfirmSignUpInput
+    );
+    if (confirmSignUpSuccess) {
+      setDialogState("signIn");
+    } else {
+      setLoading(false);
+      setFailedConfirmSignUp(true);
+    }
   }
 
   async function triggerResendVerifyEmail() {
@@ -167,6 +170,13 @@ export default function SignUpForm({
         <div className="flex justify-center border border-red-500 rounded p-2">
           <Label className="text-red-500 text-xs">
             An Account With That Email Already Exists
+          </Label>
+        </div>
+      )}
+      {failedConfirmSignUp && !loading && (
+        <div className="flex justify-center border border-red-500 rounded p-2">
+          <Label className="text-red-500 text-xs">
+            Failed To Verify Email, Please Try Again
           </Label>
         </div>
       )}

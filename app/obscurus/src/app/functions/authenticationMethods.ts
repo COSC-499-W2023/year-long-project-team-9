@@ -41,7 +41,9 @@ export async function signInUser({ username, password }: SignInInput) {
 export async function signOutUser() {
   try {
     await signOut();
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getEmail() {

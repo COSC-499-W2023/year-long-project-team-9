@@ -7,6 +7,7 @@ import {
   type ResendSignUpCodeInput,
   type ConfirmSignUpInput,
 } from "aws-amplify/auth";
+import { Label } from "../ui/label";
 
 export default function VerifyEmailForm({
   setDialogState,
@@ -39,9 +40,13 @@ export default function VerifyEmailForm({
       username: userEmail,
       confirmationCode: code,
     };
-    await confirmSignUpUser(userConfirmSignUpInput).then(() =>
-      setDialogState("signIn")
-    );
+    const verifyEmailSuccess = await confirmSignUpUser(userConfirmSignUpInput);
+    if (verifyEmailSuccess) {
+      setDialogState("signIn");
+    } else {
+      setLoading(false);
+      setFailedVerify(true);
+    }
   }
 
   async function triggerResendVerifyEmail() {
@@ -61,6 +66,13 @@ export default function VerifyEmailForm({
         </div>
       ) : (
         <div>
+          {failedVerify && (
+            <div className="flex justify-center border border-red-500 rounded p-2">
+              <Label className="text-red-500 text-xs">
+                Failed To Verify Email, Please Try Again
+              </Label>
+            </div>
+          )}
           {verifyEmailState === "email" && (
             <VerifyEmailEmailForm
               setDialogState={setDialogState}
