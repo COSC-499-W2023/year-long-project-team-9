@@ -10,7 +10,7 @@ import { LucideLoader2 } from "lucide-react";
 import { Label } from "../ui/label";
 import {
   type ConfirmSignUpInput,
-  ResendSignUpCodeInput,
+  type ResendSignUpCodeInput,
 } from "aws-amplify/auth";
 
 type SignUpParameters = {

@@ -114,6 +114,15 @@ export default function SignInForm({
                 Sign Up
               </a>
             </div>
+            <div className="text-xs text-center mt-2">
+              <span>Need to verify your account? </span>
+              <a
+                onClick={() => setDialogState("verifyEmail")}
+                className="underline text-blue-400 hover:cursor-pointer"
+              >
+                Send Verification Code
+              </a>
+            </div>
           </form>
         </Form>
       )}

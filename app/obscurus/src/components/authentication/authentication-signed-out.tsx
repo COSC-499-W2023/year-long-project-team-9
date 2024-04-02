@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import SignInForm from "./authentication-sign-in-form";
 import SignUpForm from "./authentication-sign-up-form";
 import RecoverPasswordForm from "./authentication-recover-password-form";
+import VerifyEmailForm from "./authentication-verify-email-form";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
 import { X } from "lucide-react";
@@ -75,6 +76,19 @@ export default function AuthenticationSignedOut({
               </Label>
               <Separator className="mt-1 mb-2" />
               <RecoverPasswordForm setDialogState={setDialogState} />
+            </div>
+          )}
+          {dialogState === "verifyEmail" && (
+            <div>
+              <Label className="flex justify-start text-2xl font-black">
+                Verify Email
+              </Label>
+              <Separator className="mt-1 mb-2" />
+              <VerifyEmailForm
+                setDialogState={setDialogState}
+                resendConfirmSignUpUser={resendConfirmSignUpUser}
+                confirmSignUpUser={confirmSignUpUser}
+              />
             </div>
           )}
         </AlertDialogDescription>
