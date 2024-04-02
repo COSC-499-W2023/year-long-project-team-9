@@ -7,7 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Bell, Sun } from "lucide-react";
+import { Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -137,6 +137,7 @@ const NavBar = ({
       <Navigation />
       <div className="flex flex-row gap-2">
         <Notifications
+          signedIn={signedIn}
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
           getNotificationsViaEmail={getNotificationsViaEmail}

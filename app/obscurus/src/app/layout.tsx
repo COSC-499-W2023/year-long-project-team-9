@@ -36,14 +36,6 @@ export default async function RootLayout({
                 <NavBarServerWrapper />
                 <Toaster />
                 {children}
-
-                {/*If not signed in*/}
-
-                {/* <div className="h-screen w-full flex flex-col items-center justify-center">
-            <div className="absolute z-100 top-36 left-56">Top</div>
-            <Home />
-          </div> */}
-                {/* <Footer /> */}
               </div>
             </TooltipProvider>
           </WebSocketProvider>
