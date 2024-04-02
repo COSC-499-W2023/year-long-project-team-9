@@ -8,9 +8,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import PasswordInput from "@/components/authentication-and-profile-components/account-form-password-input";
 
-// TODO: better error messages, be below for an example
-
-const recoverPasswordFormSchema = z
+const forgotPasswordFormSchema = z
   .object({
     password: z
       .string()
@@ -34,24 +32,22 @@ const recoverPasswordFormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RecoverPasswordForm({
+export default function ForgotPasswordForm({
   setDialogState,
 }: {
   setDialogState: Function;
 }) {
-  const form = useForm<z.infer<typeof recoverPasswordFormSchema>>({
-    resolver: zodResolver(recoverPasswordFormSchema),
+  const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
+    resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: {},
   });
-
-  function onSubmit(values: z.infer<typeof recoverPasswordFormSchema>) {
+  function onSubmit(values: z.infer<typeof forgotPasswordFormSchema>) {
     console.log(values);
   }
   return (
     <div className="overflow-auto max-h-[55vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
-          {/* Password */}
           <PasswordInput
             form={form}
             isDisabled={false}
@@ -62,9 +58,6 @@ export default function RecoverPasswordForm({
             label={"Password"}
             placeHolder={"Password"}
           />
-          {form.getFieldState("password").error && (
-            <div className="flex flex-grow" />
-          )}
           <PasswordInput
             form={form}
             isDisabled={false}
@@ -73,19 +66,17 @@ export default function RecoverPasswordForm({
             label={"Confirm Password"}
             placeHolder={"Confirm Password"}
           />
-          <div className="flex justify-between items-center">
-            <div className="text-xs mt-2">
-              <span>Have an account? </span>
-              <a
-                onClick={() => setDialogState("signIn")}
-                className="underline text-blue-400 hover:cursor-pointer"
-              >
-                Sign In
-              </a>
-            </div>
-            <Button type="submit" variant={"default"}>
-              Recover
-            </Button>
+          <Button type="submit" variant={"default"} className="w-full">
+            Recover
+          </Button>
+          <div className="text-xs text-center mt-2">
+            <span>Have an account? </span>
+            <a
+              onClick={() => setDialogState("signIn")}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Sign In
+            </a>
           </div>
         </form>
       </Form>

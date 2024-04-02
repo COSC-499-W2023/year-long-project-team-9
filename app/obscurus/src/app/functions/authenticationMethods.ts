@@ -2,14 +2,19 @@
 import {
   fetchAuthSession,
   signIn,
-  type SignInInput,
   signOut,
   signUp,
   confirmSignUp,
   resendSignUpCode,
+  resetPassword,
+  confirmResetPassword,
+  updatePassword,
+  AuthError,
+  type SignInInput,
   type ConfirmSignUpInput,
   type ResendSignUpCodeInput,
-  AuthError,
+  type ConfirmResetPasswordInput,
+  type UpdatePasswordInput,
 } from "aws-amplify/auth";
 
 export async function isSignedIn() {
@@ -119,6 +124,43 @@ export async function resendConfirmSignUpUser({
 }: ResendSignUpCodeInput) {
   try {
     await resendSignUpCode({ username });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function resetUserPassword(username: string) {
+  try {
+    const output = await resetPassword({ username });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function confirmResetUserPassword({
+  username,
+  confirmationCode,
+  newPassword,
+}: ConfirmResetPasswordInput) {
+  try {
+    await confirmResetPassword({ username, confirmationCode, newPassword });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+async function updateUserPassword({
+  oldPassword,
+  newPassword,
+}: UpdatePasswordInput) {
+  try {
+    await updatePassword({ oldPassword, newPassword });
     return true;
   } catch (error) {
     console.log(error);
