@@ -17,7 +17,7 @@ const HowTo = () => {
       <Accordion type="single" collapsible className="min-h-full w-full  ">
         <AccordionItem value="step1">
           <AccordionTrigger
-            className="font-bold text-xl"
+            className=" text-xl"
             data-aos="fade-right"
             data-aos-delay="100"
           >
@@ -32,7 +32,7 @@ const HowTo = () => {
 
         <AccordionItem value="step2">
           <AccordionTrigger
-            className="font-bold text-xl"
+            className=" text-xl"
             data-aos="fade-right"
             data-aos-delay="100"
           >
@@ -48,7 +48,7 @@ const HowTo = () => {
 
         <AccordionItem value="step3">
           <AccordionTrigger
-            className="font-bold text-xl"
+            className=" text-xl"
             data-aos="fade-right"
             data-aos-delay="100"
           >

@@ -145,9 +145,8 @@ def integrate_audio(
     # Delete audio
     os.remove(audio_path)
     os.remove(original_video)
-    os.remove(temp_location)
 
-    print("Complete")
+    print("Completed integrating audio with video")
 
 
 def start_face_detection(key):
@@ -206,9 +205,9 @@ def convert_to_mp4(input_video, output_video):
         "-c:v",
         "libx264",
         "-crf",
-        "23",
+        "1",
         "-preset",
-        "medium",
+        "fast",
         "-c:a",
         "aac",
         "-strict",
@@ -250,6 +249,7 @@ def process_video(timestamps, response, submission_id, file_extension):
         output_video=final_output_filename,
     )
 
+    #s3.remove_object(Bucket=bucket_name, Key=input_name)
     print("Uploading processed video to S3...")
     s3.upload_file(final_output_filename, bucket_name, output_name)
     print("Output file uploaded to S3")
@@ -320,11 +320,11 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}"
         )
         await update_submission_status("PROCESSING", submission_id)
-        await send_email_notification(
-            recipient_email,
-            "obscurus",
-            "Your video is being processed",
-        )
+        # await send_email_notification(
+        #     recipient_email,
+        #     "obscurus",
+        #     "Your video is being processed",
+        # )
         await create_notification("PROCESSING", submission_id, recipient_email)
         background_tasks.add_task(
             process_video_background, submission_id, file_extension, recipient_email
@@ -347,6 +347,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
 async def process_video_background(submission_id, file_extension, recipient_email):
     try:
         original_key = f"{submission_id}.{file_extension}"
+        converted_key = original_key
         if file_extension.lower() != "mp4":
             converted_key = f"{submission_id}.mp4"
             local_webm_path = f"/tmp/{original_key}"
