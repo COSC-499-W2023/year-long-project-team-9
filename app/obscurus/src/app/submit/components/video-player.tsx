@@ -14,7 +14,7 @@ export default function VideoPlayer({
   console.log("videoUrl in video-player", videoUrl);
   console.log("filename in video-player", filename);
   return (
-    <div className="flex h-full flex-col ">
+    <div className="flex h-full flex-col ring-accent ring-2 rounded-sm ">
       <Label htmlFor="video" className=" text-left text-base ">
         {filename}
       </Label>
@@ -23,7 +23,8 @@ export default function VideoPlayer({
         url={videoUrl}
         controls={true}
         width={"100%"}
-        className="flex  flex-col border-primary "
+        height={"100%"}
+        className="flex  h-full w-full flex-col border-primary "
       />
     </div>
   );

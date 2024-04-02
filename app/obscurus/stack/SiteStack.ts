@@ -15,7 +15,15 @@ import {
 import * as cdk from "aws-cdk-lib";
 
 export default function SiteStack({ stack }: StackContext) {
-  const chumBucket = new Bucket(stack, "ChumBucket", {});
+  const chumBucket = new Bucket(stack, "ChumBucket", {
+    cdk: {
+      bucket: {
+        autoDeleteObjects: true,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+
+      },
+    },
+  });
 
   const rekognitionPolicyStatement = new PolicyStatement({
     actions: ["rekognition:*", "rekognition:DetectFaces"],

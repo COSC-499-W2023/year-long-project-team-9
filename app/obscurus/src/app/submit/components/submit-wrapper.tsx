@@ -107,7 +107,7 @@ export const SubmitWrapper = ({
       if (updateStatus) {
         console.log("Updating submission status:", status, submissionId);
         await updateStatus(status, submissionId);
-        status !== "TRASHED" && status !== "ARCHIVED" && ws.send(
+         ws.send(
           JSON.stringify({
             action: "newNotification",
             data: {
