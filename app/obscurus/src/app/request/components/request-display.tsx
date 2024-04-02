@@ -86,6 +86,10 @@ export default function RequestDisplay({
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = "ARCHIVED";
       setRequests(newRequests);
+      toast({
+        title: "Archived",
+        description: "Request has been archived",
+      });
     }
   }
 
@@ -98,6 +102,10 @@ export default function RequestDisplay({
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = null;
       setRequests(newRequests);
+      toast({
+        title: "Unarchived",
+        description: "Request has been unarchived",
+      });
     }
   }
 
@@ -108,6 +116,10 @@ export default function RequestDisplay({
       newRequests[newRequests.indexOf(selected)].grouping = "TRASHED";
       setRequests(newRequests);
       setRequestId(null);
+      toast({
+        title: "Trashed",
+        description: "Request has been trashed",
+      });
     }
   }
 
