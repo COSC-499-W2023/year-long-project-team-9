@@ -28,9 +28,12 @@ export async function isSignedIn() {
 export async function signInUser({ username, password }: SignInInput) {
   try {
     const { isSignedIn, nextStep } = await signIn({ username, password });
-    return true;
+    if (isSignedIn) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -47,7 +50,7 @@ export async function getEmail() {
     if (idToken?.payload.email != undefined) {
       return idToken.payload.email as string;
     } else {
-      throw new Error();
+      return "";
     }
   } catch (error) {
     return "";
