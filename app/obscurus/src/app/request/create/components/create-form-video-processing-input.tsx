@@ -10,12 +10,12 @@ export default function VideoProcessingInput({ form }: any) {
         <Tabs defaultValue="blurred" className="w-full">
           <TabsList className="w-full">
             <TabsTrigger
-              value="normal"
+              value="notBlurred"
               className="w-full"
               onClick={() => form.setValue("videoProcessing", false)}
               disabled={form.formState.isSubmitting}
             >
-              Normal
+              Not Blurred
             </TabsTrigger>
             <TabsTrigger
               value="blurred"

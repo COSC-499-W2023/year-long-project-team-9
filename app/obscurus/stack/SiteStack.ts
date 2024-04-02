@@ -35,9 +35,7 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "stack/database/migrations/",
-    cdk: {
-
-    },
+    cdk: {},
   });
 
   const sesPolicyStatement = new PolicyStatement({
@@ -120,6 +118,21 @@ export default function SiteStack({ stack }: StackContext) {
       "POST /getRequestsViaEmail": {
         function: {
           handler: "stack/lambdas/getRequestsViaEmail.handler",
+        },
+      },
+      "POST /archiveRequest": {
+        function: {
+          handler: "stack/lambdas/archiveRequest.handler",
+        },
+      },
+      "POST /unarchiveRequest": {
+        function: {
+          handler: "stack/lambdas/unarchiveRequest.handler",
+        },
+      },
+      "POST /trashRequest": {
+        function: {
+          handler: "stack/lambdas/trashRequest.handler",
         },
       },
       "POST /getUserViaEmail": {
@@ -234,7 +247,16 @@ export default function SiteStack({ stack }: StackContext) {
       API_URL: api.url,
       WS_API_URL: wsApi.url,
     },
-    permissions: ["s3", rekognitionPolicyStatement, "rds-data", rds, wsApi, api, chumBucket, sesPolicyStatement],
+    permissions: [
+      "s3",
+      rekognitionPolicyStatement,
+      "rds-data",
+      rds,
+      wsApi,
+      api,
+      chumBucket,
+      sesPolicyStatement,
+    ],
     cpu: "8 vCPU",
     memory: "32 GB",
   });
@@ -261,7 +283,8 @@ export default function SiteStack({ stack }: StackContext) {
     permissions: [rekognitionPolicyStatement, wsApi],
     environment: {
       NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
-      NEXT_PUBLIC_SERVICE_URL: processVideo.url || "https://d2eo40huyu1afd.cloudfront.net",
+      NEXT_PUBLIC_SERVICE_URL:
+        processVideo.url || "https://d2eo40huyu1afd.cloudfront.net",
     },
   });
 

@@ -9,6 +9,7 @@ import {
   Users,
 } from "./sql.generated";
 import { uuidv7 } from "uuidv7";
+import { sendEmailTextBlockViaNoReply } from "@obscurus/ses/src/sendEmailTextBlockViaNoReply";
 
 export async function createRequest(data: any) {
   const validData = createFormSchema.safeParse(data);
@@ -49,10 +50,10 @@ export async function createRequest(data: any) {
         .values({
           notificationId: uuidv7(),
           userEmail: validData.data.clientEmail[i].email,
-          type: "REQUEST",
+          type: "SUBMIT",
           referenceId: newSubmissionID,
           creationDate: new Date(),
-          content: `New request from ${validData.data.userEmail}`,
+          content: `New request from ${validData.data.firstName} ${validData.data.lastName}`,
           isRead: false,
           isTrashed: false,
         })
@@ -115,4 +116,25 @@ export async function getRequestsViaEmail(email: string) {
     .where("requests.requesterEmail", "=", email)
     .execute();
   return [requests, submissions];
+}
+
+export async function archiveRequest(id: string) {
+  const archive = await SQL.DB.updateTable("requests")
+    .set({ grouping: "ARCHIVED" })
+    .where("requestId", "=", id)
+    .execute();
+}
+
+export async function unarchiveRequest(id: string) {
+  const unarchive = await SQL.DB.updateTable("requests")
+    .set({ grouping: null })
+    .where("requestId", "=", id)
+    .execute();
+}
+
+export async function trashRequest(id: string) {
+  const trash = await SQL.DB.updateTable("requests")
+    .set({ grouping: "TRASHED" })
+    .where("requestId", "=", id)
+    .execute();
 }
