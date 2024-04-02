@@ -53,6 +53,7 @@ export default function RequestDisplay({
   archiveRequest,
   unarchiveRequest,
   trashRequest,
+  handleTimezoneOffset,
 }: {
   requests: Requests[];
   submissions: Submissions[];
@@ -61,6 +62,7 @@ export default function RequestDisplay({
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
+  handleTimezoneOffset: Function;
 }) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const { toast } = useToast();
@@ -265,13 +267,13 @@ export default function RequestDisplay({
                   <span className="font-medium">Processing: </span>
                   {selected?.blurred ? "Blurred" : "Not Blurred"} |{" "}
                   <span className="font-medium">Due: </span>
-                  {format(new Date(selected?.dueDate), "PPP, p")}
+                  {format(handleTimezoneOffset(selected?.dueDate), "PPP, p")}
                 </div>
               </div>
             </div>
             {selected.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {format(new Date(selected?.creationDate), "PPP, p")}
+                {format(handleTimezoneOffset(selected?.creationDate), "PPP, p")}
               </div>
             )}
           </div>

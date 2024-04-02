@@ -30,12 +30,24 @@ export default function RequestWeapper({
   trashRequest: Function;
 }) {
   const [requests, setRequests] = useState<Requests[]>(request);
+  const handleTimezoneOffset = (date: Date) => {
+    const messageDateTime = new Date(date).getTime();
+    const userTimezoneOffset = -new Date().getTimezoneOffset() * 60 * 1000;
+    return new Date(messageDateTime + userTimezoneOffset);
+  };
+
   return (
     <Wrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
-      firstPanel={<RequestList requests={requests} submissions={submissions} />}
+      firstPanel={
+        <RequestList
+          requests={requests}
+          submissions={submissions}
+          handleTimezoneOffset={handleTimezoneOffset}
+        />
+      }
       secondPanel={
         <RequestDisplay
           requests={requests}
@@ -45,6 +57,7 @@ export default function RequestWeapper({
           archiveRequest={archiveRequest}
           unarchiveRequest={unarchiveRequest}
           trashRequest={trashRequest}
+          handleTimezoneOffset={handleTimezoneOffset}
         />
       }
     />
