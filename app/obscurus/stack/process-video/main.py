@@ -144,7 +144,6 @@ def integrate_audio(
     os.rename(temp_location, output_video)
     # Delete audio
     os.remove(audio_path)
-    os.remove(original_video)
 
     print("Completed integrating audio with video")
 
@@ -202,14 +201,7 @@ def convert_to_mp4(input_video, output_video):
         "ffmpeg",
         "-i",
         input_video,
-        "-c:v",
-        "libx264",
-        "-crf",
-        "1",
-        "-preset",
-        "fast",
-        "-c:a",
-        "aac",
+        "-c copy",
         "-strict",
         "-2",
         "-movflags",
@@ -218,11 +210,9 @@ def convert_to_mp4(input_video, output_video):
     ]
 
     try:
-        result = subprocess.run(
-            cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"Error during conversion: {e}\nOutput: {e.output}\nError: {e.stderr}")
+        os.system(" ".join(cmd))
+    except Exception as e:
+        print(f"Error converting video: {e}")
 
 
 def process_video(timestamps, response, submission_id, file_extension):
@@ -242,6 +232,7 @@ def process_video(timestamps, response, submission_id, file_extension):
 
     os.rename(temp_output_filename, final_output_filename)
 
+
     print("Integrating audio with video...")
     integrate_audio(
         submission_id=submission_id,
@@ -252,6 +243,10 @@ def process_video(timestamps, response, submission_id, file_extension):
     #s3.remove_object(Bucket=bucket_name, Key=input_name)
     print("Uploading processed video to S3...")
     s3.upload_file(final_output_filename, bucket_name, output_name)
+
+
+    os.remove(local_filename)
+    os.remove(final_output_filename)
     print("Output file uploaded to S3")
     return "Completed processing!"
 
