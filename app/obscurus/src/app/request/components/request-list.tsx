@@ -50,11 +50,13 @@ interface RequestsListProps {
   requests: Requests[];
   submissions: Submissions[];
   isCollapsed?: boolean;
+  handleTimezoneOffset: Function;
 }
 
 export default function RequestList({
   requests,
   submissions,
+  handleTimezoneOffset,
 }: RequestsListProps) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useState<string>("");
@@ -146,9 +148,12 @@ export default function RequestList({
                   </div>
 
                   <div className="ml-auto text-xs w-full flex justify-end">
-                    {formatDistanceToNow(new Date(item.creationDate), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceToNow(
+                      handleTimezoneOffset(item.creationDate),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
                   </div>
                 </div>
                 <div className="text-xs font-medium text-ellipsis line-clamp-1">
@@ -166,7 +171,7 @@ export default function RequestList({
               <div className="flex items-center gap-2">
                 <Badge variant={getBadgeVariantFromLabel("due-date")}>
                   Due{" "}
-                  {formatDistanceToNow(new Date(item.dueDate), {
+                  {formatDistanceToNow(handleTimezoneOffset(item.dueDate), {
                     addSuffix: true,
                   })}
                 </Badge>
