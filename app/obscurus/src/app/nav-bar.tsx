@@ -36,6 +36,7 @@ const NavBar = ({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
+  updateUserPassword,
   signedIn,
   email,
   name,
@@ -50,6 +51,7 @@ const NavBar = ({
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
+  updateUserPassword: Function;
   signedIn: boolean;
   email: string;
   name: string;
@@ -155,6 +157,7 @@ const NavBar = ({
           resendConfirmSignUpUser={resendConfirmSignUpUser}
           resetUserPassword={resetUserPassword}
           confirmResetUserPassword={confirmResetUserPassword}
+          updateUserPassword={updateUserPassword}
           signedIn={signedIn}
           email={email}
           name={name}

@@ -10,6 +10,7 @@ export default function Authentication({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
+  updateUserPassword,
   signedIn,
   email,
   name,
@@ -21,12 +22,14 @@ export default function Authentication({
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
+  updateUserPassword: Function;
   signedIn: boolean;
   email: string;
   name: string;
 }) {
   return signedIn ? (
     <AuthenticationSignedIn
+      updateUserPassword={updateUserPassword}
       signOutUser={signOutUser}
       userEmail={email}
       userName={name}
