@@ -19,6 +19,7 @@ export default function RequestWeapper({
   archiveRequest,
   unarchiveRequest,
   trashRequest,
+  createRequest,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -28,6 +29,7 @@ export default function RequestWeapper({
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
+  createRequest: Function;
 }) {
   const [requests, setRequests] = useState<Requests[]>(request);
   const handleTimezoneOffset = (date: Date) => {

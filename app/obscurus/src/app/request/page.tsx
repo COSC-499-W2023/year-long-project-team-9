@@ -12,6 +12,7 @@ import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import trashRequest from "../functions/trashRequest";
 import unarchiveRequest from "../functions/unarchiveRequest";
 import archiveRequest from "../functions/archiveRequest";
+import createRequest from "./components/create/function/createRequest";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -40,6 +41,7 @@ async function Request() {
       archiveRequest={archiveRequest}
       unarchiveRequest={unarchiveRequest}
       trashRequest={trashRequest}
+      createRequest={createRequest}
     />
   );
 }
