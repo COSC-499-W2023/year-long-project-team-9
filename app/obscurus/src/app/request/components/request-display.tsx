@@ -56,6 +56,17 @@ import { ResponsiveContainer } from "recharts";
 import { DataTable } from "./data-table/data-table";
 import { columns } from "./data-table/columns";
 import { SubmissionsForRequest } from "../types/types-for-request";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 
 export default function RequestDisplay({
   requests,
@@ -174,31 +185,42 @@ export default function RequestDisplay({
             )}
           </Tooltip>
           <Separator orientation="vertical" className="mx-2 h-8" />
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={!selected}
-                onClick={() => trash(selected, requests)}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Move to trash</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Move to trash</TooltipContent>
-          </Tooltip>
+
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant="ghost" size="icon" disabled={!selected}>
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Move to trash</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Move to trash</TooltipContent>
+              </Tooltip>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your request and you will no longer be able to access it.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => trash(selected, requests)}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
         <div className="flex ml-auto pr-1">
           <Drawer>
             <span className="sr-only">Submissions</span>
             <Tooltip>
               <DrawerTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  disabled={submissions && submissions.length === 0}
-                >
+                <Button variant="ghost" size="icon" disabled={!selected}>
                   <TooltipTrigger asChild>
                     <ListVideo className="h-4 w-4" />
                   </TooltipTrigger>
