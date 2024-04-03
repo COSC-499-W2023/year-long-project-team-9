@@ -2,7 +2,7 @@
 import { Api } from "sst/node/api";
 const updateStatus = async (status: string, submissionId: string) => {
   try {
-    const response = await fetch(Api.Api.url + "/updateStatus", {
+    const response = await fetch(Api.Api.url + "/updateUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
