@@ -107,7 +107,7 @@ export default function ForgotPasswordVerifyNewPasswordForm({
             placeHolder={"Confirm Password"}
           />
           <Button type="submit" variant={"default"} className="w-full">
-            Verify
+            Reset Password
           </Button>
           <div className="text-xs text-center mt-2">
             <span>Have an account? </span>
