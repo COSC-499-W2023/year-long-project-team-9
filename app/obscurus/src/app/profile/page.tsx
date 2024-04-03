@@ -11,6 +11,7 @@ import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import ProfileWrapper from "./components/profile-wapper";
 import getPresignedUrl from "../functions/getPresignedUrl";
 import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
+import updateUser from "../functions/updateUser";
 
 async function Account() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -46,6 +47,7 @@ async function Account() {
       getPresignedUrl={getPresignedUrl}
       getDownloadPresignedUrl={getDownloadPresignedUrl}
       websocketApiEndpoint={wsApi as string}
+      updateUser={updateUser}
     />
   );
 }

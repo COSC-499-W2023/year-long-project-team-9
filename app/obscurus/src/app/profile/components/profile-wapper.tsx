@@ -37,6 +37,7 @@ export default function ProfileWrapper({
   getPresignedUrl,
   getDownloadPresignedUrl,
   websocketApiEndpoint,
+  updateUser,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -44,6 +45,7 @@ export default function ProfileWrapper({
   getPresignedUrl?: (username: string) => Promise<string>;
   getDownloadPresignedUrl?: (username: string) => Promise<string>;
   websocketApiEndpoint: string;
+  updateUser?: Function;
 }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
