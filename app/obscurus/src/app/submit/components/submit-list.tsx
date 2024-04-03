@@ -139,7 +139,7 @@ export default function SubmitList({
       <TabsContent key={status} value={status} className="h-full">
         <div className="flex flex-col gap-2 p-4 pt-0 h-full ">
           {!filteredRequests && (
-            <div className="flex flex-col items-center justify-center h-full gap-4 md:mb-36">
+            <div className="flex flex-col items-center justify-center h-full gap-5 md:mb-36">
               <FileText className="w-16 h-16 text-muted-foreground" />
               <div className=" font-semibold text-muted-foreground">
                 No requests found.

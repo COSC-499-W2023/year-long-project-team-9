@@ -783,18 +783,20 @@ export default function SubmitDisplay({
           ) : selected ? (
             <ShowRequest selected={selected} />
           ) : (
-            <div className="flex flex-col w-full h-full justify-center items-center gap-5  text-muted-foreground">
+            <div className="flex flex-col w-full h-full justify-center items-center gap-4  text-muted-foreground">
               <UploadCloud className="w-20 h-20" />
-              <div className="font-semibold">
+              <div className="font-semibold md:mb-10">
                 No request selected to submit.
               </div>
             </div>
           )}
         </div>
       ) : (
-        <div className="flex flex-col w-full h-full justify-center items-center gap-5  text-muted-foreground">
+        <div className="flex flex-col w-full h-full justify-center items-center gap-4  text-muted-foreground">
           <UploadCloud className="w-20 h-20" />
-          <div className="font-semibold md:mb-14">No request selected to submit.</div>
+          <div className="font-semibold md:mb-10">
+            No request selected to submit.
+          </div>
         </div>
       )}
     </div>
