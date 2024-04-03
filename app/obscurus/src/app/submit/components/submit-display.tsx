@@ -378,7 +378,7 @@ export default function SubmitDisplay({
         <div className="flex ml-auto pr-1">
           <Button
             variant={iseShowingVideo.active ? "destructive" : "ghost"}
-            onClick={() => setShowingVideo({active: !iseShowingVideo.active})}
+            onClick={() => setShowingVideo({ active: !iseShowingVideo.active })}
             disabled={!canShowVideo}
           >
             <Tooltip>
@@ -390,7 +390,9 @@ export default function SubmitDisplay({
                 )}
               </TooltipTrigger>
               <TooltipContent>
-                {iseShowingVideo.active ? "Hide Processed Video" : "View Processed Video"}
+                {iseShowingVideo.active
+                  ? "Hide Processed Video"
+                  : "View Processed Video"}
               </TooltipContent>
             </Tooltip>
           </Button>
@@ -676,16 +678,17 @@ export default function SubmitDisplay({
       <div className="h-full w-full">
         <div className="flex flex-col container justify-center h-full p-10 text-muted-foreground">
           <div className="flex flex-col space-y-2">
-            <VideoPlayer videoUrl={processedVideo} fileName={selected.requestDetails.requestTitle} />
+            <VideoPlayer
+              videoUrl={processedVideo}
+              fileName={selected.requestDetails.requestTitle}
+            />
             {selected.submittedDate && (
-            <div>Submitted on: {format(
-                  new Date(selected.submittedDate),
-                  "PPP, p"
-                )}
-                </div>
+              <div>
+                Submitted on:{" "}
+                {format(new Date(selected.submittedDate), "PPP, p")}
+              </div>
             )}
           </div>
-
 
           <div className="flex justify-start items-center space-x-3 p-3">
             <div className="absolute bottom-10 right-10">
@@ -780,7 +783,7 @@ export default function SubmitDisplay({
           ) : selected ? (
             <ShowRequest selected={selected} />
           ) : (
-            <div className="flex flex-col w-full h-full justify-center items-center gap-5  text-muted-foreground">
+            <div className="flex flex-col w-full h-full justify-center items-center gap-5  text-muted-foreground mt-10">
               <UploadCloud className="w-20 h-20" />
               <div className="font-semibold">
                 No request selected to submit.
@@ -789,7 +792,10 @@ export default function SubmitDisplay({
           )}
         </div>
       ) : (
-        <PanelLoader />
+        <div className="flex flex-col w-full h-full justify-center items-center gap-5  text-muted-foreground">
+          <UploadCloud className="w-20 h-20" />
+          <div className="font-semibold">No request selected to submit.</div>
+        </div>
       )}
     </div>
   );

@@ -57,7 +57,7 @@ export const SubmitWrapper = ({
         "imightbejan@gmail.com"
       );
       console.log("User data:", data);
-      setSubmissions(data.submissions);
+      data?.submissions && setSubmissions(data.submissions);
     }
     setLoading(false);
   };
@@ -138,9 +138,9 @@ export const SubmitWrapper = ({
       firstPanel={
         loading ? (
           <PanelLoader1 />
-        ) :  submissions ? (
-          <SubmitList submissions={submissions} getDownloadPresignedUrl={getDownloadPresignedUrl} />
-        ) : ( <PanelLoader1 />)
+        ) : (
+          <SubmitList submissions={submissions || undefined} getDownloadPresignedUrl={getDownloadPresignedUrl} />
+        )
       }
       secondPanel={
         loading ? (
