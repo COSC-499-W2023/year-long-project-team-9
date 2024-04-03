@@ -14,6 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
 import PasswordInput from "../authentication-and-profile-components/account-form-password-input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/modified-shadcn-ui-components/input-otp";
 
 const forgotPasswordVerifyNewPasswordFormSchema = z
   .object({
@@ -74,7 +79,18 @@ export default function ForgotPasswordVerifyNewPasswordForm({
               <FormItem className="px-1">
                 <FormLabel>Forgot Password Code</FormLabel>
                 <FormControl>
-                  <Input placeholder="Forgot Password Code" {...field} />
+                  <div className="flex justify-center">
+                    <InputOTP maxLength={6} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
                 </FormControl>
               </FormItem>
             )}
