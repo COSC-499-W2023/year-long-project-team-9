@@ -206,11 +206,13 @@ export default function RequestDisplay({
               </DrawerTrigger>
               <TooltipContent>Submissions</TooltipContent>
             </Tooltip>
-            <DrawerContent>
-              <div className="w-full ">
+            <DrawerContent className="h-[85%]">
+              <div className="w-full">
                 <DrawerHeader>
                   <DrawerTitle>Submissions</DrawerTitle>
-                  <DrawerDescription>View all submissions</DrawerDescription>
+                  <DrawerDescription>
+                    Submissions for {selected?.requestTitle}
+                  </DrawerDescription>
                 </DrawerHeader>
                 <div className=" md:pb-10 md:mb-24">
                   <div className="mt-3 overflow-y-scroll ">
