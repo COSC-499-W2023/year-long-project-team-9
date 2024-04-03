@@ -238,14 +238,15 @@ export default function RequestDisplay({
                 <div className=" md:pb-10 md:mb-24">
                   <div className="mt-3 overflow-y-scroll ">
                     <ResponsiveContainer width="100%" height="100%">
-                      <DataTable
+                      <></>
+                      {/* <DataTable
                         columns={columns}
                         data={
                           submissions.filter(
                             (value) => value.requestId === selected?.requestId
                           ) || []
                         }
-                      />
+                      /> */}
                     </ResponsiveContainer>
                   </div>
                 </div>
