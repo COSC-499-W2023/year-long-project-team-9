@@ -45,7 +45,6 @@ export function Wrapper({
     "/request": "Request",
     "/submit": "Submit",
     "/chat": "Chat",
-    "/request/create": "Request",
     "/profile": "Profile",
   };
 
