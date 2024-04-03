@@ -132,11 +132,11 @@ export default function SubmitList({
           .toLowerCase()
           .includes(searchTerm);
 
-      return matchesStatus && matchesSearch && submission.status != "TRASHED";
+      return matchesStatus && matchesSearch && submission.status;
     });
 
     return (
-      <TabsContent key={status} value={status} className="h-full">
+      <TabsContent key={status} value={status} className="">
         <div className="flex flex-col gap-2 p-4 pt-0 h-full ">
           {!filteredRequests && (
             <div className="flex flex-col items-center justify-center h-full gap-5 md:mb-36">
@@ -161,11 +161,8 @@ export default function SubmitList({
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold text-ellipsis">
-                      {item.requestDetails.requestTitle.length > 30
-                        ? item.requestDetails.requestTitle.substring(0, 30) +
-                          "..."
-                        : item.requestDetails.requestTitle}
+                    <div className="font-semibold text-ellipsis line-clamp-1">
+                      {item.requestDetails.requestTitle}
                     </div>
                   </div>
 
@@ -179,11 +176,8 @@ export default function SubmitList({
                 <div className="text-xs font-medium text-ellipsis line-clamp-1">
                   {item.requester.givenName} {item.requester.familyName}
                 </div>
-                <div className="text-xs">
-                  {item.requestDetails.requesterEmail.length > 30
-                    ? item.requestDetails.requesterEmail.substring(0, 30) +
-                      "..."
-                    : item.requestDetails.requesterEmail}
+                <div className="text-xs text-ellipsis line-clamp-1">
+                  {item.requestDetails.requesterEmail}
                 </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
@@ -309,7 +303,7 @@ export default function SubmitList({
       </div>
       <Separator />
 
-      <div className={`h-full ${submissions ? "overflow-y-scroll" : "overflow-y-hidden"}`}>
+      <div className={`h-full ${submissions ? " overflow-y-scroll" : "overflow-y-hidden"}`}>
         {tabsContent}
       </div>
     </Tabs>

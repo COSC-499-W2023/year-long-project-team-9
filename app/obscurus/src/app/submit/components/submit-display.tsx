@@ -597,50 +597,54 @@ export default function SubmitDisplay({
     );
   };
 
+  const RequestHeader = ({ selected }: { selected: EnrichedSubmissions }) => {
+    return (
+      <>
+        <div className="flex items-start p-4">
+          <div className="flex items-start gap-4 text-sm max-w-[70%]">
+            <Avatar>
+              <AvatarImage alt={selected?.requester.givenName} />
+              <AvatarFallback>
+                {selected?.requester.givenName
+                  .split(" ")
+                  .map((chunk) => chunk[0])
+                  .join("")}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid gap-1 text-ellipsis ">
+              <div className="font-semibold">
+                {selected?.requestDetails.requestTitle}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis ">
+                <span className="font-medium">From: </span>
+                {selected?.requester.givenName} {selected?.requester.familyName}{" "}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis  ">
+                <span className="font-medium ">Email: </span>
+                {selected?.requestDetails.requesterEmail}
+              </div>
+              <div className="line-clamp-1 text-xs">
+                <span className="font-medium">Due: </span>
+                {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
+              </div>
+            </div>
+          </div>
+          {selected.requestDetails.creationDate && (
+            <div className="ml-auto text-xs text-muted-foreground">
+              {format(new Date(selected.requestDetails.creationDate), "PPP, p")}
+            </div>
+          )}
+        </div>
+        <Separator />
+      </>
+    );
+  };
+
   const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
     return (
       <>
         <div className="h-full">
-          <div className="flex items-start p-4">
-            <div className="flex items-start gap-4 text-sm max-w-[70%]">
-              <Avatar>
-                <AvatarImage alt={selected?.requester.givenName} />
-                <AvatarFallback>
-                  {selected?.requester.givenName
-                    .split(" ")
-                    .map((chunk) => chunk[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-ellipsis ">
-                <div className="font-semibold">
-                  {selected?.requestDetails.requestTitle}
-                </div>
-                <div className="line-clamp-3 text-xs text-ellipsis ">
-                  <span className="font-medium">From: </span>
-                  {selected?.requester.givenName}{" "}
-                  {selected?.requester.familyName}{" "}
-                </div>
-                <div className="line-clamp-3 text-xs text-ellipsis  ">
-                  <span className="font-medium ">Email: </span>
-                  {selected?.requestDetails.requesterEmail}
-                </div>
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Due: </span>
-                  {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
-                </div>
-              </div>
-            </div>
-            {selected.requestDetails.creationDate && (
-              <div className="ml-auto text-xs text-muted-foreground">
-                {format(
-                  new Date(selected.requestDetails.creationDate),
-                  "PPP, p"
-                )}
-              </div>
-            )}
-          </div>
-          <Separator />
+          <RequestHeader selected={selected} />
           <div className="flex  p-4 overflow-scroll max-h-[65%]">
             <div className="flex-1 whitespace-pre-wrap text-sm ">
               {selected?.requestDetails.description}
@@ -676,46 +680,47 @@ export default function SubmitDisplay({
   }) => {
     return (
       <div className="h-full w-full">
-        <div className="flex flex-col container justify-center h-full p-10 text-muted-foreground">
-          <div className="flex flex-col space-y-2">
-            <VideoPlayer
-              videoUrl={processedVideo}
-              fileName={selected.requestDetails.requestTitle}
-            />
-            {selected.submittedDate && (
+        <RequestHeader selected={selected} />
+
+        <div className="flex flex-col space-y-2 container">
+          <VideoPlayer
+            videoUrl={processedVideo}
+            fileName={selected.requestDetails.requestTitle}
+          />
+          <div className="text-sm">Submitted on: April 2, 2024 at 5:51 PM</div>
+          {/* {selected.submittedDate && (
               <div>
                 Submitted on:{" "}
                 {format(new Date(selected.submittedDate), "PPP, p")}
               </div>
-            )}
-          </div>
+            )} */}
+        </div>
 
-          <div className="flex justify-start items-center space-x-3 p-3">
-            <div className="absolute bottom-10 right-10">
-              <Link href={processedVideo || ""}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size="lg"
-                      disabled={!processedVideo}
-                      variant={"ghost"}
-                      style={{ display: "flex" }}
-                      className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
-                    >
-                      <DownloadCloud className="h-8 w-8 " />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Download Video</TooltipContent>
-                </Tooltip>
-              </Link>
-            </div>
-            {/* {selected.submittedDate && (
+        <div className="flex justify-start items-center space-x-3 p-3">
+          <div className="absolute bottom-10 right-10">
+            <Link href={processedVideo || ""}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="lg"
+                    disabled={!processedVideo}
+                    variant={"ghost"}
+                    style={{ display: "flex" }}
+                    className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+                  >
+                    <DownloadCloud className="h-8 w-8 " />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download Video</TooltipContent>
+              </Tooltip>
+            </Link>
+          </div>
+          {/* {selected.submittedDate && (
               <div className="text-sm">
                 Submitted on:
                 {format(new Date(selected?.submittedDate), "PPP, p")}
               </div>
             )} */}
-          </div>
         </div>
       </div>
     );

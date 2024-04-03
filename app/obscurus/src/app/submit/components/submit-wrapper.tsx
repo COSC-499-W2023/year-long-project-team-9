@@ -104,10 +104,10 @@ export const SubmitWrapper = ({
       });
       ws.send(message);
 
-      if (updateStatus) {
+      if (updateStatus && ws.readyState === WebSocket.OPEN) {
         console.log("Updating submission status:", status, submissionId);
         await updateStatus(status, submissionId);
-         ws.send(
+        {status !== "ARCHIVED" && status !== "TRASHED" && ws.send(
           JSON.stringify({
             action: "newNotification",
             data: {
@@ -119,10 +119,15 @@ export const SubmitWrapper = ({
               },
             },
           })
-        );
+        )}
       }
     } else {
-      console.error("WebSocket not connected or not ready");
+      if (updateStatus) {
+        console.log("Updating submission status:", status, submissionId);
+        await updateStatus(status, submissionId);
+      } else {
+        console.error("WebSocket not connected");
+      }
     }
   };
 

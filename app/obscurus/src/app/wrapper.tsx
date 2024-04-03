@@ -81,8 +81,8 @@ export function Wrapper({
         <ResizablePanel
           defaultSize={(defaultLayout && defaultLayout[0]) || 20}
           collapsedSize={navCollapsedSize}
-          collapsible={true}
-          minSize={15}
+          collapsible={isMobile ? false : true}
+          minSize={20}
           maxSize={20}
           onCollapse={(collapsed) => {
             setIsCollapsed(collapsed);
