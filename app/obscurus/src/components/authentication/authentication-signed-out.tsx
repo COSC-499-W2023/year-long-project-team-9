@@ -22,11 +22,15 @@ export default function AuthenticationSignedOut({
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
 }: {
   signInUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
+  resetUserPassword: Function;
+  confirmResetUserPassword: Function;
 }) {
   const [dialogState, setDialogState] = useState<string>("signIn");
   return (
@@ -75,7 +79,11 @@ export default function AuthenticationSignedOut({
                 Forgot Password
               </Label>
               <Separator className="mt-1 mb-2" />
-              <ForgotPasswordForm setDialogState={setDialogState} />
+              <ForgotPasswordForm
+                resetUserPassword={resetUserPassword}
+                confirmResetUserPassword={confirmResetUserPassword}
+                setDialogState={setDialogState}
+              />
             </div>
           )}
           {dialogState === "verifyEmail" && (

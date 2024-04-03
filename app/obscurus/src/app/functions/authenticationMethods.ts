@@ -131,7 +131,7 @@ export async function resendConfirmSignUpUser({
   }
 }
 
-async function resetUserPassword(username: string) {
+export async function resetUserPassword(username: string) {
   try {
     const output = await resetPassword({ username });
     return true;
@@ -141,7 +141,7 @@ async function resetUserPassword(username: string) {
   }
 }
 
-async function confirmResetUserPassword({
+export async function confirmResetUserPassword({
   username,
   confirmationCode,
   newPassword,
@@ -155,7 +155,7 @@ async function confirmResetUserPassword({
   }
 }
 
-async function updateUserPassword({
+export async function updateUserPassword({
   oldPassword,
   newPassword,
 }: UpdatePasswordInput) {

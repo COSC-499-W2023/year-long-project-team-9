@@ -10,13 +10,7 @@ import EmailInput from "@/components/authentication-and-profile-components/accou
 import { ArrowRight } from "lucide-react";
 
 const forgotPasswordEmailFormSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .min(1, { message: "Email cannot be blank." })
-    .max(320, { message: "Email cannot be more than 320 characters." })
-    .email({ message: "Email is not valid." }),
+  email: z.string().trim().toLowerCase().min(1).max(320).email(),
 });
 
 export default function ForgotPasswordEmailForm({

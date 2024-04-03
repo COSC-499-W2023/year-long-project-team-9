@@ -8,6 +8,8 @@ export default function Authentication({
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
   signedIn,
   email,
   name,
@@ -17,6 +19,8 @@ export default function Authentication({
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
+  resetUserPassword: Function;
+  confirmResetUserPassword: Function;
   signedIn: boolean;
   email: string;
   name: string;
@@ -33,6 +37,8 @@ export default function Authentication({
       signUpUser={signUpUser}
       confirmSignUpUser={confirmSignUpUser}
       resendConfirmSignUpUser={resendConfirmSignUpUser}
+      resetUserPassword={resetUserPassword}
+      confirmResetUserPassword={confirmResetUserPassword}
     />
   );
 }

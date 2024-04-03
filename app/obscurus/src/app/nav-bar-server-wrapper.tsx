@@ -11,6 +11,8 @@ import {
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
 import amplifyConfig from "@/app/utils/amplifyConfig";
@@ -47,6 +49,8 @@ export default async function NavBarServerWrapper() {
       signUpUser={signUpUser}
       confirmSignUpUser={confirmSignUpUser}
       resendConfirmSignUpUser={resendConfirmSignUpUser}
+      resetUserPassword={resetUserPassword}
+      confirmResetUserPassword={confirmResetUserPassword}
       signedIn={signedIn}
       email={email}
       name={name}
