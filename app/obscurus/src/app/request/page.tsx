@@ -12,6 +12,8 @@ import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import trashRequest from "../functions/trashRequest";
 import unarchiveRequest from "../functions/unarchiveRequest";
 import archiveRequest from "../functions/archiveRequest";
+import { SubmissionsForRequest } from "./types/types-for-request";
+import getPresignedUrl from "../functions/getPresignedUrl";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -28,7 +30,40 @@ async function Request() {
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
   const request: Requests[] = requestPageData.request;
-  const submissions: Submissions[] = requestPageData.submissions;
+  const submissionsForRequestPageData: Submissions[] =
+    requestPageData.submissions;
+
+  const submissions: SubmissionsForRequest[] = [];
+  for (let i = 0; i < submissionsForRequestPageData.length; i++) {
+    const url = await getPresignedUrl(
+      submissionsForRequestPageData[i].submissionId
+    );
+    if (!url) {
+      submissions.push({
+        submissionId: submissionsForRequestPageData[i].submissionId,
+        requesteeEmail: submissionsForRequestPageData[i].requesteeEmail,
+        status: submissionsForRequestPageData[i].status,
+        title: submissionsForRequestPageData[i].title,
+        grouping: submissionsForRequestPageData[i].grouping,
+        isRead: submissionsForRequestPageData[i].isRead,
+        submittedDate: submissionsForRequestPageData[i].submittedDate,
+        requestId: submissionsForRequestPageData[i].requestId,
+        url: null,
+      });
+    } else {
+      submissions.push({
+        submissionId: submissionsForRequestPageData[i].submissionId,
+        requesteeEmail: submissionsForRequestPageData[i].requesteeEmail,
+        status: submissionsForRequestPageData[i].status,
+        title: submissionsForRequestPageData[i].title,
+        grouping: submissionsForRequestPageData[i].grouping,
+        isRead: submissionsForRequestPageData[i].isRead,
+        submittedDate: submissionsForRequestPageData[i].submittedDate,
+        requestId: submissionsForRequestPageData[i].requestId,
+        url: url,
+      });
+    }
+  }
 
   return (
     <RequestWrapper

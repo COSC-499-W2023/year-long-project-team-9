@@ -9,6 +9,7 @@ import RequestList from "./request-list";
 import hello from "@/app/functions/hello";
 import RequestDisplay from "./request-display";
 import { useState } from "react";
+import { SubmissionsForRequest } from "../types/types-for-request";
 
 export default function RequestWeapper({
   defaultLayout,
@@ -23,7 +24,7 @@ export default function RequestWeapper({
   defaultLayout: number[];
   defaultCollapsed: boolean;
   request: Requests[];
-  submissions: Submissions[];
+  submissions: SubmissionsForRequest[];
   userData: Users;
   archiveRequest: Function;
   unarchiveRequest: Function;

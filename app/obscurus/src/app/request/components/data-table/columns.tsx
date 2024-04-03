@@ -4,45 +4,28 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import getDownloadPresignedUrl from "@/app/functions/getDownloadPresignedUrl";
 import { getBadgeVariantFromStatus } from "../request-display";
-
-export const columns: ColumnDef<EnrichedSubmissions>[] = [
+import { SubmissionsForRequest } from "../../types/types-for-request";
+export const columns: ColumnDef<SubmissionsForRequest>[] = [
   {
-    accessorKey: "requestTitle",
+    accessorKey: "clientEmail",
+    accessorFn: (row) => row.requesteeEmail,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Client Email" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <span className="max-w-[200px] truncate font-medium">
-            {row.original.requestDetails.requestTitle || "-"}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "requesterName",
-    accessorFn: (row) =>
-      row.requester.givenName + " " + row.requester.familyName,
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Requester" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("requesterName")}
+            {row.getValue("clientEmail")}
           </span>
         </div>
       );
     },
     sortingFn: (rowA, rowB) => {
-      return rowA.original.requester.givenName.localeCompare(
-        rowB.original.requester.givenName
+      return rowA.original.requesteeEmail.localeCompare(
+        rowB.original.requesteeEmail
       );
     },
     enableSorting: false,

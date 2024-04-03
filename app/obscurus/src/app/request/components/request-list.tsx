@@ -38,26 +38,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import RequestHeader from "@/app/request/components/request-header";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/modified-shadcn-ui-components/modified-alert";
-import { RequestListAlert } from "./request-list-alert";
-
-interface RequestsListProps {
-  requests: Requests[];
-  submissions: Submissions[];
-  isCollapsed?: boolean;
-  handleTimezoneOffset: Function;
-}
+import { SubmissionsForRequest } from "../types/types-for-request";
 
 export default function RequestList({
   requests,
   submissions,
   handleTimezoneOffset,
-}: RequestsListProps) {
+}: {
+  requests: Requests[];
+  submissions: SubmissionsForRequest[];
+  isCollapsed?: boolean;
+  handleTimezoneOffset: Function;
+}) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useState<string>("");
   const [sort, setSort] = useState<string>("sort");
