@@ -177,12 +177,20 @@ export default function RequestList({
                 {item.description}
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant={getBadgeVariantFromLabel("due-date")}>
-                  Due{" "}
-                  {formatDistanceToNow(handleTimezoneOffset(item.dueDate), {
-                    addSuffix: true,
-                  })}
-                </Badge>
+                {completed(
+                  submissions.filter(
+                    (value) => value.requestId === item.requestId
+                  )
+                ) === false ? (
+                  <Badge variant={getBadgeVariantFromLabel("due-date")}>
+                    Due{" "}
+                    {formatDistanceToNow(handleTimezoneOffset(item.dueDate), {
+                      addSuffix: true,
+                    })}
+                  </Badge>
+                ) : (
+                  <></>
+                )}
 
                 {item.grouping === "ARCHIVED" ? (
                   <Badge variant={"default"}>Archived</Badge>
