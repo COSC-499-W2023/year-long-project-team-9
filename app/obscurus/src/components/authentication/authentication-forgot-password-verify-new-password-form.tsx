@@ -65,7 +65,7 @@ export default function ForgotPasswordVerifyNewPasswordForm({
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1">
           <Label className="flex justify-start font-bold">Email: {email}</Label>
           <FormField
             control={form.control}
