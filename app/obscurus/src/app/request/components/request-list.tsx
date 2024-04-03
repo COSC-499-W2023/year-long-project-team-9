@@ -274,6 +274,7 @@ function getBadgeVariantFromLabel(
   return "secondary";
 }
 
+// function used to see if due date should be displayed
 function completed(submissions: Submissions[]) {
   for (let i = 0; i < submissions.length; i++) {
     if (
