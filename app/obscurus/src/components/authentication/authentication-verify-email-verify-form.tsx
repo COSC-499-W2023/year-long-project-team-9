@@ -11,8 +11,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/modified-shadcn-ui-components/input-otp";
 
 const verifyEmailFormSchema = z.object({
   code: z.string().trim().min(1),
@@ -48,7 +52,18 @@ export default function VerifyEmailVerifyForm({
               <FormItem className="px-1">
                 <FormLabel>Verification Code</FormLabel>
                 <FormControl>
-                  <Input placeholder="Verification Code" {...field} />
+                  <div className="flex justify-center">
+                    <InputOTP maxLength={6} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
                 </FormControl>
               </FormItem>
             )}
