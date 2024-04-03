@@ -95,7 +95,6 @@ export default function RequestDisplay({
     ? requests.find((item) => item.requestId === requestId)
     : null;
 
-  const [showVideoList, setShowVideoList] = useState<boolean>(false);
   console.log(selected?.description);
   console.log("Selected requestId to display", requestId);
   console.log(
@@ -167,7 +166,7 @@ export default function RequestDisplay({
                 {selected?.grouping === "ARCHIVED" ? (
                   <div>
                     <ArchiveX className="h-4 w-4" />
-                    <span className="sr-only">Archive</span>
+                    <span className="sr-only">Unarchive</span>
                   </div>
                 ) : (
                   <div>
