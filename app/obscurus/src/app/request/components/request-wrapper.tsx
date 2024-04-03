@@ -10,7 +10,7 @@ import hello from "@/app/functions/hello";
 import RequestDisplay from "./request-display";
 import { useState } from "react";
 
-export default function RequestWeapper({
+export default function RequestWrapper({
   defaultLayout,
   defaultCollapsed,
   request,
@@ -19,7 +19,7 @@ export default function RequestWeapper({
   archiveRequest,
   unarchiveRequest,
   trashRequest,
-  createRequest,
+  setShowCreate,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -29,7 +29,7 @@ export default function RequestWeapper({
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
-  createRequest: Function;
+  setShowCreate: Function;
 }) {
   const [requests, setRequests] = useState<Requests[]>(request);
   const handleTimezoneOffset = (date: Date) => {
@@ -48,6 +48,7 @@ export default function RequestWeapper({
           requests={requests}
           submissions={submissions}
           handleTimezoneOffset={handleTimezoneOffset}
+          setShowCreate={setShowCreate}
         />
       }
       secondPanel={

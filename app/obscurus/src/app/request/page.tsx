@@ -13,6 +13,7 @@ import trashRequest from "../functions/trashRequest";
 import unarchiveRequest from "../functions/unarchiveRequest";
 import archiveRequest from "../functions/archiveRequest";
 import createRequest from "./components/create/function/createRequest";
+import RequestPageWrapper from "./components/request-page-wrapper";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -32,7 +33,7 @@ async function Request() {
   const submissions: Submissions[] = requestPageData.submissions;
 
   return (
-    <RequestWrapper
+    <RequestPageWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       request={request}

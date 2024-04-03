@@ -51,13 +51,21 @@ interface RequestsListProps {
   submissions: Submissions[];
   isCollapsed?: boolean;
   handleTimezoneOffset: Function;
+  setCreate: Function;
 }
 
 export default function RequestList({
   requests,
   submissions,
   handleTimezoneOffset,
-}: RequestsListProps) {
+  setShowCreate,
+}: {
+  requests: Requests[];
+  submissions: Submissions[];
+  isCollapsed?: boolean;
+  handleTimezoneOffset: Function;
+  setShowCreate: Function;
+}) {
   const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useState<string>("");
   const [sort, setSort] = useState<string>("sort");
@@ -197,12 +205,11 @@ export default function RequestList({
     >
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Request</h1>
-        <a href="/request/create">
-          <Button variant="ghost">
-            <Send className="mr-2 h-4 w-4" />
-            Create
-          </Button>
-        </a>
+
+        <Button variant="ghost" onClick={() => setShowCreate(true)}>
+          <Send className="mr-2 h-4 w-4" />
+          Create
+        </Button>
       </div>
       <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
         <form>
