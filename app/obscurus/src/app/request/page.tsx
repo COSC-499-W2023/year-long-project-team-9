@@ -33,7 +33,7 @@ async function Request() {
   const submissions: Submissions[] = requestPageData.submissions;
 
   return (
-    <RequestPageWrapper
+    <RequestWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       request={request}
