@@ -10,7 +10,7 @@ import { getUserViaEmail } from "../functions/getUserData";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import ProfileWrapper from "./components/profile-wrapper";
 import getPresignedUrl from "../functions/getPresignedUrl";
-import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 import updateUser from "../functions/updateUser";
 
 async function Account() {
@@ -19,7 +19,7 @@ async function Account() {
   console.log("Layout", layout);
   console.log("Collapsed", collapsed?.value);
   console.log("getPresignedUrl", getPresignedUrl);
-  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+  console.log("getProfileImgPresignedUrl", getProfileImgPresignedUrl);
 
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
@@ -42,7 +42,7 @@ async function Account() {
       defaultCollapsed={defaultCollapsed}
       userData={userData}
       getPresignedUrl={getPresignedUrl}
-      getDownloadPresignedUrl={getDownloadPresignedUrl}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
       updateUser={updateUser}
     />
   );

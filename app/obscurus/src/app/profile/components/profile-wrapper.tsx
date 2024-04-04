@@ -35,14 +35,14 @@ export default function ProfileWrapper({
   defaultCollapsed,
   userData,
   getPresignedUrl,
-  getDownloadPresignedUrl,
+  getProfileImgPresignedUrl,
   updateUser,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userData: Users;
   getPresignedUrl?: (username: string) => Promise<string>;
-  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
   updateUser?: Function;
 }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
@@ -98,7 +98,7 @@ export default function ProfileWrapper({
         });
         console.log(response);
         setObjectURL(URL.createObjectURL(file));
-        console.log("Upload successful");        
+        console.log("Upload successful");
         updateUserInfo(values, key);
         setLoading(false);
         return;
@@ -130,11 +130,15 @@ export default function ProfileWrapper({
           form={form}
           onSubmit={onSubmit}
           getPresignedUrl={getPresignedUrl}
-          getDownloadPresignedUrl={getDownloadPresignedUrl}
           updateUser={updateUser}
         ></ProfileForm>
       }
-      secondPanel={<ProfileDisplay form={form}></ProfileDisplay>}
+      secondPanel={
+        <ProfileDisplay
+          form={form}
+          userData={userData}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+        ></ProfileDisplay>}
     />
   );
 }
