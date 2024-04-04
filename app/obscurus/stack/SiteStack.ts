@@ -262,9 +262,9 @@ export default function SiteStack({ stack }: StackContext) {
         },
       },
     },
-    // triggers: {
-    //   postAuthentication: "stack/lambdas/postAuthentication.main",
-    // },
+    triggers: {
+      postAuthentication: "stack/lambdas/postAuthentication.main",
+    },
   });
 
   auth.attachPermissionsForAuthUsers(stack, [api]);
