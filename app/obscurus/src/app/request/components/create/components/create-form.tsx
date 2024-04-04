@@ -42,14 +42,16 @@ export default function CreateForm({
   form,
   onSubmit,
   userData,
+  setShowCreate,
 }: {
   form: any;
   onSubmit: Function;
   userData: Users;
+  setShowCreate: Function;
 }) {
   return (
     <div className="h-full">
-      <CreateHeader />
+      <CreateHeader setShowCreate={setShowCreate} />
       <div className="overflow-y-auto h-[90%] px-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

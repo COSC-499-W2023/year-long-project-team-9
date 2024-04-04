@@ -52,6 +52,7 @@ import { useUpload } from "@/app/hooks/use-upload";
 import { useSort } from "@/app/hooks/use-sort";
 import { useTab } from "@/app/hooks/use-tab";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 
 interface RequestsListProps {
   requests?: Requests[];
@@ -73,9 +74,10 @@ export default function SubmitList({
   const [upload] = useUpload();
   const [sort, setSort] = useSort();
   const [tab, setTab] = useTab();
+  const [isShowingVideo, setIsShowingVideo] = useIsShowingVideo()
 
   const handleClick = (item: EnrichedSubmissions) => {
-    if (!upload.upload) {
+    if (!upload.upload && !isShowingVideo.active) {
       const submission = submissions.find(
         (submission) => submission.submissionId === item.submissionId
       );

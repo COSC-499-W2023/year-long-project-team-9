@@ -12,6 +12,9 @@ import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import trashRequest from "../functions/trashRequest";
 import unarchiveRequest from "../functions/unarchiveRequest";
 import archiveRequest from "../functions/archiveRequest";
+import createRequest from "./components/create/function/createRequest";
+import { SubmissionsForRequest } from "./types/types-for-request";
+import getPresignedUrl from "../functions/getPresignedUrl";
 import { redirect } from "next/navigation";
 
 async function Request() {
@@ -34,7 +37,36 @@ async function Request() {
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
   const request: Requests[] = requestPageData.request;
-  const submissions: Submissions[] = requestPageData.submissions;
+  const submissionsDataRequest: Submissions[] = requestPageData.submissions;
+  const submissions: SubmissionsForRequest[] = [];
+  for (let i = 0; i < submissionsDataRequest.length; i++) {
+    const url = await getPresignedUrl(submissionsDataRequest[i].submissionId);
+    if (!url) {
+      submissions.push({
+        submissionId: submissionsDataRequest[i].submissionId,
+        requesteeEmail: submissionsDataRequest[i].requesteeEmail,
+        status: submissionsDataRequest[i].status,
+        title: submissionsDataRequest[i].title,
+        grouping: submissionsDataRequest[i].grouping,
+        isRead: submissionsDataRequest[i].isRead,
+        submittedDate: submissionsDataRequest[i].submittedDate,
+        requestId: submissionsDataRequest[i].requestId,
+        url: null,
+      });
+    } else {
+      submissions.push({
+        submissionId: submissionsDataRequest[i].submissionId,
+        requesteeEmail: submissionsDataRequest[i].requesteeEmail,
+        status: submissionsDataRequest[i].status,
+        title: submissionsDataRequest[i].title,
+        grouping: submissionsDataRequest[i].grouping,
+        isRead: submissionsDataRequest[i].isRead,
+        submittedDate: submissionsDataRequest[i].submittedDate,
+        requestId: submissionsDataRequest[i].requestId,
+        url: url,
+      });
+    }
+  }
 
   return (
     <RequestWrapper
@@ -46,6 +78,7 @@ async function Request() {
       archiveRequest={archiveRequest}
       unarchiveRequest={unarchiveRequest}
       trashRequest={trashRequest}
+      createRequest={createRequest}
     />
   );
 }

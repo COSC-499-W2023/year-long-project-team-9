@@ -23,6 +23,8 @@ import {
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { motion } from "framer-motion";
+import { read } from "fs";
 
 export default function Notifications({
   signedIn,
@@ -97,16 +99,15 @@ export default function Notifications({
           )}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80  shadow-lg rounded-lg bg-card p-0">
+      <DropdownMenuContent className="w-80  shadow-lg rounded-lg bg-card p-0 mt-3">
         <CardTitle>
           <div className="font-semibold text-base p-4">Notifications</div>
           <Separator className="bg-accent w-full" />
         </CardTitle>
-        <div className="overflow-y-auto max-h-96">
-          {!notifcations ? (
+        <div className="overflow-y-auto max-h-96 h-96">
+          {!notifcations || !notifcations.length ? (
             <div className="h-full p-4 flex flex-col space-y-4 justify-center items-center text-muted-foreground text-sm">
               <Bell size={20} />
-              <Separator className="bg-muted-foreground" />
               <div>No notifications</div>
             </div>
           ) : (
@@ -159,6 +160,7 @@ export default function Notifications({
                         className="hover:bg-destructive"
                         onClick={() => {
                           deleteNotifications(value.notificationId);
+                          readNotification(value.notificationId);
                           let newNotificationsArray = [
                             ...(notifcations as any),
                           ];

@@ -44,6 +44,29 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import VideoPlayer from "@/app/submit/components/video-player";
 import { RequestTable } from "./request-table";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { ResponsiveContainer } from "recharts";
+import { DataTable } from "./data-table/data-table";
+import { columns } from "./data-table/columns";
+import { SubmissionsForRequest } from "../types/types-for-request";
 
 export default function RequestDisplay({
   requests,
@@ -53,16 +76,21 @@ export default function RequestDisplay({
   archiveRequest,
   unarchiveRequest,
   trashRequest,
+  handleTimezoneOffset,
+  requestId,
+  setRequestId,
 }: {
   requests: Requests[];
-  submissions: Submissions[];
+  submissions: SubmissionsForRequest[];
   userData: Users;
   setRequests: Function;
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
+  handleTimezoneOffset: Function;
+  requestId: string | null;
+  setRequestId: Function;
 }) {
-  const [requestId, setRequestId] = useQueryState("requestId");
   const { toast } = useToast();
 
   console.log("RequestId", requestId);
@@ -86,6 +114,10 @@ export default function RequestDisplay({
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = "ARCHIVED";
       setRequests(newRequests);
+      toast({
+        title: "Archived",
+        description: "Request has been archived",
+      });
     }
   }
 
@@ -98,6 +130,10 @@ export default function RequestDisplay({
       let newRequests = [...requests];
       newRequests[newRequests.indexOf(selected)].grouping = null;
       setRequests(newRequests);
+      toast({
+        title: "Unarchived",
+        description: "Request has been unarchived",
+      });
     }
   }
 
@@ -108,6 +144,10 @@ export default function RequestDisplay({
       newRequests[newRequests.indexOf(selected)].grouping = "TRASHED";
       setRequests(newRequests);
       setRequestId(null);
+      toast({
+        title: "Trashed",
+        description: "Request has been trashed",
+      });
     }
   }
 
@@ -150,40 +190,75 @@ export default function RequestDisplay({
           <Separator orientation="vertical" className="mx-2 h-8" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={!selected}
-                onClick={() => trash(selected, requests)}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Move to trash</span>
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" disabled={!selected}>
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Move to trash</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently remove
+                      your access to the request.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => trash(selected, requests)}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </TooltipTrigger>
             <TooltipContent>Move to trash</TooltipContent>
           </Tooltip>
         </div>
         <div className="flex ml-auto pr-1">
-          <Button
-            variant={"ghost"}
-            disabled={!selected}
-            onClick={() => {
-              setShowVideoList(!showVideoList);
-            }}
-          >
+          <Drawer>
+            <span className="sr-only">Submissions</span>
             <Tooltip>
-              <TooltipTrigger asChild>
-                {showVideoList ? (
-                  <XSquare className="w-4 h-4" />
-                ) : (
-                  <ListVideo className="w-4 h-4" />
-                )}
-              </TooltipTrigger>
-              <TooltipContent>
-                {showVideoList ? "Hide Video List" : "View Video List"}
-              </TooltipContent>
+              <DrawerTrigger asChild>
+                <Button variant="ghost" size="icon" disabled={!selected}>
+                  <TooltipTrigger asChild>
+                    <ListVideo className="h-4 w-4" />
+                  </TooltipTrigger>
+                </Button>
+              </DrawerTrigger>
+              <TooltipContent>Submissions</TooltipContent>
             </Tooltip>
-          </Button>
+            <DrawerContent className="h-[80%]">
+              <div className="w-full ">
+                <DrawerHeader>
+                  <DrawerTitle>Submissions</DrawerTitle>
+                  <DrawerDescription>
+                    View all submissions for {selected?.requestTitle}
+                  </DrawerDescription>
+                </DrawerHeader>
+                <div className=" md:pb-10 md:mb-24">
+                  <div className="mt-3 overflow-y-scroll ">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <DataTable
+                        columns={columns}
+                        data={
+                          submissions.filter(
+                            (value) => value.requestId === selected?.requestId
+                          ) || []
+                        }
+                      />
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
       </div>
     );
@@ -253,109 +328,21 @@ export default function RequestDisplay({
                   <span className="font-medium">Processing: </span>
                   {selected?.blurred ? "Blurred" : "Not Blurred"} |{" "}
                   <span className="font-medium">Due: </span>
-                  {format(new Date(selected?.dueDate), "PPP, p")}
+                  {format(handleTimezoneOffset(selected?.dueDate), "PPP, p")}
                 </div>
               </div>
             </div>
             {selected.creationDate && (
               <div className="ml-auto text-xs text-muted-foreground">
-                {format(new Date(selected?.creationDate), "PPP, p")}
+                {format(handleTimezoneOffset(selected?.creationDate), "PPP, p")}
               </div>
             )}
           </div>
           <Separator />
           <div className="p-4 overflow-y-auto grow h-[65%]">
-            {showVideoList === true ? (
-              <div className="mx-4 my-4">
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead className="text-center">Link</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {submissions
-                        .filter(
-                          (value) => value.requestId === selected?.requestId
-                        )
-                        .map((value, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              <Badge
-                                variant={getBadgeVariantFromStatus(
-                                  value.status
-                                )}
-                              >
-                                {value.status
-                                  .split(" ")
-                                  .map(
-                                    (word) =>
-                                      word.charAt(0).toUpperCase() +
-                                      word.slice(1).toLowerCase()
-                                  )
-                                  .join(" ")}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>{value.requesteeEmail}</TableCell>
-                            <TableCell>
-                              <div className="flex justify-center items-center ">
-                                <Dialog>
-                                  <DialogTrigger asChild>
-                                    <Button
-                                      variant={"outline"}
-                                      disabled={value.status !== "COMPLETED"}
-                                    >
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <ExternalLink className="w-4 h-4 " />
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                          View Processed Video
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </Button>
-                                  </DialogTrigger>
-                                  <DialogContent className="">
-                                    <VideoPlayer
-                                      videoUrl={
-                                        "https://imigh-obscurus-sitestack-outputbucketadb26529-cz8hxa3qaymx.s3.us-west-2.amazonaws.com/6b82a368-dd60-49f4-93fe-c6f8c9a05e1b-processed.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAX7KPGCHASYQC7RYM%2F20240303%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240303T095329Z&X-Amz-Expires=900&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGAaDGNhLWNlbnRyYWwtMSJHMEUCID4YCImT8PxCQX%2Bf8kOjS0Yh5mqpaKTQuz5uq%2B6JO93WAiEA2%2BfFv8UicFE8wq3MsKs%2BtdU3r%2FW0jnhECPwWbTjaXSMqnAMIWRAAGgw1NDgzMTEyNzM5MjEiDJq3K8G0i3dpZgY89Sr5At6IaYZ%2BHXgikpXLruQ541DC8QYK0FjuYWXwzKi5Z6c9tlkvrBFzYOmYM1C%2FDa8U4q1nk7rs6tpiWfxAlcb6QoQ7BtUSFJjMzoqXq7zWS70uNDNBFcqD2%2B%2BIoLZI5aDpkqAIh%2Bosq5yTvNz8xjh9vKcFtZMrZ5720hK8hn0vJHMqDYIuWpd6JO3uT2BATsS%2B5fY%2ByTAXZHUEFx9ymeL5v%2FkcORHIad2K2NP0NXXDFzW3rZQYKBc3JCV7gsy3gUTyvW82ew6TcW%2FAlOcPXsS2HMMEUipafU%2B0abLwtYOzO7nr2%2BcN502t61EmRZMi56NZf52KfGx5ohtMgyrO9ib4qV8bqiTWcCtFT4ObaZ6E%2Boawyn36uWrKXERwcgCoJ%2FGhMdbW1t%2FnVFcBYAs6EmTSnJ1n3xf097HYNQP0hZTPqeu51ZB4Wcovls%2F5BhBJl2%2F86U%2BQk8edZjK%2BBOzOao0dnUd1UJKCSWQnz5McDXzRX7k94dXH9%2BBNbBCfMNHYkK8GOqYBub6Gvd5lmNgelG6aOpZecIYWi6BcPbo5W%2BMJGMuF69UioG%2FICEsODiOOtU0ZEUUxQByJ2vYa80gwM7yeYZnsrmtFsM566x%2BLPRDtAWsoxFiOp8TSRRTBfLM4QtW01yC0Tpx6duSVBGzMlDiGNKnS%2FqyUsEUoev6MxOA5dpxeeN3p7Js%2BInbEcgaV4ywujN0QuLWby36binzDt3n9RdUmze2ULj6u6A%3D%3D&X-Amz-Signature=3ed2460d0aac57f448da86c97af8046fc2552b05b34dd9b166b637f4ab3856fb&X-Amz-SignedHeaders=host&x-id=GetObject"
-                                      }
-                                    />
-                                  </DialogContent>
-                                </Dialog>
-                                <Separator
-                                  orientation="vertical"
-                                  className="mx-2 h-8"
-                                />
-                                <Button
-                                  variant={"outline"}
-                                  disabled={value.status !== "COMPLETED"}
-                                >
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <Download className="w-4 h-4 " />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      View Processed Video
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-            ) : (
-              <div className="flex-1 whitespace-pre-wrap text-sm ">
-                {selected?.description}
-              </div>
-            )}
+            <div className="flex-1 whitespace-pre-wrap text-sm ">
+              {selected?.description}
+            </div>
           </div>
         </div>
       ) : (
