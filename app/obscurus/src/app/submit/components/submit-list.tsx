@@ -136,7 +136,7 @@ export default function SubmitList({
     });
 
     return (
-      <TabsContent key={status} value={status} className="">
+      <TabsContent key={status} value={status} className={`${submissions ? " overflow-y-scroll" : "overflow-y-hidden"}`}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full ">
           {!filteredRequests && (
             <div className="flex flex-col items-center justify-center h-full gap-5 md:mb-36">
@@ -303,7 +303,7 @@ export default function SubmitList({
       </div>
       <Separator />
 
-      <div className={`h-full ${submissions ? " overflow-y-scroll" : "overflow-y-hidden"}`}>
+      <div >
         {tabsContent}
       </div>
     </Tabs>

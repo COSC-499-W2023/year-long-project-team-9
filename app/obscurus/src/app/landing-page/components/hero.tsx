@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-const Mascot = ({ isBlurred }: any) => {
+
+const Mascot = ({isBlurred, isVisible} : {isBlurred: boolean, isVisible: boolean}) => {
   const cloudVariants = {
     visible: {
       opacity: 1,
@@ -55,7 +56,7 @@ const Mascot = ({ isBlurred }: any) => {
         id="shirt"
         variants={bodyVariants}
         initial="initial"
-        animate="animate"
+        animate={isVisible ? "animate" : "initial"}
       />
       <motion.path
         className="fill-white stroke-slate-900"
@@ -67,7 +68,7 @@ const Mascot = ({ isBlurred }: any) => {
         strokeMiterlimit="10"
         variants={bodyVariants}
         initial="initial"
-        animate="animate"
+        animate={isVisible ? "animate" : "initial"}
       />
       <motion.path
         className="fill-slate-900 stroke-slate-900"
@@ -77,7 +78,7 @@ const Mascot = ({ isBlurred }: any) => {
         strokeMiterlimit="10"
         variants={bodyVariants}
         initial="initial"
-        animate="animate"
+        animate={isVisible ? "animate" : "initial"}
       />
       <motion.path
         className="fill-slate-900 stroke-slate-900 "
@@ -89,7 +90,7 @@ const Mascot = ({ isBlurred }: any) => {
         strokeMiterlimit="10"
         variants={bodyVariants}
         initial="initial"
-        animate="animate"
+        animate={isVisible ? "animate" : "initial"}
       />
       <motion.path
         className="stroke-slate-900 fill-slate-900"
@@ -99,7 +100,7 @@ const Mascot = ({ isBlurred }: any) => {
         strokeMiterlimit="10"
         variants={bodyVariants}
         initial="initial"
-        animate="animate"
+        animate={isVisible ? "animate" : "initial"}
       />
       <motion.path
         className="stroke-slate-900 fill-white"
@@ -122,6 +123,12 @@ const Mascot = ({ isBlurred }: any) => {
 
 const Hero = () => {
   const [isBlurred, setBlurred] = useState(true);
+  const [isVisible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+    setBlurred(true);
+  }, []);
 
   return (
     <div
@@ -156,7 +163,7 @@ const Hero = () => {
         </div>
       </div>
       <div className="p-4 md:p-10 min-w-fit">
-        <Mascot isBlurred={isBlurred} />
+        <Mascot isBlurred={isBlurred} isVisible={isVisible} />
       </div>
     </div>
   );

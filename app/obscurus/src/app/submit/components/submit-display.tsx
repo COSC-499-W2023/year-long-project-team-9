@@ -42,6 +42,7 @@ import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmis
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
+import { Badge } from "@/components/ui/badge";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -419,7 +420,7 @@ export default function SubmitDisplay({
     return (
       <div className="flex flex-col w-fit h-full pt-16">
         {loading && (
-          <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+          <div className="flex flex-col w-full h-full justify-center items-center gap-5">
             <LucideLoader2 className="animate-spin text-primary" size={75} />
             <p className="font-bold">Uploading...</p>
           </div>
@@ -629,11 +630,18 @@ export default function SubmitDisplay({
               </div>
             </div>
           </div>
-          {selected.requestDetails.creationDate && (
-            <div className="ml-auto text-xs text-muted-foreground">
-              {format(new Date(selected.requestDetails.creationDate), "PPP, p")}
-            </div>
-          )}
+          {selected.requestDetails.creationDate &&
+            selected.requestDetails.blurred && (
+              <div className="ml-auto text-xs text-muted-foreground pr-3 flex flex-col justify-between h-full">
+                {format(
+                  new Date(selected.requestDetails.creationDate),
+                  "PPP, p"
+                )}
+                 <Badge variant={selected?.requestDetails.blurred ? "default": "secondary"} className=" w-fit ml-2">
+                  {selected?.requestDetails.blurred ? "Blurred" : "Not Blurred"}
+                </Badge>
+              </div>
+            )}
         </div>
         <Separator />
       </>
