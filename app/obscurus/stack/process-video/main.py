@@ -28,37 +28,42 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_gaussian_blur(image, kernel_size=(31, 31)):
+def anonymize_face_median_blur(image, kernel_size=51):
     """
-    Applies a Gaussian blur to an image
-    Args:
-        image (ndarray): The image to be blurred
-        kernel_size (tuple): The size of the Gaussian kernel (width, height).
-                             Larger values result in a more blurred image.
-                             The values should be odd (e.g., (31, 31)).
+    Applies a median blur to an image to anonymize faces.
+
+    Parameters:
+        image (ndarray): The image to be blurred.
+        kernel_size (int): The size of the kernel. Larger values result in a more blurred image.
+
     Returns:
-        image (ndarray): The blurred image
+        ndarray: The blurred image.
     """
-
-    return cv2.GaussianBlur(image, kernel_size, 0)
-
+    return cv2.medianBlur(image, kernel_size)
 
 def apply_faces_to_video(
     final_timestamps,
     local_path_to_video,
     local_output,
     video_metadata,
-    color=(255, 0, 0),
-    thickness=2,
-    blur_kernel_size=(30, 30),  # Added parameter for blur kernel size
+    blur_kernel_size=51,
 ):
-    # Extract video info
+    """
+    Applies face blurring to video frames based on detected face coordinates.
+
+    Parameters:
+        final_timestamps (dict): Timestamps and face bounding boxes.
+        local_path_to_video (str): Local path to the source video.
+        local_output (str): Local path for the output video.
+        video_metadata (dict): Metadata of the video, including frame rate and dimensions.
+        blur_kernel_size (int): The size of the blur kernel.
+    """
     frame_rate = video_metadata["FrameRate"]
     frame_height = video_metadata["FrameHeight"]
     frame_width = video_metadata["FrameWidth"]
     width_delta = int(frame_width / 250)
     height_delta = int(frame_height / 100)
-    # Set up support for OpenCV
+
     frame_counter = 0
     fourcc = cv2.VideoWriter_fourcc("M", "J", "P", "G")
     v = cv2.VideoCapture(local_path_to_video)
@@ -68,7 +73,7 @@ def apply_faces_to_video(
         fps=int(frame_rate),
         frameSize=(frame_width, frame_height),
     )
-    # Open the video
+
     while v.isOpened():
         has_frame, frame = v.read()
         if has_frame:
@@ -87,9 +92,7 @@ def apply_faces_to_video(
                         x2, y2 = x1 + w, y1 + h
 
                         to_blur = frame[y1:y2, x1:x2]
-                        blurred = anonymize_face_gaussian_blur(
-                            to_blur, kernel_size=blur_kernel_size
-                        )
+                        blurred = anonymize_face_median_blur(to_blur, kernel_size=blur_kernel_size)
                         frame[y1:y2, x1:x2] = blurred
             out.write(frame)
             frame_counter += 1
@@ -99,6 +102,7 @@ def apply_faces_to_video(
     out.release()
     v.release()
     print(f"Complete. {frame_counter} frames were written.")
+
 
 
 def integrate_audio(
@@ -318,7 +322,7 @@ async def process_video_background(submission_id, file_extension, recipient_emai
     try:
         original_key = f"{submission_id}.{file_extension}"
         converted_key = original_key
-        if file_extension.lower() == "webm":
+        if file_extension.lower() != "mp4":
             converted_key = f"{submission_id}.mp4"
             local_webm_path = f"/tmp/{original_key}"
             print("local_webm_path", local_webm_path)
