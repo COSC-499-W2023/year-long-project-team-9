@@ -9,8 +9,16 @@ import RequestList from "./request-list";
 import hello from "@/app/functions/hello";
 import RequestDisplay from "./request-display";
 import { useState } from "react";
+import { createFormSchema } from "./create/form/createFormSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import CreateForm from "./create/components/create-form";
+import CreateDisplay from "./create/components/create-display";
+import SubmitStatusAlert from "./create/components/create-submit-status-alert";
+import { useQueryState } from "nuqs";
 
-export default function RequestWeapper({
+export default function RequestWrapper({
   defaultLayout,
   defaultCollapsed,
   request,
@@ -19,6 +27,7 @@ export default function RequestWeapper({
   archiveRequest,
   unarchiveRequest,
   trashRequest,
+  createRequest,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -28,7 +37,12 @@ export default function RequestWeapper({
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
+  createRequest: Function;
 }) {
+  const [showCreate, setShowCreate] = useState<boolean>(false);
+  const [requestId, setRequestId] = useQueryState("requestId");
+
+  // Request
   const [requests, setRequests] = useState<Requests[]>(request);
   const handleTimezoneOffset = (date: Date) => {
     const messageDateTime = new Date(date).getTime();
@@ -36,30 +50,75 @@ export default function RequestWeapper({
     return new Date(messageDateTime + userTimezoneOffset);
   };
 
+  // Create
+  const form = useForm<z.infer<typeof createFormSchema>>({
+    resolver: zodResolver(createFormSchema),
+    defaultValues: {
+      title: "",
+      userEmail: userData.email,
+      videoProcessing: true,
+      clientEmail: [{ email: "" }],
+      firstName: userData.givenName,
+      lastName: userData.familyName,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof createFormSchema>) {
+    const createSucess = await createRequest(values);
+    if (createSucess === false) {
+      const button = document.getElementById("failAlert");
+      button?.click();
+    } else {
+      const button = document.getElementById("successAlert");
+      button?.click();
+    }
+  }
+
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={
-        <RequestList
-          requests={requests}
-          submissions={submissions}
-          handleTimezoneOffset={handleTimezoneOffset}
-        />
-      }
-      secondPanel={
-        <RequestDisplay
-          requests={requests}
-          submissions={submissions}
-          userData={userData}
-          setRequests={setRequests}
-          archiveRequest={archiveRequest}
-          unarchiveRequest={unarchiveRequest}
-          trashRequest={trashRequest}
-          handleTimezoneOffset={handleTimezoneOffset}
-        />
-      }
-    />
+    <>
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          showCreate === true ? (
+            <CreateForm
+              form={form}
+              onSubmit={onSubmit}
+              userData={userData}
+              setShowCreate={setShowCreate}
+            ></CreateForm>
+          ) : (
+            <RequestList
+              requests={requests}
+              submissions={submissions}
+              handleTimezoneOffset={handleTimezoneOffset}
+              setShowCreate={setShowCreate}
+              requestId={requestId}
+              setRequestId={setRequestId}
+            />
+          )
+        }
+        secondPanel={
+          showCreate === true ? (
+            <CreateDisplay form={form} userData={userData}></CreateDisplay>
+          ) : (
+            <RequestDisplay
+              requests={requests}
+              submissions={submissions}
+              userData={userData}
+              setRequests={setRequests}
+              archiveRequest={archiveRequest}
+              unarchiveRequest={unarchiveRequest}
+              trashRequest={trashRequest}
+              handleTimezoneOffset={handleTimezoneOffset}
+              requestId={requestId}
+              setRequestId={setRequestId}
+            />
+          )
+        }
+      />
+      {showCreate === true ? <SubmitStatusAlert></SubmitStatusAlert> : <></>}
+    </>
   );
 }
