@@ -62,7 +62,8 @@ export default function SubmitDisplay({
   sendToService?: (
     submissionId: string,
     fileExt: string,
-    email: string
+    email: string,
+    blurred: boolean
   ) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
@@ -169,7 +170,8 @@ export default function SubmitDisplay({
             sendToService(
               submission.submissionId,
               fileExt,
-              selected?.requesteeEmail
+              selected?.requesteeEmail,
+              selected?.requestDetails.blurred,
             );
           setSubmittedDate &&
             submission.submissionId &&
@@ -665,7 +667,7 @@ export default function SubmitDisplay({
       <>
         <div className="h-full">
           <RequestHeader selected={selected} />
-          <div className="flex  p-5 overflow-scroll max-h-[65%]">
+          <div className="flex p-4 overflow-scroll max-h-[65%]">
             <div className="flex-1 whitespace-pre-wrap text-sm ">
               {selected?.requestDetails.description}
             </div>
@@ -702,12 +704,16 @@ export default function SubmitDisplay({
       <div className="h-full w-full">
         <RequestHeader selected={selected} />
 
-        <div className="flex flex-col space-y-2 container">
+        <div className="flex flex-col space-y-2 p-4">
           <VideoPlayer
-            videoUrl={processedVideo}
-            fileName={selected.requestDetails.requestTitle}
+            videoUrl={processedVideo ? processedVideo : ""}
+            filename={"Processed Video"}
           />
-          <div className="text-sm">Submitted on: April 2, 2024 at 5:51 PM</div>
+          {selected.submittedDate && (
+            <div className="text-xs text-muted-foreground">
+              Submitted on: {format(new Date(selected.submittedDate), "PPP, p")}
+            </div>
+          )}
           {/* {selected.submittedDate && (
               <div>
                 Submitted on:{" "}
@@ -717,7 +723,7 @@ export default function SubmitDisplay({
         </div>
 
         <div className="flex justify-start items-center space-x-3 p-3">
-          <div className="absolute bottom-10 right-10">
+          <div className="absolute bottom-10 right-5">
             <Link href={processedVideo || ""}>
               <Tooltip>
                 <TooltipTrigger asChild>

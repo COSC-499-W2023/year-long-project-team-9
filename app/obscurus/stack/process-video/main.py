@@ -32,7 +32,7 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_combine(image, gaussian_kernel_size=(31, 31), median_kernel_size=31):
+def anonymize_face_combine(image, gaussian_kernel_size=(51, 51), median_kernel_size=51):
     blurred = cv2.GaussianBlur(image, gaussian_kernel_size, 0)
     return cv2.medianBlur(blurred, median_kernel_size)
 
@@ -163,7 +163,6 @@ def get_timestamps_and_faces(job_id, reko_client=None):
     print("Complete")
     return final_timestamps, response
 
-
 def convert_to_mp4(input_video, output_video):
     """
     Converts any video format to MP4 using FFmpeg.
@@ -188,7 +187,7 @@ def convert_to_mp4(input_video, output_video):
     except Exception as e:
         print(f"Error converting video: {e}")
 
-
+#Processes the video by applying the faces to the video and integrating the audio
 def process_video(timestamps, response, submission_id, file_extension):
     print("Processing video...")
     input_name = f"{submission_id}.{file_extension}"
@@ -212,8 +211,6 @@ def process_video(timestamps, response, submission_id, file_extension):
         original_video=local_filename,
         output_video=final_output_filename,
     )
-
-    # s3.remove_object(Bucket=bucket_name, Key=input_name)
     print("Uploading processed video to S3...")
     s3.upload_file(final_output_filename, bucket_name, output_name)
 
@@ -225,7 +222,7 @@ def process_video(timestamps, response, submission_id, file_extension):
 
 app = FastAPI()
 
-
+#Sends a message to the websocket endpoint to update the status of a submission
 async def update_submission_status(status: str, submission_id: str):
     async with websockets.connect(ws_api_url) as websocket:
         message = json.dumps(
@@ -238,6 +235,7 @@ async def update_submission_status(status: str, submission_id: str):
         print(f"Status updated to {status} for submission {submission_id}")
 
 
+#Sends an email notification to the user
 async def send_email_notification(email: str, subject: str, body: str):
     ses_client = boto3.client("ses", region_name="us-west-2")
     ses_client.send_email(
@@ -248,6 +246,7 @@ async def send_email_notification(email: str, subject: str, body: str):
     print(f"Email notification sent to {email}")
 
 
+#Creates a notification in the database and sends a message to the websocket endpoint to broadcast on the front end
 async def create_notification(status: str, submission_id: str, email: str):
     async with websockets.connect(ws_api_url) as websocket:
         message = json.dumps(
@@ -279,6 +278,8 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         submission_id = data.get("submission_id")
         file_extension = data.get("file_extension")
         recipient_email = data.get("email")
+        blurred = data.get("blurred")
+        print("blurred", blurred)
         if not submission_id or not file_extension:
             raise HTTPException(
                 status_code=400, detail="Missing submission_id or file_extension"
@@ -294,7 +295,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         # )
         await create_notification("PROCESSING", submission_id, recipient_email)
         background_tasks.add_task(
-            process_video_background, submission_id, file_extension, recipient_email
+            process_video_background, submission_id, file_extension, recipient_email, blurred
         )
         return {"message": "Video processing started"}
     except Exception as e:
@@ -311,8 +312,9 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
             return {"message": "Error processing video"}
 
 
-async def process_video_background(submission_id, file_extension, recipient_email):
+async def process_video_background(submission_id, file_extension, recipient_email, blurred):
     try:
+        #convert to mp4 if the video is not in mp4 format (webm does not work with rekognition)
         original_key = f"{submission_id}.{file_extension}"
         converted_key = original_key
         if file_extension.lower() != "mp4":
@@ -328,10 +330,19 @@ async def process_video_background(submission_id, file_extension, recipient_emai
             print("MP4 file uploaded to S3")
             # os.remove(local_webm_path)
             # os.remove(local_mp4_path)
-        job_id = start_face_detection(converted_key)
-        job_response = check_job_status(job_id)
-        timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
-        process_video(timestamps, job_response, submission_id, "mp4")
+        if (blurred):
+            job_id = start_face_detection(converted_key)
+            job_response = check_job_status(job_id)
+            timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
+            process_video(timestamps, job_response, submission_id, "mp4")
+
+        else:
+            #if the video is not blurred, we just copy the video to the processed folder
+            s3.copy_object(
+                Bucket=bucket_name,
+                CopySource={"Bucket": bucket_name, "Key": converted_key},
+                Key=f"{submission_id}-processed.mp4",
+            )
         await update_submission_status("COMPLETED", submission_id)
         await send_email_notification(
             recipient_email,
@@ -339,6 +350,7 @@ async def process_video_background(submission_id, file_extension, recipient_emai
             "Your video has been processed",
         )
         await create_notification("COMPLETED", submission_id, recipient_email)
+
     except Exception as e:
         print(f"Error processing video: {e}")
         await update_submission_status("FAILED", submission_id)

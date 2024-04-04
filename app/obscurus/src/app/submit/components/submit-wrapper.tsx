@@ -33,7 +33,8 @@ export const SubmitWrapper = ({
   sendToService?: (
     submissionId: string,
     fileExt: string,
-    email: string
+    email: string,
+    blurred: boolean
   ) => Promise<string>;
   updateStatus?: Function;
   getStatus?: (submissionId: string) => Promise<string>;

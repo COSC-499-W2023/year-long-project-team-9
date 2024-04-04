@@ -64,12 +64,12 @@ const NavBar = ({
           <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => setTheme("system")}
             data-testid="system"
           >
             System
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -77,7 +77,7 @@ const NavBar = ({
 
   const Navigation = () => {
     return (
-      <NavigationMenu className="flex flex-row space-x-8 ">
+      <NavigationMenu className="flex flex-row space-x-6 ">
         <Link href="/" className="">
           <Image
             className="min-h-full min-w-full"
