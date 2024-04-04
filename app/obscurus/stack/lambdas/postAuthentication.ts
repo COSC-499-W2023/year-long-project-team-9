@@ -1,10 +1,8 @@
 import { addUser, list } from "@obscurus/database/src/users";
+import { activateRooms } from "@obscurus/database/src/rooms";
 import { Users as UserType } from "@obscurus/database/src/sql.generated";
 
 export async function main(event: any) {
-  // Step 2: Set all rooms where new user is participant 1 and participant 2 is in users table to active
-  // Step 3: Set all rooms where new user is participant 2 and participant 1 is in users table to active
-
   const { userAttributes } = event.request;
   const email = userAttributes.email;
   const givenName = userAttributes.given_name;
@@ -17,6 +15,7 @@ export async function main(event: any) {
       givenName: givenName,
       familyName: familyName,
     });
+    const activatedRooms = await activateRooms(email);
     return event;
   } else {
     return event;
