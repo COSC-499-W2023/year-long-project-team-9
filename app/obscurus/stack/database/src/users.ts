@@ -30,11 +30,8 @@ export function addUser({
     .execute();
 }
 
-export function getUserByEmail(email: string) {
-  return SQL.DB.selectFrom("users")
-    .selectAll()
-    .where("email", "=", email)
-    .execute();
+export function list() {
+  return SQL.DB.selectFrom("users").selectAll().execute();
 }
 
 export async function getUserDataByEmail(email: string) {
