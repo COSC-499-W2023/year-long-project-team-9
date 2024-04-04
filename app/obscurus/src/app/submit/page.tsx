@@ -26,7 +26,6 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  console.log("triggerJob", triggerJob);
   console.log("updateStatus", updateStatus);
   console.log("getStatus", getStatus);
   console.log("getPresignedUrl", getPresignedUrl);
