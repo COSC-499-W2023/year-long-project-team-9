@@ -30,6 +30,13 @@ export function addUser({
     .execute();
 }
 
+export function getUserByEmail(email: string) {
+  return SQL.DB.selectFrom("users")
+    .selectAll()
+    .where("email", "=", email)
+    .execute();
+}
+
 export async function getUserDataByEmail(email: string) {
   const requests = await SQL.DB.selectFrom("requests")
     .selectAll()
