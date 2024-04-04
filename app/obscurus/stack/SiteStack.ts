@@ -263,7 +263,10 @@ export default function SiteStack({ stack }: StackContext) {
       },
     },
     triggers: {
-      postAuthentication: "stack/lambdas/postAuthentication.main",
+      postAuthentication: {
+        handler: "stack/lambdas/postAuthentication.main",
+        bind: [rds],
+      },
     },
   });
 

@@ -39,6 +39,7 @@ export async function signInUser({ username, password }: SignInInput) {
       return false;
     }
   } catch (error) {
+    console.log(error);
     return false;
   }
 }
