@@ -23,7 +23,8 @@ Amplify.configure(amplifyConfig);
 
 type UserNames = {
   email: string;
-  fullName: string;
+  givenName: string;
+  familyName: string;
 };
 
 export default async function NavBarServerWrapper() {
@@ -33,12 +34,13 @@ export default async function NavBarServerWrapper() {
     const userNames: UserNames[] = await getUserNames();
     const filUserNames = userNames.filter((user) => user.email === userEmail);
     if (filUserNames.length > 0) {
-      return filUserNames[0].fullName;
+      return [filUserNames[0].givenName, filUserNames[0].familyName];
     } else {
-      return "";
+      return ["", ""];
     }
   };
   const name = await getUserName(email);
+  console.log(name);
 
   return (
     <NavBar

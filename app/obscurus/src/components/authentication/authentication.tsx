@@ -25,7 +25,7 @@ export default function Authentication({
   updateUserPassword: Function;
   signedIn: boolean;
   email: string;
-  name: string;
+  name: string[];
 }) {
   return signedIn ? (
     <AuthenticationSignedIn

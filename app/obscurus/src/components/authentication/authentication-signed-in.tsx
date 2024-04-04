@@ -32,7 +32,7 @@ export default function AuthenticationSignedIn({
   updateUserPassword: Function;
   signOutUser: Function;
   userEmail: string;
-  userName: string;
+  userName: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   async function handleLogOut() {
@@ -43,13 +43,8 @@ export default function AuthenticationSignedIn({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="hover:cursor-pointer">
-          <AvatarImage alt={userName} />
-          <AvatarFallback>
-            {userName
-              .split(" ")
-              .map((word) => word.charAt(0))
-              .join("")}
-          </AvatarFallback>
+          <AvatarImage alt={userName[0]} />
+          <AvatarFallback>{userName}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

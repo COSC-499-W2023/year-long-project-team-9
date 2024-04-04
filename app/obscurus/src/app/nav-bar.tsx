@@ -54,7 +54,7 @@ const NavBar = ({
   updateUserPassword: Function;
   signedIn: boolean;
   email: string;
-  name: string;
+  name: string[];
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
