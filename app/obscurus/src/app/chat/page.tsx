@@ -35,6 +35,8 @@ async function Chat() {
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
+  const websocketApiEndpoint =
+    (process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string) ?? "";
 
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
@@ -71,9 +73,7 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={userEmail}
-      websocketApiEndpoint={
-        process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string
-      }
+      websocketApiEndpoint={websocketApiEndpoint}
       rooms={rooms}
       userNames={userNames}
       messages={messages}
