@@ -40,7 +40,6 @@ export default async function NavBarServerWrapper() {
     }
   };
   const name = await getUserName(email);
-  console.log(name);
 
   return (
     <NavBar
