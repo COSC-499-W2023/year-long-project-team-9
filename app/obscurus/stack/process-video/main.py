@@ -2,14 +2,10 @@ import boto3
 import os
 import time
 import cv2
-import numpy as np
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 from fastapi import (
     FastAPI,
-    UploadFile,
-    File,
-    Form,
     HTTPException,
     WebSocket,
     Request,
@@ -19,7 +15,6 @@ import requests
 import json
 import subprocess
 import websockets
-import asyncio
 
 # Configure AWS clients
 rekognition = boto3.client("rekognition")
@@ -33,36 +28,19 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_pixelate(image, blocks=10):
+def anonymize_face_gaussian_blur(image, kernel_size=(31, 31)):
     """
-    Computes a pixelated blur with OpenCV
+    Applies a Gaussian blur to an image
     Args:
         image (ndarray): The image to be blurred
-        blocks (int): Number of pixel blocks (default is 10)
+        kernel_size (tuple): The size of the Gaussian kernel (width, height).
+                             Larger values result in a more blurred image.
+                             The values should be odd (e.g., (31, 31)).
     Returns:
         image (ndarray): The blurred image
     """
-    # divide the input image into NxN blocks
-    (h, w) = image.shape[:2]
-    x_coordinates, y_coordinates = np.linspace(
-        0, w, blocks + 1, dtype="int"
-    ), np.linspace(0, h, blocks + 1, dtype="int")
 
-    # loop over the blocks along x and y axis
-    for i in range(1, len(y_coordinates)):
-        for j in range(1, len(x_coordinates)):
-            # compute the first and last (x, y)-coordinates for the current block
-            first_x, last_x = x_coordinates[j - 1], x_coordinates[j]
-            first_y, last_y = y_coordinates[i - 1], y_coordinates[i]
-            # extract the ROI
-            roi = image[first_y:last_y, first_x:last_x]
-            # compute the mean of the ROI
-            (b, g, r) = [int(x) for x in cv2.mean(roi)[:3]]
-            # draw a rectangle with the mean RGB values over the ROI in the original image
-            cv2.rectangle(image, (first_x, first_y), (last_x, last_y), (b, g, r), -1)
-
-    # return the pixelated blurred image
-    return image
+    return cv2.GaussianBlur(image, kernel_size, 0)
 
 
 def apply_faces_to_video(
@@ -72,6 +50,7 @@ def apply_faces_to_video(
     video_metadata,
     color=(255, 0, 0),
     thickness=2,
+    blur_kernel_size=(30, 30),  # Added parameter for blur kernel size
 ):
     # Extract video info
     frame_rate = video_metadata["FrameRate"]
@@ -82,7 +61,6 @@ def apply_faces_to_video(
     # Set up support for OpenCV
     frame_counter = 0
     fourcc = cv2.VideoWriter_fourcc("M", "J", "P", "G")
-    # Create the file pointers
     v = cv2.VideoCapture(local_path_to_video)
     out = cv2.VideoWriter(
         filename=local_output,
@@ -109,10 +87,10 @@ def apply_faces_to_video(
                         x2, y2 = x1 + w, y1 + h
 
                         to_blur = frame[y1:y2, x1:x2]
-                        blurred = anonymize_face_pixelate(to_blur, blocks=10)
+                        blurred = anonymize_face_gaussian_blur(
+                            to_blur, kernel_size=blur_kernel_size
+                        )
                         frame[y1:y2, x1:x2] = blurred
-
-                        # frame = cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0), 3)
             out.write(frame)
             frame_counter += 1
         else:
@@ -120,7 +98,6 @@ def apply_faces_to_video(
 
     out.release()
     v.release()
-    # cv2.destroyAllWindows()
     print(f"Complete. {frame_counter} frames were written.")
 
 
@@ -232,7 +209,6 @@ def process_video(timestamps, response, submission_id, file_extension):
 
     os.rename(temp_output_filename, final_output_filename)
 
-
     print("Integrating audio with video...")
     integrate_audio(
         submission_id=submission_id,
@@ -240,10 +216,9 @@ def process_video(timestamps, response, submission_id, file_extension):
         output_video=final_output_filename,
     )
 
-    #s3.remove_object(Bucket=bucket_name, Key=input_name)
+    # s3.remove_object(Bucket=bucket_name, Key=input_name)
     print("Uploading processed video to S3...")
     s3.upload_file(final_output_filename, bucket_name, output_name)
-
 
     os.remove(local_filename)
     os.remove(final_output_filename)
@@ -343,7 +318,7 @@ async def process_video_background(submission_id, file_extension, recipient_emai
     try:
         original_key = f"{submission_id}.{file_extension}"
         converted_key = original_key
-        if file_extension.lower() != "mp4":
+        if file_extension.lower() == "webm":
             converted_key = f"{submission_id}.mp4"
             local_webm_path = f"/tmp/{original_key}"
             print("local_webm_path", local_webm_path)
@@ -354,8 +329,8 @@ async def process_video_background(submission_id, file_extension, recipient_emai
             convert_to_mp4(local_webm_path, local_mp4_path)
             s3.upload_file(local_mp4_path, bucket_name, converted_key)
             print("MP4 file uploaded to S3")
-            os.remove(local_webm_path)
-            os.remove(local_mp4_path)
+            # os.remove(local_webm_path)
+            # os.remove(local_mp4_path)
         job_id = start_face_detection(converted_key)
         job_response = check_job_status(job_id)
         timestamps, _ = get_timestamps_and_faces(job_id, rekognition)
