@@ -65,6 +65,8 @@ export default function RequestDisplay({
   unarchiveRequest,
   trashRequest,
   handleTimezoneOffset,
+  requestId,
+  setRequestId,
 }: {
   requests: Requests[];
   submissions: Submissions[];
@@ -74,8 +76,9 @@ export default function RequestDisplay({
   unarchiveRequest: Function;
   trashRequest: Function;
   handleTimezoneOffset: Function;
+  requestId: string | null;
+  setRequestId: Function;
 }) {
-  const [requestId, setRequestId] = useQueryState("requestId");
   const { toast } = useToast();
 
   console.log("RequestId", requestId);
@@ -188,8 +191,8 @@ export default function RequestDisplay({
                       Are you absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
+                      This action cannot be undone. This will permanently remove
+                      your access to the request.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>

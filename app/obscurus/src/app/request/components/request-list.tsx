@@ -59,14 +59,17 @@ export default function RequestList({
   submissions,
   handleTimezoneOffset,
   setShowCreate,
+  requestId,
+  setRequestId,
 }: {
   requests: Requests[];
   submissions: Submissions[];
   isCollapsed?: boolean;
   handleTimezoneOffset: Function;
   setShowCreate: Function;
+  requestId: string | null;
+  setRequestId: Function;
 }) {
-  const [requestId, setRequestId] = useQueryState("requestId");
   const [search, setSearch] = useState<string>("");
   const [sort, setSort] = useState<string>("sort");
   const [tab, setTab] = useState<string>("tab");
@@ -214,7 +217,13 @@ export default function RequestList({
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Request</h1>
 
-        <Button variant="ghost" onClick={() => setShowCreate(true)}>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            setShowCreate(true);
+            setRequestId(null);
+          }}
+        >
           <Send className="mr-2 h-4 w-4" />
           Create
         </Button>

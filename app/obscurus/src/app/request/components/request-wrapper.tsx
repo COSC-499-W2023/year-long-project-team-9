@@ -16,6 +16,7 @@ import { z } from "zod";
 import CreateForm from "./create/components/create-form";
 import CreateDisplay from "./create/components/create-display";
 import SubmitStatusAlert from "./create/components/create-submit-status-alert";
+import { useQueryState } from "nuqs";
 
 export default function RequestWrapper({
   defaultLayout,
@@ -39,6 +40,7 @@ export default function RequestWrapper({
   createRequest: Function;
 }) {
   const [showCreate, setShowCreate] = useState<boolean>(false);
+  const [requestId, setRequestId] = useQueryState("requestId");
 
   // Request
   const [requests, setRequests] = useState<Requests[]>(request);
@@ -92,6 +94,8 @@ export default function RequestWrapper({
               submissions={submissions}
               handleTimezoneOffset={handleTimezoneOffset}
               setShowCreate={setShowCreate}
+              requestId={requestId}
+              setRequestId={setRequestId}
             />
           )
         }
@@ -108,6 +112,8 @@ export default function RequestWrapper({
               unarchiveRequest={unarchiveRequest}
               trashRequest={trashRequest}
               handleTimezoneOffset={handleTimezoneOffset}
+              requestId={requestId}
+              setRequestId={setRequestId}
             />
           )
         }
