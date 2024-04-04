@@ -46,12 +46,13 @@ export default async function RootLayout({
         >
           <WebSocketProvider url={wsUrl}>
           <TooltipProvider delayDuration={0}>
-            <div className=" flex-col md:flex h-screen ">
-              <NavBar
+          <NavBar
                 readNotification={readNotification}
                 deleteNotifications={deleteNotification}
                 getNotificationsViaEmail={getNotificationsViaEmail}
               />
+            <div className=" flex-col md:flex h-screen pt-16">
+
               <Toaster />
               {children}
 

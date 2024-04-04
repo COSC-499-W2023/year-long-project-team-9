@@ -125,7 +125,7 @@ const NavBar = ({
   };
 
   return (
-    <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
+    <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
       <div className="flex gap-2">
         <Notifications

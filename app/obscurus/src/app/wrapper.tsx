@@ -82,7 +82,7 @@ export function Wrapper({
           defaultSize={(defaultLayout && defaultLayout[0]) || 20}
           collapsedSize={navCollapsedSize}
           collapsible={isMobile ? false : true}
-          minSize={20}
+          minSize={10}
           maxSize={20}
           onCollapse={(collapsed) => {
             setIsCollapsed(collapsed);
@@ -138,7 +138,7 @@ export function Wrapper({
           minSize={35}
         >
           <div className="h-full flex-1 flex-col  md:flex">
-            <Suspense fallback={<div>Loading...</div>}>{firstPanel}</Suspense>
+            {firstPanel}
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
@@ -146,7 +146,7 @@ export function Wrapper({
           defaultSize={(defaultLayout && defaultLayout[2]) || 50}
           minSize={25}
         >
-          <Suspense fallback={<div>Loading...</div>}>{secondPanel}</Suspense>
+          {secondPanel}
         </ResizablePanel>
       </ResizablePanelGroup>
 
