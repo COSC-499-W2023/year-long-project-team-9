@@ -45,6 +45,7 @@ import {
   AlertTitle,
 } from "@/components/modified-shadcn-ui-components/modified-alert";
 import { RequestListAlert } from "./request-list-alert";
+import { SubmissionsForRequest } from "../types/types-for-request";
 
 interface RequestsListProps {
   requests: Requests[];
@@ -63,7 +64,7 @@ export default function RequestList({
   setRequestId,
 }: {
   requests: Requests[];
-  submissions: Submissions[];
+  submissions: SubmissionsForRequest[];
   isCollapsed?: boolean;
   handleTimezoneOffset: Function;
   setShowCreate: Function;

@@ -17,6 +17,7 @@ import CreateForm from "./create/components/create-form";
 import CreateDisplay from "./create/components/create-display";
 import SubmitStatusAlert from "./create/components/create-submit-status-alert";
 import { useQueryState } from "nuqs";
+import { SubmissionsForRequest } from "../types/types-for-request";
 
 export default function RequestWrapper({
   defaultLayout,
@@ -32,7 +33,7 @@ export default function RequestWrapper({
   defaultLayout: number[];
   defaultCollapsed: boolean;
   request: Requests[];
-  submissions: Submissions[];
+  submissions: SubmissionsForRequest[];
   userData: Users;
   archiveRequest: Function;
   unarchiveRequest: Function;
