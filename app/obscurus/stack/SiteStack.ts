@@ -263,8 +263,7 @@ export default function SiteStack({ stack }: StackContext) {
       },
     },
     // triggers: {
-    //   preAuthentication: "stack/database/src/preAuthentication.main",
-    //   postAuthentication: "stack/database/src/postAuthentication.main",
+    //   postAuthentication: "stack/lambdas/postAuthentication.main",
     // },
   });
 
