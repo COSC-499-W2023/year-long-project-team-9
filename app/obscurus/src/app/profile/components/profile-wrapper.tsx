@@ -36,7 +36,6 @@ export default function ProfileWrapper({
   userData,
   getPresignedUrl,
   getDownloadPresignedUrl,
-  websocketApiEndpoint,
   updateUser,
 }: {
   defaultLayout: number[];
@@ -44,7 +43,6 @@ export default function ProfileWrapper({
   userData: Users;
   getPresignedUrl?: (username: string) => Promise<string>;
   getDownloadPresignedUrl?: (username: string) => Promise<string>;
-  websocketApiEndpoint: string;
   updateUser?: Function;
 }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
@@ -98,14 +96,26 @@ export default function ProfileWrapper({
           },
           body: file,
         });
+        console.log(response);
         setObjectURL(URL.createObjectURL(file));
-        console.log("Upload successful");
+        console.log("Upload successful");        
+        updateUserInfo(values, key);
         setLoading(false);
         return;
       } catch (error) {
         console.error("Upload failed:", error);
         setLoading(false);
       }
+    }
+  };
+
+  const updateUserInfo = async (values: z.infer<typeof profileFormSchema>, key: string) => {
+    console.log("test");
+    if (updateUser) {
+      console.log("Updating user information");
+      updateUser(values.email, values.firstName, values.lastName, key);
+    } else {
+      console.error("unable to update user info");
     }
   };
 
@@ -121,6 +131,7 @@ export default function ProfileWrapper({
           onSubmit={onSubmit}
           getPresignedUrl={getPresignedUrl}
           getDownloadPresignedUrl={getDownloadPresignedUrl}
+          updateUser={updateUser}
         ></ProfileForm>
       }
       secondPanel={<ProfileDisplay form={form}></ProfileDisplay>}

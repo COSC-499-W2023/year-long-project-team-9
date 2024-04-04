@@ -1,21 +1,25 @@
 "use server";
 import { Api } from "sst/node/api";
-const updateStatus = async (status: string, submissionId: string) => {
+const updateStatus = async (email: string,
+  givenName: string,
+  familyName: string,
+  profileImage: string,) => {
   try {
+    // console.log("=====");
     const response = await fetch(Api.Api.url + "/updateUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        submissionId: submissionId,
-        status: status,
+        email: email,
+        givenName: givenName,
+        familyName: familyName,
+        profileImage: profileImage,
       }),
     });
-
-    // if (response.ok) {
-    //   return response.json();
-    // }
+    // console.log("=====");
+    console.log(response);
 
   } catch (error) {
     console.error("Error updating status:", error);

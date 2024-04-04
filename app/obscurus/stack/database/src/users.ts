@@ -66,3 +66,18 @@ export interface Users {
   profileImage: string;
   preference: string;
 }
+
+export function setUser(
+  email: string,
+  givenName: string,
+  familyName: string,
+  profileImage: string,) {
+  return SQL.DB.updateTable("users")
+    .set({
+      givenName: givenName,
+      familyName: familyName,
+      profileImage: profileImage,
+    })
+    .where("email", "=", email)
+    .executeTakeFirst();
+}
