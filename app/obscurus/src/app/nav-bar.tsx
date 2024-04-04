@@ -77,7 +77,7 @@ const NavBar = ({
 
   const Navigation = () => {
     return (
-      <NavigationMenu className="flex flex-row space-x-6 ">
+      <NavigationMenu className="flex flex-row space-x-8 ">
         <Link href="/" className="">
           <Image
             className="min-h-full min-w-full"
@@ -88,7 +88,7 @@ const NavBar = ({
           />
         </Link>
 
-        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-4  ">
+        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-5  ">
           <Link href="/" className="">
             <NavigationMenuItem className="font-bold text-lg">
               obscurus

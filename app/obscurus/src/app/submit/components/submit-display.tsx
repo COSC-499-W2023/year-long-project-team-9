@@ -43,6 +43,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 import { Badge } from "@/components/ui/badge";
+import {isSafari} from "react-device-detect";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -77,7 +78,6 @@ export default function SubmitDisplay({
 
   const submissionIdFromQuery = useSearchParams().get("submissionId");
 
-  console.log("Submission ID from query:", submissionIdFromQuery);
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -92,13 +92,11 @@ export default function SubmitDisplay({
       setSubmission({ submissionId: submissionIdFromQuery });
     }
     const fetchProcessedVideo = async () => {
-      console.log("Selected:", selected);
       if (
         selected?.status === "COMPLETED" &&
         getDownloadPresignedUrl &&
         selected.submissionId
       ) {
-        console.log("Fetching processed video");
         try {
           const videoUrl = await getDownloadPresignedUrl(selected.submissionId);
           setProcessedVideo(videoUrl);
@@ -166,7 +164,6 @@ export default function SubmitDisplay({
         });
 
         if (response.ok) {
-          console.log("Upload successful");
           sendToService &&
             selected &&
             submission.submissionId &&
@@ -224,11 +221,16 @@ export default function SubmitDisplay({
   const [capturing, setCapturing] = useState<boolean>(false);
   const [recordedChunks, setRecordedChunks] = useState<BlobPart[]>([]);
 
+
   const handleStartCaptureClick = () => {
     setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current!.stream!, {
-      mimeType: "video/webm",
-    });
+    const options = {
+      mimeType: isSafari ? "video/mp4" : "video/webm",
+    };
+    mediaRecorderRef.current = new MediaRecorder(
+      webcamRef.current!.stream!,
+      options
+    );
     mediaRecorderRef.current.addEventListener(
       "dataavailable",
       handleDataAvailable
@@ -249,13 +251,14 @@ export default function SubmitDisplay({
 
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const fileName = `${submission.submissionId}.webm`;
-      const file = new File([blob], fileName, { type: "video/webm" });
+      const mimeType = isSafari ? "video/mp4" : "video/webm";
+      const fileExtension = isSafari ? "mp4" : "webm";
+      const blob = new Blob(recordedChunks, { type: mimeType });
+      const fileName = `${submission.submissionId}.${fileExtension}`;
+      const file = new File([blob], fileName, { type: mimeType });
 
       setFile(file);
 
-      console.log("File:", file);
 
       if (submission.submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
@@ -637,7 +640,12 @@ export default function SubmitDisplay({
                   new Date(selected.requestDetails.creationDate),
                   "PPP, p"
                 )}
-                 <Badge variant={selected?.requestDetails.blurred ? "default": "secondary"} className=" w-fit ml-2">
+                <Badge
+                  variant={
+                    selected?.requestDetails.blurred ? "default" : "secondary"
+                  }
+                  className=" w-fit ml-2"
+                >
                   {selected?.requestDetails.blurred ? "Blurred" : "Not Blurred"}
                 </Badge>
               </div>
@@ -769,6 +777,14 @@ export default function SubmitDisplay({
                       <Suspense fallback={<div>Failed to load webcam</div>}>
                         <Webcam
                           audio={true}
+                          audioConstraints={{
+                            echoCancellation: true,
+                          }}
+                          videoConstraints={{
+                            width: 1280,
+                            height: 720,
+                            facingMode: "user",
+                          }}
                           ref={webcamRef}
                           className=" w-full rounded-md"
                         />
