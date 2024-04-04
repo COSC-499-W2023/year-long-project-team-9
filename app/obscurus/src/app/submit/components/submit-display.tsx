@@ -43,7 +43,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 import { Badge } from "@/components/ui/badge";
-import {isSafari} from "react-device-detect";
+import { isSafari } from "react-device-detect";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -77,7 +77,6 @@ export default function SubmitDisplay({
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
   const submissionIdFromQuery = useSearchParams().get("submissionId");
-
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -221,7 +220,6 @@ export default function SubmitDisplay({
   const [capturing, setCapturing] = useState<boolean>(false);
   const [recordedChunks, setRecordedChunks] = useState<BlobPart[]>([]);
 
-
   const handleStartCaptureClick = () => {
     setCapturing(true);
     const options = {
@@ -258,7 +256,6 @@ export default function SubmitDisplay({
       const file = new File([blob], fileName, { type: mimeType });
 
       setFile(file);
-
 
       if (submission.submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
@@ -633,23 +630,30 @@ export default function SubmitDisplay({
               </div>
             </div>
           </div>
-          {selected.requestDetails.creationDate &&
-            selected.requestDetails.blurred && (
-              <div className="ml-auto text-xs text-muted-foreground pr-3 flex flex-col justify-between h-full">
+          {selected.requestDetails.creationDate && (
+            <div className="ml-auto text-xs text-muted-foreground pr-3 grid p-0 justify-between space-y-5 h-full">
+              <div>
                 {format(
                   new Date(selected.requestDetails.creationDate),
                   "PPP, p"
                 )}
-                <Badge
-                  variant={
-                    selected?.requestDetails.blurred ? "default" : "secondary"
-                  }
-                  className=" w-fit ml-2"
-                >
-                  {selected?.requestDetails.blurred ? "Blurred" : "Not Blurred"}
-                </Badge>
               </div>
-            )}
+              {selected.requestDetails && (
+                <div className="flex justify-end pt-5">
+                  <Badge
+                    variant={
+                      selected?.requestDetails.blurred ? "default" : "secondary"
+                    }
+                    className=" w-fit h-full"
+                  >
+                    {selected?.requestDetails.blurred
+                      ? "Blurred"
+                      : "Not Blurred"}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <Separator />
       </>
@@ -661,14 +665,14 @@ export default function SubmitDisplay({
       <>
         <div className="h-full">
           <RequestHeader selected={selected} />
-          <div className="flex  p-4 overflow-scroll max-h-[65%]">
+          <div className="flex  p-5 overflow-scroll max-h-[65%]">
             <div className="flex-1 whitespace-pre-wrap text-sm ">
               {selected?.requestDetails.description}
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-10 right-10">
+        <div className="absolute bottom-10 right-5">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

@@ -1,3 +1,7 @@
+###This code is based on the sample code provided by AWS. You can find it here:
+###https://github.com/aws-samples/rekognition-video-people-blurring-cdk
+
+
 import boto3
 import os
 import time
@@ -28,25 +32,15 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_median_blur(image, kernel_size=51):
-    """
-    Applies a median blur to an image to anonymize faces.
-
-    Parameters:
-        image (ndarray): The image to be blurred.
-        kernel_size (int): The size of the kernel. Larger values result in a more blurred image.
-
-    Returns:
-        ndarray: The blurred image.
-    """
-    return cv2.medianBlur(image, kernel_size)
+def anonymize_face_combine(image, gaussian_kernel_size=(31, 31), median_kernel_size=31):
+    blurred = cv2.GaussianBlur(image, gaussian_kernel_size, 0)
+    return cv2.medianBlur(blurred, median_kernel_size)
 
 def apply_faces_to_video(
     final_timestamps,
     local_path_to_video,
     local_output,
     video_metadata,
-    blur_kernel_size=51,
 ):
     """
     Applies face blurring to video frames based on detected face coordinates.
@@ -56,7 +50,6 @@ def apply_faces_to_video(
         local_path_to_video (str): Local path to the source video.
         local_output (str): Local path for the output video.
         video_metadata (dict): Metadata of the video, including frame rate and dimensions.
-        blur_kernel_size (int): The size of the blur kernel.
     """
     frame_rate = video_metadata["FrameRate"]
     frame_height = video_metadata["FrameHeight"]
@@ -92,7 +85,7 @@ def apply_faces_to_video(
                         x2, y2 = x1 + w, y1 + h
 
                         to_blur = frame[y1:y2, x1:x2]
-                        blurred = anonymize_face_median_blur(to_blur, kernel_size=blur_kernel_size)
+                        blurred = anonymize_face_combine(to_blur)
                         frame[y1:y2, x1:x2] = blurred
             out.write(frame)
             frame_counter += 1
