@@ -1,10 +1,5 @@
 "use server";
-import { cookies } from "next/headers";
-import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import {
-  fetchAuthSession,
-  signIn,
-  signOut,
   signUp,
   confirmSignUp,
   resendSignUpCode,
@@ -12,59 +7,11 @@ import {
   confirmResetPassword,
   updatePassword,
   AuthError,
-  type SignInInput,
   type ConfirmSignUpInput,
   type ResendSignUpCodeInput,
   type ConfirmResetPasswordInput,
   type UpdatePasswordInput,
 } from "aws-amplify/auth";
-import { getCurrentUser, fetchUserAttributes } from "aws-amplify/auth/server";
-
-export async function isSignedIn() {
-  try {
-    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    if (idToken != undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    return false;
-  }
-}
-
-export async function signOutUser() {
-  try {
-    await signOut();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getCurrentUserServer() {
-  try {
-    const currentUser = await runWithAmplifyServerContext({
-      nextServerContext: { cookies },
-      operation: (contextSpec) => getCurrentUser(contextSpec),
-    });
-    console.log(currentUser);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getEmail() {
-  try {
-    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    if (idToken?.payload.email != undefined) {
-      return idToken.payload.email as string;
-    } else {
-      return "";
-    }
-  } catch (error) {
-    return "";
-  }
-}
 
 type SignUpParameters = {
   username: string;
