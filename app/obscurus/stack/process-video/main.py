@@ -161,28 +161,29 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def convert_to_mp4(input_video, output_video):
     """
-    Converts any video format to MP4 using FFmpeg.
+    Converts any video format to MP4 using FFmpeg, trimming the first few frames by starting at 0.04 seconds.
+    This version uses subprocess for enhanced security and flexibility.
+
     Args:
         input_video (str): Path to the source video.
         output_video (str): Path where the output (MP4) video will be saved.
     """
-    cmd = [
+    command = [
         "ffmpeg",
-        "-i",
-        input_video,
-        "-ss 0.04",
-        "-c copy",
-        "-strict",
-        "-2",
-        "-movflags",
-        "+faststart",
-        output_video,
+        "-i", input_video,
+        "-ss", "0.04",
+        "-c", "copy",
+        "-strict", "-2",
+        "-movflags", "faststart",
+        output_video
     ]
 
     try:
-        os.system(" ".join(cmd))
-    except Exception as e:
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
         print(f"Error converting video: {e}")
+        print(e.stderr)
 
 #Processes the video by applying the faces to the video and integrating the audio
 def process_video(timestamps, response, submission_id, file_extension):
