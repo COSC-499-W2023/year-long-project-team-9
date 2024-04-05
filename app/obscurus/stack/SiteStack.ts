@@ -272,7 +272,7 @@ export default function SiteStack({ stack }: StackContext) {
       fargateService: {
         circuitBreaker: { rollback: true },
       },
-      vpc: ec2.Vpc.fromLookup(stack, "Veep2", {
+      vpc: ec2.Vpc.fromLookup(stack, "Veep", {
         vpcId: "vpc-03517d1439c6e7459",
       }),
     },
