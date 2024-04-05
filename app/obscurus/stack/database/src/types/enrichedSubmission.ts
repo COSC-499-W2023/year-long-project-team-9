@@ -4,7 +4,7 @@ import { Grouping, Status } from "./status";
 export type UserData = {
   givenName: string;
   familyName: string;
-  profileImage: string;
+  profileImage: string | null;
 };
 
 export type EnrichedSubmissions = {

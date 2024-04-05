@@ -32,8 +32,8 @@ export default async function NavBarServerWrapper() {
   const email = await getEmail();
   const getUserName = async (userEmail: string) => {
     const userNames: UserNames[] = await getUserNames();
-    const filUserNames = userNames.filter((user) => user.email === userEmail);
-    if (filUserNames.length > 0) {
+    const filUserNames = userNames?.filter((user) => user.email === userEmail);
+    if (filUserNames && filUserNames.length > 0) {
       return [filUserNames[0].givenName, filUserNames[0].familyName];
     } else {
       return ["", ""];

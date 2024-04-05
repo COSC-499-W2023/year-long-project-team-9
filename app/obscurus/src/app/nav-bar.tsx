@@ -123,16 +123,16 @@ const NavBar = ({
               scroll("how-to");
             }}
           >
-            Get Started
+            Getting Started
           </NavigationMenuItem>
-          <NavigationMenuItem
+          {/* <NavigationMenuItem
             className="font-semibold text-sm cursor-pointer"
             onClick={() => {
               scroll("about");
             }}
           >
             About
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     );

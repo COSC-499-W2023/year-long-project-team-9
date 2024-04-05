@@ -4,17 +4,11 @@ import { Requests, Submissions } from "@obscurus/database/src/sql.generated";
 import SubmitList from "./submit-list";
 import SubmitDisplay from "./submit-display";
 import { Suspense, use, useEffect, useState } from "react";
-import { useRequests } from "@/app/hooks/use-requests";
 import { useSubmissions } from "@/app/hooks/use-submissions";
-import { set } from "date-fns";
-import Loading from "./loading";
-import { Provider } from "jotai";
-import { c } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
-import { useSearchParams } from "next/navigation";
 import { useWebSocket } from "@/app/ws-provider";
-import PanelLoader from "./panel-1-loader";
 import PanelLoader1 from "./panel-1-loader";
 import PanelLoader2 from "./panel-2-loader";
+import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -26,7 +20,7 @@ export const SubmitWrapper = ({
   defaultLayout,
   defaultCollapsed,
   getUserViaEmail,
-  setSubmittedDate
+  setSubmittedDate,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -48,20 +42,6 @@ export const SubmitWrapper = ({
   const ws = useWebSocket();
   const [loading, setLoading] = useState(false);
 
-  console.log(setSubmittedDate);
-
-  const fetchUserData = async () => {
-    setLoading(true);
-    console.log("Fetching user data");
-    if (getRequestsAndSubmissionsByEmail) {
-      const data = await getRequestsAndSubmissionsByEmail(
-        "imightbejan@gmail.com"
-      );
-      console.log("User data:", data);
-      data?.submissions && setSubmissions(data.submissions);
-    }
-    setLoading(false);
-  };
 
   useEffect(() => {
     if (!ws) return;
@@ -106,25 +86,27 @@ export const SubmitWrapper = ({
       ws.send(message);
 
       if (updateStatus && ws.readyState === WebSocket.OPEN) {
-        console.log("Updating submission status:", status, submissionId);
         await updateStatus(status, submissionId);
-        {status !== "ARCHIVED" && status !== "TRASHED" && ws.send(
-          JSON.stringify({
-            action: "newNotification",
-            data: {
-              notification: {
-                referenceId: submissionId,
-                type: "SUBMIT",
-                content: `Submission status updated to ${status}`,
-                email: "imightbejan@gmail.com",
-              },
-            },
-          })
-        )}
+        {
+          status !== "ARCHIVED" &&
+            status !== "TRASHED" &&
+            ws.send(
+              JSON.stringify({
+                action: "newNotification",
+                data: {
+                  notification: {
+                    referenceId: submissionId,
+                    type: "SUBMIT",
+                    content: `Submission status updated to ${status}`,
+                    email: "imightbejan@gmail.com",
+                  },
+                },
+              })
+            );
+        }
       }
     } else {
       if (updateStatus) {
-        console.log("Updating submission status:", status, submissionId);
         await updateStatus(status, submissionId);
       } else {
         console.error("WebSocket not connected");
@@ -133,7 +115,18 @@ export const SubmitWrapper = ({
   };
 
   useEffect(() => {
-    fetchUserData();
+    setLoading(true);
+    const fetchUserData = async () => {
+      console.log("Fetching user data");
+      if (getRequestsAndSubmissionsByEmail) {
+        const data = await getRequestsAndSubmissionsByEmail(
+          "imightbejan@gmail.com"
+        );
+        console.log("User data:", data);
+        data?.submissions && setSubmissions(data.submissions);
+      }
+    };
+    fetchUserData().then(() => setLoading(false));
   }, []);
 
   return (
@@ -142,27 +135,18 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-        loading ? (
-          <PanelLoader1 />
-        ) : (
-          <SubmitList submissions={submissions || undefined} getDownloadPresignedUrl={getDownloadPresignedUrl} />
-        )
+          <SubmitList
+            submissions={submissions as EnrichedSubmissions[]}
+          />
       }
       secondPanel={
-        loading ? (
-          <PanelLoader2 />
-        ) : (
           <SubmitDisplay
-            fetchUserData={fetchUserData}
             getPresignedUrl={getPresignedUrl}
             getDownloadPresignedUrl={getDownloadPresignedUrl}
             sendToService={sendToService}
-            getStatus={getStatus}
             updateSubmissionStatus={updateSubmissionStatus}
-            getUserViaEmail={getUserViaEmail}
             setSubmittedDate={setSubmittedDate}
           />
-        )
       }
     />
   );
