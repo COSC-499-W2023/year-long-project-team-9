@@ -19,7 +19,7 @@ import NavBar from "./nav-bar";
 import amplifyConfig from "@/app/utils/amplifyConfig";
 import { Amplify } from "aws-amplify";
 
-Amplify.configure(amplifyConfig);
+Amplify.configure(amplifyConfig, { ssr: true });
 
 type UserNames = {
   email: string;

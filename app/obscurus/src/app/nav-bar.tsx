@@ -23,7 +23,7 @@ import Authentication from "@/components/authentication/authentication";
 import amplifyConfig from "@/app/utils/amplifyConfig";
 import { Amplify } from "aws-amplify";
 
-Amplify.configure(amplifyConfig);
+Amplify.configure(amplifyConfig, { ssr: true });
 
 const NavBar = ({
   readNotification,
