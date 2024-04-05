@@ -14,7 +14,7 @@ import {
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 import { UserPoolEmail, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Vpc } from "aws-cdk-lib/aws-ec2";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
@@ -36,13 +36,7 @@ export default function SiteStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: "obscurus",
     migrations: "stack/database/migrations/",
-    cdk: {
-      cluster: {
-        vpc: ec2.Vpc.fromLookup(stack, "VPC", {
-          vpcId: "vpc-03517d1439c6e7459",
-        }),
-      },
-    },
+    cdk: {},
   });
 
   const sesPolicyStatement = new PolicyStatement({
@@ -269,9 +263,6 @@ export default function SiteStack({ stack }: StackContext) {
       fargateService: {
         circuitBreaker: { rollback: true },
       },
-      vpc: ec2.Vpc.fromLookup(stack, "VPC", {
-        vpcId: "vpc-03517d1439c6e7459",
-      }),
     },
     environment: {
       BUCKET_NAME: chumBucket.bucketName,
