@@ -39,6 +39,10 @@ export default async function RootLayout({
                 <Toaster />
                 {children}
               </div>
+              {/* <div className="h-screen w-full flex flex-col items-center justify-center">
+                <div className="absolute z-100 top-36 left-56">Top</div>
+                <Home />
+              </div> */}
             </TooltipProvider>
           </WebSocketProvider>
         </ThemeProvider>
