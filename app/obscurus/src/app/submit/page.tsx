@@ -9,11 +9,8 @@ import { SubmitWrapper } from "./components/submit-wrapper";
 import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
 import { getUserViaEmail } from "../functions/getUserData";
 import setSubmittedDate from "../functions/setSubmittedDate";
-import { isSignedIn } from "../functions/authenticationMethods";
-import { redirect } from "next/navigation";
 
 async function Submit() {
-
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;

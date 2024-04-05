@@ -1,8 +1,5 @@
 "use server";
 import {
-  fetchAuthSession,
-  signIn,
-  signOut,
   signUp,
   confirmSignUp,
   resendSignUpCode,
@@ -10,60 +7,11 @@ import {
   confirmResetPassword,
   updatePassword,
   AuthError,
-  type SignInInput,
   type ConfirmSignUpInput,
   type ResendSignUpCodeInput,
   type ConfirmResetPasswordInput,
   type UpdatePasswordInput,
 } from "aws-amplify/auth";
-
-export async function isSignedIn() {
-  try {
-    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    if (idToken != undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    return false;
-  }
-}
-
-export async function signInUser({ username, password }: SignInInput) {
-  try {
-    const { isSignedIn, nextStep } = await signIn({ username, password });
-    if (isSignedIn) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-}
-
-export async function signOutUser() {
-  try {
-    await signOut();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getEmail() {
-  try {
-    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    if (idToken?.payload.email != undefined) {
-      return idToken.payload.email as string;
-    } else {
-      return "";
-    }
-  } catch (error) {
-    return "";
-  }
-}
 
 type SignUpParameters = {
   username: string;

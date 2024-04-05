@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBarServerWrapper from "./nav-bar-server-wrapper";
+import ConfigureAmplifyClientSide from "./ConfigureAmplifyClientSide";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
 import { WebSocketProvider } from "./ws-provider";
@@ -35,6 +36,7 @@ export default async function RootLayout({
               <NavBarServerWrapper />
               <div className=" flex-col md:flex h-screen pt-16">
                 <Toaster />
+                <ConfigureAmplifyClientSide />
                 {children}
               </div>
             </TooltipProvider>

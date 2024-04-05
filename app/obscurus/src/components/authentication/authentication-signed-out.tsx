@@ -18,14 +18,12 @@ import { Label } from "../ui/label";
 import { X } from "lucide-react";
 
 export default function AuthenticationSignedOut({
-  signInUser,
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
 }: {
-  signInUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
@@ -53,10 +51,7 @@ export default function AuthenticationSignedOut({
                 Sign In
               </Label>
               <Separator className="mt-1 mb-2" />
-              <SignInForm
-                signInUser={signInUser}
-                setDialogState={setDialogState}
-              />
+              <SignInForm setDialogState={setDialogState} />
             </div>
           )}
           {dialogState === "signUp" && (
