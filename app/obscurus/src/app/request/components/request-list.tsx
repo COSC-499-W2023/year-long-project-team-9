@@ -45,18 +45,32 @@ import {
   AlertTitle,
 } from "@/components/modified-shadcn-ui-components/modified-alert";
 import { RequestListAlert } from "./request-list-alert";
+import { SubmissionsForRequest } from "../types/types-for-request";
 
 interface RequestsListProps {
   requests: Requests[];
   submissions: Submissions[];
   isCollapsed?: boolean;
+  handleTimezoneOffset: Function;
+  setCreate: Function;
 }
 
 export default function RequestList({
   requests,
   submissions,
-}: RequestsListProps) {
-  const [requestId, setRequestId] = useQueryState("requestId");
+  handleTimezoneOffset,
+  setShowCreate,
+  requestId,
+  setRequestId,
+}: {
+  requests: Requests[];
+  submissions: SubmissionsForRequest[];
+  isCollapsed?: boolean;
+  handleTimezoneOffset: Function;
+  setShowCreate: Function;
+  requestId: string | null;
+  setRequestId: Function;
+}) {
   const [search, setSearch] = useState<string>("");
   const [sort, setSort] = useState<string>("sort");
   const [tab, setTab] = useState<string>("tab");
@@ -146,9 +160,12 @@ export default function RequestList({
                   </div>
 
                   <div className="ml-auto text-xs w-full flex justify-end">
-                    {formatDistanceToNow(new Date(item.creationDate), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceToNow(
+                      handleTimezoneOffset(item.creationDate),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
                   </div>
                 </div>
                 <div className="text-xs font-medium text-ellipsis line-clamp-1">
@@ -164,12 +181,20 @@ export default function RequestList({
                 {item.description}
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant={getBadgeVariantFromLabel("due-date")}>
-                  Due{" "}
-                  {formatDistanceToNow(new Date(item.dueDate), {
-                    addSuffix: true,
-                  })}
-                </Badge>
+                {completed(
+                  submissions.filter(
+                    (value) => value.requestId === item.requestId
+                  )
+                ) === false ? (
+                  <Badge variant={getBadgeVariantFromLabel("due-date")}>
+                    Due{" "}
+                    {formatDistanceToNow(handleTimezoneOffset(item.dueDate), {
+                      addSuffix: true,
+                    })}
+                  </Badge>
+                ) : (
+                  <></>
+                )}
 
                 {item.grouping === "ARCHIVED" ? (
                   <Badge variant={"default"}>Archived</Badge>
@@ -192,12 +217,17 @@ export default function RequestList({
     >
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Request</h1>
-        <a href="/request/create">
-          <Button variant="ghost">
-            <Send className="mr-2 h-4 w-4" />
-            Create
-          </Button>
-        </a>
+
+        <Button
+          variant="ghost"
+          onClick={() => {
+            setShowCreate(true);
+            setRequestId(null);
+          }}
+        >
+          <Send className="mr-2 h-4 w-4" />
+          Create
+        </Button>
       </div>
       <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
         <form>
@@ -259,4 +289,17 @@ function getBadgeVariantFromLabel(
     return "outline";
   }
   return "secondary";
+}
+
+// function used to see if due date should be displayed
+function completed(submissions: Submissions[]) {
+  for (let i = 0; i < submissions.length; i++) {
+    if (
+      submissions[i].status !== "COMPLETED" &&
+      submissions[i].status !== "ARCHIVED"
+    ) {
+      return false;
+    }
+  }
+  return true;
 }

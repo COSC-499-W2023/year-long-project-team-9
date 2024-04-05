@@ -15,11 +15,13 @@ export default function CreateWrapper({
   defaultCollapsed,
   createRequest,
   userData,
+  setShowCreate,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   createRequest: Function;
   userData: Users;
+  setShowCreate: Function;
 }) {
   const form = useForm<z.infer<typeof createFormSchema>>({
     resolver: zodResolver(createFormSchema),
@@ -54,6 +56,7 @@ export default function CreateWrapper({
             form={form}
             onSubmit={onSubmit}
             userData={userData}
+            setShowCreate={setShowCreate}
           ></CreateForm>
         }
         secondPanel={

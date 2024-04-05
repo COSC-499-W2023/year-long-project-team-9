@@ -1,4 +1,4 @@
-import { createFormSchema } from "@/app/request/create/form/createFormSchema";
+import { createFormSchema } from "@/app/request/components/create/form/createFormSchema";
 import { createRequest } from "@obscurus/database/src/request";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
