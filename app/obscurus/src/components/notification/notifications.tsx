@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Notifications } from "@obscurus/database/src/sql.generated";
+import { Notifications as NotificationsType } from "@obscurus/database/src/sql.generated";
 import Link from "next/link";
 import { CardTitle } from "../ui/card";
 import { useEffect } from "react";
@@ -49,7 +49,7 @@ export default function Notifications({
         setNotifications(data.notifications);
         setHasUnreadNotifications(
           data.notifications.some(
-            (notification: Notifications) => !notification.isRead
+            (notification: NotificationsType) => !notification.isRead
           )
         );
       } catch (error) {

@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileDisplay from "./profile-display";
 import { useRef, useState } from "react";
-import { e } from "node_modules/nuqs/dist/serializer-RqlbYgUW";
 
 const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 

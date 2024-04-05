@@ -33,24 +33,21 @@ s3 = boto3.client("s3")
 
 
 def anonymize_face_combine(image, gaussian_kernel_size=(51, 51), median_kernel_size=51):
+    """
+    Applies a combined Gaussian and median blur to a given image.
+
+    Args:
+        image (ndarray): The image to be blurred.
+        gaussian_kernel_size (tuple): The size of the kernel used for Gaussian blurring.
+        median_kernel_size (int): The size of the kernel used for median blurring.
+
+    Returns:
+        image (ndarray): The blurred image.
+    """
     blurred = cv2.GaussianBlur(image, gaussian_kernel_size, 0)
     return cv2.medianBlur(blurred, median_kernel_size)
 
-def apply_faces_to_video(
-    final_timestamps,
-    local_path_to_video,
-    local_output,
-    video_metadata,
-):
-    """
-    Applies face blurring to video frames based on detected face coordinates.
-
-    Parameters:
-        final_timestamps (dict): Timestamps and face bounding boxes.
-        local_path_to_video (str): Local path to the source video.
-        local_output (str): Local path for the output video.
-        video_metadata (dict): Metadata of the video, including frame rate and dimensions.
-    """
+def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, video_metadata):
     frame_rate = video_metadata["FrameRate"]
     frame_height = video_metadata["FrameHeight"]
     frame_width = video_metadata["FrameWidth"]
@@ -58,13 +55,13 @@ def apply_faces_to_video(
     height_delta = int(frame_height / 100)
 
     frame_counter = 0
-    fourcc = cv2.VideoWriter_fourcc("M", "J", "P", "G")
+    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
     v = cv2.VideoCapture(local_path_to_video)
     out = cv2.VideoWriter(
         filename=local_output,
         fourcc=fourcc,
         fps=int(frame_rate),
-        frameSize=(frame_width, frame_height),
+        frameSize=(frame_width, frame_height)
     )
 
     while v.isOpened():
@@ -76,17 +73,17 @@ def apply_faces_to_video(
                 upper_bound = int(int(t) / 1000 * frame_rate + frame_rate / 2) + 1
                 if (frame_counter >= lower_bound) and (frame_counter <= upper_bound):
                     for f in faces:
-                        x = int(f["Left"] * frame_width) - width_delta
-                        y = int(f["Top"] * frame_height) - height_delta
-                        w = int(f["Width"] * frame_width) + 2 * width_delta
-                        h = int(f["Height"] * frame_height) + 2 * height_delta
+                        x = int(f['Left'] * frame_width) - width_delta
+                        y = int(f['Top'] * frame_height) - height_delta
+                        w = int(f['Width'] * frame_width) + 2 * width_delta
+                        h = int(f['Height'] * frame_height) + 2 * height_delta
 
                         x1, y1 = x, y
                         x2, y2 = x1 + w, y1 + h
 
-                        to_blur = frame[y1:y2, x1:x2]
-                        blurred = anonymize_face_combine(to_blur)
-                        frame[y1:y2, x1:x2] = blurred
+                        roi = frame[y1:y2, x1:x2]
+                        blurred_roi = anonymize_face_combine(roi)
+                        frame[y1:y2, x1:x2] = blurred_roi
             out.write(frame)
             frame_counter += 1
         else:
@@ -165,27 +162,29 @@ def get_timestamps_and_faces(job_id, reko_client=None):
 
 def convert_to_mp4(input_video, output_video):
     """
-    Converts any video format to MP4 using FFmpeg.
+    Converts any video format to MP4 using FFmpeg, trimming the first few frames by starting at 0.04 seconds.
+    This version uses subprocess for enhanced security and flexibility.
+
     Args:
         input_video (str): Path to the source video.
         output_video (str): Path where the output (MP4) video will be saved.
     """
-    cmd = [
+    command = [
         "ffmpeg",
-        "-i",
-        input_video,
-        "-c copy",
-        "-strict",
-        "-2",
-        "-movflags",
-        "+faststart",
-        output_video,
+        "-i", input_video,
+        "-ss", "00:00:00.04",
+        "-c", "copy",
+        "-strict", "-2",
+        "-movflags", "faststart",
+        output_video
     ]
 
     try:
-        os.system(" ".join(cmd))
-    except Exception as e:
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
         print(f"Error converting video: {e}")
+        print(e.stderr)
 
 #Processes the video by applying the faces to the video and integrating the audio
 def process_video(timestamps, response, submission_id, file_extension):

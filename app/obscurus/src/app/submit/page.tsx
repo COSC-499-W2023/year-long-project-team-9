@@ -19,16 +19,8 @@ async function Submit() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  console.log("updateStatus", updateStatus);
-  console.log("getStatus", getStatus);
-  console.log("getPresignedUrl", getPresignedUrl);
-  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
-
-  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
-
-  console.log("wsApi", wsApi);
-
   return (
+
     <SubmitWrapper
       getPresignedUrl={getPresignedUrl}
       getDownloadPresignedUrl={getDownloadPresignedUrl}

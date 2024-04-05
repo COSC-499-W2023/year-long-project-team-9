@@ -26,7 +26,7 @@ async function Request() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const userEmail = await getEmail();
+  const userEmail = "imightbejan@gmail.com"
   const userData: Users = await getUserViaEmail(userEmail);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);

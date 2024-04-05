@@ -92,6 +92,8 @@ export async function getRequestsAndSubmissionsByEmail(email: string) {
       "requester.profileImage as requesterProfileImage",
     ])
     .where("submissions.requesteeEmail", "=", email)
+    .where("submissions.status", "!=", "ARCHIVED")
+    .where("submissions.status", "!=", "TRASHED")
     .execute();
 
   return {
