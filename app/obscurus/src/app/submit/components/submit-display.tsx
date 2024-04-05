@@ -42,6 +42,8 @@ import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmis
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
+import { Badge } from "@/components/ui/badge";
+import { isSafari } from "react-device-detect";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -60,7 +62,8 @@ export default function SubmitDisplay({
   sendToService?: (
     submissionId: string,
     fileExt: string,
-    email: string
+    email: string,
+    blurred: boolean
   ) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
@@ -76,8 +79,6 @@ export default function SubmitDisplay({
 
   const submissionIdFromQuery = useSearchParams().get("submissionId");
 
-  console.log("Submission ID from query:", submissionIdFromQuery);
-
   // if (!request) {
   //   setRequest(requests && requests[0]);
   // }
@@ -91,13 +92,11 @@ export default function SubmitDisplay({
       setSubmission({ submissionId: submissionIdFromQuery });
     }
     const fetchProcessedVideo = async () => {
-      console.log("Selected:", selected);
       if (
         selected?.status === "COMPLETED" &&
         getDownloadPresignedUrl &&
         selected.submissionId
       ) {
-        console.log("Fetching processed video");
         try {
           const videoUrl = await getDownloadPresignedUrl(selected.submissionId);
           setProcessedVideo(videoUrl);
@@ -165,14 +164,14 @@ export default function SubmitDisplay({
         });
 
         if (response.ok) {
-          console.log("Upload successful");
           sendToService &&
             selected &&
             submission.submissionId &&
             sendToService(
               submission.submissionId,
               fileExt,
-              selected?.requesteeEmail
+              selected?.requesteeEmail,
+              selected?.requestDetails.blurred,
             );
           setSubmittedDate &&
             submission.submissionId &&
@@ -225,9 +224,13 @@ export default function SubmitDisplay({
 
   const handleStartCaptureClick = () => {
     setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current!.stream!, {
-      mimeType: "video/webm",
-    });
+    const options = {
+      mimeType: isSafari ? "video/mp4" : "video/webm",
+    };
+    mediaRecorderRef.current = new MediaRecorder(
+      webcamRef.current!.stream!,
+      options
+    );
     mediaRecorderRef.current.addEventListener(
       "dataavailable",
       handleDataAvailable
@@ -248,13 +251,13 @@ export default function SubmitDisplay({
 
   const handleSaveAndUpload = async () => {
     if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const fileName = `${submission.submissionId}.webm`;
-      const file = new File([blob], fileName, { type: "video/webm" });
+      const mimeType = isSafari ? "video/mp4" : "video/webm";
+      const fileExtension = isSafari ? "mp4" : "webm";
+      const blob = new Blob(recordedChunks, { type: mimeType });
+      const fileName = `${submission.submissionId}.${fileExtension}`;
+      const file = new File([blob], fileName, { type: mimeType });
 
       setFile(file);
-
-      console.log("File:", file);
 
       if (submission.submissionId && getPresignedUrl) {
         const presignedUrl = await getPresignedUrl(fileName);
@@ -378,7 +381,7 @@ export default function SubmitDisplay({
         <div className="flex ml-auto pr-1">
           <Button
             variant={iseShowingVideo.active ? "destructive" : "ghost"}
-            onClick={() => setShowingVideo({active: !iseShowingVideo.active})}
+            onClick={() => setShowingVideo({ active: !iseShowingVideo.active })}
             disabled={!canShowVideo}
           >
             <Tooltip>
@@ -390,7 +393,9 @@ export default function SubmitDisplay({
                 )}
               </TooltipTrigger>
               <TooltipContent>
-                {iseShowingVideo.active ? "Hide Processed Video" : "View Processed Video"}
+                {iseShowingVideo.active
+                  ? "Hide Processed Video"
+                  : "View Processed Video"}
               </TooltipContent>
             </Tooltip>
           </Button>
@@ -417,7 +422,7 @@ export default function SubmitDisplay({
     return (
       <div className="flex flex-col w-fit h-full pt-16">
         {loading && (
-          <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+          <div className="flex flex-col w-full h-full justify-center items-center gap-5">
             <LucideLoader2 className="animate-spin text-primary" size={75} />
             <p className="font-bold">Uploading...</p>
           </div>
@@ -595,58 +600,81 @@ export default function SubmitDisplay({
     );
   };
 
-  const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
+  const RequestHeader = ({ selected }: { selected: EnrichedSubmissions }) => {
     return (
       <>
-        <div className="h-full">
-          <div className="flex items-start p-4">
-            <div className="flex items-start gap-4 text-sm max-w-[70%]">
-              <Avatar>
-                <AvatarImage alt={selected?.requester.givenName} />
-                <AvatarFallback>
-                  {selected?.requester.givenName
-                    .split(" ")
-                    .map((chunk) => chunk[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-ellipsis ">
-                <div className="font-semibold">
-                  {selected?.requestDetails.requestTitle}
-                </div>
-                <div className="line-clamp-3 text-xs text-ellipsis ">
-                  <span className="font-medium">From: </span>
-                  {selected?.requester.givenName}{" "}
-                  {selected?.requester.familyName}{" "}
-                </div>
-                <div className="line-clamp-3 text-xs text-ellipsis  ">
-                  <span className="font-medium ">Email: </span>
-                  {selected?.requestDetails.requesterEmail}
-                </div>
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Due: </span>
-                  {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
-                </div>
+        <div className="flex items-start p-4">
+          <div className="flex items-start gap-4 text-sm max-w-[70%]">
+            <Avatar>
+              <AvatarImage alt={selected?.requester.givenName} />
+              <AvatarFallback>
+                {selected?.requester.givenName
+                  .split(" ")
+                  .map((chunk) => chunk[0])
+                  .join("")}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid gap-1 text-ellipsis ">
+              <div className="font-semibold">
+                {selected?.requestDetails.requestTitle}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis ">
+                <span className="font-medium">From: </span>
+                {selected?.requester.givenName} {selected?.requester.familyName}{" "}
+              </div>
+              <div className="line-clamp-3 text-xs text-ellipsis  ">
+                <span className="font-medium ">Email: </span>
+                {selected?.requestDetails.requesterEmail}
+              </div>
+              <div className="line-clamp-1 text-xs">
+                <span className="font-medium">Due: </span>
+                {format(new Date(selected?.requestDetails.dueDate), "PPP, p")}
               </div>
             </div>
-            {selected.requestDetails.creationDate && (
-              <div className="ml-auto text-xs text-muted-foreground">
+          </div>
+          {selected.requestDetails.creationDate && (
+            <div className="ml-auto text-xs text-muted-foreground grid p-0 justify-between space-y-5 h-full">
+              <div>
                 {format(
                   new Date(selected.requestDetails.creationDate),
                   "PPP, p"
                 )}
               </div>
-            )}
-          </div>
-          <Separator />
-          <div className="flex  p-4 overflow-scroll max-h-[65%]">
+              {selected.requestDetails && (
+                <div className="flex justify-end pt-5">
+                  <Badge
+                    variant={
+                      selected?.requestDetails.blurred ? "default" : "secondary"
+                    }
+                    className=" w-fit h-full"
+                  >
+                    {selected?.requestDetails.blurred
+                      ? "Blurred"
+                      : "Not Blurred"}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <Separator />
+      </>
+    );
+  };
+
+  const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
+    return (
+      <>
+        <div className="h-full">
+          <RequestHeader selected={selected} />
+          <div className="flex p-4 overflow-scroll max-h-[65%]">
             <div className="flex-1 whitespace-pre-wrap text-sm ">
               {selected?.requestDetails.description}
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-10 right-10">
+        <div className="absolute bottom-10 right-5">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -674,45 +702,51 @@ export default function SubmitDisplay({
   }) => {
     return (
       <div className="h-full w-full">
-        <div className="flex flex-col container justify-center h-full p-10 text-muted-foreground">
-          <div className="flex flex-col space-y-2">
-            <VideoPlayer videoUrl={processedVideo} fileName={selected.requestDetails.requestTitle} />
-            {selected.submittedDate && (
-            <div>Submitted on: {format(
-                  new Date(selected.submittedDate),
-                  "PPP, p"
-                )}
-                </div>
-            )}
-          </div>
+        <RequestHeader selected={selected} />
 
-
-          <div className="flex justify-start items-center space-x-3 p-3">
-            <div className="absolute bottom-10 right-10">
-              <Link href={processedVideo || ""}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size="lg"
-                      disabled={!processedVideo}
-                      variant={"ghost"}
-                      style={{ display: "flex" }}
-                      className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
-                    >
-                      <DownloadCloud className="h-8 w-8 " />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Download Video</TooltipContent>
-                </Tooltip>
-              </Link>
+        <div className="flex flex-col space-y-2 p-4">
+          <VideoPlayer
+            videoUrl={processedVideo ? processedVideo : ""}
+            filename={"Processed Video"}
+          />
+          {selected.submittedDate && (
+            <div className="text-xs text-muted-foreground">
+              Submitted on: {format(new Date(selected.submittedDate), "PPP, p")}
             </div>
-            {/* {selected.submittedDate && (
+          )}
+          {/* {selected.submittedDate && (
+              <div>
+                Submitted on:{" "}
+                {format(new Date(selected.submittedDate), "PPP, p")}
+              </div>
+            )} */}
+        </div>
+
+        <div className="flex justify-start items-center space-x-3 p-3">
+          <div className="absolute bottom-10 right-5">
+            <Link href={processedVideo || ""}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="lg"
+                    disabled={!processedVideo}
+                    variant={"ghost"}
+                    style={{ display: "flex" }}
+                    className="text-secondary bg-primary rounded-full p-4 h-full  w-full flex items-center justify-center z-50"
+                  >
+                    <DownloadCloud className="h-8 w-8 " />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download Video</TooltipContent>
+              </Tooltip>
+            </Link>
+          </div>
+          {/* {selected.submittedDate && (
               <div className="text-sm">
                 Submitted on:
                 {format(new Date(selected?.submittedDate), "PPP, p")}
               </div>
             )} */}
-          </div>
         </div>
       </div>
     );
@@ -753,6 +787,14 @@ export default function SubmitDisplay({
                       <Suspense fallback={<div>Failed to load webcam</div>}>
                         <Webcam
                           audio={true}
+                          audioConstraints={{
+                            echoCancellation: true,
+                          }}
+                          videoConstraints={{
+                            width: 1280,
+                            height: 720,
+                            facingMode: "user",
+                          }}
                           ref={webcamRef}
                           className=" w-full rounded-md"
                         />
@@ -780,16 +822,21 @@ export default function SubmitDisplay({
           ) : selected ? (
             <ShowRequest selected={selected} />
           ) : (
-            <div className="flex flex-col w-full h-full justify-center items-center gap-5  text-muted-foreground">
+            <div className="flex flex-col w-full h-full justify-center items-center gap-4  text-muted-foreground">
               <UploadCloud className="w-20 h-20" />
-              <div className="font-semibold">
+              <div className="font-semibold md:mb-10">
                 No request selected to submit.
               </div>
             </div>
           )}
         </div>
       ) : (
-        <PanelLoader />
+        <div className="flex flex-col w-full h-full justify-center items-center gap-4  text-muted-foreground">
+          <UploadCloud className="w-20 h-20" />
+          <div className="font-semibold md:mb-10">
+            No request selected to submit.
+          </div>
+        </div>
       )}
     </div>
   );

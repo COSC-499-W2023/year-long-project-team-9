@@ -32,8 +32,8 @@ export default async function RootLayout({
         >
           <WebSocketProvider url={wsUrl}>
             <TooltipProvider delayDuration={0}>
-              <div className=" flex-col md:flex h-screen ">
-                <NavBarServerWrapper />
+              <NavBarServerWrapper />
+              <div className=" flex-col md:flex h-screen pt-16">
                 <Toaster />
                 {children}
               </div>

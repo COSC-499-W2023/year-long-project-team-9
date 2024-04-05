@@ -9,6 +9,7 @@ async function getPresignedUrl(submissionId: string) {
     ACL: "public-read",
     Key: submissionId,
     Bucket: bucket,
+
   });
   const url =  await getSignedUrl(new S3Client({}), command);
   console.log("Url", url);
