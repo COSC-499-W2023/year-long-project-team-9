@@ -20,7 +20,6 @@ import {
   ReactElement,
   JSXElementConstructor,
   ReactNode,
-  PromiseLikeOfReactNode,
   Key,
   useEffect,
   useState,
