@@ -13,6 +13,7 @@ import {
   Topic,
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {});
@@ -276,7 +277,17 @@ export default function SiteStack({ stack }: StackContext) {
     environment: {
       NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT: wsApi.url,
       NEXT_PUBLIC_SERVICE_URL:
-        processVideo.url || "https://d2eo40huyu1afd.cloudfront.net",
+        processVideo.url || "",
+    },
+    customDomain: {
+      domainName: "obscurus.me",
+      domainAlias: "www.obscurus.me",
+      cdk: {
+        hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+          hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+          zoneName: "obscurus.me",
+        }),
+      },
     },
   });
 
