@@ -32,18 +32,20 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_gaussian_blur(image, kernel_size=(51, 51)):
+def anonymize_face_combine(image, gaussian_kernel_size=(51, 51), median_kernel_size=51):
     """
-    Applies a Gaussian blur to a given image.
+    Applies a combined Gaussian and median blur to a given image.
 
     Args:
         image (ndarray): The image to be blurred.
-        kernel_size (tuple): The size of the kernel used for blurring.
+        gaussian_kernel_size (tuple): The size of the kernel used for Gaussian blurring.
+        median_kernel_size (int): The size of the kernel used for median blurring.
 
     Returns:
         image (ndarray): The blurred image.
     """
-    return cv2.GaussianBlur(image, kernel_size, 0)
+    blurred = cv2.GaussianBlur(image, gaussian_kernel_size, 0)
+    return cv2.medianBlur(blurred, median_kernel_size)
 
 def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, video_metadata):
     frame_rate = video_metadata["FrameRate"]
@@ -80,8 +82,7 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
                         x2, y2 = x1 + w, y1 + h
 
                         roi = frame[y1:y2, x1:x2]
-                        blurred_roi = anonymize_face_gaussian_blur(roi)
-                        # Place the blurred ROI back into the frame
+                        blurred_roi = anonymize_face_combine(roi)
                         frame[y1:y2, x1:x2] = blurred_roi
             out.write(frame)
             frame_counter += 1
