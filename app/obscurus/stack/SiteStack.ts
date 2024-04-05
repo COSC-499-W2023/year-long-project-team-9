@@ -44,6 +44,11 @@ export default function SiteStack({ stack }: StackContext) {
   const USER_POOL_ID_KEY = new Config.Secret(stack, "USER_POOL_ID_KEY");
 
   const api = new Api(stack, "Api", {
+    customDomain: {
+      domainName: "api.obscurus.me",
+      hostedZone: "obscurus.me",
+      path: "v1"
+    },
     defaults: {
       function: {
         timeout: 20,
@@ -252,6 +257,11 @@ export default function SiteStack({ stack }: StackContext) {
     ],
     cpu: "8 vCPU",
     memory: "32 GB",
+    customDomain: {
+      domainName: "service.obscurus.com",
+      domainAlias: "www.service.obscurus.com",
+      hostedZone: "obscurus.me"
+    }
   });
 
   const auth = new Cognito(stack, "Auth", {
