@@ -16,10 +16,6 @@ import {
   updateUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
-import config from "@/app/utils/amplifyConfig";
-import { Amplify } from "aws-amplify";
-
-Amplify.configure(config);
 
 type UserNames = {
   email: string;
@@ -27,11 +23,8 @@ type UserNames = {
   familyName: string;
 };
 
-export default async function NavBarServerWrapper({
-  signedIn,
-}: {
-  signedIn: boolean;
-}) {
+export default async function NavBarServerWrapper() {
+  const signedIn = await isSignedIn();
   const email = await getEmail();
   const getUserName = async (userEmail: string) => {
     const userNames: UserNames[] = await getUserNames();

@@ -20,10 +20,6 @@ import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
 import Authentication from "@/components/authentication/authentication";
-import config from "@/app/utils/amplifyConfig";
-import { Amplify } from "aws-amplify";
-
-Amplify.configure(config, { ssr: true });
 
 const NavBar = ({
   readNotification,

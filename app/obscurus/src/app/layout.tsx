@@ -3,11 +3,11 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBarServerWrapper from "./nav-bar-server-wrapper";
+import ConfigureAmplifyClientSide from "./ConfigureAmplifyClientSide";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
 import { WebSocketProvider } from "./ws-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { isSignedIn } from "./functions/authenticationMethods";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const signedIn = await isSignedIn();
   return (
     <html lang="en">
       <body className={`${GeistSans.className}`}>
@@ -34,15 +33,12 @@ export default async function RootLayout({
         >
           <WebSocketProvider url={wsUrl}>
             <TooltipProvider delayDuration={0}>
-              <NavBarServerWrapper signedIn={signedIn} />
+              <NavBarServerWrapper />
               <div className=" flex-col md:flex h-screen pt-16">
                 <Toaster />
+                <ConfigureAmplifyClientSide />
                 {children}
               </div>
-              {/* <div className="h-screen w-full flex flex-col items-center justify-center">
-                <div className="absolute z-100 top-36 left-56">Top</div>
-                <Home />
-              </div> */}
             </TooltipProvider>
           </WebSocketProvider>
         </ThemeProvider>
