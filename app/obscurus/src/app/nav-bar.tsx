@@ -25,7 +25,6 @@ const NavBar = ({
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
-  signOutUser,
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
@@ -39,7 +38,6 @@ const NavBar = ({
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
-  signOutUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
@@ -138,7 +136,6 @@ const NavBar = ({
         />
         <ThemeSwitcher />
         <Authentication
-          signOutUser={signOutUser}
           signUpUser={signUpUser}
           confirmSignUpUser={confirmSignUpUser}
           resendConfirmSignUpUser={resendConfirmSignUpUser}

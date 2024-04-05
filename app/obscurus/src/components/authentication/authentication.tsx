@@ -3,7 +3,6 @@ import AuthenticationSignedIn from "./authentication-signed-in";
 import AuthenticationSignedOut from "./authentication-signed-out";
 
 export default function Authentication({
-  signOutUser,
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
@@ -14,7 +13,6 @@ export default function Authentication({
   email,
   name,
 }: {
-  signOutUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
@@ -28,7 +26,6 @@ export default function Authentication({
   return signedIn ? (
     <AuthenticationSignedIn
       updateUserPassword={updateUserPassword}
-      signOutUser={signOutUser}
       userEmail={email}
       userName={name}
     />
