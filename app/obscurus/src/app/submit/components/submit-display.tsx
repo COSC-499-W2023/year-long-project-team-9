@@ -41,6 +41,7 @@ import { useUpload } from "@/app/hooks/use-upload";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { AnyNaptrRecord } from "dns";
 
 export default function SubmitDisplay({
   fetchUserData,
@@ -52,6 +53,7 @@ export default function SubmitDisplay({
   updateRequests,
   getUserViaEmail,
   setSubmittedDate,
+  getProfileImgPresignedUrl,
 }: {
   fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -59,13 +61,14 @@ export default function SubmitDisplay({
   sendToService?: (
     submissionId: string,
     fileExt: string,
-    email: string
+    email: string,
   ) => Promise<string>;
   getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
   updateRequests?: Function;
   getUserViaEmail?: (email: string) => Promise<string>;
   setSubmittedDate?: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [upload, setUpload] = useUpload();
@@ -590,19 +593,31 @@ export default function SubmitDisplay({
     );
   };
 
+  const [requesterProfileImage, setrequesterProfileImage] = useState<string | undefined>(undefined);
+  const getrequesterProfileImage = async (requester: any, requestDetails: any, ) => {
+    const imgkey = requester.profileImage;
+    const requesterEmail = requestDetails.requesterEmail;
+    console.log("test ", imgkey);
+    if (requesterEmail && getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      console.log("url: ", url);
+      setrequesterProfileImage(url);
+    }
+  };
+
   const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
+    getrequesterProfileImage(selected?.requester, selected?.requestDetails);
+
     return (
       <>
         <div className="h-full">
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm max-w-[70%]">
               <Avatar>
-                <AvatarImage alt={selected?.requester.givenName} />
+                <AvatarImage src={requesterProfileImage} alt={selected?.requester.givenName} />
                 <AvatarFallback>
-                  {selected?.requester.givenName
-                    .split(" ")
-                    .map((chunk) => chunk[0])
-                    .join("")}
+                  {selected?.requester.givenName.charAt(0)}
+                  {selected?.requester.familyName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid gap-1 text-ellipsis ">

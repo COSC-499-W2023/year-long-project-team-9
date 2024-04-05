@@ -4,7 +4,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Bucket } from "sst/node/bucket";
 
 async function getProfileImgPresignedUrl(submissionId: string): Promise<string> {
-  console.log("getDownloadPresignedUrl called for submission:", submissionId);
+  console.log("getProfileImgPresignedUrl called for email:", submissionId);
   const bucketName = Bucket.ChumBucket.bucketName;
   const objectKey = `${submissionId}`;
   

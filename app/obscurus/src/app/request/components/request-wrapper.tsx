@@ -19,6 +19,7 @@ export default function RequestWeapper({
   archiveRequest,
   unarchiveRequest,
   trashRequest,
+  getProfileImgPresignedUrl,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -28,6 +29,7 @@ export default function RequestWeapper({
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const [requests, setRequests] = useState<Requests[]>(request);
   return (
@@ -45,6 +47,7 @@ export default function RequestWeapper({
           archiveRequest={archiveRequest}
           unarchiveRequest={unarchiveRequest}
           trashRequest={trashRequest}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
         />
       }
     />

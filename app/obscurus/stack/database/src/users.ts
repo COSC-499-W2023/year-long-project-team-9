@@ -53,7 +53,7 @@ export async function getUserDataByEmail(email: string) {
 
 export function getUserNames() {
   return SQL.DB.selectFrom("users")
-    .select(["email", "givenName", "familyName"])
+    .select(["email", "givenName", "familyName", "profileImage"])
     .execute();
 }
 

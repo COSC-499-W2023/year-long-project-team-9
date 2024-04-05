@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { getEmail } from "../functions/authenticationMethods";
-import { Rooms, Messages } from "stack/database/src/sql.generated";
+import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getUserNames } from "../functions/getUserNames";
 import { getMessages } from "../functions/getMessages";
@@ -9,11 +9,14 @@ import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 import setIsReadTrue from "../functions/setIsReadTrue";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
+import { getUserViaEmail } from "../functions/getUserData";
 
 type UserNames = {
   email: string;
   givenName: string;
   familyName: string;
+  profileImage: any;
 };
 
 async function Chat() {
@@ -29,6 +32,22 @@ async function Chat() {
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
+
+  if (userNames) {
+    const getProfileImage = async () => {
+      for (const user of userNames) {
+        const imgkey = user.profileImage;
+        const url = await getProfileImgPresignedUrl(imgkey);
+        user.profileImage = url;
+      }
+      // if (userData.email && getProfileImgPresignedUrl) {
+      //   const url = await getProfileImgPresignedUrl(imgkey);
+      //   console.log(url);
+      //   setProfileImage(url);
+      // }
+    };
+    getProfileImage();
+  }
 
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
@@ -74,6 +93,8 @@ async function Chat() {
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
       setIsReadTrue={setIsReadTrue}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+      getUserViaEmail={getUserViaEmail}
     />
   );
 }

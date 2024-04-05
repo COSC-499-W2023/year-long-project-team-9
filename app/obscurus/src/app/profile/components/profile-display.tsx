@@ -6,9 +6,8 @@ import { Users } from "@obscurus/database/src/sql.generated";
 export default function ProfileDisplay({ form, userData,
   getProfileImgPresignedUrl, }: { form: any; userData: Users; getProfileImgPresignedUrl?: (username: string) => Promise<string>; }) {
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   // const profileImage = form.getValues("profileImage");
-  
+  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   const getProfileImage = async () => {
     const imgkey = userData.profileImage;
     if (userData.email && getProfileImgPresignedUrl) {
@@ -20,9 +19,6 @@ export default function ProfileDisplay({ form, userData,
 
   getProfileImage();  
   
-  // const profileImage = getProfileImage();
-  // const profileImage = "https://haunt-obscurus-sitestack-chumbucket7c91860e-nusuk5sudi3a.s3.us-west-2.amazonaws.com/imightbejan%40gmail.jpg";
-
   return (
     <>
       <div className="flex justify-center">
@@ -31,14 +27,8 @@ export default function ProfileDisplay({ form, userData,
             {/* <AvatarImage src="{form.getValues('profileImage')}" /> */}
             <AvatarImage src={profileImage} />
             <AvatarFallback className="text-4xl">
-              {form.getValues("firstName")
-                .split(" ")
-                .map((chunk: string[]) => chunk[0])
-                .join("")}
-              {form.getValues("lastName")
-                .split(" ")
-                .map((chunk: string[]) => chunk[0])
-                .join("")}
+              {form.getValues("firstName").charAt(0)}
+              {form.getValues("lastName").charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-row mt-4 text-lg font-semibold">
