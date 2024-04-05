@@ -170,6 +170,7 @@ def convert_to_mp4(input_video, output_video):
         "ffmpeg",
         "-i",
         input_video,
+        "-ss 0.04",
         "-c copy",
         "-strict",
         "-2",
