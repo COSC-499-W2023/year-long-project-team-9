@@ -10,7 +10,7 @@ export default function ProfileDisplay({ form, userData,
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   const getProfileImage = async () => {
     const imgkey = userData.profileImage;
-    if (userData.email && getProfileImgPresignedUrl) {
+    if (imgkey && getProfileImgPresignedUrl) {
       const url = await getProfileImgPresignedUrl(imgkey);
       console.log(url);
       setProfileImage(url);
