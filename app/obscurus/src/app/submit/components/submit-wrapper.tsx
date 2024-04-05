@@ -21,7 +21,6 @@ export const SubmitWrapper = ({
   defaultCollapsed,
   getUserViaEmail,
   setSubmittedDate,
-  getProfileImgPresignedUrl,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -38,7 +37,6 @@ export const SubmitWrapper = ({
   defaultCollapsed: boolean;
   getUserViaEmail?: (email: string) => Promise<string>;
   setSubmittedDate?: Function;
-  getProfileImgPresignedUrl?: (username: string) => any;
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
@@ -148,7 +146,6 @@ export const SubmitWrapper = ({
             sendToService={sendToService}
             updateSubmissionStatus={updateSubmissionStatus}
             setSubmittedDate={setSubmittedDate}
-            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
           />
       }
     />

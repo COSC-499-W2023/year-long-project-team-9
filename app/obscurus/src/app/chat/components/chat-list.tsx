@@ -1,14 +1,12 @@
 "use client";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
-import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { MessageCircle, Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useEffect, useState } from "react";
-import { profile } from "console";
 
 interface ChatListProps {
   userEmail: string;
@@ -23,9 +21,6 @@ interface ChatListProps {
   setIsReadTrue: Function;
   isCollapsed?: boolean;
   setChatScrollBoolean: Function;
-  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
-  getUserViaEmail?: (email: string) => Promise<Users>;
-  getOtherParticipantProfileImg: Function;
 }
 
 export default function ChatList({
@@ -40,9 +35,6 @@ export default function ChatList({
   sortRooms,
   setIsReadTrue,
   setChatScrollBoolean,
-  getProfileImgPresignedUrl,
-  getUserViaEmail,
-  getOtherParticipantProfileImg,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
   const [roomId, setRoomId] = useQueryState("roomId");
@@ -76,7 +68,6 @@ export default function ChatList({
           .includes(searchTerm);
       return matchesSearch;
     });
-
     return filteredRooms && filteredRooms.length > 0 ? (
       <div className="flex flex-col gap-2 p-4 pt-2 h-full overflow-y-auto">
         {filteredRooms.map((item) => (
@@ -91,7 +82,6 @@ export default function ChatList({
             <div className="flex flex-row gap-2 w-full">
               <Avatar>
                 <AvatarImage
-                  src={getOtherParticipantProfileImg(getOtherParticipantEmail(item))}
                   alt={getOtherParticipantName(getOtherParticipantEmail(item))}
                 />
                 <AvatarFallback>
@@ -136,7 +126,7 @@ export default function ChatList({
                   {getLatestMessage(item) != undefined &&
                     getLatestMessage(item).messageContent.length > 24 &&
                     getLatestMessage(item).messageContent?.substring(0, 24) +
-                    "..."}
+                      "..."}
                   {getLatestMessage(item) != undefined &&
                     getLatestMessage(item).messageContent.length <= 24 &&
                     getLatestMessage(item).messageContent}

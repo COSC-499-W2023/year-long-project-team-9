@@ -11,7 +11,6 @@ import { getUserViaEmail } from "../functions/getUserData";
 import setSubmittedDate from "../functions/setSubmittedDate";
 import { isSignedIn } from "../functions/authenticationMethods";
 import { redirect } from "next/navigation";
-import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Submit() {
 
@@ -36,7 +35,6 @@ async function Submit() {
       defaultCollapsed={defaultCollapsed}
       getUserViaEmail={getUserViaEmail}
       setSubmittedDate={setSubmittedDate}
-      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

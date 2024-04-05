@@ -51,14 +51,12 @@ export default function ProfileForm({
   userData,
   form,
   onSubmit,
-  updateUser,
   getPresignedUrl,
   getDownloadPresignedUrl,
 }: {
   userData: Users;
   form: any;
   onSubmit: Function;
-  updateUser?: Function;
   getPresignedUrl?: (username: string) => Promise<string>;
   getDownloadPresignedUrl?: (username: string) => Promise<string>;
 }) {

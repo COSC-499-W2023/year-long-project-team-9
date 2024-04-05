@@ -34,15 +34,15 @@ export default function ProfileWrapper({
   defaultCollapsed,
   userData,
   getPresignedUrl,
-  getProfileImgPresignedUrl,
-  updateUser,
+  getDownloadPresignedUrl,
+  websocketApiEndpoint,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userData: Users;
   getPresignedUrl?: (username: string) => Promise<string>;
-  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
-  updateUser?: Function;
+  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+  websocketApiEndpoint: string;
 }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
@@ -53,9 +53,7 @@ export default function ProfileWrapper({
     },
   });
   const email = userData.email;
-  // const [username, extention] = email.slice(email.lastIndexOf(".") + 1);
-  const extension  = email.slice(email.lastIndexOf(".") + 1);
-  const username = email.slice(0, email.lastIndexOf("."));
+  const [username, extention] = email.split('.');
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
@@ -97,26 +95,14 @@ export default function ProfileWrapper({
           },
           body: file,
         });
-        console.log(response);
         setObjectURL(URL.createObjectURL(file));
         console.log("Upload successful");
-        updateUserInfo(values, key);
         setLoading(false);
         return;
       } catch (error) {
         console.error("Upload failed:", error);
         setLoading(false);
       }
-    }
-  };
-
-  const updateUserInfo = async (values: z.infer<typeof profileFormSchema>, key: string) => {
-    console.log("test");
-    if (updateUser) {
-      console.log("Updating user information");
-      updateUser(values.email, values.firstName, values.lastName, key);
-    } else {
-      console.error("unable to update user info");
     }
   };
 
@@ -131,15 +117,10 @@ export default function ProfileWrapper({
           form={form}
           onSubmit={onSubmit}
           getPresignedUrl={getPresignedUrl}
-          updateUser={updateUser}
+          getDownloadPresignedUrl={getDownloadPresignedUrl}
         ></ProfileForm>
       }
-      secondPanel={
-        <ProfileDisplay
-          form={form}
-          userData={userData}
-          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-        ></ProfileDisplay>}
+      secondPanel={<ProfileDisplay form={form}></ProfileDisplay>}
     />
   );
 }

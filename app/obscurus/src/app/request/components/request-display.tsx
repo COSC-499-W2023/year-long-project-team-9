@@ -79,7 +79,6 @@ export default function RequestDisplay({
   handleTimezoneOffset,
   requestId,
   setRequestId,
-  getProfileImgPresignedUrl,
 }: {
   requests: Requests[];
   submissions: SubmissionsForRequest[];
@@ -91,7 +90,6 @@ export default function RequestDisplay({
   handleTimezoneOffset: Function;
   requestId: string | null;
   setRequestId: Function;
-  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const { toast } = useToast();
 
@@ -266,17 +264,6 @@ export default function RequestDisplay({
     );
   };
 
-  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
-  const getProfileImage = async () => {
-    const imgkey = userData.profileImage;
-    if (userData.email && getProfileImgPresignedUrl) {
-      const url = await getProfileImgPresignedUrl(imgkey);
-      console.log(url);
-      setProfileImage(url);
-    }
-  };
-  getProfileImage();
-
   return (
     <div className="flex h-full flex-col">
       {/* <Toggle/> */}
@@ -290,10 +277,16 @@ export default function RequestDisplay({
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm">
               <Avatar>
-                <AvatarImage src={profileImage} alt={userData.givenName} />
+                <AvatarImage alt={userData.givenName} />
                 <AvatarFallback>
-                  {userData.givenName.charAt(0) }
-                  {userData.familyName.charAt(0)}
+                  {userData.givenName
+                    .split(" ")
+                    .map((chunk) => chunk[0])
+                    .join("")}
+                  {userData.familyName
+                    .split(" ")
+                    .map((chunk) => chunk[0])
+                    .join("")}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start gap-1 break-all">
