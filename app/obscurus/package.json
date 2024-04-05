@@ -13,6 +13,7 @@
     "test:e2e": "concurrently --success first --kill-others \"npm run dev\" \"wait-on http://localhost:3000 && npx playwright test\""
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.0.27",
     "@aws-sdk/client-dynamodb": "^3.445.0",
     "@aws-sdk/client-s3": "^3.445.0",
     "@aws-sdk/client-sfn": "^3.490.0",
