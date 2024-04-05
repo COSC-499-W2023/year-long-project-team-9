@@ -633,7 +633,7 @@ export default function SubmitDisplay({
             </div>
           </div>
           {selected.requestDetails.creationDate && (
-            <div className="ml-auto text-xs text-muted-foreground pr-3 grid p-0 justify-between space-y-5 h-full">
+            <div className="ml-auto text-xs text-muted-foreground grid p-0 justify-between space-y-5 h-full">
               <div>
                 {format(
                   new Date(selected.requestDetails.creationDate),

@@ -4,12 +4,12 @@ import ReactPlayer from "react-player";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 
-export default function VideoPlayer({ videoUrl, filename }: { videoUrl: string; filename: string }) {
+export default function VideoPlayer({ videoUrl, filename }: { videoUrl: string; filename?: string }) {
   console.log("videoUrl in video-player", videoUrl);
   console.log("filename in video-player", filename);
   return (
     <div className="flex h-full flex-col space-y-3 rounded-sm ">
-      <Label className="text-sm">{filename}</Label>
+      <Label className="text-sm">{filename || "Processed Video"}</Label>
 <Separator />
       <ReactPlayer
         url={videoUrl}
