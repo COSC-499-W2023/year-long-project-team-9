@@ -1,6 +1,7 @@
 "use server";
+import { cookies } from "next/headers";
+import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import {
-  fetchAuthSession,
   signIn,
   signOut,
   signUp,
@@ -16,18 +17,24 @@ import {
   type ConfirmResetPasswordInput,
   type UpdatePasswordInput,
 } from "aws-amplify/auth";
+import {
+  fetchAuthSession,
+  getCurrentUser,
+  fetchUserAttributes,
+} from "aws-amplify/auth/server";
 
 export async function isSignedIn() {
-  try {
-    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    if (idToken != undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    return false;
-  }
+  // try {
+  //   const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+  //   if (idToken != undefined) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // } catch (error) {
+  //   return false;
+  // }
+  return false;
 }
 
 export async function signInUser({ username, password }: SignInInput) {
@@ -52,17 +59,30 @@ export async function signOutUser() {
   }
 }
 
-export async function getEmail() {
+export async function getCurrentUserServer() {
   try {
-    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    if (idToken?.payload.email != undefined) {
-      return idToken.payload.email as string;
-    } else {
-      return "";
-    }
+    const currentUser = await runWithAmplifyServerContext({
+      nextServerContext: { cookies },
+      operation: (contextSpec) => getCurrentUser(contextSpec),
+    });
+    console.log(currentUser);
   } catch (error) {
-    return "";
+    console.log(error);
   }
+}
+
+export async function getEmail() {
+  // try {
+  //   const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+  //   if (idToken?.payload.email != undefined) {
+  //     return idToken.payload.email as string;
+  //   } else {
+  //     return "";
+  //   }
+  // } catch (error) {
+  //   return "";
+  // }
+  return "";
 }
 
 type SignUpParameters = {
