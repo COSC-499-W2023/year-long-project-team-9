@@ -16,6 +16,7 @@ import createRequest from "./components/create/function/createRequest";
 import { SubmissionsForRequest } from "./types/types-for-request";
 import getPresignedUrl from "../functions/getPresignedUrl";
 import { redirect } from "next/navigation";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Request() {
   // const signedIn = await isSignedIn();
@@ -79,6 +80,7 @@ async function Request() {
       unarchiveRequest={unarchiveRequest}
       trashRequest={trashRequest}
       createRequest={createRequest}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

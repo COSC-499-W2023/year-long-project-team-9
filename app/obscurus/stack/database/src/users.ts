@@ -50,6 +50,31 @@ export async function getUserDataByEmail(email: string) {
 
 export function getUserNames() {
   return SQL.DB.selectFrom("users")
-    .select(["email", "givenName", "familyName"])
+    .select(["email", "givenName", "familyName", "profileImage"])
     .execute();
+}
+
+export interface Users {
+  email: string;
+  givenName: string;
+  familyName: string;
+  isLoggedInWithSocialIdentityProvider: boolean;
+  isAdmin: boolean;
+  profileImage: string;
+  preference: string;
+}
+
+export function setUser(
+  email: string,
+  givenName: string,
+  familyName: string,
+  profileImage: string,) {
+  return SQL.DB.updateTable("users")
+    .set({
+      givenName: givenName,
+      familyName: familyName,
+      profileImage: profileImage,
+    })
+    .where("email", "=", email)
+    .executeTakeFirst();
 }

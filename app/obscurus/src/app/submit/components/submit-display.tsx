@@ -62,6 +62,7 @@ export default function SubmitDisplay({
   sendToService,
   updateSubmissionStatus,
   setSubmittedDate,
+  getProfileImgPresignedUrl,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -73,6 +74,7 @@ export default function SubmitDisplay({
   ) => Promise<string>;
   updateSubmissionStatus?: Function;
   setSubmittedDate?: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [upload, setUpload] = useUpload();
@@ -614,6 +616,18 @@ export default function SubmitDisplay({
         </Button>
       </div>
     );
+  };
+
+  const [requesterProfileImage, setrequesterProfileImage] = useState<string | undefined>(undefined);
+  const getrequesterProfileImage = async (requester: any, requestDetails: any, ) => {
+    const imgkey = requester.profileImage;
+    const requesterEmail = requestDetails.requesterEmail;
+    console.log("test ", imgkey);
+    if (requesterEmail && getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      console.log("url: ", url);
+      setrequesterProfileImage(url);
+    }
   };
 
   const RequestHeader = ({ selected }: { selected: EnrichedSubmissions }) => {
