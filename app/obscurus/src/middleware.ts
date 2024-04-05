@@ -4,12 +4,10 @@ import { runWithAmplifyServerContext } from "./app/utils/amplifyServerUtils";
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
-  console.log("pathname", request.nextUrl.pathname);
   const authenticated = await runWithAmplifyServerContext({
     nextServerContext: { request, response },
     operation: async (contextSpec) => {
       try {
-        console.log("contextspec token", contextSpec.token);
         const session = await fetchAuthSession(contextSpec);
         return session.tokens !== undefined;
       } catch (error) {

@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import {
+  fetchAuthSession,
   signIn,
   signOut,
   signUp,
@@ -17,36 +18,17 @@ import {
   type ConfirmResetPasswordInput,
   type UpdatePasswordInput,
 } from "aws-amplify/auth";
-import {
-  fetchAuthSession,
-  getCurrentUser,
-  fetchUserAttributes,
-} from "aws-amplify/auth/server";
+import { getCurrentUser, fetchUserAttributes } from "aws-amplify/auth/server";
 
 export async function isSignedIn() {
-  // try {
-  //   const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-  //   if (idToken != undefined) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // } catch (error) {
-  //   return false;
-  // }
-  return false;
-}
-
-export async function signInUser({ username, password }: SignInInput) {
   try {
-    const { isSignedIn, nextStep } = await signIn({ username, password });
-    if (isSignedIn) {
+    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+    if (idToken != undefined) {
       return true;
     } else {
       return false;
     }
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -72,17 +54,16 @@ export async function getCurrentUserServer() {
 }
 
 export async function getEmail() {
-  // try {
-  //   const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-  //   if (idToken?.payload.email != undefined) {
-  //     return idToken.payload.email as string;
-  //   } else {
-  //     return "";
-  //   }
-  // } catch (error) {
-  //   return "";
-  // }
-  return "";
+  try {
+    const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+    if (idToken?.payload.email != undefined) {
+      return idToken.payload.email as string;
+    } else {
+      return "";
+    }
+  } catch (error) {
+    return "";
+  }
 }
 
 type SignUpParameters = {

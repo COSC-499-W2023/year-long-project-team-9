@@ -25,7 +25,6 @@ const NavBar = ({
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
-  signInUser,
   signOutUser,
   signUpUser,
   confirmSignUpUser,
@@ -40,7 +39,6 @@ const NavBar = ({
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
-  signInUser: Function;
   signOutUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
@@ -74,12 +72,6 @@ const NavBar = ({
           <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
             Dark
           </DropdownMenuItem>
-          {/* <DropdownMenuItem
-            onClick={() => setTheme("system")}
-            data-testid="system"
-          >
-            System
-          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -146,7 +138,6 @@ const NavBar = ({
         />
         <ThemeSwitcher />
         <Authentication
-          signInUser={signInUser}
           signOutUser={signOutUser}
           signUpUser={signUpUser}
           confirmSignUpUser={confirmSignUpUser}

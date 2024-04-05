@@ -5,7 +5,6 @@ import deleteNotification from "./functions/deleteNotification";
 import { getUserNames } from "./functions/getUserNames";
 import {
   isSignedIn,
-  signInUser,
   signOutUser,
   getEmail,
   signUpUser,
@@ -42,7 +41,6 @@ export default async function NavBarServerWrapper() {
       readNotification={readNotification}
       deleteNotifications={deleteNotification}
       getNotificationsViaEmail={getNotificationsViaEmail}
-      signInUser={signInUser}
       signOutUser={signOutUser}
       signUpUser={signUpUser}
       confirmSignUpUser={confirmSignUpUser}
