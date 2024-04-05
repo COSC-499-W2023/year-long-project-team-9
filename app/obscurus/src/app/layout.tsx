@@ -7,6 +7,7 @@ import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
 import { WebSocketProvider } from "./ws-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { isSignedIn } from "./functions/authenticationMethods";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const signedIn = await isSignedIn();
   return (
     <html lang="en">
       <body className={`${GeistSans.className}`}>
@@ -32,7 +34,7 @@ export default async function RootLayout({
         >
           <WebSocketProvider url={wsUrl}>
             <TooltipProvider delayDuration={0}>
-              <NavBarServerWrapper />
+              <NavBarServerWrapper signedIn={signedIn} />
               <div className=" flex-col md:flex h-screen pt-16">
                 <Toaster />
                 {children}

@@ -27,8 +27,11 @@ type UserNames = {
   familyName: string;
 };
 
-export default async function NavBarServerWrapper() {
-  const signedIn = await isSignedIn();
+export default async function NavBarServerWrapper({
+  signedIn,
+}: {
+  signedIn: boolean;
+}) {
   const email = await getEmail();
   const getUserName = async (userEmail: string) => {
     const userNames: UserNames[] = await getUserNames();
