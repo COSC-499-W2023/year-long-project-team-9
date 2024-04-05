@@ -52,13 +52,13 @@ export default function ProfileForm({
   form,
   onSubmit,
   getPresignedUrl,
-  getDownloadPresignedUrl,
+  updateUser,
 }: {
   userData: Users;
   form: any;
   onSubmit: Function;
   getPresignedUrl?: (username: string) => Promise<string>;
-  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+  updateUser?: Function;
 }) {
   // TODO: Work in progress
   return (
@@ -99,7 +99,6 @@ export default function ProfileForm({
             form={form}
             userData={userData}
             getPresignedUrl={getPresignedUrl}
-            getDownloadPresignedUrl={getDownloadPresignedUrl}
           ></ProfileImageInput>
           <div className="text-right gap-2">
             <AccountCancel></AccountCancel>

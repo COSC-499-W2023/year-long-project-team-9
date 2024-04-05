@@ -29,6 +29,7 @@ export default function RequestWrapper({
   unarchiveRequest,
   trashRequest,
   createRequest,
+  getProfileImgPresignedUrl,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -39,6 +40,7 @@ export default function RequestWrapper({
   unarchiveRequest: Function;
   trashRequest: Function;
   createRequest: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const [showCreate, setShowCreate] = useState<boolean>(false);
   const [requestId, setRequestId] = useQueryState("requestId");
@@ -115,6 +117,7 @@ export default function RequestWrapper({
               handleTimezoneOffset={handleTimezoneOffset}
               requestId={requestId}
               setRequestId={setRequestId}
+              getProfileImgPresignedUrl={getProfileImgPresignedUrl}
             />
           )
         }
