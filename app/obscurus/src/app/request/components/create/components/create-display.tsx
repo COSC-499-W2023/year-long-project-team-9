@@ -121,7 +121,7 @@ export default function CreateDisplay({
                       .watch("clientEmail")
                       .map((item: { email: string }, index: number) =>
                         item.email !== ""
-                          ? item.email
+                          ? item.email.toLocaleLowerCase()
                           : form.getValues("clientEmail").length === 1
                           ? "Email"
                           : `Email ${index + 1}`
@@ -139,10 +139,10 @@ export default function CreateDisplay({
                             {form.getValues("clientEmail").length === 1
                               ? item.email === ""
                                 ? "Email"
-                                : item.email
+                                : item.email.toLocaleLowerCase()
                               : item.email === ""
                               ? `Email ${index + 1}`
-                              : item.email}
+                              : item.email.toLocaleLowerCase()}
                           </div>
                         ))}
                     </div>
