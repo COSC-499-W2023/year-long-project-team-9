@@ -15,11 +15,13 @@ import { Button } from "./ui/button";
 export default function TermsAndConditions() {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="link" className="underline text-xs text-blue-400">
-          Terms of Service and Privacy Policy
-        </Button>
-      </AlertDialogTrigger>
+      <span>
+        <AlertDialogTrigger asChild>
+          <span className="underline text-blue-400">
+            Terms of Service and Privacy Policy
+          </span>
+        </AlertDialogTrigger>
+      </span>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="content-center">

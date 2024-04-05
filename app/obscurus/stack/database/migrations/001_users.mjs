@@ -9,12 +9,8 @@ export async function up(db) {
     .addColumn("email", "varchar", (col) => col.primaryKey())
     .addColumn("givenName", "varchar", (col) => col.notNull())
     .addColumn("familyName", "varchar", (col) => col.notNull())
-    .addColumn("isLoggedInWithSocialIdentityProvider", "boolean", (col) =>
-      col.notNull().defaultTo(false)
-    )
-    .addColumn("isAdmin", "boolean", (col) => col.notNull().defaultTo(false))
     .addColumn("profileImage", "varchar")
-    .addColumn("preference", "varchar", (col) => col.notNull().defaultTo("{}"))
+    .addColumn("joinedDate", "date", (col) => col.notNull().defaultTo("now()"))
     .execute();
 }
 

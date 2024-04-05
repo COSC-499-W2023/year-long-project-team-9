@@ -108,18 +108,18 @@ export default function ChatWrapper({
       );
     }
   };
+  const checkIfMessageInList = (newMessage: Messages) => {
+    const newMessages = chatMessages.filter(
+      (message) => message.messageId === newMessage.messageId
+    );
+    return newMessages.length > 0;
+  };
 
   useEffect(() => {
     const ws = new WebSocket(websocketApiEndpoint);
-    // const handleBeforeUnload = () => {
-    //   console.log("Page reloading or closing, disconnecting WebSocket");
-    //   ws.close();
-    // };
-
     ws.onopen = () => {
       console.log("Connected to WebSocket");
     };
-    // window.addEventListener("beforeunload", handleBeforeUnload);
     setSocket(ws);
 
     ws.onmessage = (event) => {
@@ -137,7 +137,6 @@ export default function ChatWrapper({
     };
 
     return () => {
-      // window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("Disconnecting WebSocket");
       ws.close();
     };
@@ -146,12 +145,6 @@ export default function ChatWrapper({
     if (socket) {
       socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
     }
-  };
-  const checkIfMessageInList = (newMessage: Messages) => {
-    const newMessages = chatMessages.filter(
-      (message) => message.messageId === newMessage.messageId
-    );
-    return newMessages.length > 0;
   };
 
   return (

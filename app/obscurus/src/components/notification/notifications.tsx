@@ -1,6 +1,5 @@
 import {
   Bell,
-  BellPlus,
   Inbox,
   MessageCircle,
   Trash2,
@@ -15,8 +14,8 @@ import {
 import { Button } from "../ui/button";
 import { Notifications } from "@obscurus/database/src/sql.generated";
 import Link from "next/link";
-import { Card, CardContent, CardTitle } from "../ui/card";
-import { useEffect, useState } from "react";
+import { CardTitle } from "../ui/card";
+import { useEffect } from "react";
 import { Separator } from "../ui/separator";
 import {
   useHasUnreadNotifications,
@@ -24,15 +23,16 @@ import {
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { read } from "fs";
 
-
 export default function Notifications({
+  signedIn,
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
 }: {
+  signedIn: boolean;
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
@@ -84,7 +84,7 @@ export default function Notifications({
     };
   }, [ws, getNotificationsViaEmail]);
 
-  return (
+  return signedIn ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
@@ -93,7 +93,7 @@ export default function Notifications({
           </Button>
           {hasUnreadNotifications && (
             <div
-              className="absolute top-3 right-16 mt-2 h-2 w-2 rounded-full bg-blue-600  "
+              className="absolute top-3 right-32 mt-2 h-2 w-2 rounded-full bg-blue-600  "
               aria-label="Unread Notification"
             ></div>
           )}
@@ -183,5 +183,7 @@ export default function Notifications({
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
+  ) : (
+    <></>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -7,7 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Bell, Sun } from "lucide-react";
+import { Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -19,32 +19,46 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
-import { useNotifications } from "./hooks/use-notifications";
+import Authentication from "@/components/authentication/authentication";
+import amplifyConfig from "@/app/utils/amplifyConfig";
+import { Amplify } from "aws-amplify";
+
+Amplify.configure(amplifyConfig);
 
 const NavBar = ({
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
+  signInUser,
+  signOutUser,
+  signUpUser,
+  confirmSignUpUser,
+  resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
+  updateUserPassword,
+  signedIn,
+  email,
+  name,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
+  signInUser: Function;
+  signOutUser: Function;
+  signUpUser: Function;
+  confirmSignUpUser: Function;
+  resendConfirmSignUpUser: Function;
+  resetUserPassword: Function;
+  confirmResetUserPassword: Function;
+  updateUserPassword: Function;
+  signedIn: boolean;
+  email: string;
+  name: string[];
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
-  const [signedIn, setSignedIn] = useState(false);
-  const [showSignInDialog, setShowSignInDialog] = useState(false);
-  const handleAuth = (route: string) => {
-    if (signedIn) {
-      router.push(route);
-    } else {
-      setShowSignInDialog(true);
-    }
-  };
-
-  const [currentTab, selectCurrentTab] = useState("/");
-  const [userSignedIn, setUserSignedIn] = useState(false);
 
   const ThemeSwitcher = () => {
     return (
@@ -127,13 +141,27 @@ const NavBar = ({
   return (
     <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
-      <div className="flex gap-2">
+      <div className="flex flex-row gap-2">
         <Notifications
+          signedIn={signedIn}
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
           getNotificationsViaEmail={getNotificationsViaEmail}
         />
         <ThemeSwitcher />
+        <Authentication
+          signInUser={signInUser}
+          signOutUser={signOutUser}
+          signUpUser={signUpUser}
+          confirmSignUpUser={confirmSignUpUser}
+          resendConfirmSignUpUser={resendConfirmSignUpUser}
+          resetUserPassword={resetUserPassword}
+          confirmResetUserPassword={confirmResetUserPassword}
+          updateUserPassword={updateUserPassword}
+          signedIn={signedIn}
+          email={email}
+          name={name}
+        />
       </div>
     </div>
   );

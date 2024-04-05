@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { getEmail } from "../functions/authenticationMethods";
+import { getEmail, isSignedIn } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getUserNames } from "../functions/getUserNames";
@@ -8,6 +8,7 @@ import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
+import { redirect } from "next/navigation";
 import setIsReadTrue from "../functions/setIsReadTrue";
 
 type UserNames = {
@@ -17,6 +18,11 @@ type UserNames = {
 };
 
 async function Chat() {
+  const signedIn = await isSignedIn();
+  if (!signedIn) {
+    redirect("/");
+  }
+
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
@@ -29,6 +35,8 @@ async function Chat() {
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
+  const websocketApiEndpoint =
+    (process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string) ?? "";
 
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
@@ -65,9 +73,7 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={userEmail}
-      websocketApiEndpoint={
-        process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string
-      }
+      websocketApiEndpoint={websocketApiEndpoint}
       rooms={rooms}
       userNames={userNames}
       messages={messages}
