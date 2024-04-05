@@ -16,10 +16,10 @@ import {
   updateUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
-import amplifyConfig from "@/app/utils/amplifyConfig";
+import config from "@/app/utils/amplifyConfig";
 import { Amplify } from "aws-amplify";
 
-Amplify.configure(amplifyConfig);
+Amplify.configure(config);
 
 type UserNames = {
   email: string;
