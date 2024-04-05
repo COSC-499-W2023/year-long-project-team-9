@@ -37,7 +37,8 @@ export async function createRequest(data: any) {
       const insertSubmission = await SQL.DB.insertInto("submissions")
         .values({
           submissionId: newSubmissionID,
-          requesteeEmail: validData.data.clientEmail[i].email,
+          requesteeEmail:
+            validData.data.clientEmail[i].email.toLocaleLowerCase(),
           status: "TODO",
           title: "null",
           grouping: null,
@@ -46,6 +47,11 @@ export async function createRequest(data: any) {
           requestId: requestID,
         })
         .execute();
+      sendEmailTextBlockViaNoReply(
+        validData.data.clientEmail[i].email.toLocaleLowerCase(),
+        "obscurus - New Submission Request",
+        `${validData.data.firstName} ${validData.data.lastName} has requested a video from you.`
+      );
       const insertNotifications = await SQL.DB.insertInto("notifications")
         .values({
           notificationId: uuidv7(),
