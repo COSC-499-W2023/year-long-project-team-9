@@ -92,42 +92,77 @@ export function Wrapper({
           isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out"
         )}
       >
-        <Nav
-          isCollapsed={isCollapsed}
-          links={[
-            {
-              title: "Request",
-              icon: Inbox,
-              variant: getLinkVariant("Request"),
-              href: "/request",
-            },
-            {
-              title: "Submit",
-              icon: UploadCloudIcon,
-              variant: getLinkVariant("Submit"),
-              href: "/submit",
-            },
-            {
-              title: "Chat",
-              icon: MessageCircle,
-              variant: getLinkVariant("Chat"),
-              href: "/chat",
-            },
-          ]}
-        />
-        <Separator className="container mx-auto" />
-        <Nav
-          isCollapsed={isCollapsed}
-          links={[
-            {
-              title: "Profile",
-              icon: User,
-              variant: getLinkVariant("Profile"),
-              href: "/profile",
-            },
-          ]}
-        />
-      </ResizablePanel>
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[0]) || 20}
+          collapsedSize={navCollapsedSize}
+          collapsible={isMobile ? false : true}
+          minSize={10}
+          maxSize={20}
+          onCollapse={(collapsed) => {
+            setIsCollapsed(collapsed);
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+              collapsed
+            )}`;
+          }}
+          className={cn(
+            isCollapsed &&
+              "min-w-[50px] transition-all duration-300 ease-in-out"
+          )}
+        >
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Request",
+                icon: Inbox,
+                variant: getLinkVariant("Request"),
+                href: "/request",
+              },
+              {
+                title: "Submit",
+                icon: UploadCloudIcon,
+                variant: getLinkVariant("Submit"),
+                href: "/submit",
+              },
+              {
+                title: "Chat",
+                icon: MessageCircle,
+                variant: getLinkVariant("Chat"),
+                href: "/chat",
+              },
+            ]}
+          />
+          <Separator className="container mx-auto" />
+          <Nav
+            isCollapsed={isCollapsed}
+            links={[
+              {
+                title: "Profile",
+                icon: User,
+                variant: getLinkVariant("Profile"),
+                href: "/profile",
+              },
+            ]}
+          />
+        </ResizablePanel>
+
+        <ResizableHandle withHandle />
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[1]) || 40}
+          minSize={35}
+        >
+          <div className="h-full flex-1 flex-col  md:flex">
+            {firstPanel}
+          </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel
+          defaultSize={(defaultLayout && defaultLayout[2]) || 50}
+          minSize={25}
+        >
+          {secondPanel}
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       <ResizableHandle withHandle />
       <ResizablePanel

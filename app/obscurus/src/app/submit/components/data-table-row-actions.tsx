@@ -72,6 +72,7 @@ export function DataTableRowActions<TData>({
         </DialogTrigger>
         <DialogContent className="">
           <VideoPlayer
+            filename={"Processed Video"}
             videoUrl={
               url
             }

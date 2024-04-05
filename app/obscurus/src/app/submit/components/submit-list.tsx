@@ -54,17 +54,11 @@ import { useTab } from "@/app/hooks/use-tab";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 
-interface RequestsListProps {
-  requests?: Requests[];
-  submissions?: Submissions[];
-  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
-}
-
 export default function SubmitList({
   submissions,
   getDownloadPresignedUrl
 }: {
-  submissions: EnrichedSubmissions[];
+  submissions: EnrichedSubmissions[] | undefined;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }) {
   const router = useRouter();
@@ -78,9 +72,9 @@ export default function SubmitList({
 
   const handleClick = (item: EnrichedSubmissions) => {
     if (!upload.upload && !isShowingVideo.active) {
-      const submission = submissions.find(
+      const submission = submissions && submissions.find(
         (submission) => submission.submissionId === item.submissionId
-      );
+      ) || null;
       if (submission) {
         setSubmission({ ...submission, submissionId: submission.submissionId });
       }
@@ -118,7 +112,7 @@ export default function SubmitList({
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
   const tabsTriggers = statuses.map((status) => (
-    <TabsTrigger key={status} value={status} className="text-xs">
+    <TabsTrigger key={status} value={status} className="text-xs" disabled={!submissions}>
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </TabsTrigger>
   ));
@@ -138,12 +132,20 @@ export default function SubmitList({
           .toLowerCase()
           .includes(searchTerm);
 
-      return matchesStatus && matchesSearch && submission.status != "TRASHED";
+      return matchesStatus && matchesSearch && submission.status;
     });
 
     return (
-      <TabsContent key={status} value={status}>
-        <div className="flex flex-col gap-2 p-4 pt-0 h-full">
+      <TabsContent key={status} value={status} className={`${submissions ? " overflow-y-scroll" : "overflow-y-hidden"}`}>
+        <div className="flex flex-col gap-2 p-4 pt-0 h-full ">
+          {!filteredRequests && (
+            <div className="flex flex-col items-center justify-center h-full gap-5 md:mb-36">
+              <FileText className="w-16 h-16 text-muted-foreground" />
+              <div className=" font-semibold text-muted-foreground">
+                No requests found.
+              </div>
+            </div>
+          )}
           {filteredRequests?.map((item) => (
             <button
               key={item.submissionId}
@@ -154,15 +156,13 @@ export default function SubmitList({
                   : "bg-background border-muted-border"
               )}
               onClick={() => handleClick(item)}
+              disabled={!submissions}
             >
               <div className="flex w-full flex-col gap-1">
                 <div className="flex items-center w-full justify-between">
                   <div className="flex items-center gap-2 w-full h-full">
-                    <div className="font-semibold text-ellipsis">
-                      {item.requestDetails.requestTitle.length > 30
-                        ? item.requestDetails.requestTitle.substring(0, 30) +
-                          "..."
-                        : item.requestDetails.requestTitle}
+                    <div className="font-semibold text-ellipsis line-clamp-1">
+                      {item.requestDetails.requestTitle}
                     </div>
                   </div>
 
@@ -176,11 +176,8 @@ export default function SubmitList({
                 <div className="text-xs font-medium text-ellipsis line-clamp-1">
                   {item.requester.givenName} {item.requester.familyName}
                 </div>
-                <div className="text-xs">
-                  {item.requestDetails.requesterEmail.length > 30
-                    ? item.requestDetails.requesterEmail.substring(0, 30) +
-                      "..."
-                    : item.requestDetails.requesterEmail}
+                <div className="text-xs text-ellipsis line-clamp-1">
+                  {item.requestDetails.requesterEmail}
                 </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">
@@ -230,7 +227,7 @@ export default function SubmitList({
               <Button
                 variant="ghost"
                 size="icon"
-                disabled={submissions && submissions.length === 0}
+                disabled={!submissions || submissions.length === 0}
               >
                 <TooltipTrigger asChild>
                   <ListVideo className="h-4 w-4" />
@@ -265,6 +262,7 @@ export default function SubmitList({
               className="pl-8"
               onChange={(e) => setSearch({ search: e.target.value })}
               value={search.search || ""}
+              disabled={!submissions}
             />
             {search && (
               <XCircle
@@ -282,7 +280,7 @@ export default function SubmitList({
           <TooltipTrigger asChild>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="">
+                <Button variant="ghost" size="icon" className="" disabled={!submissions}>
                   <SortDescIcon className="w-4 h-4  " />
                   <span className="sr-only">Filter Results</span>
                 </Button>
@@ -305,8 +303,8 @@ export default function SubmitList({
       </div>
       <Separator />
 
-      <div className="h-full overflow-y-scroll">
-        {tabsContent || <div>No requests.</div>}
+      <div >
+        {tabsContent}
       </div>
     </Tabs>
   );

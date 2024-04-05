@@ -64,12 +64,12 @@ const NavBar = ({
           <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => setTheme("system")}
             data-testid="system"
           >
             System
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -77,7 +77,7 @@ const NavBar = ({
 
   const Navigation = () => {
     return (
-      <NavigationMenu className="flex flex-row space-x-4 ">
+      <NavigationMenu className="flex flex-row space-x-6 ">
         <Link href="/" className="">
           <Image
             className="min-h-full min-w-full"
@@ -88,7 +88,7 @@ const NavBar = ({
           />
         </Link>
 
-        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-4  ">
+        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-5  ">
           <Link href="/" className="">
             <NavigationMenuItem className="font-bold text-lg">
               obscurus
@@ -125,7 +125,7 @@ const NavBar = ({
   };
 
   return (
-    <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
+    <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
       <div className="flex gap-2">
         <Notifications

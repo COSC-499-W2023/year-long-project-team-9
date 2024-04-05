@@ -33,7 +33,8 @@ export const SubmitWrapper = ({
   sendToService?: (
     submissionId: string,
     fileExt: string,
-    email: string
+    email: string,
+    blurred: boolean
   ) => Promise<string>;
   updateStatus?: Function;
   getStatus?: (submissionId: string) => Promise<string>;
@@ -57,7 +58,7 @@ export const SubmitWrapper = ({
         "imightbejan@gmail.com"
       );
       console.log("User data:", data);
-      setSubmissions(data.submissions);
+      data?.submissions && setSubmissions(data.submissions);
     }
     setLoading(false);
   };
@@ -104,10 +105,10 @@ export const SubmitWrapper = ({
       });
       ws.send(message);
 
-      if (updateStatus) {
+      if (updateStatus && ws.readyState === WebSocket.OPEN) {
         console.log("Updating submission status:", status, submissionId);
         await updateStatus(status, submissionId);
-         ws.send(
+        {status !== "ARCHIVED" && status !== "TRASHED" && ws.send(
           JSON.stringify({
             action: "newNotification",
             data: {
@@ -119,10 +120,15 @@ export const SubmitWrapper = ({
               },
             },
           })
-        );
+        )}
       }
     } else {
-      console.error("WebSocket not connected or not ready");
+      if (updateStatus) {
+        console.log("Updating submission status:", status, submissionId);
+        await updateStatus(status, submissionId);
+      } else {
+        console.error("WebSocket not connected");
+      }
     }
   };
 
@@ -138,9 +144,9 @@ export const SubmitWrapper = ({
       firstPanel={
         loading ? (
           <PanelLoader1 />
-        ) :  submissions ? (
-          <SubmitList submissions={submissions} getDownloadPresignedUrl={getDownloadPresignedUrl} />
-        ) : ( <PanelLoader1 />)
+        ) : (
+          <SubmitList submissions={submissions || undefined} getDownloadPresignedUrl={getDownloadPresignedUrl} />
+        )
       }
       secondPanel={
         loading ? (

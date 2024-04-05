@@ -8,6 +8,7 @@ import { DataTableRowActions } from "./data-table-row-actions";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { getBadgeVariantFromStatus } from "./submit-list";
 import getDownloadPresignedUrl from "@/app/functions/getDownloadPresignedUrl";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<EnrichedSubmissions>[] = [
   {
@@ -27,7 +28,8 @@ export const columns: ColumnDef<EnrichedSubmissions>[] = [
   },
   {
     accessorKey: "requesterName",
-    accessorFn: (row) => row.requester.givenName + " " + row.requester.familyName,
+    accessorFn: (row) =>
+      row.requester.givenName + " " + row.requester.familyName,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Requester" />
     ),
@@ -41,7 +43,9 @@ export const columns: ColumnDef<EnrichedSubmissions>[] = [
       );
     },
     sortingFn: (rowA, rowB) => {
-      return rowA.original.requester.givenName.localeCompare(rowB.original.requester.givenName);
+      return rowA.original.requester.givenName.localeCompare(
+        rowB.original.requester.givenName
+      );
     },
     enableSorting: false,
     enableHiding: false,
@@ -89,12 +93,13 @@ export const columns: ColumnDef<EnrichedSubmissions>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {row.original.submittedDate?.toString() || "-"}
+            {(row.original.submittedDate &&
+              format(new Date(row.original.submittedDate), "PPP, p")) ||
+              "-"}
           </span>
         </div>
       );
     },
-
   },
   {
     id: "actions",
@@ -105,6 +110,11 @@ export const columns: ColumnDef<EnrichedSubmissions>[] = [
         className="text-center"
       />
     ),
-    cell: ({ row }) => <DataTableRowActions row={row}  getDownloadPresignedUrl={getDownloadPresignedUrl}/>,
+    cell: ({ row }) => (
+      <DataTableRowActions
+        row={row}
+        getDownloadPresignedUrl={getDownloadPresignedUrl}
+      />
+    ),
   },
 ];
