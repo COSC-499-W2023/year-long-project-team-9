@@ -8,10 +8,9 @@ import {
 } from "@obscurus/database/src/sql.generated";
 import getUserDataByEmail from "../functions/getUserDataByEmail";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
-import ProfileWrapper from "./components/profile-wrapper";
+import ProfileWrapper from "./components/profile-wapper";
 import getPresignedUrl from "../functions/getPresignedUrl";
-import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
-import updateUser from "../functions/updateUser";
+import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import { redirect } from "next/navigation";
 
 async function Account() {
@@ -25,7 +24,11 @@ async function Account() {
   console.log("Layout", layout);
   console.log("Collapsed", collapsed?.value);
   console.log("getPresignedUrl", getPresignedUrl);
-  console.log("getProfileImgPresignedUrl", getProfileImgPresignedUrl);
+  console.log("getDownloadPresignedUrl", getDownloadPresignedUrl);
+
+  const wsApi = process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT;
+
+  console.log("wsApi", wsApi);
 
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
@@ -41,15 +44,14 @@ async function Account() {
     await getRequestsViaEmail(userEmail);
   const requests: Requests[] = requestPageData.request;
   const submissions: Submissions[] = requestPageData.submissions;
-  // console.log(updateUser)
   return (
     <ProfileWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userData={userData}
       getPresignedUrl={getPresignedUrl}
-      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-      updateUser={updateUser}
+      getDownloadPresignedUrl={getDownloadPresignedUrl}
+      websocketApiEndpoint={wsApi as string}
     />
   );
 }

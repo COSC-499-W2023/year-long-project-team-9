@@ -1,12 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Wrapper from "../../wrapper";
-import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
 
 type UserNames = {
-  profileImage: any;
   email: string;
   givenName: string;
   familyName: string;
@@ -23,8 +22,6 @@ interface ChatWrapperProps {
   createMessage: Function;
   createMessageNotification: Function;
   setIsReadTrue: Function;
-  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
-  getUserViaEmail?: (email: string) => Promise<Users>;
 }
 
 export default function ChatWrapper({
@@ -38,8 +35,6 @@ export default function ChatWrapper({
   createMessage,
   createMessageNotification,
   setIsReadTrue,
-  getProfileImgPresignedUrl,
-  getUserViaEmail,
 }: ChatWrapperProps) {
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
@@ -79,34 +74,6 @@ export default function ChatWrapper({
       return "N/A";
     }
   };
-
-  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
-  const getOtherParticipantProfileImg = (email: string) => {
-    setProfileImage(undefined);
-    const otherParticipant: UserNames[] = userNames.filter(
-      (user) => user.email === email
-    );
-    if (otherParticipant.length > 0) {
-      console.log(otherParticipant[0].familyName);
-      return otherParticipant[0].profileImage;
-      // setProfileImage("https://haunt-obscurus-sitestack-chumbucket7c91860e-nusuk5sudi3a.s3.us-west-2.amazonaws.com/ansivana%40gmail.jpg");
-      // getProfileImage(otherParticipant[0].profileImage);
-    }
-    console.log("test", profileImage);
-    return " ";
-  }
-
-  const getProfileImage = async (imgkey: any) => {
-    if (imgkey === null) {
-      setProfileImage("undefined");
-    } else if (getProfileImgPresignedUrl) {
-      const url = await getProfileImgPresignedUrl(imgkey);
-      setProfileImage(url);
-    } else {
-      setProfileImage("undefined");
-    }
-  };
-
   const checkUnreadMessages = (item: Rooms) => {
     const roomMessages = chatMessages.filter(
       (message) =>
@@ -199,9 +166,6 @@ export default function ChatWrapper({
             sortRooms={sortRooms}
             setIsReadTrue={setIsReadTrue}
             setChatScrollBoolean={setChatScrollBoolean}
-            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-            getUserViaEmail={getUserViaEmail}
-            getOtherParticipantProfileImg={getOtherParticipantProfileImg}
           />
         }
         secondPanel={
@@ -218,8 +182,6 @@ export default function ChatWrapper({
             createMessageNotification={createMessageNotification}
             chatScrollBoolean={chatScrollBoolean}
             setChatScrollBoolean={setChatScrollBoolean}
-            getUserViaEmail={getUserViaEmail}
-            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
           />
         }
       />

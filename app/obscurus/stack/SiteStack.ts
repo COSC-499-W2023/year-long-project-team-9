@@ -236,11 +236,6 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/setSubmittedDate.handler",
         },
       },
-      "POST /updateUser": {
-        function: {
-          handler: "stack/lambdas/updateUser.handler",
-        },
-      },
     },
   });
 

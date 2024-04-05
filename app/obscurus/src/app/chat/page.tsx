@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { getEmail, isSignedIn } from "../functions/authenticationMethods";
-import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
+import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getUserNames } from "../functions/getUserNames";
 import { getMessages } from "../functions/getMessages";
@@ -10,14 +10,11 @@ import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 import { redirect } from "next/navigation";
 import setIsReadTrue from "../functions/setIsReadTrue";
-import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
-import { getUserViaEmail } from "../functions/getUserData";
 
 type UserNames = {
   email: string;
   givenName: string;
   familyName: string;
-  profileImage: any;
 };
 
 async function Chat() {
@@ -40,22 +37,6 @@ async function Chat() {
   const messages: Messages[] = await getMessages();
   const websocketApiEndpoint =
     (process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string) ?? "";
-
-  if (userNames) {
-    const getProfileImage = async () => {
-      for (const user of userNames) {
-        const imgkey = user.profileImage;
-        const url = await getProfileImgPresignedUrl(imgkey);
-        user.profileImage = url;
-      }
-      // if (userData.email && getProfileImgPresignedUrl) {
-      //   const url = await getProfileImgPresignedUrl(imgkey);
-      //   console.log(url);
-      //   setProfileImage(url);
-      // }
-    };
-    getProfileImage();
-  }
 
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
@@ -99,8 +80,6 @@ async function Chat() {
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
       setIsReadTrue={setIsReadTrue}
-      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-      getUserViaEmail={getUserViaEmail}
     />
   );
 }
