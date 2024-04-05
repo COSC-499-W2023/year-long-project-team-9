@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { getEmail, isSignedIn } from "../functions/authenticationMethods";
+import { getEmail } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getUserNames } from "../functions/getUserNames";
@@ -8,7 +8,6 @@ import { getMessages } from "../functions/getMessages";
 import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
-import { redirect } from "next/navigation";
 import setIsReadTrue from "../functions/setIsReadTrue";
 
 type UserNames = {
@@ -18,11 +17,6 @@ type UserNames = {
 };
 
 async function Chat() {
-  const signedIn = await isSignedIn();
-  if (!signedIn) {
-    redirect("/");
-  }
-
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
