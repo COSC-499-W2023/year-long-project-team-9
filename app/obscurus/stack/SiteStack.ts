@@ -38,12 +38,9 @@ export default function SiteStack({ stack }: StackContext) {
     migrations: "stack/database/migrations/",
     cdk: {
       cluster: {
-        vpc: ec2.Vpc.fromLookup(stack, "Veep", {
+        vpc: ec2.Vpc.fromLookup(stack, "VPC", {
           vpcId: "vpc-03517d1439c6e7459",
         }),
-        vpcSubnets: {
-          subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-        },
       },
     },
   });
@@ -272,7 +269,7 @@ export default function SiteStack({ stack }: StackContext) {
       fargateService: {
         circuitBreaker: { rollback: true },
       },
-      vpc: ec2.Vpc.fromLookup(stack, "Veep", {
+      vpc: ec2.Vpc.fromLookup(stack, "VPC", {
         vpcId: "vpc-03517d1439c6e7459",
       }),
     },
