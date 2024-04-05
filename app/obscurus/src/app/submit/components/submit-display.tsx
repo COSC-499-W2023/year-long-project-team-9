@@ -44,19 +44,25 @@ import Link from "next/link";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 import { Badge } from "@/components/ui/badge";
 import { isSafari } from "react-device-detect";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function SubmitDisplay({
-  fetchUserData,
   getPresignedUrl,
   getDownloadPresignedUrl,
   sendToService,
-  getStatus,
   updateSubmissionStatus,
-  updateRequests,
-  getUserViaEmail,
   setSubmittedDate,
 }: {
-  fetchUserData: Function;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   sendToService?: (
@@ -65,10 +71,7 @@ export default function SubmitDisplay({
     email: string,
     blurred: boolean
   ) => Promise<string>;
-  getStatus?: (submissionId: string) => Promise<string>;
   updateSubmissionStatus?: Function;
-  updateRequests?: Function;
-  getUserViaEmail?: (email: string) => Promise<string>;
   setSubmittedDate?: Function;
 }) {
   const [submission, setSubmission] = useSubmission();
@@ -171,7 +174,7 @@ export default function SubmitDisplay({
               submission.submissionId,
               fileExt,
               selected?.requesteeEmail,
-              selected?.requestDetails.blurred,
+              selected?.requestDetails.blurred
             );
           setSubmittedDate &&
             submission.submissionId &&
@@ -180,9 +183,6 @@ export default function SubmitDisplay({
             title: "Success",
             description: "Your video has been uploaded successfully.",
           });
-          // console.log("Updated submission status");
-          // updateRequests && updateRequests();
-          // await fetchUserData();
         } else {
           throw new Error("Upload failed");
         }
@@ -364,17 +364,33 @@ export default function SubmitDisplay({
           </Tooltip>
           <Separator orientation="vertical" className="mx-2 h-8" />
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={!selected}
-                onClick={handleTrash}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Move to trash</span>
-              </Button>
-            </TooltipTrigger>
+            <AlertDialog>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={!selected}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Move to trash</span>
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure you want to trash this request?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleTrash}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
             <TooltipContent>Move to trash</TooltipContent>
           </Tooltip>
         </div>
@@ -824,19 +840,14 @@ export default function SubmitDisplay({
           ) : (
             <div className="flex flex-col w-full h-full justify-center items-center gap-4  text-muted-foreground">
               <UploadCloud className="w-20 h-20" />
-              <div className="font-semibold md:mb-10">
+              <div className="font-semibold mb-8">
                 No request selected to submit.
               </div>
             </div>
           )}
         </div>
       ) : (
-        <div className="flex flex-col w-full h-full justify-center items-center gap-4  text-muted-foreground">
-          <UploadCloud className="w-20 h-20" />
-          <div className="font-semibold md:mb-10">
-            No request selected to submit.
-          </div>
-        </div>
+        <PanelLoader />
       )}
     </div>
   );

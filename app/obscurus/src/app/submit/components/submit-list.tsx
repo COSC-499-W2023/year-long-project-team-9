@@ -1,17 +1,14 @@
 "use client";
-import { ComponentProps, Suspense, useEffect } from "react";
+import { ComponentProps } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
-import { Requests, Submissions } from "stack/database/src/sql.generated";
 import { usePathname, useRouter } from "next/navigation";
 import {
   FileText,
-  Filter,
-  List,
   ListVideo,
   Search,
-  SortAscIcon,
+  Send,
   SortDescIcon,
   XCircle,
 } from "lucide-react";
@@ -40,12 +37,8 @@ import {
 import { ResponsiveContainer } from "recharts";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { useRequest } from "@/app/hooks/use-request";
 import { Separator } from "@/components/ui/separator";
-import { useRequests } from "@/app/hooks/use-requests";
-import { useSubmissions } from "@/app/hooks/use-submissions";
 import { useSubmission } from "@/app/hooks/use-submission";
-import { Skeleton } from "@/components/ui/skeleton";
 import PanelLoader from "./panel-1-loader";
 import { useSearch } from "@/app/hooks/use-search";
 import { useUpload } from "@/app/hooks/use-upload";
@@ -53,28 +46,28 @@ import { useSort } from "@/app/hooks/use-sort";
 import { useTab } from "@/app/hooks/use-tab";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
+import Link from "next/link";
 
 export default function SubmitList({
   submissions,
-  getDownloadPresignedUrl
 }: {
-  submissions: EnrichedSubmissions[] | undefined;
-  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
+  submissions: EnrichedSubmissions[];
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
   const [submission, setSubmission] = useSubmission();
   const [search, setSearch] = useSearch();
   const [upload] = useUpload();
   const [sort, setSort] = useSort();
   const [tab, setTab] = useTab();
-  const [isShowingVideo, setIsShowingVideo] = useIsShowingVideo()
+  const [isShowingVideo] = useIsShowingVideo();
 
   const handleClick = (item: EnrichedSubmissions) => {
     if (!upload.upload && !isShowingVideo.active) {
-      const submission = submissions && submissions.find(
-        (submission) => submission.submissionId === item.submissionId
-      ) || null;
+      const submission =
+        (submissions &&
+          submissions.find(
+            (submission) => submission.submissionId === item.submissionId
+          )) ||
+        null;
       if (submission) {
         setSubmission({ ...submission, submissionId: submission.submissionId });
       }
@@ -112,7 +105,12 @@ export default function SubmitList({
   const statuses = ["all", "todo", "processing", "completed", "archived"];
 
   const tabsTriggers = statuses.map((status) => (
-    <TabsTrigger key={status} value={status} className="text-xs" disabled={!submissions}>
+    <TabsTrigger
+      key={status}
+      value={status}
+      className="text-xs"
+      disabled={!submissions || submissions.length === 0}
+    >
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </TabsTrigger>
   ));
@@ -136,14 +134,31 @@ export default function SubmitList({
     });
 
     return (
-      <TabsContent key={status} value={status} className={`${submissions ? " overflow-y-scroll" : "overflow-y-hidden"}`}>
+      <TabsContent
+        key={status}
+        value={status}
+        className={`${
+          submissions ? " overflow-y-scroll h-full" : "overflow-y-hidden"
+        }`}
+      >
         <div className="flex flex-col gap-2 p-4 pt-0 h-full ">
-          {!filteredRequests && (
-            <div className="flex flex-col items-center justify-center h-full gap-5 md:mb-36">
+          {filteredRequests?.length === 0 && (
+            <div className="flex flex-col h-full justify-center items-center space-y-4 md:pb-32">
               <FileText className="w-16 h-16 text-muted-foreground" />
               <div className=" font-semibold text-muted-foreground">
                 No requests found.
               </div>
+              <Separator className="w-[200px]" />
+              <Link
+                href="/request"
+                className=" font-semibold text-muted-foreground"
+              >
+                <Button variant={"ghost"}>
+                  {" "}
+                  <Send className="mr-2 h-4 w-4" />
+                  Create one
+                </Button>
+              </Link>
             </div>
           )}
           {filteredRequests?.map((item) => (
@@ -228,6 +243,7 @@ export default function SubmitList({
                 variant="ghost"
                 size="icon"
                 disabled={!submissions || submissions.length === 0}
+                className="m"
               >
                 <TooltipTrigger asChild>
                   <ListVideo className="h-4 w-4" />
@@ -259,7 +275,7 @@ export default function SubmitList({
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search"
-              className="pl-8"
+              className="pl-8 w-full"
               onChange={(e) => setSearch({ search: e.target.value })}
               value={search.search || ""}
               disabled={!submissions}
@@ -274,38 +290,41 @@ export default function SubmitList({
           </div>
         </form>
       </div>
-      <div className="flex flex-row items-center justify-between px-4">
+      <div className="flex flex-row items-center justify-between pl-4 pr-4">
         <TabsList>{tabsTriggers}</TabsList>
         <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="" disabled={!submissions}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className=""
+                  disabled={!submissions || submissions.length === 0}
+                >
                   <SortDescIcon className="w-4 h-4  " />
-                  <span className="sr-only">Filter Results</span>
+                  <span className="sr-only">Sort Results</span>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setSort({ sort: "newest" })}>
-                  Newest
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort({ sort: "oldest" })}>
-                  Oldest
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort({ sort: "due" })}>
-                  Due
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TooltipTrigger>
-          <TooltipContent>Filter</TooltipContent>
+              </TooltipTrigger>
+            </DropdownMenuTrigger>
+            <TooltipContent>Sort Requests</TooltipContent>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setSort({ sort: "newest" })}>
+                Newest
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSort({ sort: "oldest" })}>
+                Oldest
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSort({ sort: "due" })}>
+                Due
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </Tooltip>
       </div>
       <Separator />
 
-      <div >
-        {tabsContent}
-      </div>
+      {submissions ? tabsContent : <PanelLoader />}
     </Tabs>
   );
 }

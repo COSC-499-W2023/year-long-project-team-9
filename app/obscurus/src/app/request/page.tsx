@@ -18,10 +18,10 @@ import getPresignedUrl from "../functions/getPresignedUrl";
 import { redirect } from "next/navigation";
 
 async function Request() {
-  const signedIn = await isSignedIn();
-  if (!signedIn) {
-    redirect("/");
-  }
+  // const signedIn = await isSignedIn();
+  // if (!signedIn) {
+  //   redirect("/");
+  // }
 
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
@@ -32,7 +32,7 @@ async function Request() {
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const userEmail = await getEmail();
+  const userEmail = "imightbejan@gmail.com"
   const userData: Users = await getUserViaEmail(userEmail);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(userEmail);
