@@ -14,7 +14,6 @@ import { redirect } from "next/navigation";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Submit() {
-
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;

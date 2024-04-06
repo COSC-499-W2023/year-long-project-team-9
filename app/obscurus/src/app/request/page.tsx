@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { getEmail, isSignedIn } from "../functions/authenticationMethods";
+import { getEmail } from "../functions/authenticationMethods";
 import {
   Users,
   Requests,
@@ -19,11 +19,6 @@ import { redirect } from "next/navigation";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Request() {
-  // const signedIn = await isSignedIn();
-  // if (!signedIn) {
-  //   redirect("/");
-  // }
-
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);

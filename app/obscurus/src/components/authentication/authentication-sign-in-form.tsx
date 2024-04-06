@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LucideLoader2 } from "lucide-react";
 import { Label } from "../ui/label";
-import { type SignInInput } from "aws-amplify/auth";
+import { signIn, type SignInInput } from "aws-amplify/auth";
+import { useRouter } from "next/navigation";
 
 const accountFormSchema = z.object({
   email: z.string().trim().toLowerCase().min(1).max(320).email(),
@@ -22,10 +23,8 @@ const accountFormSchema = z.object({
 });
 
 export default function SignInForm({
-  signInUser,
   setDialogState,
 }: {
-  signInUser: Function;
   setDialogState: Function;
 }) {
   const form = useForm<z.infer<typeof accountFormSchema>>({
@@ -35,15 +34,17 @@ export default function SignInForm({
   const [loading, setLoading] = useState(false);
   const [failedLogin, setFailedLogin] = useState(false);
 
+  const router = useRouter();
+
   async function onSubmit(values: z.infer<typeof accountFormSchema>) {
     setLoading(true);
     const userSignInInput: SignInInput = {
       username: values.email,
       password: values.password,
     };
-    const signInSuccess = await signInUser(userSignInInput);
-    if (signInSuccess) {
-      window.location.reload();
+    const { isSignedIn, nextStep } = await signIn(userSignInInput);
+    if (isSignedIn) {
+      router.push("/profile");
     } else {
       setLoading(false);
       setFailedLogin(true);

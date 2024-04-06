@@ -1,4 +1,4 @@
-const amplifyConfig = {
+const config = {
   Auth: {
     Cognito: {
       userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID ?? "",
@@ -7,4 +7,4 @@ const amplifyConfig = {
   },
 };
 
-export default amplifyConfig;
+export default config;

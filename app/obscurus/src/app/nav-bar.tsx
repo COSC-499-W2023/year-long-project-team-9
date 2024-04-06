@@ -20,17 +20,11 @@ import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
 import Authentication from "@/components/authentication/authentication";
-import amplifyConfig from "@/app/utils/amplifyConfig";
-import { Amplify } from "aws-amplify";
-
-Amplify.configure(amplifyConfig);
 
 const NavBar = ({
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
-  signInUser,
-  signOutUser,
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
@@ -44,8 +38,6 @@ const NavBar = ({
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
-  signInUser: Function;
-  signOutUser: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
@@ -78,12 +70,6 @@ const NavBar = ({
           <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
             Dark
           </DropdownMenuItem>
-          {/* <DropdownMenuItem
-            onClick={() => setTheme("system")}
-            data-testid="system"
-          >
-            System
-          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -150,8 +136,6 @@ const NavBar = ({
         />
         <ThemeSwitcher />
         <Authentication
-          signInUser={signInUser}
-          signOutUser={signOutUser}
           signUpUser={signUpUser}
           confirmSignUpUser={confirmSignUpUser}
           resendConfirmSignUpUser={resendConfirmSignUpUser}

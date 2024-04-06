@@ -22,23 +22,29 @@ import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import UpdatePasswordForm from "./authentication-update-password-form";
 import { useState } from "react";
+import { signOut } from "aws-amplify/auth";
+import { useRouter } from "next/navigation";
 
 export default function AuthenticationSignedIn({
   updateUserPassword,
-  signOutUser,
   userEmail,
   userName,
 }: {
   updateUserPassword: Function;
-  signOutUser: Function;
   userEmail: string;
   userName: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   async function handleLogOut() {
-    await signOutUser().then(() => window.location.reload());
+    try {
+      await signOut();
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
   }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
