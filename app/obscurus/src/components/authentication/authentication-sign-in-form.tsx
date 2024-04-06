@@ -46,6 +46,7 @@ export default function SignInForm({
       const { isSignedIn, nextStep } = await signIn(userSignInInput);
       if (isSignedIn) {
         router.push("/profile");
+        router.refresh();
       } else {
         setLoading(false);
         setFailedLogin(true);

@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileDisplay from "./profile-display";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -53,10 +53,6 @@ export default function ProfileWrapper({
     },
   });
   const email = userData.email;
-  // const [username, setUsername] = useState<string | null>(null);
-  // if (email) {
-  //   setUsername(email.slice(0, email.lastIndexOf(".")));
-  // }
 
   const username = email.slice(0, email.lastIndexOf("."));
 
@@ -111,7 +107,10 @@ export default function ProfileWrapper({
     }
   };
 
-  const updateUserInfo = async (values: z.infer<typeof profileFormSchema>, key: string) => {
+  const updateUserInfo = async (
+    values: z.infer<typeof profileFormSchema>,
+    key: string
+  ) => {
     console.log("test");
     if (updateUser) {
       console.log("Updating user information");
@@ -140,7 +139,8 @@ export default function ProfileWrapper({
           form={form}
           userData={userData}
           getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-        ></ProfileDisplay>}
+        ></ProfileDisplay>
+      }
     />
   );
 }
