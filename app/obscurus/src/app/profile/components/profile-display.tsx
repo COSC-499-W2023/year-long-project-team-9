@@ -24,11 +24,6 @@ export default function ProfileDisplay({ form, userData,
 
   getProfileImage();  
 
-  const [initials, setInitials] = useState<string | undefined>(undefined);
-  if (form.getValues("firstName") && form.getValues("lastName").charAt(0)){
-    setInitials(form.getValues("firstName").charAt(0) + form.getValues("lastName").charAt(0));
-  }
-
   return (
     <>
       <div className="flex justify-center">
@@ -36,7 +31,8 @@ export default function ProfileDisplay({ form, userData,
           <Avatar className="w-32 h-32 ">
           <AvatarImage src={profileImage} />
             <AvatarFallback className="text-4xl">
-              {initials}
+              {form.getValues("firstName").charAt(0)}
+              {form.getValues("lastName").charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-row mt-4 text-lg font-semibold">

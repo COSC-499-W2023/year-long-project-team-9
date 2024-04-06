@@ -53,19 +53,18 @@ export default function ProfileWrapper({
     },
   });
   const email = userData.email;
-  const [username, setUsername] = useState<string | null>(null);
-  // const extension = email.slice(email.lastIndexOf(".") + 1);
-  // const username: string = email.slice(0, email.lastIndexOf("."));
-  if (email) {
-    setUsername(email.slice(0, email.lastIndexOf(".")));
-  }
+  // const [username, setUsername] = useState<string | null>(null);
+  // if (email) {
+  //   setUsername(email.slice(0, email.lastIndexOf(".")));
+  // }
+
+  const username = email.slice(0, email.lastIndexOf("."));
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
-  // const fileInputRef = useRef<HTMLInputElement>(null);
 
   function onSubmit(values: z.infer<typeof profileFormSchema>) {
     console.log(values);
