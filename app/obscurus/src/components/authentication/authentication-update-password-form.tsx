@@ -71,65 +71,69 @@ export default function UpdatePasswordForm({
   }
   return (
     <div className="flex flex-col h-full">
-      {loading ? (
-        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
-          <LucideLoader2 className="animate-spin text-primary" size={75} />
-        </div>
-      ) : (
-        <div>
-          {failedUpdatePassword && (
-            <div className="flex justify-center border border-red-500 rounded p-2">
-              <Label className="text-red-500 text-xs">
-                Failed To Update Password, Please Try Again
-              </Label>
-            </div>
-          )}
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4 px-1"
+      <div>
+        {failedUpdatePassword && (
+          <div className="flex justify-center border border-red-500 rounded p-2">
+            <Label className="text-red-500 text-xs">
+              Failed To Update Password, Please Try Again
+            </Label>
+          </div>
+        )}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 px-1"
+          >
+            <FormField
+              control={form.control}
+              name="oldPassword"
+              render={({ field }) => (
+                <FormItem className="px-1">
+                  <FormLabel>Old Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder=" Old Password"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <PasswordInput
+              form={form}
+              isDisabled={loading}
+              formDescription={
+                "Password must contain at least one lowercase and one uppercase letter. Password must contain at least one number and one special character. Password must be at least 8 characters and at most 24 characters."
+              }
+              fieldName={"newPassword"}
+              label={"New Password"}
+              placeHolder={"New Password"}
+            />
+            <PasswordInput
+              form={form}
+              isDisabled={loading}
+              formDescription={"Passwords must match."}
+              fieldName={"confirmNewPassword"}
+              label={"Confirm New Password"}
+              placeHolder={"Confirm New Password"}
+            />
+            <Button
+              type="submit"
+              variant={"default"}
+              disabled={loading}
+              className="w-full"
             >
-              <FormField
-                control={form.control}
-                name="oldPassword"
-                render={({ field }) => (
-                  <FormItem className="px-1">
-                    <FormLabel>Old Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder=" Old Password"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <PasswordInput
-                form={form}
-                isDisabled={false}
-                formDescription={
-                  "Password must contain at least one lowercase and one uppercase letter. Password must contain at least one number and one special character. Password must be at least 8 characters and at most 24 characters."
-                }
-                fieldName={"newPassword"}
-                label={"New Password"}
-                placeHolder={"New Password"}
-              />
-              <PasswordInput
-                form={form}
-                isDisabled={false}
-                formDescription={"Passwords must match."}
-                fieldName={"confirmNewPassword"}
-                label={"Confirm New Password"}
-                placeHolder={"Confirm New Password"}
-              />
-              <Button type="submit" variant={"default"} className="w-full">
-                Update Password
-              </Button>
-            </form>
-          </Form>
-        </div>
-      )}
+              {loading ? (
+                <span>Updating Password</span>
+              ) : (
+                <span>Update Password</span>
+              )}
+            </Button>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }
