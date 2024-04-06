@@ -17,12 +17,10 @@ export default function ProfileImageInput({
   userData,
   form,
   getPresignedUrl,
-  getDownloadPresignedUrl,
 }: {
   userData: Users;
   form: any;
   getPresignedUrl?: (username: string) => Promise<string>;
-  getDownloadPresignedUrl?: (username: string) => Promise<string>;
 }) {
   return (
     <FormItem>

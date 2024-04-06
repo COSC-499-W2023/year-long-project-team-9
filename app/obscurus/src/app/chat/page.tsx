@@ -8,11 +8,13 @@ import ChatWrapper from "./components/chat-wrapper";
 import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 import setIsReadTrue from "../functions/setIsReadTrue";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 type UserNames = {
   email: string;
   givenName: string;
   familyName: string;
+  profileImage: any;
 };
 
 async function Chat() {
@@ -30,6 +32,17 @@ async function Chat() {
   const messages: Messages[] = await getMessages();
   const websocketApiEndpoint =
     (process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string) ?? "";
+
+  if (userNames) {
+    const getProfileImage = async () => {
+      for (const user of userNames) {
+        const imgkey = user.profileImage;
+        const url = await getProfileImgPresignedUrl(imgkey);
+        user.profileImage = url;
+      }
+    };
+    getProfileImage();
+  }
 
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;

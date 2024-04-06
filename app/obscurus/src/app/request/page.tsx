@@ -14,6 +14,8 @@ import archiveRequest from "../functions/archiveRequest";
 import createRequest from "./components/create/function/createRequest";
 import { SubmissionsForRequest } from "./types/types-for-request";
 import getPresignedUrl from "../functions/getPresignedUrl";
+import { redirect } from "next/navigation";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -72,6 +74,7 @@ async function Request() {
       unarchiveRequest={unarchiveRequest}
       trashRequest={trashRequest}
       createRequest={createRequest}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

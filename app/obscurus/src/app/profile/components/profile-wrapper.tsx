@@ -34,15 +34,15 @@ export default function ProfileWrapper({
   defaultCollapsed,
   userData,
   getPresignedUrl,
-  getDownloadPresignedUrl,
-  websocketApiEndpoint,
+  getProfileImgPresignedUrl,
+  updateUser,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userData: Users;
   getPresignedUrl?: (username: string) => Promise<string>;
-  getDownloadPresignedUrl?: (username: string) => Promise<string>;
-  websocketApiEndpoint: string;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  updateUser?: Function;
 }) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
@@ -52,8 +52,14 @@ export default function ProfileWrapper({
       lastName: userData.familyName,
     },
   });
-  const email = userData?.email;
-  const [username, extention] = email?.split("@") || [];
+  const email = userData.email;
+  const [username, setUsername] = useState<string | null>(null);
+  // const extension = email.slice(email.lastIndexOf(".") + 1);
+  // const username: string = email.slice(0, email.lastIndexOf("."));
+  if (email) {
+    setUsername(email.slice(0, email.lastIndexOf(".")));
+  }
+
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
@@ -106,6 +112,16 @@ export default function ProfileWrapper({
     }
   };
 
+  const updateUserInfo = async (values: z.infer<typeof profileFormSchema>, key: string) => {
+    console.log("test");
+    if (updateUser) {
+      console.log("Updating user information");
+      updateUser(values.email, values.firstName, values.lastName, key);
+    } else {
+      console.error("unable to update user info");
+    }
+  };
+
   return (
     <Wrapper
       defaultLayout={defaultLayout}
@@ -117,10 +133,15 @@ export default function ProfileWrapper({
           form={form}
           onSubmit={onSubmit}
           getPresignedUrl={getPresignedUrl}
-          getDownloadPresignedUrl={getDownloadPresignedUrl}
+          updateUser={updateUser}
         ></ProfileForm>
       }
-      secondPanel={<ProfileDisplay form={form}></ProfileDisplay>}
+      secondPanel={
+        <ProfileDisplay
+          form={form}
+          userData={userData}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+        ></ProfileDisplay>}
     />
   );
 }

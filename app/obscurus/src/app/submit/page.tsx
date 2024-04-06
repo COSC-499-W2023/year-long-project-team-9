@@ -14,6 +14,7 @@ import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import getUserDataByEmail from "../functions/getUserDataByEmail";
 import { Users as UsersType } from "@obscurus/database/src/sql.generated";
 import { redirect } from "next/navigation";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -66,9 +67,9 @@ async function Submit() {
       getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      getUserViaEmail={getUserViaEmail}
       setSubmittedDate={setSubmittedDate}
       user={userData?.user}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

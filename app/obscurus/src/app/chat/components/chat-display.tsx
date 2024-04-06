@@ -5,9 +5,10 @@ import {
   Rooms,
   Notifications,
   Messages,
+  Users,
 } from "stack/database/src/sql.generated";
 import { useQueryState } from "nuqs";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ArrowUpCircle } from "lucide-react";
@@ -28,6 +29,8 @@ interface ChatDisplayProps {
   createMessageNotification: Function;
   chatScrollBoolean: boolean;
   setChatScrollBoolean: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  getUserViaEmail?: (email: string) => Promise<Users>;
 }
 
 export default function ChatDisplay({
@@ -43,6 +46,8 @@ export default function ChatDisplay({
   createMessageNotification,
   chatScrollBoolean,
   setChatScrollBoolean,
+  getProfileImgPresignedUrl,
+  getUserViaEmail,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -77,6 +82,32 @@ export default function ChatDisplay({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
+
+  const [profileImage, setProfileImage] = useState('');
+  useEffect(() => {
+    const getProfileImage = async () => {
+      const email = otherUserEmail;
+      if (email && getProfileImgPresignedUrl && getUserViaEmail) {
+        try {
+          const userData = await getUserViaEmail(email);
+          const imgKey = userData.profileImage;
+          if (imgKey !== undefined && imgKey !== null) {
+            const url = await getProfileImgPresignedUrl(imgKey);
+            // console.log(url);
+            setProfileImage(url); 
+          } else {
+            // console.error("image key undefined");
+            setProfileImage(""); 
+          }
+        } catch (error) {
+          console.error("Error fetching profile image:", error);
+        }
+      }
+    };
+
+    getProfileImage();
+  }, [otherUserEmail, getProfileImgPresignedUrl, getUserViaEmail]);
+
   const handleClick = () => {
     if (selected) {
       setChatScrollBoolean(true);
@@ -122,7 +153,7 @@ export default function ChatDisplay({
     <div className="flex flex-col h-full">
       <div className="flex flex-row items-center justify-left p-4">
         <Avatar>
-          <AvatarImage alt={otherUserName} />
+          <AvatarImage src={profileImage} alt={otherUserName} />
           <AvatarFallback>{otherUserInitials}</AvatarFallback>
         </Avatar>
         <div className="pl-2 flex flex-col w-[90%]">
