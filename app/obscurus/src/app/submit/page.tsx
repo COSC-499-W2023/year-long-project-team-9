@@ -9,6 +9,9 @@ import { SubmitWrapper } from "./components/submit-wrapper";
 import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
 import { getUserViaEmail } from "../functions/getUserData";
 import setSubmittedDate from "../functions/setSubmittedDate";
+import { isSignedIn } from "../functions/authenticationMethods";
+import { redirect } from "next/navigation";
+import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 
 async function Submit() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -30,8 +33,8 @@ async function Submit() {
       getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      getUserViaEmail={getUserViaEmail}
       setSubmittedDate={setSubmittedDate}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

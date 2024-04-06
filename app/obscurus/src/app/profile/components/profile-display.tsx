@@ -1,31 +1,42 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useRef, useState } from "react";
+import { Users } from "@obscurus/database/src/sql.generated";
 
-export default function ProfileDisplay({ form }: { form: any }) {
+export default function ProfileDisplay({ form, userData,
+  getProfileImgPresignedUrl, }: { form: any; userData: Users; getProfileImgPresignedUrl?: (username: string) => Promise<string>; }) {
   const [file, setFile] = useState<File | undefined>(undefined);
-  const profileImage = form.getValues("profileImage");
-  const fileLength = profileImage ? profileImage.length : 0;
+  // const profileImage = form.getValues("profileImage");
+  // const fileLength = profileImage ? profileImage.length : 0;
   // if (fileLength > 0) {
   //   console.log("test", profileImage[0]);
   //   setFile(profileImage[0]);
   // }
+  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
+  const getProfileImage = async () => {
+    const imgkey = userData.profileImage;
+    if (userData.email && getProfileImgPresignedUrl && imgkey) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      console.log(url);
+      setProfileImage(url);
+    }
+  };
+
+  getProfileImage();  
+
+  const [initials, setInitials] = useState<string | undefined>(undefined);
+  if (form.getValues("firstName") && form.getValues("lastName").charAt(0)){
+    setInitials(form.getValues("firstName").charAt(0) + form.getValues("lastName").charAt(0));
+  }
 
   return (
     <>
       <div className="flex justify-center">
         <div className="items-start p-5 grid grid-cols-1 w-4/5 flex justify-items-center">
           <Avatar className="w-32 h-32 ">
-            <AvatarImage src="{form.getValues('profileImage')}" />
+          <AvatarImage src={profileImage} />
             <AvatarFallback className="text-4xl">
-              {form.getValues("firstName")
-                .split(" ")
-                .map((chunk: string[]) => chunk[0])
-                .join("")}
-              {form.getValues("lastName")
-                .split(" ")
-                .map((chunk: string[]) => chunk[0])
-                .join("")}
+              {initials}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-row mt-4 text-lg font-semibold">

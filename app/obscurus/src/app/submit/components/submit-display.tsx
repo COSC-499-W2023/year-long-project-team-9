@@ -62,6 +62,7 @@ export default function SubmitDisplay({
   sendToService,
   updateSubmissionStatus,
   setSubmittedDate,
+  getProfileImgPresignedUrl,
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -73,6 +74,7 @@ export default function SubmitDisplay({
   ) => Promise<string>;
   updateSubmissionStatus?: Function;
   setSubmittedDate?: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [upload, setUpload] = useUpload();
@@ -142,7 +144,7 @@ export default function SubmitDisplay({
     return null;
   };
 
-  const reset = () => {};
+  const reset = () => { };
 
   const handleProcessVideo = async () => {
     if (!file) {
@@ -502,9 +504,8 @@ export default function SubmitDisplay({
           </div>
           <Separator className="text-muted-foreground my-2" /> */}
           <div
-            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg space-y-5 ${
-              isDragActive ? "border-2 border-dashed border-primary" : ""
-            }`}
+            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg space-y-5 ${isDragActive ? "border-2 border-dashed border-primary" : ""
+              }`}
             {...getRootProps()}
           >
             <input {...getInputProps()} style={{ display: "none" }} />
@@ -617,17 +618,16 @@ export default function SubmitDisplay({
   };
 
   const RequestHeader = ({ selected }: { selected: EnrichedSubmissions }) => {
+    getrequesterProfileImage(selected?.requester, selected?.requestDetails);
     return (
       <>
         <div className="flex items-start p-4">
           <div className="flex items-start gap-4 text-sm max-w-[70%]">
             <Avatar>
-              <AvatarImage alt={selected?.requester.givenName} />
+              <AvatarImage src={requesterProfileImage} alt={selected?.requester.givenName} />
               <AvatarFallback>
-                {selected?.requester.givenName
-                  .split(" ")
-                  .map((chunk) => chunk[0])
-                  .join("")}
+                {selected?.requester.givenName.charAt(0)}
+                {selected?.requester.familyName.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div className="grid gap-1 text-ellipsis ">
@@ -676,6 +676,18 @@ export default function SubmitDisplay({
         <Separator />
       </>
     );
+  };
+
+  const [requesterProfileImage, setrequesterProfileImage] = useState<string | undefined>(undefined);
+  const getrequesterProfileImage = async (requester: any, requestDetails: any,) => {
+    const imgkey = requester.profileImage;
+    const requesterEmail = requestDetails.requesterEmail;
+    console.log("test ", imgkey);
+    if (requesterEmail && getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      console.log("url: ", url);
+      setrequesterProfileImage(url);
+    }
   };
 
   const ShowRequest = ({ selected }: { selected: EnrichedSubmissions }) => {
@@ -781,11 +793,11 @@ export default function SubmitDisplay({
           {/*Show video */}
 
           {iseShowingVideo.active &&
-          getPresignedUrl &&
-          getDownloadPresignedUrl &&
-          sendToService &&
-          submission &&
-          selected ? (
+            getPresignedUrl &&
+            getDownloadPresignedUrl &&
+            sendToService &&
+            submission &&
+            selected ? (
             <>
               {" "}
               <ViewProcessedVideo selected={selected} />
