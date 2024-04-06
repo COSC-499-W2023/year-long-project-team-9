@@ -8,8 +8,9 @@ import { DataTableRowActions } from "./data-table-row-actions";
 import getDownloadPresignedUrl from "@/app/functions/getDownloadPresignedUrl";
 import { getBadgeVariantFromStatus } from "../request-display";
 import { SubmissionsForRequest } from "../../types/types-for-request";
+import { EnrichedRequests, SubmissionData } from "@obscurus/database/src/types/enrichedRequests";
 
-export const columns: ColumnDef<SubmissionsForRequest>[] = [
+export const columns: ColumnDef<SubmissionData>[] = [
   {
     accessorKey: "requesteeEmail",
     accessorFn: (row) => row.requesteeEmail,

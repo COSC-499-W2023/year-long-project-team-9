@@ -63,7 +63,6 @@ export default function ProfileForm({
   // TODO: Work in progress
   return (
     <div className="overflow-auto p-4">
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -72,7 +71,7 @@ export default function ProfileForm({
             form={form}
             isDisabled={true}
             formDescription={
-              "One cannot change their email once an account has been set."
+              "You cannot change your email."
             }
             fieldName="email"
             label="Email"
@@ -81,18 +80,18 @@ export default function ProfileForm({
           <FirstNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you first name."}
+            formDescription={"Other users will see your first name."}
             fieldName={"firstName"}
             label={"First Name"}
-            placeHolder="First Name"
+            placeHolder={userData.givenName}
           ></FirstNameInput>
           <LastNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you last name."}
+            formDescription={"Other users will see your last name."}
             fieldName={"lastName"}
             label={"Last Name"}
-            placeHolder={"Last Name"}
+            placeHolder={userData.familyName}
           ></LastNameInput>
           {/* TODO: ProfileImageInput */}
           <ProfileImageInput

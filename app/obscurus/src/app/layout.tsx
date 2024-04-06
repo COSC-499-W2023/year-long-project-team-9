@@ -64,12 +64,9 @@ export default async function RootLayout({
   const { signedIn, email } = await getCurrentUserServer();
 
 
-  console.log("Signed in layout", signedIn);
-  console.log("Email layout", email);
 
   const userData = await getUserViaEmail(email);
 
-  console.log("User data in layout", userData);
 
   return (
     <html lang="en">

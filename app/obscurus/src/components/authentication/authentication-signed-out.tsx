@@ -33,7 +33,6 @@ export default function AuthenticationSignedOut({
   user?: any;
 }) {
 
-  console.log("User in signed out", user);
   const [dialogState, setDialogState] = useState<string>("signIn");
   return (
     <AlertDialog onOpenChange={() => setDialogState("signIn")}>

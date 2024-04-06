@@ -24,18 +24,20 @@ interface DataTableRowActionsProps<TData> {
 
 export function DataTableRowActions<TData>({
   row,
+  getDownloadPresignedUrl,
 }: DataTableRowActionsProps<TData>) {
   console.log("row", row);
   const task = SubmissionsForRequestSchema.parse(row.original);
 
   const [url, setUrl] = useState<string>("");
 
-  // console.log(getDownloadPresignedUrl);
+  console.log(getDownloadPresignedUrl);
 
   const setProcessedVideo = async () => {
-    if (!task.url) return;
+    if (!getDownloadPresignedUrl) return;
+    const url = await getDownloadPresignedUrl(task.submissionId);
     console.log(task.submissionId);
-    setUrl(task.url);
+    setUrl(url);
     console.log("download url", url);
   };
 
@@ -43,18 +45,20 @@ export function DataTableRowActions<TData>({
     window.open(url, "_blank");
   };
 
+  const isCompleted = task.status === "COMPLETED";
+
   useEffect(() => {
-    if (task.status === "COMPLETED") {
+    if (isCompleted) {
       setProcessedVideo();
     }
-  });
+  }), [isCompleted];
 
   console.log("submissionId", task.submissionId);
   return (
     <div className="flex justify-center items-center ">
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"outline"} disabled={!(task.status === "COMPLETED")}>
+          <Button variant={"outline"} disabled={!isCompleted}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <ExternalLink className="w-4 h-4 " />
@@ -64,15 +68,11 @@ export function DataTableRowActions<TData>({
           </Button>
         </DialogTrigger>
         <DialogContent className="">
-          <VideoPlayer videoUrl={url} />
+          <VideoPlayer filename={"Processed Video"} videoUrl={url} />
         </DialogContent>
       </Dialog>
       <Separator orientation="vertical" className="mx-2 h-8" />
-      <Button
-        variant={"outline"}
-        onClick={downloadProcessedVideo}
-        disabled={!(task.status === "COMPLETED")}
-      >
+      <Button variant={"outline"} onClick={downloadProcessedVideo} disabled={!isCompleted}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Download className="w-4 h-4 " />

@@ -26,8 +26,6 @@ export default function Authentication({
 
 
 
-  console.log("User in authentication", user);
-
   return user ? (
     <AuthenticationSignedIn
       updateUserPassword={updateUserPassword}

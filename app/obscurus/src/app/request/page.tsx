@@ -12,69 +12,58 @@ import trashRequest from "../functions/trashRequest";
 import unarchiveRequest from "../functions/unarchiveRequest";
 import archiveRequest from "../functions/archiveRequest";
 import createRequest from "./components/create/function/createRequest";
-import { SubmissionsForRequest } from "./types/types-for-request";
-import getPresignedUrl from "../functions/getPresignedUrl";
 import { redirect } from "next/navigation";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
+import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
+import getEnrichedRequestsByEmail from "../functions/getEnrichedRequestsByEmail";
+import { getCurrentUser } from "aws-amplify/auth/server";
+import updateRequest from "../functions/updateRequest";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
-  console.log("Layout", layout);
-  console.log("Collapsed", collapsed?.value);
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const userEmail = "imightbejan@gmail.com"
-  const userData: Users = await getUserViaEmail(userEmail);
-  const requestPageData: { request: Requests[]; submissions: Submissions[] } =
-    await getRequestsViaEmail(userEmail);
-  const request: Requests[] = requestPageData.request;
-  const submissionsDataRequest: Submissions[] = requestPageData.submissions;
-  const submissions: SubmissionsForRequest[] = [];
-  for (let i = 0; i < submissionsDataRequest.length; i++) {
-    const url = await getPresignedUrl(submissionsDataRequest[i].submissionId);
-    if (!url) {
-      submissions.push({
-        submissionId: submissionsDataRequest[i].submissionId,
-        requesteeEmail: submissionsDataRequest[i].requesteeEmail,
-        status: submissionsDataRequest[i].status,
-        title: submissionsDataRequest[i].title,
-        grouping: submissionsDataRequest[i].grouping,
-        isRead: submissionsDataRequest[i].isRead,
-        submittedDate: submissionsDataRequest[i].submittedDate,
-        requestId: submissionsDataRequest[i].requestId,
-        url: null,
+
+  async function getCurrentUserServer() {
+    try {
+      const currentUser = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: (contextSpec) => getCurrentUser(contextSpec),
       });
-    } else {
-      submissions.push({
-        submissionId: submissionsDataRequest[i].submissionId,
-        requesteeEmail: submissionsDataRequest[i].requesteeEmail,
-        status: submissionsDataRequest[i].status,
-        title: submissionsDataRequest[i].title,
-        grouping: submissionsDataRequest[i].grouping,
-        isRead: submissionsDataRequest[i].isRead,
-        submittedDate: submissionsDataRequest[i].submittedDate,
-        requestId: submissionsDataRequest[i].requestId,
-        url: url,
-      });
+      return {
+        signedIn: true,
+        email: currentUser.signInDetails?.loginId ?? "",
+      };
+    } catch (error) {
+      console.log(error);
+      return { signedIn: false, email: "" };
     }
+  }
+  const { signedIn, email } = await getCurrentUserServer();
+
+  const userData = await getUserViaEmail(email);
+
+
+  if (!userData) {
+    redirect("/");
   }
 
   return (
     <RequestWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      request={request}
-      submissions={submissions}
-      userData={userData}
+      userData={userData.user}
       archiveRequest={archiveRequest}
       unarchiveRequest={unarchiveRequest}
       trashRequest={trashRequest}
       createRequest={createRequest}
       getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+      getEnrichedRequestsByEmail={getEnrichedRequestsByEmail}
+      updateRequest={updateRequest}
     />
   );
 }

@@ -44,9 +44,7 @@ export const SubmitWrapper = ({
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
-  const [loading, setLoading] = useState(false);
 
-  console.log("User in submit wrapper", user);
 
 
 
@@ -64,11 +62,20 @@ export const SubmitWrapper = ({
               submission.submissionId === data.submissionId
                 ? { ...submission, status: data.newStatus }
                 : submission
-            )
+            ).filter((submission: any) => submission.status !== "TRASHED")
           );
           break;
         case "updateSubmissions":
           setSubmissions(data.submissions);
+          break;
+        case "updateSubmissionIsRead":
+          setSubmissions((currentSubmissions: any) =>
+            currentSubmissions.map((submission: any) =>
+              submission.submissionId === data.submissionId
+                ? { ...submission, isRead: data.isRead }
+                : submission
+            )
+          );
           break;
         default:
           break;
@@ -122,17 +129,27 @@ export const SubmitWrapper = ({
     }
   };
 
+  const updateSubmissionIsRead = async ( submissionId: string, isRead: boolean) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
+        action: "updateSubmissionIsRead",
+        data: { submissionId, isRead },
+      });
+      ws.send(message);
+    } else {
+      console.error("WebSocket not connected");
+    }
+  }
+
+
   useEffect(() => {
     if (!user) return;
-
-    console.log("User in submit wrapper", user);
 
     const fetchUserData = async () => {
       if (getRequestsAndSubmissionsByEmail) {
         const data = await getRequestsAndSubmissionsByEmail(
          user?.email
         );
-        console.log("Fetched data:", data);
         data?.submissions && setSubmissions(data.submissions);
       }
     };
@@ -147,6 +164,7 @@ export const SubmitWrapper = ({
       firstPanel={
           <SubmitList
             submissions={submissions as EnrichedSubmissions[]}
+            updateSubmissionIsRead={updateSubmissionIsRead}
           />
       }
       secondPanel={

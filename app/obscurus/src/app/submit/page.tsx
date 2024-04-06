@@ -44,12 +44,8 @@ async function Submit() {
       const { signedIn, email } = await getCurrentUserServer();
 
 
-      console.log("Signed in submit", signedIn);
-      console.log("Email layout", email);
-
       const userData = await getUserViaEmail(email);
 
-      console.log("User data in submit", userData);
 
       if (!userData) {
         redirect("/");
