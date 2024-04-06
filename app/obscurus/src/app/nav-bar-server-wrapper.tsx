@@ -8,7 +8,6 @@ import {
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
 import { cookies } from "next/headers";
@@ -48,7 +47,6 @@ export default async function NavBarServerWrapper() {
       resendConfirmSignUpUser={resendConfirmSignUpUser}
       resetUserPassword={resetUserPassword}
       confirmResetUserPassword={confirmResetUserPassword}
-      updateUserPassword={updateUserPassword}
       signedIn={signedIn}
       email={email}
       name={name}
