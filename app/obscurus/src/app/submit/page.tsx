@@ -34,7 +34,6 @@ async function Submit() {
       getRequestsAndSubmissionsByEmail={getRequestsAndSubmissionsByEmail}
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      getUserViaEmail={getUserViaEmail}
       setSubmittedDate={setSubmittedDate}
       getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
