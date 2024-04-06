@@ -93,7 +93,7 @@ export default function Notifications({
           </Button>
           {hasUnreadNotifications && (
             <div
-              className="absolute top-3 right-32 mt-2 h-2 w-2 rounded-full bg-blue-600  "
+              className="absolute top-3 right-[105px] mt-2 h-2 w-2 rounded-full bg-blue-600  "
               aria-label="Unread Notification"
             ></div>
           )}

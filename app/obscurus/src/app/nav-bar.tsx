@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
 import Authentication from "@/components/authentication/authentication";
+import { useUserData } from "./user-provider";
 
 const NavBar = ({
   readNotification,
@@ -51,6 +52,10 @@ const NavBar = ({
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
+
+  const userData = useUserData();
+
+  console.log("userdata in navbar", userData);
 
   const ThemeSwitcher = () => {
     return (
@@ -134,7 +139,7 @@ const NavBar = ({
   return (
     <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 items-center">
         <Notifications
           signedIn={signedIn}
           readNotification={readNotification}
