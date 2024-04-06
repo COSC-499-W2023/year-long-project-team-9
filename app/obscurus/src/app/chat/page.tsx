@@ -9,7 +9,6 @@ import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 import setIsReadTrue from "../functions/setIsReadTrue";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
-import { getUserViaEmail } from "../functions/getUserData";
 import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import { getCurrentUser } from "aws-amplify/auth/server";
 
