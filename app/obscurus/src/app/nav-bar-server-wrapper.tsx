@@ -15,7 +15,7 @@ import NavBar from "./nav-bar";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "aws-amplify/auth/server";
 import { runWithAmplifyServerContext } from "./utils/amplifyServerUtils";
-import getUserDataByEmail from "./functions/getUserDataByEmail";
+import { getUserViaEmail } from "./functions/getUserData";
 import { Users as UsersType } from "@obscurus/database/src/sql.generated";
 
 export default async function NavBarServerWrapper() {
@@ -36,7 +36,7 @@ export default async function NavBarServerWrapper() {
     }
   }
   const { signedIn, email } = await getCurrentUserServer();
-  const userData: UsersType = await getUserDataByEmail(email);
+  const userData: UsersType = await getUserViaEmail(email);
   const name = [userData.givenName, userData.familyName];
 
   return (
