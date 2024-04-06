@@ -2,7 +2,6 @@
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import readNotification from "./functions/readNotification";
 import deleteNotification from "./functions/deleteNotification";
-import { getUserNames } from "./functions/getUserNames";
 import {
   signUpUser,
   confirmSignUpUser,

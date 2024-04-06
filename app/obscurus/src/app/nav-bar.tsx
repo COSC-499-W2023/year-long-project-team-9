@@ -111,14 +111,6 @@ const NavBar = ({
           >
             Getting Started
           </NavigationMenuItem>
-          {/* <NavigationMenuItem
-            className="font-semibold text-sm cursor-pointer"
-            onClick={() => {
-              scroll("about");
-            }}
-          >
-            About
-          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     );
@@ -129,6 +121,7 @@ const NavBar = ({
       <Navigation />
       <div className="flex flex-row gap-2">
         <Notifications
+          email={email}
           signedIn={signedIn}
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
