@@ -46,11 +46,13 @@ const forgotPasswordVerifyNewPasswordFormSchema = z
   });
 
 export default function ForgotPasswordVerifyNewPasswordForm({
+  loading,
   email,
   setDialogState,
   triggerForgotPasswordChange,
   triggerSendForgotPasswordEmail,
 }: {
+  loading: boolean;
   email: string;
   setDialogState: Function;
   triggerForgotPasswordChange: Function;
@@ -80,7 +82,7 @@ export default function ForgotPasswordVerifyNewPasswordForm({
                 <FormLabel>Forgot Password Code</FormLabel>
                 <FormControl>
                   <div className="flex justify-center">
-                    <InputOTP maxLength={6} {...field}>
+                    <InputOTP maxLength={6} disabled={loading} {...field}>
                       <InputOTPGroup>
                         <InputOTPSlot index={0} />
                         <InputOTPSlot index={1} />
@@ -122,8 +124,17 @@ export default function ForgotPasswordVerifyNewPasswordForm({
             label={"Confirm Password"}
             placeHolder={"Confirm Password"}
           />
-          <Button type="submit" variant={"default"} className="w-full">
-            Reset Password
+          <Button
+            type="submit"
+            variant={"default"}
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? (
+              <span>Reseting Password</span>
+            ) : (
+              <span>Reset Password</span>
+            )}
           </Button>
           <div className="text-xs text-center mt-2">
             <span>Have an account? </span>
