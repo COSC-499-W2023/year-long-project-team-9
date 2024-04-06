@@ -16,7 +16,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import PasswordInput from "../authentication-and-profile-components/account-form-password-input";
-import { type UpdatePasswordInput } from "aws-amplify/auth";
+import { updatePassword, type UpdatePasswordInput } from "aws-amplify/auth";
 
 const updatePasswordFormSchema = z
   .object({
@@ -44,13 +44,9 @@ const updatePasswordFormSchema = z
   });
 
 export default function UpdatePasswordForm({
-  updateUserPassword,
   setIsOpen,
-  userEmail,
 }: {
-  updateUserPassword: Function;
   setIsOpen: Function;
-  userEmail: string;
 }) {
   const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
     resolver: zodResolver(updatePasswordFormSchema),
@@ -64,12 +60,11 @@ export default function UpdatePasswordForm({
       oldPassword: values.oldPassword,
       newPassword: values.newPassword,
     };
-    const updateUserPasswordSuccess = await updateUserPassword(
-      updateUserPasswordInput
-    );
-    if (updateUserPasswordSuccess) {
+    try {
+      await updatePassword(updateUserPasswordInput);
       setIsOpen(false);
-    } else {
+    } catch (error) {
+      console.log(error);
       setFailedUpdatePassword(true);
       setLoading(false);
     }
@@ -103,7 +98,7 @@ export default function UpdatePasswordForm({
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder=" OldPassword"
+                        placeholder=" Old Password"
                         {...field}
                       />
                     </FormControl>

@@ -26,12 +26,8 @@ import { signOut } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
 
 export default function AuthenticationSignedIn({
-  updateUserPassword,
-  userEmail,
   userName,
 }: {
-  updateUserPassword: Function;
-  userEmail: string;
   userName: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -87,11 +83,7 @@ export default function AuthenticationSignedIn({
                   Update Password
                 </Label>
                 <Separator className="mt-1 mb-2" />
-                <UpdatePasswordForm
-                  updateUserPassword={updateUserPassword}
-                  setIsOpen={setIsOpen}
-                  userEmail={userEmail}
-                />
+                <UpdatePasswordForm setIsOpen={setIsOpen} />
               </AlertDialogDescription>
             </AlertDialogContent>
           </AlertDialog>

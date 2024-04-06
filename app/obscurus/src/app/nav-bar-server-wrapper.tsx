@@ -2,14 +2,12 @@
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import readNotification from "./functions/readNotification";
 import deleteNotification from "./functions/deleteNotification";
-import { getUserNames } from "./functions/getUserNames";
 import {
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
 import { cookies } from "next/headers";
@@ -51,7 +49,6 @@ export default async function NavBarServerWrapper() {
       resendConfirmSignUpUser={resendConfirmSignUpUser}
       resetUserPassword={resetUserPassword}
       confirmResetUserPassword={confirmResetUserPassword}
-      updateUserPassword={updateUserPassword}
       signedIn={signedIn}
       email={email}
       name={name}

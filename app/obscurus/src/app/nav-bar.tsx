@@ -30,7 +30,6 @@ const NavBar = ({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
   signedIn,
   email,
   name,
@@ -43,7 +42,6 @@ const NavBar = ({
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
-  updateUserPassword: Function;
   signedIn: boolean;
   email: string;
   name: string[];
@@ -111,14 +109,6 @@ const NavBar = ({
           >
             Getting Started
           </NavigationMenuItem>
-          {/* <NavigationMenuItem
-            className="font-semibold text-sm cursor-pointer"
-            onClick={() => {
-              scroll("about");
-            }}
-          >
-            About
-          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     );
@@ -129,6 +119,7 @@ const NavBar = ({
       <Navigation />
       <div className="flex flex-row gap-2">
         <Notifications
+          email={email}
           signedIn={signedIn}
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
@@ -141,9 +132,7 @@ const NavBar = ({
           resendConfirmSignUpUser={resendConfirmSignUpUser}
           resetUserPassword={resetUserPassword}
           confirmResetUserPassword={confirmResetUserPassword}
-          updateUserPassword={updateUserPassword}
           signedIn={signedIn}
-          email={email}
           name={name}
         />
       </div>

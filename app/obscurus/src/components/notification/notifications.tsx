@@ -23,15 +23,15 @@ import {
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { motion } from "framer-motion";
-import { read } from "fs";
 
 export default function Notifications({
+  email,
   signedIn,
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
 }: {
+  email: string;
   signedIn: boolean;
   readNotification: Function;
   deleteNotifications: Function;
@@ -45,7 +45,7 @@ export default function Notifications({
   useEffect(() => {
     const fetchInitialNotifications = async () => {
       try {
-        const data = await getNotificationsViaEmail("imightbejan@gmail.com");
+        const data = await getNotificationsViaEmail(email);
         setNotifications(data.notifications);
         setHasUnreadNotifications(
           data.notifications.some(
