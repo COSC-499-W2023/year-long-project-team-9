@@ -36,9 +36,11 @@ export default async function NavBarServerWrapper() {
     }
   }
   const { signedIn, email } = await getCurrentUserServer();
-  const userData: UsersType = await getUserViaEmail(email);
-  const name = [userData.givenName, userData.familyName];
-
+  var name = ["",""]
+  try {
+    const userData: UsersType = await getUserViaEmail(email);
+    name = [userData.givenName, userData.familyName];
+  }catch(error) {}
   return (
     <NavBar
       readNotification={readNotification}
