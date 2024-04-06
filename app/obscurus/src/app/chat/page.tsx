@@ -104,6 +104,7 @@ async function Chat() {
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
       setIsReadTrue={setIsReadTrue}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

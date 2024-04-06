@@ -98,6 +98,7 @@ export default function ProfileWrapper({
         });
         setObjectURL(URL.createObjectURL(file));
         console.log("Upload successful");
+        updateUserInfo(values, key);
         setLoading(false);
         return;
       } catch (error) {
