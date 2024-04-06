@@ -33,6 +33,7 @@ const NavBar = ({
   signedIn,
   email,
   name,
+  profileImage,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
@@ -45,6 +46,7 @@ const NavBar = ({
   signedIn: boolean;
   email: string;
   name: string[];
+  profileImage: string;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -134,6 +136,7 @@ const NavBar = ({
           confirmResetUserPassword={confirmResetUserPassword}
           signedIn={signedIn}
           name={name}
+          profileImage={profileImage}
         />
       </div>
     </div>

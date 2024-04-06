@@ -10,6 +10,7 @@ export default function Authentication({
   confirmResetUserPassword,
   signedIn,
   name,
+  profileImage,
 }: {
   signUpUser: Function;
   confirmSignUpUser: Function;
@@ -18,9 +19,12 @@ export default function Authentication({
   confirmResetUserPassword: Function;
   signedIn: boolean;
   name: string[];
+  profileImage: string;
 }) {
   return signedIn ? (
-    <AuthenticationSignedIn userName={name} />
+    <AuthenticationSignedIn
+      userName={name}
+      profileImage={profileImage} />
   ) : (
     <AuthenticationSignedOut
       signUpUser={signUpUser}

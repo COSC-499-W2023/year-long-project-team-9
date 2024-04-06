@@ -15,6 +15,7 @@ import { getCurrentUser } from "aws-amplify/auth/server";
 import { runWithAmplifyServerContext } from "./utils/amplifyServerUtils";
 import { getUserViaEmail } from "./functions/getUserData";
 import { Users as UsersType } from "@obscurus/database/src/sql.generated";
+import getProfileImgPresignedUrl from "./functions/getProfileImgPresignedUrl";
 
 export default async function NavBarServerWrapper() {
   async function getCurrentUserServer() {
@@ -35,9 +36,16 @@ export default async function NavBarServerWrapper() {
   }
   const { signedIn, email } = await getCurrentUserServer();
   var name = ["",""]
+  var profileImage = "";
   try {
     const userData: UsersType = await getUserViaEmail(email);
     name = [userData.givenName, userData.familyName];
+    profileImage = userData.profileImage ?? "";
+    if (profileImage && getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(profileImage);
+      console.log(url);
+      profileImage = url;
+    }
   }catch(error) {}
   return (
     <NavBar
@@ -52,6 +60,7 @@ export default async function NavBarServerWrapper() {
       signedIn={signedIn}
       email={email}
       name={name}
+      profileImage={profileImage}
     />
   );
 }
