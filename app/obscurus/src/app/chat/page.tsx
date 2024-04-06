@@ -1,6 +1,5 @@
 "use server";
 import { cookies } from "next/headers";
-import { getEmail } from "../functions/authenticationMethods";
 import { Rooms, Messages } from "stack/database/src/sql.generated";
 import { getRoomsViaEmail } from "../functions/getRoomsViaEmail";
 import { getUserNames } from "../functions/getUserNames";
@@ -25,7 +24,7 @@ async function Chat() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  const userEmail = await getEmail();
+  const userEmail = "imightbejan@gmail.com"
   const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();

@@ -124,6 +124,13 @@ const NavBar = ({
     );
   };
 
+  console.log("Signed in navbar", signedIn);
+  console.log("Email in navbar", email);
+  console.log("Name in navbar", name);
+
+
+
+
   return (
     <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
       <Navigation />

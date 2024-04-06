@@ -23,6 +23,10 @@ export default function Authentication({
   email: string;
   name: string[];
 }) {
+  console.log("Signed in auth", signedIn);
+  console.log("Email in auth", email);
+  console.log("Name in auth", name);
+
   return signedIn ? (
     <AuthenticationSignedIn
       updateUserPassword={updateUserPassword}

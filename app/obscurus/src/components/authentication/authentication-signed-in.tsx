@@ -51,7 +51,7 @@ export default function AuthenticationSignedIn({
         <Avatar className="hover:cursor-pointer">
           <AvatarImage alt={userName[0] + " " + userName[1]} />
           <AvatarFallback>
-            {userName[0].charAt(0) + userName[1].charAt(0)}
+            {userName[0]?.charAt(0) + userName[1]?.charAt(0)}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

@@ -52,8 +52,8 @@ export default function ProfileWrapper({
       lastName: userData.familyName,
     },
   });
-  const email = userData.email;
-  const [username, extention] = email.split('.');
+  const email = userData?.email;
+  const [username, extention] = email?.split("@") || [];
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);

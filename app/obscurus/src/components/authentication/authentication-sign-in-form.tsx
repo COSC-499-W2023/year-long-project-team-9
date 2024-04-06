@@ -44,7 +44,9 @@ export default function SignInForm({
     };
     const { isSignedIn, nextStep } = await signIn(userSignInInput);
     if (isSignedIn) {
+      setLoading(false);
       router.push("/profile");
+      router.refresh();
     } else {
       setLoading(false);
       setFailedLogin(true);
@@ -54,8 +56,8 @@ export default function SignInForm({
   return (
     <div className="flex flex-col h-full">
       {loading ? (
-        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
-          <LucideLoader2 className="animate-spin text-primary" size={75} />
+        <div className="flex flex-col w-full h-full justify-start items-center gap-5 overflow-hidden">
+          <LucideLoader2 className="animate-spin text-primary" size={30} />
         </div>
       ) : (
         <Form {...form}>

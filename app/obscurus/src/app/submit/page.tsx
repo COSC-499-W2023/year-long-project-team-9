@@ -7,7 +7,7 @@ import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 import getStatus from "../functions/getStatus";
 import { SubmitWrapper } from "./components/submit-wrapper";
 import getRequestsAndSubmissionsByEmail from "../functions/getRequestsAndSubmissionsByEmail";
-import { getUserViaEmail } from "../functions/getUserData";
+import { getUserViaEmail } from "../functions/getUserViaEmail";
 import setSubmittedDate from "../functions/setSubmittedDate";
 
 async function Submit() {

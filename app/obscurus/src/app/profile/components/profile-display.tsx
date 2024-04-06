@@ -14,19 +14,19 @@ export default function ProfileDisplay({ form }: { form: any }) {
   return (
     <>
       <div className="flex justify-center">
-        <div className="items-start p-5 grid grid-cols-1 w-4/5 flex justify-items-center">
+        <div className="items-start p-5 grid grid-cols-1 w-4/5 justify-items-center">
           <Avatar className="w-32 h-32 ">
             <AvatarImage src="{form.getValues('profileImage')}" />
-            <AvatarFallback className="text-4xl">
-              {form.getValues("firstName")
+            {/* <AvatarFallback className="text-4xl">
+              {form?.getValues("firstName")
                 .split(" ")
                 .map((chunk: string[]) => chunk[0])
                 .join("")}
               {form.getValues("lastName")
                 .split(" ")
                 .map((chunk: string[]) => chunk[0])
-                .join("")}
-            </AvatarFallback>
+                .join("") || "U"}
+            </AvatarFallback> */}
           </Avatar>
           <div className="flex flex-row mt-4 text-lg font-semibold">
             <div>{form.getValues("firstName")}</div>

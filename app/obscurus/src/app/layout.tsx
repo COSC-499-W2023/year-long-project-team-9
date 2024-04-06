@@ -2,12 +2,30 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import NavBarServerWrapper from "./nav-bar-server-wrapper";
 import ConfigureAmplifyClientSide from "./ConfigureAmplifyClientSide";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/toaster";
 import { WebSocketProvider } from "./ws-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { cookies } from "next/headers";
+import { getCurrentUser } from "aws-amplify/auth/server";
+import { runWithAmplifyServerContext } from "./utils/amplifyServerUtils";
+import getUserDataByEmail from "./functions/getUserDataByEmail";
+import { Users as UsersType } from "@obscurus/database/src/sql.generated";
+import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
+import readNotification from "./functions/readNotification";
+import deleteNotification from "./functions/deleteNotification";
+import { getUserNames } from "./functions/getUserNames";
+import {
+  signUpUser,
+  confirmSignUpUser,
+  resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
+  updateUserPassword,
+} from "./functions/authenticationMethods";
+import NavBar from "./nav-bar";
+import { getUserViaEmail } from "./functions/getUserViaEmail";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +41,33 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  async function getCurrentUserServer() {
+    try {
+      const currentUser = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: (contextSpec) => getCurrentUser(contextSpec),
+      });
+      return {
+        signedIn: true,
+        email: currentUser.signInDetails?.loginId ?? "",
+      };
+    } catch (error) {
+      console.log(error);
+      return { signedIn: false, email: "" };
+    }
+  }
+  const { signedIn, email } = await getCurrentUserServer();
+
+  console.log("Signed in layout", signedIn);
+  console.log("Email layout", email);
+
+  const userData = await getUserViaEmail(email);
+
+
+  console.log("User data in layout", userData);
+  const name = userData ? [userData.user?.givenName, userData.user?.familyName] : ["", ""];
+
+  console.log("Name layout", name);
   return (
     <html lang="en">
       <body className={`${GeistSans.className}`}>
@@ -33,7 +78,20 @@ export default async function RootLayout({
         >
           <WebSocketProvider url={wsUrl}>
             <TooltipProvider delayDuration={0}>
-              <NavBarServerWrapper />
+              <NavBar
+                readNotification={readNotification}
+                deleteNotifications={deleteNotification}
+                getNotificationsViaEmail={getNotificationsViaEmail}
+                signUpUser={signUpUser}
+                confirmSignUpUser={confirmSignUpUser}
+                resendConfirmSignUpUser={resendConfirmSignUpUser}
+                resetUserPassword={resetUserPassword}
+                confirmResetUserPassword={confirmResetUserPassword}
+                updateUserPassword={updateUserPassword}
+                signedIn={signedIn}
+                email={email}
+                name={name}
+              />
               <div className=" flex-col md:flex h-screen pt-16">
                 <Toaster />
                 <ConfigureAmplifyClientSide />

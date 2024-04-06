@@ -1,12 +1,11 @@
 "use server";
 import { cookies } from "next/headers";
-import { getEmail } from "../functions/authenticationMethods";
 import {
   Users,
   Requests,
   Submissions,
 } from "@obscurus/database/src/sql.generated";
-import { getUserViaEmail } from "../functions/getUserData";
+import { getUserViaEmail } from "../functions/getUserViaEmail";
 import RequestWrapper from "./components/request-wrapper";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import trashRequest from "../functions/trashRequest";
