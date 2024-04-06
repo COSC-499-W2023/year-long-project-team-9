@@ -11,6 +11,7 @@ import PanelLoader2 from "./panel-2-loader";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 
 export const SubmitWrapper = ({
+  userEmail,
   getPresignedUrl,
   getDownloadPresignedUrl,
   sendToService,
@@ -22,6 +23,7 @@ export const SubmitWrapper = ({
   setSubmittedDate,
   getProfileImgPresignedUrl,
 }: {
+  userEmail: string;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   sendToService?: (
@@ -41,7 +43,6 @@ export const SubmitWrapper = ({
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
   const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     if (!ws) return;
@@ -98,7 +99,7 @@ export const SubmitWrapper = ({
                     referenceId: submissionId,
                     type: "SUBMIT",
                     content: `Submission status updated to ${status}`,
-                    email: "imightbejan@gmail.com",
+                    email: userEmail,
                   },
                 },
               })
@@ -119,9 +120,7 @@ export const SubmitWrapper = ({
     const fetchUserData = async () => {
       console.log("Fetching user data");
       if (getRequestsAndSubmissionsByEmail) {
-        const data = await getRequestsAndSubmissionsByEmail(
-          "imightbejan@gmail.com"
-        );
+        const data = await getRequestsAndSubmissionsByEmail(userEmail);
         console.log("User data:", data);
         data?.submissions && setSubmissions(data.submissions);
       }
@@ -135,19 +134,17 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-          <SubmitList
-            submissions={submissions as EnrichedSubmissions[]}
-          />
+        <SubmitList submissions={submissions as EnrichedSubmissions[]} />
       }
       secondPanel={
-          <SubmitDisplay
-            getPresignedUrl={getPresignedUrl}
-            getDownloadPresignedUrl={getDownloadPresignedUrl}
-            sendToService={sendToService}
-            updateSubmissionStatus={updateSubmissionStatus}
-            setSubmittedDate={setSubmittedDate}
-            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-          />
+        <SubmitDisplay
+          getPresignedUrl={getPresignedUrl}
+          getDownloadPresignedUrl={getDownloadPresignedUrl}
+          sendToService={sendToService}
+          updateSubmissionStatus={updateSubmissionStatus}
+          setSubmittedDate={setSubmittedDate}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+        />
       }
     />
   );

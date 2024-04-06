@@ -26,13 +26,11 @@ import { signOut } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
 
 export default function AuthenticationSignedIn({
-  updateUserPassword,
-  userEmail,
   userName,
+  profileImage,
 }: {
-  updateUserPassword: Function;
-  userEmail: string;
   userName: string[];
+  profileImage: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -49,7 +47,7 @@ export default function AuthenticationSignedIn({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="hover:cursor-pointer">
-          <AvatarImage alt={userName[0] + " " + userName[1]} />
+          <AvatarImage src={profileImage} alt={userName[0] + " " + userName[1]} />
           <AvatarFallback>
             {userName[0].charAt(0) + userName[1].charAt(0)}
           </AvatarFallback>
@@ -87,11 +85,7 @@ export default function AuthenticationSignedIn({
                   Update Password
                 </Label>
                 <Separator className="mt-1 mb-2" />
-                <UpdatePasswordForm
-                  updateUserPassword={updateUserPassword}
-                  setIsOpen={setIsOpen}
-                  userEmail={userEmail}
-                />
+                <UpdatePasswordForm setIsOpen={setIsOpen} />
               </AlertDialogDescription>
             </AlertDialogContent>
           </AlertDialog>

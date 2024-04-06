@@ -2,21 +2,20 @@
 import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
 import readNotification from "./functions/readNotification";
 import deleteNotification from "./functions/deleteNotification";
-import { getUserNames } from "./functions/getUserNames";
 import {
   signUpUser,
   confirmSignUpUser,
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "aws-amplify/auth/server";
 import { runWithAmplifyServerContext } from "./utils/amplifyServerUtils";
-import getUserDataByEmail from "./functions/getUserDataByEmail";
+import { getUserViaEmail } from "./functions/getUserData";
 import { Users as UsersType } from "@obscurus/database/src/sql.generated";
+import getProfileImgPresignedUrl from "./functions/getProfileImgPresignedUrl";
 
 export default async function NavBarServerWrapper() {
   async function getCurrentUserServer() {
@@ -36,9 +35,18 @@ export default async function NavBarServerWrapper() {
     }
   }
   const { signedIn, email } = await getCurrentUserServer();
-  const userData: UsersType = await getUserDataByEmail(email);
-  const name = [userData.givenName, userData.familyName];
-
+  var name = ["",""]
+  var profileImage = "";
+  try {
+    const userData: UsersType = await getUserViaEmail(email);
+    name = [userData.givenName, userData.familyName];
+    profileImage = userData.profileImage ?? "";
+    if (profileImage && getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(profileImage);
+      console.log(url);
+      profileImage = url;
+    }
+  }catch(error) {}
   return (
     <NavBar
       readNotification={readNotification}
@@ -49,10 +57,10 @@ export default async function NavBarServerWrapper() {
       resendConfirmSignUpUser={resendConfirmSignUpUser}
       resetUserPassword={resetUserPassword}
       confirmResetUserPassword={confirmResetUserPassword}
-      updateUserPassword={updateUserPassword}
       signedIn={signedIn}
       email={email}
       name={name}
+      profileImage={profileImage}
     />
   );
 }

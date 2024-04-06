@@ -42,10 +42,16 @@ export default function SignInForm({
       username: values.email,
       password: values.password,
     };
-    const { isSignedIn, nextStep } = await signIn(userSignInInput);
-    if (isSignedIn) {
-      router.push("/profile");
-    } else {
+    try {
+      const { isSignedIn, nextStep } = await signIn(userSignInInput);
+      if (isSignedIn) {
+        router.push("/profile");
+        router.refresh();
+      } else {
+        setLoading(false);
+        setFailedLogin(true);
+      }
+    } catch (error) {
       setLoading(false);
       setFailedLogin(true);
     }
@@ -53,80 +59,84 @@ export default function SignInForm({
 
   return (
     <div className="flex flex-col h-full">
-      {loading ? (
-        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
-          <LucideLoader2 className="animate-spin text-primary" size={75} />
-        </div>
-      ) : (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="px-1">
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="px-1">
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <div>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                      />
-                      <a
-                        onClick={() => setDialogState("forgotPassword")}
-                        className="underline text-xs text-blue-400 hover:cursor-pointer"
-                      >
-                        Forgot password
-                      </a>
-                    </div>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            {failedLogin && (
-              <div className="flex justify-center border border-red-500 rounded p-2">
-                <Label className="text-red-500 text-xs">
-                  Invalid Credentials
-                </Label>
-              </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="px-1">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" disabled={loading} {...field} />
+                </FormControl>
+              </FormItem>
             )}
-            <Button type="submit" variant={"default"} className="w-full">
-              Sign In
-            </Button>
-            <div className="text-xs text-center mt-2">
-              <span>Need an account? </span>
-              <a
-                onClick={() => setDialogState("signUp")}
-                className="underline text-blue-400 hover:cursor-pointer"
-              >
-                Sign Up
-              </a>
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="px-1">
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <div>
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      disabled={loading}
+                      {...field}
+                    />
+                    <a
+                      onClick={() => setDialogState("forgotPassword")}
+                      className="underline text-xs text-blue-400 hover:cursor-pointer"
+                    >
+                      Forgot password
+                    </a>
+                  </div>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {failedLogin && (
+            <div className="flex justify-center border border-red-500 rounded p-2">
+              <Label className="text-red-500 text-xs">
+                Invalid Credentials
+              </Label>
             </div>
-            <div className="text-xs text-center mt-2">
-              <span>Need to verify your account? </span>
-              <a
-                onClick={() => setDialogState("verifyEmail")}
-                className="underline text-blue-400 hover:cursor-pointer"
-              >
-                Send Verification Code
-              </a>
-            </div>
-          </form>
-        </Form>
-      )}
+          )}
+          <Button
+            type="submit"
+            variant={"default"}
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? (
+              <span>Signing In, Please Wait</span>
+            ) : (
+              <span>Sign In</span>
+            )}
+          </Button>
+          <div className="text-xs text-center mt-2">
+            <span>Need an account? </span>
+            <a
+              onClick={() => setDialogState("signUp")}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Sign Up
+            </a>
+          </div>
+          <div className="text-xs text-center mt-2">
+            <span>Need to verify your account? </span>
+            <a
+              onClick={() => setDialogState("verifyEmail")}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Send Verification Code
+            </a>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

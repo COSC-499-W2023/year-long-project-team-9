@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileDisplay from "./profile-display";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const acceptedImageFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -53,19 +53,14 @@ export default function ProfileWrapper({
     },
   });
   const email = userData.email;
-  const [username, setUsername] = useState<string | null>(null);
-  // const extension = email.slice(email.lastIndexOf(".") + 1);
-  // const username: string = email.slice(0, email.lastIndexOf("."));
-  if (email) {
-    setUsername(email.slice(0, email.lastIndexOf(".")));
-  }
+
+  const username = email.slice(0, email.lastIndexOf("."));
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
-  // const fileInputRef = useRef<HTMLInputElement>(null);
 
   function onSubmit(values: z.infer<typeof profileFormSchema>) {
     console.log(values);
@@ -103,6 +98,7 @@ export default function ProfileWrapper({
         });
         setObjectURL(URL.createObjectURL(file));
         console.log("Upload successful");
+        updateUserInfo(values, key);
         setLoading(false);
         return;
       } catch (error) {
@@ -112,7 +108,10 @@ export default function ProfileWrapper({
     }
   };
 
-  const updateUserInfo = async (values: z.infer<typeof profileFormSchema>, key: string) => {
+  const updateUserInfo = async (
+    values: z.infer<typeof profileFormSchema>,
+    key: string
+  ) => {
     console.log("test");
     if (updateUser) {
       console.log("Updating user information");
@@ -141,7 +140,8 @@ export default function ProfileWrapper({
           form={form}
           userData={userData}
           getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-        ></ProfileDisplay>}
+        ></ProfileDisplay>
+      }
     />
   );
 }

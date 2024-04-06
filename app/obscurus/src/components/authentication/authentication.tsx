@@ -8,27 +8,23 @@ export default function Authentication({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
   signedIn,
-  email,
   name,
+  profileImage,
 }: {
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
-  updateUserPassword: Function;
   signedIn: boolean;
-  email: string;
   name: string[];
+  profileImage: string;
 }) {
   return signedIn ? (
     <AuthenticationSignedIn
-      updateUserPassword={updateUserPassword}
-      userEmail={email}
       userName={name}
-    />
+      profileImage={profileImage} />
   ) : (
     <AuthenticationSignedOut
       signUpUser={signUpUser}

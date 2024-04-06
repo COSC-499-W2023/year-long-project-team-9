@@ -1,6 +1,5 @@
 "use server";
 import { cookies } from "next/headers";
-import { getEmail } from "../functions/authenticationMethods";
 import {
   Users,
   Requests,
@@ -15,23 +14,39 @@ import archiveRequest from "../functions/archiveRequest";
 import createRequest from "./components/create/function/createRequest";
 import { SubmissionsForRequest } from "./types/types-for-request";
 import getPresignedUrl from "../functions/getPresignedUrl";
-import { redirect } from "next/navigation";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
+import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
+import { getCurrentUser } from "aws-amplify/auth/server";
 
 async function Request() {
+  async function getCurrentUserServer() {
+    try {
+      const currentUser = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: (contextSpec) => getCurrentUser(contextSpec),
+      });
+      console.log(currentUser);
+      return {
+        signedIn: true,
+        email: currentUser.signInDetails?.loginId ?? "",
+      };
+    } catch (error) {
+      console.log(error);
+      return { signedIn: false, email: "" };
+    }
+  }
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
-  console.log("Layout", layout);
-  console.log("Collapsed", collapsed?.value);
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed =
     collapsed && collapsed.value !== "undefined"
       ? JSON.parse(collapsed.value)
       : undefined;
-  const userEmail = "imightbejan@gmail.com"
-  const userData: Users = await getUserViaEmail(userEmail);
+
+  const { signedIn, email } = await getCurrentUserServer();
+  const userData: Users = await getUserViaEmail(email);
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
-    await getRequestsViaEmail(userEmail);
+    await getRequestsViaEmail(email);
   const request: Requests[] = requestPageData.request;
   const submissionsDataRequest: Submissions[] = requestPageData.submissions;
   const submissions: SubmissionsForRequest[] = [];
