@@ -28,6 +28,7 @@ import NavBar from "./nav-bar";
 import { getUserViaEmail } from "./functions/getUserViaEmail";
 import { UserProvider } from "./user-provider";
 import { User } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   async function getCurrentUserServer() {
     try {
       const currentUser = await runWithAmplifyServerContext({
@@ -60,17 +63,14 @@ export default async function RootLayout({
   }
   const { signedIn, email } = await getCurrentUserServer();
 
+
   console.log("Signed in layout", signedIn);
   console.log("Email layout", email);
 
   const userData = await getUserViaEmail(email);
 
   console.log("User data in layout", userData);
-  const name = userData
-    ? [userData.user?.givenName, userData.user?.familyName]
-    : ["", ""];
 
-  console.log("Name layout", name);
   return (
     <html lang="en">
       <body className={`${GeistSans.className}`}>
@@ -79,8 +79,7 @@ export default async function RootLayout({
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <UserProvider userData={userData}>
-            <WebSocketProvider url={wsUrl}>
+          <WebSocketProvider url={wsUrl}>
               <TooltipProvider delayDuration={0}>
                 <NavBar
                   readNotification={readNotification}
@@ -92,18 +91,15 @@ export default async function RootLayout({
                   resetUserPassword={resetUserPassword}
                   confirmResetUserPassword={confirmResetUserPassword}
                   updateUserPassword={updateUserPassword}
-                  signedIn={signedIn}
-                  email={email}
-                  name={name}
+                  user={userData?.user}
                 />
-                <div className=" flex-col md:flex h-screen pt-16 overflow-auto">
+                <div className=" flex-col md:flex h-screen pt-16">
                   <Toaster />
                   <ConfigureAmplifyClientSide />
                   {children}
                 </div>
               </TooltipProvider>
-            </WebSocketProvider>
-          </UserProvider>
+          </WebSocketProvider>
         </ThemeProvider>
       </body>
     </html>

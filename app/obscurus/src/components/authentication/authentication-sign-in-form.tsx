@@ -44,13 +44,14 @@ export default function SignInForm({
     };
     const { isSignedIn, nextStep } = await signIn(userSignInInput);
     if (isSignedIn) {
-      setLoading(false);
-      router.push("/profile");
+
+      router.push("/submit");
       router.refresh();
     } else {
-      setLoading(false);
       setFailedLogin(true);
     }
+
+    setLoading(false);
   }
 
   return (

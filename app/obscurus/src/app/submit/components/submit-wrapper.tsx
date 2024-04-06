@@ -9,6 +9,8 @@ import { useWebSocket } from "@/app/ws-provider";
 import PanelLoader1 from "./panel-1-loader";
 import PanelLoader2 from "./panel-2-loader";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { useUserData } from "@/app/user-provider";
+import { set } from "date-fns";
 
 export const SubmitWrapper = ({
   getPresignedUrl,
@@ -21,6 +23,7 @@ export const SubmitWrapper = ({
   defaultCollapsed,
   getUserViaEmail,
   setSubmittedDate,
+  user
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -37,14 +40,19 @@ export const SubmitWrapper = ({
   defaultCollapsed: boolean;
   getUserViaEmail?: (email: string) => Promise<string>;
   setSubmittedDate?: Function;
+  user?: any;
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
   const [loading, setLoading] = useState(false);
 
+  console.log("User in submit wrapper", user);
+
+
 
   useEffect(() => {
     if (!ws) return;
+
 
     const handleWebSocketMessages = (event: any) => {
       const { action, data } = JSON.parse(event.data);
@@ -115,19 +123,21 @@ export const SubmitWrapper = ({
   };
 
   useEffect(() => {
-    setLoading(true);
+    if (!user) return;
+
+    console.log("User in submit wrapper", user);
+
     const fetchUserData = async () => {
-      console.log("Fetching user data");
       if (getRequestsAndSubmissionsByEmail) {
         const data = await getRequestsAndSubmissionsByEmail(
-          "imightbejan@gmail.com"
+         user?.email
         );
-        console.log("User data:", data);
+        console.log("Fetched data:", data);
         data?.submissions && setSubmissions(data.submissions);
       }
     };
-    fetchUserData().then(() => setLoading(false));
-  }, []);
+    fetchUserData();
+  }, [user]);
 
   return (
     <Wrapper

@@ -1,5 +1,5 @@
 "use client";
-import React, { use } from "react";
+import React, { use, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -21,6 +21,7 @@ import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
 import Authentication from "@/components/authentication/authentication";
 import { useUserData } from "./user-provider";
+import { useUser } from "./hooks/use-user";
 
 const NavBar = ({
   readNotification,
@@ -32,9 +33,7 @@ const NavBar = ({
   resetUserPassword,
   confirmResetUserPassword,
   updateUserPassword,
-  signedIn,
-  email,
-  name,
+  user
 }: {
   readNotification: Function;
   deleteNotifications: Function;
@@ -45,17 +44,14 @@ const NavBar = ({
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
   updateUserPassword: Function;
-  signedIn: boolean;
-  email: string;
-  name: string[];
+  user?: any;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
 
-  const userData = useUserData();
+  console.log("User in nav bar", user);
 
-  console.log("userdata in navbar", userData);
 
   const ThemeSwitcher = () => {
     return (
@@ -83,7 +79,7 @@ const NavBar = ({
   const Navigation = () => {
     return (
       <NavigationMenu className="flex flex-row space-x-6 ">
-        <Link href="/" className="">
+        <Link href={ user ? "/request" : "/"} className="">
           <Image
             className="min-h-full min-w-full"
             src="/logo.svg"
@@ -129,9 +125,6 @@ const NavBar = ({
     );
   };
 
-  console.log("Signed in navbar", signedIn);
-  console.log("Email in navbar", email);
-  console.log("Name in navbar", name);
 
 
 
@@ -141,10 +134,10 @@ const NavBar = ({
       <Navigation />
       <div className="flex flex-row gap-2 items-center">
         <Notifications
-          signedIn={signedIn}
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
           getNotificationsViaEmail={getNotificationsViaEmail}
+          user={user}
         />
         <ThemeSwitcher />
         <Authentication
@@ -154,9 +147,7 @@ const NavBar = ({
           resetUserPassword={resetUserPassword}
           confirmResetUserPassword={confirmResetUserPassword}
           updateUserPassword={updateUserPassword}
-          signedIn={signedIn}
-          email={email}
-          name={name}
+          user={user}
         />
       </div>
     </div>

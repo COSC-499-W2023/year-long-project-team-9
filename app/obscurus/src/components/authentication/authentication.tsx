@@ -1,6 +1,8 @@
 "use client";
+import { useUserData } from "@/app/user-provider";
 import AuthenticationSignedIn from "./authentication-signed-in";
 import AuthenticationSignedOut from "./authentication-signed-out";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 export default function Authentication({
   signUpUser,
@@ -9,9 +11,8 @@ export default function Authentication({
   resetUserPassword,
   confirmResetUserPassword,
   updateUserPassword,
-  signedIn,
-  email,
-  name,
+  user,
+
 }: {
   signUpUser: Function;
   confirmSignUpUser: Function;
@@ -19,19 +20,18 @@ export default function Authentication({
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
   updateUserPassword: Function;
-  signedIn: boolean;
-  email: string;
-  name: string[];
+  user?: Users;
 }) {
-  console.log("Signed in auth", signedIn);
-  console.log("Email in auth", email);
-  console.log("Name in auth", name);
 
-  return signedIn ? (
+
+
+
+  console.log("User in authentication", user);
+
+  return user ? (
     <AuthenticationSignedIn
       updateUserPassword={updateUserPassword}
-      userEmail={email}
-      userName={name}
+      user={user}
     />
   ) : (
     <AuthenticationSignedOut
@@ -40,6 +40,7 @@ export default function Authentication({
       resendConfirmSignUpUser={resendConfirmSignUpUser}
       resetUserPassword={resetUserPassword}
       confirmResetUserPassword={confirmResetUserPassword}
+      user={user}
     />
   );
 }

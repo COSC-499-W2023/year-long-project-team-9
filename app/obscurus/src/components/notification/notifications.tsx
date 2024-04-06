@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Notifications as NotificationsType } from "@obscurus/database/src/sql.generated";
+import { Notifications as NotificationsType, Users } from "@obscurus/database/src/sql.generated";
 import Link from "next/link";
 import { CardTitle } from "../ui/card";
 import { useEffect } from "react";
@@ -25,22 +25,24 @@ import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { motion } from "framer-motion";
 import { read } from "fs";
+import { useUserData } from "@/app/user-provider";
 
 export default function Notifications({
-  signedIn,
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
+  user
 }: {
-  signedIn: boolean;
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
+  user?: Users
 }) {
   const [notifcations, setNotifications] = useNotifications();
   const [hasUnreadNotifications, setHasUnreadNotifications] =
     useHasUnreadNotifications();
   const ws = useWebSocket();
+
 
   useEffect(() => {
     const fetchInitialNotifications = async () => {
@@ -84,7 +86,7 @@ export default function Notifications({
     };
   }, [ws, getNotificationsViaEmail]);
 
-  return signedIn ? (
+  return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>

@@ -24,21 +24,37 @@ import UpdatePasswordForm from "./authentication-update-password-form";
 import { useState } from "react";
 import { signOut } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
+import { useUserData } from "@/app/user-provider";
+import { Users } from "@obscurus/database/src/sql.generated";
+
 
 export default function AuthenticationSignedIn({
   updateUserPassword,
-  userEmail,
-  userName,
+  user
 }: {
   updateUserPassword: Function;
-  userEmail: string;
-  userName: string[];
+  user?: Users;
 }) {
+
+
+console.log("User in signed in", user);
+
+
+  const userEmail = user?.email || "";
+
+  const firstName = user?.givenName || "";
+
+  const lastName = user?.familyName || "";
+
+
+
+
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   async function handleLogOut() {
     try {
       await signOut();
+
       router.push("/");
       router.refresh();
     } catch (error) {
@@ -49,9 +65,9 @@ export default function AuthenticationSignedIn({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="hover:cursor-pointer w-8 h-8 text-xs">
-          <AvatarImage alt={userName[0] + " " + userName[1]} />
+          <AvatarImage alt={firstName + " " + lastName} />
           <AvatarFallback>
-            {userName[0]?.charAt(0) + userName[1]?.charAt(0)}
+            {firstName?.charAt(0).toUpperCase() + lastName?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
