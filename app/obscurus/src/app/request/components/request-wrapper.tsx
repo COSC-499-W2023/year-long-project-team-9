@@ -78,7 +78,7 @@ export default function RequestWrapper({
 
       switch (action) {
         case "updateRequestGrouping":
-          console.log("Updating request grouping");
+          console.log("Received message:", event.data);
           console.log("Request ID:", data.requestId);
           console.log("Grouping:", data.grouping);
           setRequests((currentRequests: any) =>

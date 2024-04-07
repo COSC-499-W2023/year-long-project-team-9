@@ -192,8 +192,8 @@ export default function RequestDisplay({
                 disabled={!selected}
                 onClick={() => {
                   selected?.grouping === null
-                    ? updateRequestGrouping(selected, "ARCHIVED")
-                    : updateRequestGrouping(selected, null);
+                    ? updateRequestGrouping(selected?.requestId, "ARCHIVED")
+                    : updateRequestGrouping(selected?.requestId, null);
                 }}
               >
                 {selected?.grouping === "ARCHIVED" ? (
@@ -238,7 +238,7 @@ export default function RequestDisplay({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => updateRequestGrouping(selected, "TRASHED")}
+                      onClick={() => updateRequestGrouping(selected?.requestId, "TRASHED")}
                     >
                       Continue
                     </AlertDialogAction>

@@ -56,6 +56,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import Loading from "@/components/authentication/loading";
+import { useProcessedVideo } from "@/app/hooks/use-processed-video";
 
 export default function SubmitDisplay({
   getPresignedUrl,
@@ -81,7 +82,7 @@ export default function SubmitDisplay({
   const [upload, setUpload] = useUpload();
   const [iseShowingVideo, setShowingVideo] = useIsShowingVideo();
   const { toast } = useToast();
-  const [processedVideo, setProcessedVideo] = useState<string | null>(null);
+  const [processedVideo, setProcessedVideo] = useProcessedVideo();
 
   const submissionIdFromQuery = useSearchParams().get("submissionId");
 
@@ -97,26 +98,6 @@ export default function SubmitDisplay({
     if (submissionIdFromQuery) {
       setSubmission({ submissionId: submissionIdFromQuery });
     }
-    const fetchProcessedVideo = async () => {
-      if (
-        selected?.status === "COMPLETED" &&
-        getDownloadPresignedUrl &&
-        selected.submissionId
-      ) {
-        try {
-          const videoUrl = await getDownloadPresignedUrl(selected.submissionId);
-          setProcessedVideo(videoUrl);
-        } catch (error) {
-          console.error("Error fetching processed video:", error);
-          toast({
-            title: "Error",
-            description: "Failed to load processed video.",
-          });
-        }
-      }
-    };
-
-    fetchProcessedVideo();
   }, [submissionIdFromQuery, selected]);
 
   const canShowVideo =
@@ -722,7 +703,7 @@ export default function SubmitDisplay({
         <div className="flex flex-col space-y-2 p-4">
           <Suspense fallback={<Loading />}>
             <VideoPlayer
-              videoUrl={processedVideo ? processedVideo : ""}
+              videoUrl={processedVideo.url ? processedVideo.url : ""}
               filename={"Processed Video"}
             />
             {selected.submittedDate && (
@@ -742,7 +723,7 @@ export default function SubmitDisplay({
 
         <div className="flex justify-start items-center space-x-3 p-3">
           <div className="absolute bottom-10 right-5">
-            <Link href={processedVideo || ""}>
+            <Link href={processedVideo.url || ""}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button

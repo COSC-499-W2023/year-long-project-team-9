@@ -47,13 +47,17 @@ import { useTab } from "@/app/hooks/use-tab";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { useProcessedVideo } from "@/app/hooks/use-processed-video";
 
 export default function SubmitList({
   submissions,
   updateSubmissionIsRead,
+  getDownloadPresignedUrl,
 }: {
   submissions: EnrichedSubmissions[];
   updateSubmissionIsRead: Function;
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [search, setSearch] = useSearch();
@@ -61,9 +65,34 @@ export default function SubmitList({
   const [sort, setSort] = useSort();
   const [tab, setTab] = useTab();
   const [isShowingVideo] = useIsShowingVideo();
+  const [processedVideo, setProcessedVideo] = useProcessedVideo();
+
+  const { toast } = useToast();
+
 
   const handleClick = (item: EnrichedSubmissions) => {
+
     if (!upload.upload && !isShowingVideo.active) {
+      const fetchProcessedVideo = async ( item: EnrichedSubmissions) => {
+        console.log("fetching processed video", item);
+        if (
+          item?.status === "COMPLETED" &&
+          getDownloadPresignedUrl &&
+          item.submissionId
+        ) {
+          try {
+            const videoUrl = await getDownloadPresignedUrl(item.submissionId);
+            setProcessedVideo({ url: videoUrl });
+          } catch (error) {
+            console.error("Error fetching processed video:", error);
+            toast({
+              title: "Error",
+              description: "Failed to load processed video.",
+            });
+          }
+        }
+      };
+
       const submission =
         (submissions &&
           submissions.find(
@@ -76,7 +105,9 @@ export default function SubmitList({
         if (submission.isRead === false) {
           updateSubmissionIsRead(submission.submissionId, true);
         }
+        fetchProcessedVideo(submission);
       }
+
     }
   };
 
