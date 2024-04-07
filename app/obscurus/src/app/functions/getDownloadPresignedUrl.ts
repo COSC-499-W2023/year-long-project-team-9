@@ -4,7 +4,6 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Bucket } from "sst/node/bucket";
 
 async function getDownloadPresignedUrl(submissionId: string): Promise<string> {
-  console.log("getDownloadPresignedUrl called for submission:", submissionId);
   const bucketName = Bucket.ChumBucket.bucketName;
   const objectKey = `${submissionId}-processed.mp4`;
 
@@ -16,7 +15,6 @@ async function getDownloadPresignedUrl(submissionId: string): Promise<string> {
   const url = await getSignedUrl(new S3Client({}), command, {
     expiresIn: 3600,
   });
-  console.log("Generated download URL:", url);
   return url;
 }
 

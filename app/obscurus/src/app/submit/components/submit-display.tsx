@@ -118,15 +118,10 @@ export default function SubmitDisplay({
     fetchProcessedVideo();
   }, [submissionIdFromQuery, selected, getDownloadPresignedUrl]);
 
-  // const url = process.env.NEXT_PUBLIC_SERVICE_URL;
-
-  // console.log("URL", url);
-
   const canShowVideo =
     selected && selected.status === "COMPLETED" && processedVideo;
 
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [fileExt, setFileExt] = useState<string | undefined>(undefined);
   const [objectURL, setObjectURL] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -137,14 +132,6 @@ export default function SubmitDisplay({
     fileInputRef.current?.click();
   };
 
-  const getAssociatedSubmission = (requestId: string) => {
-    if (requestId && submissions) {
-      return submissions.find((item) => requestId === item.requestId);
-    }
-    return null;
-  };
-
-  const reset = () => { };
 
   const handleProcessVideo = async () => {
     if (!file) {
@@ -273,7 +260,6 @@ export default function SubmitDisplay({
         });
 
         if (response.ok) {
-          console.log("Upload successful");
           setObjectURL(URL.createObjectURL(file));
           setRecord(false);
           setRecordedChunks([]);
@@ -291,7 +277,6 @@ export default function SubmitDisplay({
   const router = useRouter();
 
   const handleArchive = async () => {
-    console.log("Archiving");
     if (submission && updateSubmissionStatus) {
       if (submission && updateSubmissionStatus) {
         await updateSubmissionStatus("ARCHIVED", submission.submissionId);
@@ -310,7 +295,6 @@ export default function SubmitDisplay({
   };
 
   const handleTrash = async () => {
-    console.log("Trashing request");
     if (submission && updateSubmissionStatus && submissions) {
       if (submission && updateSubmissionStatus) {
         await updateSubmissionStatus("TRASHED", submission.submissionId);
@@ -424,8 +408,8 @@ export default function SubmitDisplay({
 
   const canUpload = () => {
     if (selected) {
-      const submission = getAssociatedSubmission(selected.requestId);
-      if (submission && submission.status === "TODO") {
+
+      if (selected.status === "TODO") {
         return true;
       } else {
         return false;
@@ -436,7 +420,6 @@ export default function SubmitDisplay({
   };
 
   const DisplayUploadedVideo = () => {
-    console.log("Displaying uploaded video", file?.name);
     return (
       <div className="flex flex-col w-fit h-full pt-16">
         {loading && (
@@ -479,8 +462,6 @@ export default function SubmitDisplay({
   const Upload = () => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
       const f: File = acceptedFiles[0];
-
-      console.log("File:", f);
       setFile(f);
       setObjectURL(URL.createObjectURL(f));
       setUpload({ upload: true });
@@ -618,12 +599,12 @@ export default function SubmitDisplay({
   };
 
   const RequestHeader = ({ selected }: { selected: EnrichedSubmissions }) => {
-    getrequesterProfileImage(selected?.requester, selected?.requestDetails);
+    getRequesterProfileImage(selected?.requester, selected?.requestDetails);
     return (
       <>
         <div className="flex items-start p-4">
           <div className="flex items-start gap-4 text-sm max-w-[70%]">
-            <Avatar>
+            <Avatar className="mt-1.5">
               <AvatarImage src={requesterProfileImage} alt={selected?.requester.givenName} />
               <AvatarFallback>
                 {selected?.requester.givenName.charAt(0)}
@@ -679,13 +660,11 @@ export default function SubmitDisplay({
   };
 
   const [requesterProfileImage, setrequesterProfileImage] = useState<string | undefined>(undefined);
-  const getrequesterProfileImage = async (requester: any, requestDetails: any,) => {
+  const getRequesterProfileImage = async (requester: any, requestDetails: any,) => {
     const imgkey = requester.profileImage;
     const requesterEmail = requestDetails.requesterEmail;
-    console.log("test ", imgkey);
     if (requesterEmail && getProfileImgPresignedUrl) {
       const url = await getProfileImgPresignedUrl(imgkey);
-      console.log("url: ", url);
       setrequesterProfileImage(url);
     }
   };

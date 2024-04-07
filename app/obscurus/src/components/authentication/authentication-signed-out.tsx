@@ -23,13 +23,16 @@ export default function AuthenticationSignedOut({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
+  user,
 }: {
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
+  user?: any;
 }) {
+
   const [dialogState, setDialogState] = useState<string>("signIn");
   return (
     <AlertDialog onOpenChange={() => setDialogState("signIn")}>
@@ -40,14 +43,14 @@ export default function AuthenticationSignedOut({
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[30%] max-h-[90%] flex flex-col">
         <AlertDialogHeader className="flex items-end">
-          <AlertDialogCancel>
+          <AlertDialogCancel className="pl-4">
             <X />
           </AlertDialogCancel>
         </AlertDialogHeader>
         <AlertDialogDescription className="justify-center w-full max-h-full overflow-auto">
           {dialogState === "signIn" && (
             <div>
-              <Label className="flex justify-start text-2xl font-black">
+              <Label className="flex justify-start text-2xl text-primary font-bold">
                 Sign In
               </Label>
               <Separator className="mt-1 mb-2" />

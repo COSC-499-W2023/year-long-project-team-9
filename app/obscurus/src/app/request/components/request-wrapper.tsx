@@ -1,59 +1,50 @@
 "use client";
+import Wrapper from "@/app/wrapper";
 import {
   Requests,
   Submissions,
   Users,
 } from "@obscurus/database/src/sql.generated";
-import Wrapper from "@/app/wrapper";
 import RequestList from "./request-list";
-import hello from "@/app/functions/hello";
 import RequestDisplay from "./request-display";
-import { useState } from "react";
-import { createFormSchema } from "./create/form/createFormSchema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import CreateForm from "./create/components/create-form";
 import CreateDisplay from "./create/components/create-display";
 import SubmitStatusAlert from "./create/components/create-submit-status-alert";
-import { useQueryState } from "nuqs";
-import { SubmissionsForRequest } from "../types/types-for-request";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { createFormSchema } from "./create/form/createFormSchema";
+import { useRequests } from "@/app/hooks/use-requests";
+import { EnrichedRequests } from "@obscurus/database/src/types/enrichedRequests";
+import { useWebSocket } from "@/app/ws-provider";
 
 export default function RequestWrapper({
   defaultLayout,
   defaultCollapsed,
-  request,
-  submissions,
   userData,
   archiveRequest,
   unarchiveRequest,
   trashRequest,
   createRequest,
   getProfileImgPresignedUrl,
+  getEnrichedRequestsByEmail,
+  updateRequest,
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
-  request: Requests[];
-  submissions: SubmissionsForRequest[];
   userData: Users;
   archiveRequest: Function;
   unarchiveRequest: Function;
   trashRequest: Function;
   createRequest: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  getEnrichedRequestsByEmail?: Function;
+  updateRequest?: Function;
 }) {
-  const [showCreate, setShowCreate] = useState<boolean>(false);
-  const [requestId, setRequestId] = useQueryState("requestId");
+  const [showCreate, setShowCreate] = useState(false);
+  const [requests, setRequests] = useRequests();
 
-  // Request
-  const [requests, setRequests] = useState<Requests[]>(request);
-  const handleTimezoneOffset = (date: Date) => {
-    const messageDateTime = new Date(date).getTime();
-    const userTimezoneOffset = -new Date().getTimezoneOffset() * 60 * 1000;
-    return new Date(messageDateTime + userTimezoneOffset);
-  };
-
-  // Create
   const form = useForm<z.infer<typeof createFormSchema>>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
@@ -67,8 +58,8 @@ export default function RequestWrapper({
   });
 
   async function onSubmit(values: z.infer<typeof createFormSchema>) {
-    const createSucess = await createRequest(values);
-    if (createSucess === false) {
+    const createSuccess = await createRequest(values);
+    if (!createSuccess) {
       const button = document.getElementById("failAlert");
       button?.click();
     } else {
@@ -77,52 +68,140 @@ export default function RequestWrapper({
     }
   }
 
+  const ws = useWebSocket();
+
+  useEffect(() => {
+    if (!ws) return;
+
+    const handleWebSocketMessages = (event: any) => {
+      const { action, data } = JSON.parse(event.data);
+
+      switch (action) {
+        case "updateRequestGrouping":
+          setRequests((currentRequests: any) =>
+            currentRequests.map((submission: any) =>
+              submission.submissionId === data.submissionId
+                ? { ...submission, status: data.newStatus }
+                : submission
+            )
+          );
+          break;
+        default:
+          break;
+      }
+    };
+
+    ws.addEventListener("message", handleWebSocketMessages);
+
+    return () => {
+      ws.removeEventListener("message", handleWebSocketMessages);
+    };
+  }, [ws]);
+
+  const updateRequestGrouping = async (requestId: string, grouping: string) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
+        action: "updateRequestGrouping",
+        data: { requestId, grouping },
+      });
+      ws.send(message);
+
+      if (updateRequest && ws.readyState === WebSocket.OPEN) {
+        await updateRequest(requestId, grouping);
+        {
+          grouping !== "ARCHIVED" &&
+            grouping !== "TRASHED" &&
+            ws.send(
+              JSON.stringify({
+                action: "newNotification",
+                data: {
+                  notification: {
+                    referenceId: requestId,
+                    type: "REQUEST",
+                    content: `Request status updated to ${grouping}`,
+                    email: userData?.email,
+                  },
+                },
+              })
+            );
+        }
+      }
+    } else {
+      if (updateRequest) {
+        await updateRequest(requestId, grouping);
+      } else {
+        console.error("WebSocket not connected");
+      }
+    }
+  };
+
+  const updateSubmissionIsRead = async (
+    submissionId: string,
+    isRead: boolean
+  ) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
+        action: "updateSubmissionIsRead",
+        data: { submissionId, isRead },
+      });
+      ws.send(message);
+    } else {
+      console.error("WebSocket not connected");
+    }
+  };
+
+  useEffect(() => {
+    if (!userData) return;
+
+    console.log("User in request wrapper", userData);
+    async function fetchRequests() {
+      if (getEnrichedRequestsByEmail === undefined) return;
+      const enrichedRequests = await getEnrichedRequestsByEmail(userData.email);
+      enrichedRequests?.requests && setRequests(enrichedRequests.requests);
+      console.log("Enriched requests", enrichedRequests?.requests);
+    }
+
+    fetchRequests();
+  }, [userData]);
+
   return (
-    <>
-      <Wrapper
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-        firstPanel={
-          showCreate === true ? (
-            <CreateForm
-              form={form}
-              onSubmit={onSubmit}
-              userData={userData}
-              setShowCreate={setShowCreate}
-            ></CreateForm>
-          ) : (
-            <RequestList
-              requests={requests}
-              submissions={submissions}
-              handleTimezoneOffset={handleTimezoneOffset}
-              setShowCreate={setShowCreate}
-              requestId={requestId}
-              setRequestId={setRequestId}
-            />
-          )
-        }
-        secondPanel={
-          showCreate === true ? (
-            <CreateDisplay form={form} userData={userData}></CreateDisplay>
-          ) : (
-            <RequestDisplay
-              requests={requests}
-              submissions={submissions}
-              userData={userData}
-              setRequests={setRequests}
-              archiveRequest={archiveRequest}
-              unarchiveRequest={unarchiveRequest}
-              trashRequest={trashRequest}
-              handleTimezoneOffset={handleTimezoneOffset}
-              requestId={requestId}
-              setRequestId={setRequestId}
-              getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-            />
-          )
-        }
-      />
-      {showCreate === true ? <SubmitStatusAlert></SubmitStatusAlert> : <></>}
-    </>
+    <Wrapper
+      defaultLayout={defaultLayout}
+      defaultCollapsed={defaultCollapsed}
+      navCollapsedSize={4}
+      firstPanel={
+        showCreate ? (
+          <CreateForm
+            form={form}
+            onSubmit={onSubmit}
+            userData={userData}
+            setShowCreate={setShowCreate}
+          />
+        ) : (
+          <RequestList
+            requests={requests as EnrichedRequests[]}
+            // handleTimezoneOffset={(date: Date) =>
+            //   new Date(date.getTime() - new Date().getTimezoneOffset() * 60000)
+            // }
+            setShowCreate={setShowCreate}
+          />
+        )
+      }
+      secondPanel={
+        showCreate ? (
+          <CreateDisplay form={form} userData={userData} />
+        ) : (
+          <RequestDisplay
+            userData={userData}
+            updateRequestGrouping={updateRequestGrouping}
+            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+            handleTimezoneOffset={(date: Date) =>
+              new Date(date.getTime() - new Date().getTimezoneOffset() * 60000)
+            }
+            form={form}
+          />
+        )
+      }
+    />
   );
 }

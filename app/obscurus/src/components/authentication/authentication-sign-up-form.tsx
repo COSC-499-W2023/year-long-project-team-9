@@ -204,6 +204,7 @@ export default function SignUpForm({
       )}
       {signUpState === "verifyEmail" && (
         <SignUpVerifyEmailForm
+
           email={signUpEmailNames.email}
           loading={loading}
           setDialogState={setDialogState}

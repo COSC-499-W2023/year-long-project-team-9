@@ -21,19 +21,41 @@ import { X } from "lucide-react";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import UpdatePasswordForm from "./authentication-update-password-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
+import { useUserData } from "@/app/user-provider";
+import { Users } from "@obscurus/database/src/sql.generated";
+
 
 export default function AuthenticationSignedIn({
-  userName,
-  profileImage,
+  user,
+  getProfileImgPresignedUrl
 }: {
-  userName: string[];
-  profileImage: string;
+  user?: Users;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
+
+
+  const [profileImageUrl, setProfileImageUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (user?.profileImage && getProfileImgPresignedUrl) {
+        const url = await getProfileImgPresignedUrl(user.profileImage);
+        setProfileImageUrl(url);
+      }
+    };
+
+    fetchProfileImage();
+  }, [user]);
+
+  const userEmail = user?.email || "";
+  const firstName = user?.givenName || "";
+  const lastName = user?.familyName || "";
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
   async function handleLogOut() {
     try {
       await signOut();
@@ -43,14 +65,18 @@ export default function AuthenticationSignedIn({
       console.log(error);
     }
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="hover:cursor-pointer">
-          <AvatarImage src={profileImage} alt={userName[0] + " " + userName[1]} />
-          <AvatarFallback>
-            {userName[0].charAt(0) + userName[1].charAt(0)}
-          </AvatarFallback>
+        <Avatar className="hover:cursor-pointer w-6 h-6 text-xs ml-1">
+          {profileImageUrl ? (
+            <AvatarImage src={profileImageUrl} alt={firstName + " " + lastName} />
+          ) : (
+            <AvatarFallback>
+              {firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          )}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -68,7 +94,7 @@ export default function AuthenticationSignedIn({
             <DropdownMenuItem>Profile</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
-          <AlertDialog open={isOpen} onOpenChange={() => setIsOpen(true)}>
+          <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
               <span className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
                 Change Password

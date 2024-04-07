@@ -11,7 +11,6 @@ export interface SubmissionsForRequest {
   isRead: boolean;
   submittedDate: Date | null;
   requestId: string;
-  url: string | null;
 }
 
 export const SubmissionsForRequestSchema = z.object({
@@ -23,5 +22,4 @@ export const SubmissionsForRequestSchema = z.object({
   isRead: z.boolean(),
   submittedDate: z.string().or(z.date()).nullable(),
   requestId: z.string(),
-  url: z.string().nullable(),
 });

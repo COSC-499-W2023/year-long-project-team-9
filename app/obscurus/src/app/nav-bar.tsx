@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { use, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -20,6 +20,9 @@ import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
 import Authentication from "@/components/authentication/authentication";
+import { useUserData } from "./user-provider";
+import { useUser } from "./hooks/use-user";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 const NavBar = ({
   readNotification,
@@ -30,10 +33,8 @@ const NavBar = ({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  signedIn,
-  email,
-  name,
-  profileImage,
+  user,
+  getProfileImgPresignedUrl
 }: {
   readNotification: Function;
   deleteNotifications: Function;
@@ -43,14 +44,13 @@ const NavBar = ({
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
-  signedIn: boolean;
-  email: string;
-  name: string[];
-  profileImage: string;
+  user?: any;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
+
 
   const ThemeSwitcher = () => {
     return (
@@ -75,10 +75,10 @@ const NavBar = ({
     );
   };
 
-  const Navigation = () => {
+  const Navigation = ({ user }: { user: Users }) => {
     return (
       <NavigationMenu className="flex flex-row space-x-6 ">
-        <Link href="/" className="">
+        <Link href={user ? "/request" : "/"} className="">
           <Image
             className="min-h-full min-w-full"
             src="/logo.svg"
@@ -88,29 +88,40 @@ const NavBar = ({
           />
         </Link>
 
-        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-5  ">
+        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-2 ">
           <Link href="/" className="">
             <NavigationMenuItem className="font-bold text-lg">
               obscurus
             </NavigationMenuItem>
           </Link>
-          <NavigationMenuItem
+          {!user && (
+            <>
+              <NavigationMenuItem
+                className="font-semibold text-sm cursor-pointer"
+                onClick={() => {
+                  scroll("features");
+                }}
+              >
+                Features
+              </NavigationMenuItem>
+              <NavigationMenuItem
+                className="font-semibold text-sm cursor-pointer"
+                onClick={() => {
+                  scroll("how-to");
+                }}
+              >
+                Getting Started
+              </NavigationMenuItem>
+            </>
+          )}
+          {/* <NavigationMenuItem
             className="font-semibold text-sm cursor-pointer"
             onClick={() => {
-              scroll("features");
+              scroll("about");
             }}
           >
-            Features
-          </NavigationMenuItem>
-
-          <NavigationMenuItem
-            className="font-semibold text-sm cursor-pointer"
-            onClick={() => {
-              scroll("how-to");
-            }}
-          >
-            Getting Started
-          </NavigationMenuItem>
+            About
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     );
@@ -118,14 +129,13 @@ const NavBar = ({
 
   return (
     <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
-      <Navigation />
-      <div className="flex flex-row gap-2">
+      <Navigation user={user} />
+      <div className="flex flex-row gap-2 items-center">
         <Notifications
-          email={email}
-          signedIn={signedIn}
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
           getNotificationsViaEmail={getNotificationsViaEmail}
+          user={user}
         />
         <ThemeSwitcher />
         <Authentication
@@ -134,9 +144,8 @@ const NavBar = ({
           resendConfirmSignUpUser={resendConfirmSignUpUser}
           resetUserPassword={resetUserPassword}
           confirmResetUserPassword={confirmResetUserPassword}
-          signedIn={signedIn}
-          name={name}
-          profileImage={profileImage}
+          user={user}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
         />
       </div>
     </div>

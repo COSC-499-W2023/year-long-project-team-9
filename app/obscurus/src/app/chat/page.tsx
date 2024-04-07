@@ -48,8 +48,6 @@ async function Chat() {
   const rooms: Rooms[] = await getRoomsViaEmail(email);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
-  const websocketApiEndpoint =
-    (process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string) ?? "";
 
   if (userNames) {
     const getProfileImage = async () => {
@@ -97,7 +95,6 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={email}
-      websocketApiEndpoint={websocketApiEndpoint}
       rooms={rooms}
       userNames={userNames}
       messages={messages}

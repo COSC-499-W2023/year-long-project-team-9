@@ -1,9 +1,9 @@
 import { atom, useAtom } from "jotai"
-import { Requests } from "@obscurus/database/src/sql.generated"
+import { EnrichedRequests } from "@obscurus/database/src/types/enrichedRequests"
 
 
 type Config = {
-  requestId: Requests["requestId"] | null
+  requestId: EnrichedRequests["requestId"] | null
 }
 
 const configAtom = atom<Config>({

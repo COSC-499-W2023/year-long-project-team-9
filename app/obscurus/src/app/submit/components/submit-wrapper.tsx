@@ -9,6 +9,8 @@ import { useWebSocket } from "@/app/ws-provider";
 import PanelLoader1 from "./panel-1-loader";
 import PanelLoader2 from "./panel-2-loader";
 import { EnrichedSubmissions } from "@obscurus/database/src/types/enrichedSubmission";
+import { useUserData } from "@/app/user-provider";
+import { set } from "date-fns";
 
 export const SubmitWrapper = ({
   userEmail,
@@ -21,6 +23,7 @@ export const SubmitWrapper = ({
   defaultLayout,
   defaultCollapsed,
   setSubmittedDate,
+  user,
   getProfileImgPresignedUrl,
 }: {
   userEmail: string;
@@ -38,14 +41,17 @@ export const SubmitWrapper = ({
   defaultLayout: number[];
   defaultCollapsed: boolean;
   setSubmittedDate?: Function;
+  user?: any;
   getProfileImgPresignedUrl?: (username: string) => any;
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
-  const [loading, setLoading] = useState(false);
+
+
 
   useEffect(() => {
     if (!ws) return;
+
 
     const handleWebSocketMessages = (event: any) => {
       const { action, data } = JSON.parse(event.data);
@@ -57,11 +63,20 @@ export const SubmitWrapper = ({
               submission.submissionId === data.submissionId
                 ? { ...submission, status: data.newStatus }
                 : submission
-            )
+            ).filter((submission: any) => submission.status !== "TRASHED")
           );
           break;
         case "updateSubmissions":
           setSubmissions(data.submissions);
+          break;
+        case "updateSubmissionIsRead":
+          setSubmissions((currentSubmissions: any) =>
+            currentSubmissions.map((submission: any) =>
+              submission.submissionId === data.submissionId
+                ? { ...submission, isRead: data.isRead }
+                : submission
+            )
+          );
           break;
         default:
           break;
@@ -115,18 +130,32 @@ export const SubmitWrapper = ({
     }
   };
 
+  const updateSubmissionIsRead = async ( submissionId: string, isRead: boolean) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = JSON.stringify({
+        action: "updateSubmissionIsRead",
+        data: { submissionId, isRead },
+      });
+      ws.send(message);
+    } else {
+      console.error("WebSocket not connected");
+    }
+  }
+
+
   useEffect(() => {
-    setLoading(true);
+    if (!user) return;
+
     const fetchUserData = async () => {
-      console.log("Fetching user data");
       if (getRequestsAndSubmissionsByEmail) {
-        const data = await getRequestsAndSubmissionsByEmail(userEmail);
-        console.log("User data:", data);
+        const data = await getRequestsAndSubmissionsByEmail(
+         user?.email
+        );
         data?.submissions && setSubmissions(data.submissions);
       }
     };
-    fetchUserData().then(() => setLoading(false));
-  }, []);
+    fetchUserData();
+  }, [user]);
 
   return (
     <Wrapper
@@ -134,7 +163,10 @@ export const SubmitWrapper = ({
       defaultCollapsed={defaultCollapsed}
       navCollapsedSize={4}
       firstPanel={
-        <SubmitList submissions={submissions as EnrichedSubmissions[]} />
+          <SubmitList
+            submissions={submissions as EnrichedSubmissions[]}
+            updateSubmissionIsRead={updateSubmissionIsRead}
+          />
       }
       secondPanel={
         <SubmitDisplay

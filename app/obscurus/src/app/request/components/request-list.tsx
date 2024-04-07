@@ -7,24 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Requests, Submissions } from "stack/database/src/sql.generated";
-import { useRouter } from "next/navigation";
-import {
-  Filter,
-  Link,
-  Megaphone,
-  RocketIcon,
-  Search,
-  Send,
-  SortAscIcon,
-  SortDescIcon,
-  XCircle,
-} from "lucide-react";
-import Nav from "../../../components/nav";
-import { request } from "@playwright/test";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { Search, Send, SortDescIcon, XCircle } from "lucide-react";
 import {} from "@radix-ui/react-tabs";
 import { Input } from "../../../components/ui/input";
-import { useQueryState } from "nuqs";
 import { TabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -38,52 +23,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import RequestHeader from "@/app/request/components/request-header";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/modified-shadcn-ui-components/modified-alert";
-import { RequestListAlert } from "./request-list-alert";
-import { SubmissionsForRequest } from "../types/types-for-request";
-
-interface RequestsListProps {
-  requests: Requests[];
-  submissions: Submissions[];
-  isCollapsed?: boolean;
-  handleTimezoneOffset: Function;
-  setCreate: Function;
-}
+import { EnrichedRequests } from "@obscurus/database/src/types/enrichedRequests";
+import { useRequest } from "@/app/hooks/use-request";
+import { useSearch } from "@/app/hooks/use-search";
+import { useSort } from "@/app/hooks/use-sort";
+import { useTab } from "@/app/hooks/use-tab";
+import PanelLoader from "@/app/submit/components/panel-1-loader";
 
 export default function RequestList({
   requests,
-  submissions,
-  handleTimezoneOffset,
+  // handleTimezoneOffset,
   setShowCreate,
-  requestId,
-  setRequestId,
 }: {
-  requests: Requests[];
-  submissions: SubmissionsForRequest[];
-  isCollapsed?: boolean;
-  handleTimezoneOffset: Function;
+  requests: EnrichedRequests[];
+  // handleTimezoneOffset: Function;
   setShowCreate: Function;
-  requestId: string | null;
-  setRequestId: Function;
 }) {
-  const [search, setSearch] = useState<string>("");
-  const [sort, setSort] = useState<string>("sort");
-  const [tab, setTab] = useState<string>("tab");
+  const [request, setRequest] = useRequest();
+  const [search, setSearch] = useSearch();
+  const [sort, setSort] = useSort();
+  const [tab, setTab] = useTab();
 
-  const getAssociatedSubmission = (requestId: string | null) => {
-    if (requestId) {
-      return submissions.find((item) => requestId === item.requestId);
-    }
-    return null;
-  };
-
-  const sortRequests = (a: Requests, b: Requests) => {
-    switch (sort) {
+  const sortRequests = (a: EnrichedRequests, b: EnrichedRequests) => {
+    switch (sort.sort) {
       case "newest":
         return (
           new Date(b.creationDate).getTime() -
@@ -99,11 +61,12 @@ export default function RequestList({
     }
   };
 
-  const sortedRequests = requests?.sort(sortRequests);
+  console.log("Requests in request list", requests);
+  const sortedRequests =
+    requests && requests?.map((request) => request).sort(sortRequests);
 
-  const handleClick = (item: Requests) => {
-    setRequestId(item.requestId);
-    console.log("Selected RequestID to list", requestId);
+  const handleClick = (item: EnrichedRequests) => {
+    setRequest(item);
   };
 
   const statuses = ["all", "archived"];
@@ -119,7 +82,7 @@ export default function RequestList({
       const matchesStatus =
         status === "all" || request.grouping?.toLowerCase() === status;
 
-      const searchTerm = search.toLowerCase();
+      const searchTerm = search && search.search?.toLowerCase();
       const matchesSearch =
         !searchTerm ||
         request.requestTitle.toLowerCase().includes(searchTerm) ||
@@ -129,7 +92,9 @@ export default function RequestList({
     });
 
     return (
-      <TabsContent key={status} value={status}>
+      <TabsContent key={status} value={status}  className={`${
+        requests ? " overflow-y-scroll h-full mb-4" : "overflow-y-hidden"
+      }`}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRequests?.length === 0 && (
             <div className="flex flex-col w-full h-full justify-center items-center">
@@ -138,12 +103,12 @@ export default function RequestList({
               </div>
             </div>
           )}
-          {filteredRequests.map((item) => (
+          {filteredRequests?.map((item) => (
             <button
-              key={item.requestId} // Use submissionId for key as requestId could be duplicated in filteredRequests
+              key={item.requestId}
               className={cn(
                 "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-                requestId === item.requestId // Use condition based on submission state
+                request?.requestId === item.requestId
                   ? "bg-accent text-foreground"
                   : "bg-background border-muted-border"
               )}
@@ -161,10 +126,8 @@ export default function RequestList({
 
                   <div className="ml-auto text-xs w-full flex justify-end">
                     {formatDistanceToNow(
-                      handleTimezoneOffset(item.creationDate),
-                      {
-                        addSuffix: true,
-                      }
+                      new Date(item.creationDate),
+                      { addSuffix: true }
                     )}
                   </div>
                 </div>
@@ -181,25 +144,17 @@ export default function RequestList({
                 {item.description}
               </div>
               <div className="flex items-center gap-2">
-                {completed(
-                  submissions.filter(
-                    (value) => value.requestId === item.requestId
-                  )
-                ) === false ? (
+                {item.grouping === "COMPLETED" && (
                   <Badge variant={getBadgeVariantFromLabel("due-date")}>
                     Due{" "}
-                    {formatDistanceToNow(handleTimezoneOffset(item.dueDate), {
+                    {formatDistanceToNow(item.dueDate, {
                       addSuffix: true,
                     })}
                   </Badge>
-                ) : (
-                  <></>
                 )}
 
-                {item.grouping === "ARCHIVED" ? (
+                {item.grouping === "ARCHIVED" && (
                   <Badge variant={"default"}>Archived</Badge>
-                ) : (
-                  <></>
                 )}
               </div>
             </button>
@@ -213,7 +168,7 @@ export default function RequestList({
     <Tabs
       defaultValue="all"
       className="h-full flex flex-col gap-3 pt-2"
-      onValueChange={(newValue) => setTab(newValue)}
+      onValueChange={(newValue) => setTab({ tab: newValue })}
     >
       <div className="flex justify-between items-center px-4">
         <h1 className="text-xl font-semibold">Request</h1>
@@ -222,7 +177,7 @@ export default function RequestList({
           variant="ghost"
           onClick={() => {
             setShowCreate(true);
-            setRequestId(null);
+            setRequest({ ...request, requestId: request.requestId });
           }}
         >
           <Send className="mr-2 h-4 w-4" />
@@ -236,45 +191,53 @@ export default function RequestList({
             <Input
               placeholder="Search"
               className="pl-8"
-              onChange={(e) => setSearch(e.target.value)}
-              value={search || ""}
+              onChange={(e) => setSearch({ search: e.target.value })}
+              value={search.search || ""}
             />
             {search && (
               <XCircle
                 className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
-                onClick={() => setSearch("")}
-                visibility={search ? "visible" : "hidden"}
+                onClick={() => setSearch({ ...search, search: null })}
+                visibility={search.search ? "visible" : "hidden"}
               />
             )}
           </div>
         </form>
       </div>
-      <div className="flex flex-row items-center justify-between px-4">
+      <div className="flex flex-row items-center justify-between pl-4 pr-4">
         <TabsList>{tabsTriggers}</TabsList>
         <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className=""
+                  disabled={!requests || requests.length === 0}
+                >
                   <SortDescIcon className="w-4 h-4  " />
-                  <span className="sr-only">Filter Results</span>
+                  <span className="sr-only">Sort Results</span>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setSort("newest")}>
-                  Newest
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSort("oldest")}>
-                  Oldest
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TooltipTrigger>
-          <TooltipContent>Filter</TooltipContent>
+              </TooltipTrigger>
+            </DropdownMenuTrigger>
+            <TooltipContent>Sort Requests</TooltipContent>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setSort({ sort: "newest" })}>
+                Newest
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSort({ sort: "oldest" })}>
+                Oldest
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSort({ sort: "due" })}>
+                Due
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </Tooltip>
       </div>
       <Separator />
-      <div className="h-full overflow-y-scroll">{tabsContent}</div>
+      {requests ? tabsContent : <PanelLoader />}
     </Tabs>
   );
 }
@@ -289,17 +252,4 @@ function getBadgeVariantFromLabel(
     return "outline";
   }
   return "secondary";
-}
-
-// function used to see if due date should be displayed
-function completed(submissions: Submissions[]) {
-  for (let i = 0; i < submissions.length; i++) {
-    if (
-      submissions[i].status !== "COMPLETED" &&
-      submissions[i].status !== "ARCHIVED"
-    ) {
-      return false;
-    }
-  }
-  return true;
 }

@@ -240,6 +240,16 @@ export default function SiteStack({ stack }: StackContext) {
           handler: "stack/lambdas/updateUser.handler",
         },
       },
+      "POST /getEnrichedRequestsByEmail": {
+        function: {
+          handler: "stack/lambdas/getEnrichedRequestsByEmail.handler",
+        },
+      },
+      "POST /updateRequest": {
+        function: {
+          handler: "stack/lambdas/updateRequest.handler",
+        },
+      },
     },
   });
 
@@ -255,6 +265,7 @@ export default function SiteStack({ stack }: StackContext) {
       sendmessage: "stack/lambdas/chat/sendMessage.main",
       updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
       newNotification: "stack/lambdas/newNotification.main",
+      updateSubmissionIsRead: "stack/lambdas/updateSubmissionIsRead.main",
     },
   });
 

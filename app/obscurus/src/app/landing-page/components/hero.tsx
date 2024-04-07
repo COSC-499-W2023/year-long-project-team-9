@@ -123,12 +123,12 @@ const Mascot = ({isBlurred, isVisible} : {isBlurred: boolean, isVisible: boolean
 
 const Hero = () => {
   const [isBlurred, setBlurred] = useState(true);
-  const [isVisible, setVisible] = useState(false);
+  const [isVisible, setVisible] = useState(true);
 
-  useEffect(() => {
-    setVisible(true);
-    setBlurred(true);
-  }, []);
+  // useEffect(() => {
+  //   setVisible(true);
+  //   setBlurred(true);
+  // }, []);
 
   return (
     <div

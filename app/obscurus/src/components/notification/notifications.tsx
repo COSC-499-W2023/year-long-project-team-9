@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Notifications as NotificationsType } from "@obscurus/database/src/sql.generated";
+import { Notifications as NotificationsType, Users } from "@obscurus/database/src/sql.generated";
 import Link from "next/link";
 import { CardTitle } from "../ui/card";
 import { useEffect } from "react";
@@ -23,29 +23,31 @@ import {
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { motion } from "framer-motion";
+import { read } from "fs";
+import { useUserData } from "@/app/user-provider";
 
 export default function Notifications({
-  email,
-  signedIn,
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
+  user
 }: {
-  email: string;
-  signedIn: boolean;
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
+  user?: Users
 }) {
   const [notifcations, setNotifications] = useNotifications();
   const [hasUnreadNotifications, setHasUnreadNotifications] =
     useHasUnreadNotifications();
   const ws = useWebSocket();
 
+
   useEffect(() => {
     const fetchInitialNotifications = async () => {
       try {
-        const data = await getNotificationsViaEmail(email);
+        const data = await getNotificationsViaEmail("imightbejan@gmail.com");
         setNotifications(data.notifications);
         setHasUnreadNotifications(
           data.notifications.some(
@@ -84,7 +86,7 @@ export default function Notifications({
     };
   }, [ws, getNotificationsViaEmail]);
 
-  return signedIn ? (
+  return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
@@ -93,7 +95,7 @@ export default function Notifications({
           </Button>
           {hasUnreadNotifications && (
             <div
-              className="absolute top-3 right-32 mt-2 h-2 w-2 rounded-full bg-blue-600  "
+              className="absolute top-3 right-[105px] mt-2 h-2 w-2 rounded-full bg-blue-600  "
               aria-label="Unread Notification"
             ></div>
           )}

@@ -70,11 +70,11 @@ export default function CreateDisplay({
               <TooltipContent>Move to trash</TooltipContent>
             </Tooltip>
           </div>
-          <div className="flex ml-auto pr-1">
+          <div className="flex ml-auto">
             <Button variant={"ghost"} disabled={true}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <ListVideo className="w-4 h-4" />
+                  <ListVideo className="w-4 h-4 ml-5" />
                 </TooltipTrigger>
                 <TooltipContent>View Video List</TooltipContent>
               </Tooltip>

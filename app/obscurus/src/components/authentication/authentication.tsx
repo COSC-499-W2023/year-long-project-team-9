@@ -1,6 +1,8 @@
 "use client";
+import { useUserData } from "@/app/user-provider";
 import AuthenticationSignedIn from "./authentication-signed-in";
 import AuthenticationSignedOut from "./authentication-signed-out";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 export default function Authentication({
   signUpUser,
@@ -8,23 +10,26 @@ export default function Authentication({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  signedIn,
-  name,
-  profileImage,
+  user,
+  getProfileImgPresignedUrl,
+
 }: {
   signUpUser: Function;
   confirmSignUpUser: Function;
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
-  signedIn: boolean;
-  name: string[];
-  profileImage: string;
+  user?: Users;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
-  return signedIn ? (
+
+
+  return user ? (
     <AuthenticationSignedIn
-      userName={name}
-      profileImage={profileImage} />
+      user={user}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+    />
+
   ) : (
     <AuthenticationSignedOut
       signUpUser={signUpUser}
@@ -32,6 +37,7 @@ export default function Authentication({
       resendConfirmSignUpUser={resendConfirmSignUpUser}
       resetUserPassword={resetUserPassword}
       confirmResetUserPassword={confirmResetUserPassword}
+      user={user}
     />
   );
 }
