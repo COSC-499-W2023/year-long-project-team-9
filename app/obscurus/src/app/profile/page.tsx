@@ -45,11 +45,9 @@ async function Account() {
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(email);
   const requests: Requests[] = requestPageData.request;
-  // const submissions: Submissions[] = requestPageData.submissions;
   const submissions: Submissions[] = await getSubmissions();
   const requestNum = requests.length;
   console.log("requests", requestNum);
-  // console.log("submitssions", submissions);
 
   const filteredSubmissions: Submissions[] = submissions.filter(submission => {
     return (
