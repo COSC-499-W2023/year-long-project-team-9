@@ -2,18 +2,18 @@
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
-import { MessageCircle, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useEffect, useState } from "react";
-import { profile } from "console";
 
 interface ChatListProps {
   userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
+  roomId: string | undefined;
+  setRoomId: Function;
   getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
   getOtherParticipantInitials: Function;
@@ -32,6 +32,8 @@ export default function ChatList({
   userEmail,
   rooms,
   messages,
+  roomId,
+  setRoomId,
   getOtherParticipantEmail,
   getOtherParticipantName,
   getOtherParticipantInitials,
@@ -45,7 +47,6 @@ export default function ChatList({
   getOtherParticipantProfileImg,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
-  const [roomId, setRoomId] = useQueryState("roomId");
 
   const handleClick = (item: Rooms) => {
     setChatScrollBoolean(true);
@@ -90,7 +91,9 @@ export default function ChatList({
             <div className="flex flex-row gap-2 w-full">
               <Avatar>
                 <AvatarImage
-                  src={getOtherParticipantProfileImg(getOtherParticipantEmail(item))}
+                  src={getOtherParticipantProfileImg(
+                    getOtherParticipantEmail(item)
+                  )}
                   alt={getOtherParticipantName(getOtherParticipantEmail(item))}
                 />
                 <AvatarFallback>
@@ -135,7 +138,7 @@ export default function ChatList({
                   {getLatestMessage(item) != undefined &&
                     getLatestMessage(item).messageContent.length > 24 &&
                     getLatestMessage(item).messageContent?.substring(0, 24) +
-                    "..."}
+                      "..."}
                   {getLatestMessage(item) != undefined &&
                     getLatestMessage(item).messageContent.length <= 24 &&
                     getLatestMessage(item).messageContent}
