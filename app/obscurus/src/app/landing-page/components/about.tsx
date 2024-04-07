@@ -40,7 +40,7 @@ const About = () => {
           </g>
         </svg>
 
-        <Image src="aws.svg" height={100} width={100} alt="aws" data-testid="aws" />
+        <Image src="/aws.svg" height={100} width={100} alt="aws" data-testid="aws" />
       </div>
     </div>
   );

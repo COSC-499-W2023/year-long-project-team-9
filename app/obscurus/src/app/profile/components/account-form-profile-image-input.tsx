@@ -35,7 +35,7 @@ export default function ProfileImageInput({
             button?.click();
           }}
         >
-          Browse
+          {userData.profileImage ? ( userData.profileImage ) : "No file selected"}
           <div className="ml-auto">
             <FileUp className="mr-2 h-4 w-4" />
           </div>
@@ -49,8 +49,11 @@ export default function ProfileImageInput({
         />
       </div>
       <FormDescription className="text-justify">
-        Other users will see you profile image. Profile picture must be a .jpeg,
-        .png, or .jpg; and no larger than 10 MB.
+        Accepted filetypes: jpeg,
+        .png, .jpg
+      </FormDescription>
+      <FormDescription className="text-justify">
+        File size limit: 10MB
       </FormDescription>
       {form.getFieldState("profileImage").error && (
         <FormMessage>

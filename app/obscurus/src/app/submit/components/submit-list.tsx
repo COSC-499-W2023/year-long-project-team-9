@@ -50,8 +50,10 @@ import Link from "next/link";
 
 export default function SubmitList({
   submissions,
+  updateSubmissionIsRead,
 }: {
   submissions: EnrichedSubmissions[];
+  updateSubmissionIsRead: Function;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [search, setSearch] = useSearch();
@@ -69,13 +71,17 @@ export default function SubmitList({
           )) ||
         null;
       if (submission) {
+        console.log(updateSubmissionIsRead)
         setSubmission({ ...submission, submissionId: submission.submissionId });
+        if (submission.isRead === false) {
+          updateSubmissionIsRead(submission.submissionId, true);
+        }
       }
     }
   };
 
   const clearSearch = () => {
-    setSearch({ ...search, search: null });
+
   };
 
   const sortRequests = (a: EnrichedSubmissions, b: EnrichedSubmissions) => {
@@ -99,6 +105,7 @@ export default function SubmitList({
         return 0;
     }
   };
+
 
   const sortedRequests = submissions?.sort(sortRequests);
 
@@ -138,7 +145,7 @@ export default function SubmitList({
         key={status}
         value={status}
         className={`${
-          submissions ? " overflow-y-scroll h-full" : "overflow-y-hidden"
+          submissions ? " overflow-y-scroll h-full mb-4" : "overflow-y-hidden"
         }`}
       >
         <div className="flex flex-col gap-2 p-4 pt-0 h-full ">
@@ -179,6 +186,7 @@ export default function SubmitList({
                     <div className="font-semibold text-ellipsis line-clamp-1">
                       {item.requestDetails.requestTitle}
                     </div>
+                    {!item.isRead && <span className="flex p-1 rounded-full bg-blue-600" />}
                   </div>
 
                   <div className="ml-auto text-xs w-full flex justify-end">

@@ -1,7 +1,6 @@
-
 import { atom } from 'jotai';
+import { Requests, Submissions } from '@obscurus/database/src/sql.generated';
 
-export const layoutAtom = atom({ defaultLayout: undefined, defaultCollapsed: undefined });
-export const selectedRequestAtom = atom(null);
-export const requestsAtom = atom([]);
-export const submissionsAtom = atom([]);
+export const requestsAtom = atom<Requests[]>([]);
+export const submissionsAtom = atom<Submissions[]>([]);
+export const selectedRequestAtom = atom<Requests | null>(null);

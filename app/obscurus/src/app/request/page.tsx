@@ -5,27 +5,35 @@ import {
   Requests,
   Submissions,
 } from "@obscurus/database/src/sql.generated";
-import { getUserViaEmail } from "../functions/getUserData";
+import { getUserViaEmail } from "../functions/getUserViaEmail";
 import RequestWrapper from "./components/request-wrapper";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import trashRequest from "../functions/trashRequest";
 import unarchiveRequest from "../functions/unarchiveRequest";
 import archiveRequest from "../functions/archiveRequest";
 import createRequest from "./components/create/function/createRequest";
-import { SubmissionsForRequest } from "./types/types-for-request";
-import getPresignedUrl from "../functions/getPresignedUrl";
+import { redirect } from "next/navigation";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
 import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
+import getEnrichedRequestsByEmail from "../functions/getEnrichedRequestsByEmail";
 import { getCurrentUser } from "aws-amplify/auth/server";
+import updateRequest from "../functions/updateRequest";
 
 async function Request() {
+  const layout = cookies().get("react-resizable-panels:layout");
+  const collapsed = cookies().get("react-resizable-panels:collapsed");
+  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
+  const defaultCollapsed =
+    collapsed && collapsed.value !== "undefined"
+      ? JSON.parse(collapsed.value)
+      : undefined;
+
   async function getCurrentUserServer() {
     try {
       const currentUser = await runWithAmplifyServerContext({
         nextServerContext: { cookies },
         operation: (contextSpec) => getCurrentUser(contextSpec),
       });
-      console.log(currentUser);
       return {
         signedIn: true,
         email: currentUser.signInDetails?.loginId ?? "",
@@ -35,62 +43,27 @@ async function Request() {
       return { signedIn: false, email: "" };
     }
   }
-  const layout = cookies().get("react-resizable-panels:layout");
-  const collapsed = cookies().get("react-resizable-panels:collapsed");
-  const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
-  const defaultCollapsed =
-    collapsed && collapsed.value !== "undefined"
-      ? JSON.parse(collapsed.value)
-      : undefined;
-
   const { signedIn, email } = await getCurrentUserServer();
-  const userData: Users = await getUserViaEmail(email);
-  const requestPageData: { request: Requests[]; submissions: Submissions[] } =
-    await getRequestsViaEmail(email);
-  const request: Requests[] = requestPageData.request;
-  const submissionsDataRequest: Submissions[] = requestPageData.submissions;
-  const submissions: SubmissionsForRequest[] = [];
-  for (let i = 0; i < submissionsDataRequest.length; i++) {
-    const url = await getPresignedUrl(submissionsDataRequest[i].submissionId);
-    if (!url) {
-      submissions.push({
-        submissionId: submissionsDataRequest[i].submissionId,
-        requesteeEmail: submissionsDataRequest[i].requesteeEmail,
-        status: submissionsDataRequest[i].status,
-        title: submissionsDataRequest[i].title,
-        grouping: submissionsDataRequest[i].grouping,
-        isRead: submissionsDataRequest[i].isRead,
-        submittedDate: submissionsDataRequest[i].submittedDate,
-        requestId: submissionsDataRequest[i].requestId,
-        url: null,
-      });
-    } else {
-      submissions.push({
-        submissionId: submissionsDataRequest[i].submissionId,
-        requesteeEmail: submissionsDataRequest[i].requesteeEmail,
-        status: submissionsDataRequest[i].status,
-        title: submissionsDataRequest[i].title,
-        grouping: submissionsDataRequest[i].grouping,
-        isRead: submissionsDataRequest[i].isRead,
-        submittedDate: submissionsDataRequest[i].submittedDate,
-        requestId: submissionsDataRequest[i].requestId,
-        url: url,
-      });
-    }
+
+  const userData = await getUserViaEmail(email);
+
+
+  if (!userData) {
+    redirect("/");
   }
 
   return (
     <RequestWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      request={request}
-      submissions={submissions}
-      userData={userData}
+      userData={userData.user}
       archiveRequest={archiveRequest}
       unarchiveRequest={unarchiveRequest}
       trashRequest={trashRequest}
       createRequest={createRequest}
       getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+      getEnrichedRequestsByEmail={getEnrichedRequestsByEmail}
+      updateRequest={updateRequest}
     />
   );
 }
