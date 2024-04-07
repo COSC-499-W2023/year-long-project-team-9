@@ -32,22 +32,36 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_combine(image, gaussian_kernel_size=(51, 51), median_kernel_size=51):
+def anonymize_face_median_blur(image, kernel_size=51):
     """
-    Applies a combined Gaussian and median blur to a given image.
+    Applies a median blur to an image to anonymize faces.
 
-    Args:
+    Parameters:
         image (ndarray): The image to be blurred.
-        gaussian_kernel_size (tuple): The size of the kernel used for Gaussian blurring.
-        median_kernel_size (int): The size of the kernel used for median blurring.
+        kernel_size (int): The size of the kernel. Larger values result in a more blurred image.
 
     Returns:
-        image (ndarray): The blurred image.
+        ndarray: The blurred image.
     """
-    blurred = cv2.GaussianBlur(image, gaussian_kernel_size, 0)
-    return cv2.medianBlur(blurred, median_kernel_size)
+    return cv2.medianBlur(image, kernel_size)
 
-def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, video_metadata):
+def apply_faces_to_video(
+    final_timestamps,
+    local_path_to_video,
+    local_output,
+    video_metadata,
+    blur_kernel_size=51,
+):
+    """
+    Applies face blurring to video frames based on detected face coordinates.
+
+    Parameters:
+        final_timestamps (dict): Timestamps and face bounding boxes.
+        local_path_to_video (str): Local path to the source video.
+        local_output (str): Local path for the output video.
+        video_metadata (dict): Metadata of the video, including frame rate and dimensions.
+        blur_kernel_size (int): The size of the blur kernel.
+    """
     frame_rate = video_metadata["FrameRate"]
     frame_height = video_metadata["FrameHeight"]
     frame_width = video_metadata["FrameWidth"]
@@ -55,13 +69,13 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
     height_delta = int(frame_height / 100)
 
     frame_counter = 0
-    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+    fourcc = cv2.VideoWriter_fourcc("M", "J", "P", "G")
     v = cv2.VideoCapture(local_path_to_video)
     out = cv2.VideoWriter(
         filename=local_output,
         fourcc=fourcc,
         fps=int(frame_rate),
-        frameSize=(frame_width, frame_height)
+        frameSize=(frame_width, frame_height),
     )
 
     while v.isOpened():
@@ -73,17 +87,17 @@ def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, vi
                 upper_bound = int(int(t) / 1000 * frame_rate + frame_rate / 2) + 1
                 if (frame_counter >= lower_bound) and (frame_counter <= upper_bound):
                     for f in faces:
-                        x = int(f['Left'] * frame_width) - width_delta
-                        y = int(f['Top'] * frame_height) - height_delta
-                        w = int(f['Width'] * frame_width) + 2 * width_delta
-                        h = int(f['Height'] * frame_height) + 2 * height_delta
+                        x = int(f["Left"] * frame_width) - width_delta
+                        y = int(f["Top"] * frame_height) - height_delta
+                        w = int(f["Width"] * frame_width) + 2 * width_delta
+                        h = int(f["Height"] * frame_height) + 2 * height_delta
 
                         x1, y1 = x, y
                         x2, y2 = x1 + w, y1 + h
 
-                        roi = frame[y1:y2, x1:x2]
-                        blurred_roi = anonymize_face_combine(roi)
-                        frame[y1:y2, x1:x2] = blurred_roi
+                        to_blur = frame[y1:y2, x1:x2]
+                        blurred = anonymize_face_median_blur(to_blur, kernel_size=blur_kernel_size)
+                        frame[y1:y2, x1:x2] = blurred
             out.write(frame)
             frame_counter += 1
         else:

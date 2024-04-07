@@ -100,6 +100,7 @@ export default function RequestWrapper({
 
   const updateRequestGrouping = async (requestId: string, grouping: string) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
+      console.log("Updating request grouping", requestId, grouping);
       const message = JSON.stringify({
         action: "updateRequestGrouping",
         data: { requestId, grouping },
@@ -165,43 +166,48 @@ export default function RequestWrapper({
   }, [userData]);
 
   return (
-    <Wrapper
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-      firstPanel={
-        showCreate ? (
-          <CreateForm
-            form={form}
-            onSubmit={onSubmit}
-            userData={userData}
-            setShowCreate={setShowCreate}
-          />
-        ) : (
-          <RequestList
-            requests={requests as EnrichedRequests[]}
-            // handleTimezoneOffset={(date: Date) =>
-            //   new Date(date.getTime() - new Date().getTimezoneOffset() * 60000)
-            // }
-            setShowCreate={setShowCreate}
-          />
-        )
-      }
-      secondPanel={
-        showCreate ? (
-          <CreateDisplay form={form} userData={userData} />
-        ) : (
-          <RequestDisplay
-            userData={userData}
-            updateRequestGrouping={updateRequestGrouping}
-            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-            handleTimezoneOffset={(date: Date) =>
-              new Date(date.getTime() - new Date().getTimezoneOffset() * 60000)
-            }
-            form={form}
-          />
-        )
-      }
-    />
+    <>
+      <Wrapper
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+        firstPanel={
+          showCreate ? (
+            <CreateForm
+              form={form}
+              onSubmit={onSubmit}
+              userData={userData}
+              setShowCreate={setShowCreate}
+            />
+          ) : (
+            <RequestList
+              requests={requests as EnrichedRequests[]}
+              // handleTimezoneOffset={(date: Date) =>
+              //   new Date(date.getTime() - new Date().getTimezoneOffset() * 60000)
+              // }
+              setShowCreate={setShowCreate}
+            />
+          )
+        }
+        secondPanel={
+          showCreate ? (
+            <CreateDisplay form={form} userData={userData} />
+          ) : (
+            <RequestDisplay
+              userData={userData}
+              updateRequestGrouping={updateRequestGrouping}
+              getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+              handleTimezoneOffset={(date: Date) =>
+                new Date(
+                  date.getTime() - new Date().getTimezoneOffset() * 60000
+                )
+              }
+              form={form}
+            />
+          )
+        }
+      />
+      {showCreate === true ? <SubmitStatusAlert /> : <></>}
+    </>
   );
 }

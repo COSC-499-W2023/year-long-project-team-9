@@ -21,14 +21,14 @@ export default function SubmitStatusAlert() {
           <AlertDialogHeader>
             <AlertDialogTitle>Success!</AlertDialogTitle>
             <AlertDialogDescription>
-              The submission process was a sucess.
+              Request sent.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <a href="/request">
               <Button variant="ghost">
                 <Inbox className="mr-2 h-4 w-4" />
-                Request
+                Back to Requests
               </Button>
             </a>
           </AlertDialogFooter>

@@ -55,6 +55,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Loading from "@/components/authentication/loading";
 
 export default function SubmitDisplay({
   getPresignedUrl,
@@ -116,7 +117,7 @@ export default function SubmitDisplay({
     };
 
     fetchProcessedVideo();
-  }, [submissionIdFromQuery, selected, getDownloadPresignedUrl]);
+  }, [submissionIdFromQuery, selected]);
 
   const canShowVideo =
     selected && selected.status === "COMPLETED" && processedVideo;
@@ -131,7 +132,6 @@ export default function SubmitDisplay({
     e.preventDefault();
     fileInputRef.current?.click();
   };
-
 
   const handleProcessVideo = async () => {
     if (!file) {
@@ -353,11 +353,7 @@ export default function SubmitDisplay({
             <AlertDialog>
               <TooltipTrigger asChild>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    disabled={!selected}
-                  >
+                  <Button variant="ghost" size="icon" disabled={!selected}>
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Move to trash</span>
                   </Button>
@@ -365,14 +361,18 @@ export default function SubmitDisplay({
               </TooltipTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure you want to trash this request?</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    Are you sure you want to trash this request?
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleTrash}>Continue</AlertDialogAction>
+                  <AlertDialogAction onClick={handleTrash}>
+                    Continue
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -408,7 +408,6 @@ export default function SubmitDisplay({
 
   const canUpload = () => {
     if (selected) {
-
       if (selected.status === "TODO") {
         return true;
       } else {
@@ -432,7 +431,7 @@ export default function SubmitDisplay({
           <div className="flex flex-col w-full h-full">
             <>
               {objectURL && !loading && file && (
-                <>
+                <Suspense fallback={<Loading />}>
                   <VideoPlayer videoUrl={objectURL} filename={file?.name} />
                   <div className="flex w-full  justify-between py-4">
                     <Button
@@ -445,7 +444,7 @@ export default function SubmitDisplay({
                       Submit Video
                     </Button>
                   </div>
-                </>
+                </Suspense>
               )}
             </>
           </div>
@@ -485,8 +484,9 @@ export default function SubmitDisplay({
           </div>
           <Separator className="text-muted-foreground my-2" /> */}
           <div
-            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg space-y-5 ${isDragActive ? "border-2 border-dashed border-primary" : ""
-              }`}
+            className={`flex flex-col w-full h-full justify-center items-center bg-accent rounded-lg space-y-5 ${
+              isDragActive ? "border-2 border-dashed border-primary" : ""
+            }`}
             {...getRootProps()}
           >
             <input {...getInputProps()} style={{ display: "none" }} />
@@ -605,7 +605,10 @@ export default function SubmitDisplay({
         <div className="flex items-start p-4">
           <div className="flex items-start gap-4 text-sm max-w-[70%]">
             <Avatar className="mt-1.5">
-              <AvatarImage src={requesterProfileImage} alt={selected?.requester.givenName} />
+              <AvatarImage
+                src={requesterProfileImage}
+                alt={selected?.requester.givenName}
+              />
               <AvatarFallback>
                 {selected?.requester.givenName.charAt(0)}
                 {selected?.requester.familyName.charAt(0)}
@@ -659,8 +662,13 @@ export default function SubmitDisplay({
     );
   };
 
-  const [requesterProfileImage, setrequesterProfileImage] = useState<string | undefined>(undefined);
-  const getRequesterProfileImage = async (requester: any, requestDetails: any,) => {
+  const [requesterProfileImage, setrequesterProfileImage] = useState<
+    string | undefined
+  >(undefined);
+  const getRequesterProfileImage = async (
+    requester: any,
+    requestDetails: any
+  ) => {
     const imgkey = requester.profileImage;
     const requesterEmail = requestDetails.requesterEmail;
     if (requesterEmail && getProfileImgPresignedUrl) {
@@ -712,21 +720,24 @@ export default function SubmitDisplay({
         <RequestHeader selected={selected} />
 
         <div className="flex flex-col space-y-2 p-4">
-          <VideoPlayer
-            videoUrl={processedVideo ? processedVideo : ""}
-            filename={"Processed Video"}
-          />
-          {selected.submittedDate && (
-            <div className="text-xs text-muted-foreground">
-              Submitted on: {format(new Date(selected.submittedDate), "PPP, p")}
-            </div>
-          )}
-          {/* {selected.submittedDate && (
+          <Suspense fallback={<Loading />}>
+            <VideoPlayer
+              videoUrl={processedVideo ? processedVideo : ""}
+              filename={"Processed Video"}
+            />
+            {selected.submittedDate && (
+              <div className="text-xs text-muted-foreground">
+                Submitted on:{" "}
+                {format(new Date(selected.submittedDate), "PPP, p")}
+              </div>
+            )}
+            {/* {selected.submittedDate && (
               <div>
                 Submitted on:{" "}
                 {format(new Date(selected.submittedDate), "PPP, p")}
               </div>
             )} */}
+          </Suspense>
         </div>
 
         <div className="flex justify-start items-center space-x-3 p-3">
@@ -772,11 +783,11 @@ export default function SubmitDisplay({
           {/*Show video */}
 
           {iseShowingVideo.active &&
-            getPresignedUrl &&
-            getDownloadPresignedUrl &&
-            sendToService &&
-            submission &&
-            selected ? (
+          getPresignedUrl &&
+          getDownloadPresignedUrl &&
+          sendToService &&
+          submission &&
+          selected ? (
             <>
               {" "}
               <ViewProcessedVideo selected={selected} />

@@ -15,6 +15,7 @@ import {
 import * as cdk from "aws-cdk-lib";
 import { UserPoolEmail, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
+import updateRequest from "@/app/functions/updateRequest";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
@@ -267,6 +268,7 @@ export default function SiteStack({ stack }: StackContext) {
       updateSubmissionStatus: "stack/lambdas/updateSubmissionStatus.main",
       newNotification: "stack/lambdas/newNotification.main",
       updateSubmissionIsRead: "stack/lambdas/updateSubmissionIsRead.main",
+      updateRequestGrouping: "stack/lambdas/updateRequestGrouping.main",
     },
   });
 
