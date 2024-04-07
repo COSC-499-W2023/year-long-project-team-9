@@ -95,7 +95,6 @@ async function Chat() {
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
       userEmail={email}
-      websocketApiEndpoint={""}
       rooms={rooms}
       userNames={userNames}
       messages={messages}

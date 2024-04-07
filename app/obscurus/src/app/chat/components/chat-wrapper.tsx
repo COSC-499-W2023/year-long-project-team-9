@@ -4,6 +4,7 @@ import Wrapper from "../../wrapper";
 import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
+import { useWebSocket } from "@/app/ws-provider";
 
 type UserNames = {
   email: string;
@@ -16,7 +17,6 @@ interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userEmail: string;
-  websocketApiEndpoint: string;
   rooms: Rooms[];
   userNames: UserNames[];
   messages: Messages[];
@@ -31,7 +31,6 @@ export default function ChatWrapper({
   defaultLayout,
   defaultCollapsed,
   userEmail,
-  websocketApiEndpoint,
   rooms,
   userNames,
   messages,
@@ -41,9 +40,11 @@ export default function ChatWrapper({
   getProfileImgPresignedUrl,
   getUserViaEmail,
 }: ChatWrapperProps) {
+  const ws = useWebSocket();
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
   const [chatScrollBoolean, setChatScrollBoolean] = useState<boolean>(false);
+  const [roomId, setRoomId] = useState<string | undefined>();
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
@@ -80,7 +81,9 @@ export default function ChatWrapper({
     }
   };
 
-  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
+  const [profileImage, setProfileImage] = useState<string | undefined>(
+    undefined
+  );
   const getOtherParticipantProfileImg = (email: string) => {
     setProfileImage(undefined);
     const otherParticipant: UserNames[] = userNames.filter(
@@ -92,7 +95,7 @@ export default function ChatWrapper({
     }
     console.log("test", profileImage);
     return " ";
-  }
+  };
 
   const getProfileImage = async (imgkey: any) => {
     if (imgkey === null) {
@@ -147,7 +150,9 @@ export default function ChatWrapper({
   };
 
   useEffect(() => {
-    const ws = new WebSocket(websocketApiEndpoint);
+    if (!ws) {
+      return;
+    }
     ws.onopen = () => {
       console.log("Connected to WebSocket");
     };
@@ -171,7 +176,7 @@ export default function ChatWrapper({
       console.log("Disconnecting WebSocket");
       ws.close();
     };
-  }, [chatMessages]);
+  }, [ws, chatMessages]);
   const sendMessage = (messageData: string) => {
     if (socket) {
       socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
@@ -189,6 +194,8 @@ export default function ChatWrapper({
             userEmail={userEmail}
             rooms={chatRooms}
             messages={chatMessages}
+            roomId={roomId}
+            setRoomId={setRoomId}
             getOtherParticipantEmail={getOtherParticipantEmail}
             getOtherParticipantName={getOtherParticipantName}
             getOtherParticipantInitials={getOtherParticipantInitials}
@@ -207,6 +214,8 @@ export default function ChatWrapper({
             userEmail={userEmail}
             rooms={chatRooms}
             messages={chatMessages}
+            roomId={roomId}
+            setRoomId={setRoomId}
             getOtherParticipantEmail={getOtherParticipantEmail}
             getOtherParticipantName={getOtherParticipantName}
             getOtherParticipantInitials={getOtherParticipantInitials}
