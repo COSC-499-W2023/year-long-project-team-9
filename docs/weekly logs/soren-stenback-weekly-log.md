@@ -346,3 +346,20 @@
 ### Picture of T2 Week 12's Survey
 
 ![T2 Week 12 Survey](img/soren-stenback/T2Week12-Survey-ID4.png)
+
+---
+
+## T2 Week 13
+
+### April 1 - April 7, 2024
+
+- This week I worked on Milestone #6, Final Project Review.
+- The goals for this week were to finalise the codebase and write my final report.
+
+### Picture of Project Board
+
+![T2 Week 13 Project Board](img/soren-stenback/T2Week13-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 13's Survey
+
+![T2 Week 13 Survey](img/soren-stenback/T2Week13-Survey-ID4.png)
