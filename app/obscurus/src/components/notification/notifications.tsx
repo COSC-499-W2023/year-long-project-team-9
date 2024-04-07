@@ -45,12 +45,13 @@ export default function Notifications({
 
 
   useEffect(() => {
+    if (!user) return;
     const fetchInitialNotifications = async () => {
       try {
         const data = await getNotificationsViaEmail(user?.email);
-        setNotifications(data.notifications);
+        setNotifications(data?.notifications);
         setHasUnreadNotifications(
-          data.notifications.some(
+          data?.notifications.some(
             (notification: NotificationsType) => !notification.isRead
           )
         );
@@ -65,7 +66,7 @@ export default function Notifications({
       console.log("Received message:", event.data);
       const data = JSON.parse(event.data);
       if (data.action === "newNotification") {
-        const newNotification = data.data.notification;
+        const newNotification = data?.data.notification;
         setNotifications((prevNotifications: any) => [
           newNotification,
           ...prevNotifications,

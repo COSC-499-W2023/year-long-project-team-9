@@ -78,11 +78,14 @@ export default function RequestWrapper({
 
       switch (action) {
         case "updateRequestGrouping":
+          console.log("Updating request grouping");
+          console.log("Request ID:", data.requestId);
+          console.log("Grouping:", data.grouping);
           setRequests((currentRequests: any) =>
-            currentRequests.map((submission: any) =>
-              submission.submissionId === data.submissionId
-                ? { ...submission, status: data.newStatus }
-                : submission
+            currentRequests.map((request: any) =>
+              request === data.requestId
+                ? { ...request, status: data.grouping }
+                : request
             )
           );
           break;
@@ -100,7 +103,9 @@ export default function RequestWrapper({
 
   const updateRequestGrouping = async (requestId: string, grouping: string) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
-      console.log("Updating request grouping", requestId, grouping);
+      console.log("Updating request grouping");
+      console.log("Request ID:", requestId);
+      console.log("Grouping:", grouping);
       const message = JSON.stringify({
         action: "updateRequestGrouping",
         data: { requestId, grouping },
