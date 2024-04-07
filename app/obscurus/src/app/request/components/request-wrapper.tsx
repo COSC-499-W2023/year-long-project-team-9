@@ -116,7 +116,7 @@ export default function RequestWrapper({
         await updateRequest(requestId, grouping);
         {
           grouping !== "ARCHIVED" &&
-            grouping !== "TRASHED" &&
+            grouping !== "TRASHED" && grouping !== null &&
             ws.send(
               JSON.stringify({
                 action: "newNotification",
@@ -196,7 +196,7 @@ export default function RequestWrapper({
         }
         secondPanel={
           showCreate ? (
-            <CreateDisplay form={form} userData={userData} />
+            <CreateDisplay form={form} userData={userData}  />
           ) : (
             <RequestDisplay
               userData={userData}

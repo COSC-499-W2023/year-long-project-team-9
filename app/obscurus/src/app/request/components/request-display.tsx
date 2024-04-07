@@ -42,7 +42,7 @@ import { columns } from "./data-table/columns";
 import { useRequests } from "@/app/hooks/use-requests";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRequest } from "@/app/hooks/use-request";
 import {
   EnrichedRequests,
@@ -99,7 +99,7 @@ export default function RequestDisplay({
     }
 
     fetchProfileImage();
-  }, [request, getProfileImgPresignedUrl]);
+  }, [request]);
 
   const RequestHeader = ({ selected }: { selected: EnrichedRequests }) => {
     return (
@@ -180,6 +180,57 @@ export default function RequestDisplay({
     );
   };
 
+  const router = useRouter();
+
+
+  const handleArchive = async () => {
+    if (request && updateRequestGrouping && requests) {
+      if (request && updateRequestGrouping) {
+        await updateRequestGrouping(request.requestId, "ARCHIVED");
+        toast({
+          title: "Archived",
+          description: "Request has been archived",
+        });
+        setRequest({ requestId: null });
+        router.refresh()
+      }
+    } else {
+      console.error("Failed to update status");
+    }
+  };
+
+  const handleUnarchive = async () => {
+    if (request && updateRequestGrouping && requests) {
+      if (request && updateRequestGrouping) {
+        await updateRequestGrouping(request.requestId, null);
+        toast({
+          title: "Unarchived",
+          description: "Request has been unarchived",
+        });
+        router.refresh()
+      }
+    } else {
+      console.error("Failed to update status");
+    }
+  };
+
+  const handleTrash = async () => {
+    if (request && updateRequestGrouping && requests) {
+      if (request && updateRequestGrouping) {
+        await updateRequestGrouping(request.requestId, "TRASHED");
+        toast({
+          title: "Trashed",
+          description: "Request has been trashed",
+        });
+        setRequest({ requestId: null });
+        router.refresh()
+
+      }
+    } else {
+      console.error("Failed to update status");
+    }
+  };
+
   const Toolbar = () => {
     return (
       <div className="flex flex-row justify-between w-full items-center gap-2">
@@ -192,8 +243,8 @@ export default function RequestDisplay({
                 disabled={!selected}
                 onClick={() => {
                   selected?.grouping === null
-                    ? updateRequestGrouping(selected?.requestId, "ARCHIVED")
-                    : updateRequestGrouping(selected?.requestId, null);
+                    ? handleArchive()
+                    : handleUnarchive();
                 }}
               >
                 {selected?.grouping === "ARCHIVED" ? (
@@ -238,7 +289,7 @@ export default function RequestDisplay({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => updateRequestGrouping(selected?.requestId, "TRASHED")}
+                      onClick={handleTrash}
                     >
                       Continue
                     </AlertDialogAction>
