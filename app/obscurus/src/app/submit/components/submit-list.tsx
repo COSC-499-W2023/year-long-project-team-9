@@ -83,6 +83,7 @@ export default function SubmitList({
           try {
             const videoUrl = await getDownloadPresignedUrl(item.submissionId);
             setProcessedVideo({ url: videoUrl });
+            console.log("Processed video url:", videoUrl);
           } catch (error) {
             console.error("Error fetching processed video:", error);
             toast({
