@@ -1,90 +1,103 @@
 "use client";
-import React, { useState } from "react";
-import { LucideLoader2 } from "lucide-react";
-import VerifyEmailEmailForm from "./authentication-verify-email-email-form";
-import VerifyEmailVerifyForm from "./authentication-verify-email-verify-form";
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
-  type ResendSignUpCodeInput,
-  type ConfirmSignUpInput,
-} from "aws-amplify/auth";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { Label } from "../ui/label";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/modified-shadcn-ui-components/input-otp";
 
-export default function VerifyEmailForm({
+const verifyEmailFormSchema = z.object({
+  code: z.string().trim().min(1),
+});
+
+export default function SignUpVerifyEmailForm({
+  email,
+  loading,
   setDialogState,
-  resendConfirmSignUpUser,
-  confirmSignUpUser,
+  triggerVerifyEmail,
+  triggerResendVerifyEmail,
 }: {
+  email: string;
+  loading: boolean;
   setDialogState: Function;
-  resendConfirmSignUpUser: Function;
-  confirmSignUpUser: Function;
+  triggerVerifyEmail: Function;
+  triggerResendVerifyEmail: Function;
 }) {
-  const [verifyEmailState, setVerifyEmailState] = useState("email");
-  const [userEmail, setUserEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [failedVerify, setFailedVerify] = useState(false);
+  const form = useForm<z.infer<typeof verifyEmailFormSchema>>({
+    resolver: zodResolver(verifyEmailFormSchema),
+  });
 
-  async function triggerSendVerifyEmail(email: string) {
-    setLoading(true);
-    setUserEmail(email);
-    const sendVerifyEmailInput: ResendSignUpCodeInput = {
-      username: email,
-    };
-    await resendConfirmSignUpUser(sendVerifyEmailInput).then(() => [
-      setVerifyEmailState("verify"),
-      setLoading(false),
-    ]);
-  }
-  async function triggerVerifyEmail(code: string) {
-    setLoading(true);
-    const userConfirmSignUpInput: ConfirmSignUpInput = {
-      username: userEmail,
-      confirmationCode: code,
-    };
-    const verifyEmailSuccess = await confirmSignUpUser(userConfirmSignUpInput);
-    if (verifyEmailSuccess) {
-      setDialogState("signIn");
-    } else {
-      setLoading(false);
-      setFailedVerify(true);
-    }
-  }
-
-  async function triggerResendVerifyEmail() {
-    setLoading(true);
-    const userResendConfirmSignUpInput: ResendSignUpCodeInput = {
-      username: userEmail,
-    };
-    await resendConfirmSignUpUser(userResendConfirmSignUpInput).then(() =>
-      setLoading(false)
-    );
+  async function onSubmit(values: z.infer<typeof verifyEmailFormSchema>) {
+    triggerVerifyEmail(values.code);
   }
   return (
-    <div className="flex flex-col h-full">
-      <div>
-        {failedVerify && (
-          <div className="flex justify-center border border-red-500 rounded p-2">
-            <Label className="text-red-500 text-xs">
-              Failed To Verify Email, Please Try Again
-            </Label>
+    <div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <Label className="flex justify-start font-bold">Email: {email}</Label>
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem className="px-1">
+                <FormLabel>Verification Code</FormLabel>
+                <FormControl>
+                  <div className="flex justify-center">
+                    <InputOTP maxLength={6} disabled={loading} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <div className="text-xs text-center my-2">
+            <span>Did not receive an email? </span>
+            <a
+              onClick={() => triggerResendVerifyEmail()}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Resend Verification Code
+            </a>
           </div>
-        )}
-        {verifyEmailState === "email" && (
-          <VerifyEmailEmailForm
-            loading={loading}
-            setDialogState={setDialogState}
-            triggerSendVerifyEmail={triggerSendVerifyEmail}
-          />
-        )}
-        {verifyEmailState === "verify" && (
-          <VerifyEmailVerifyForm
-            loading={loading}
-            email={userEmail}
-            setDialogState={setDialogState}
-            triggerVerifyEmail={triggerVerifyEmail}
-            triggerResendVerifyEmail={triggerResendVerifyEmail}
-          />
-        )}
-      </div>
+          <Button
+            type="submit"
+            variant={"default"}
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? <span>Verifying Email</span> : <span>Verify</span>}
+          </Button>
+          <div className="text-xs text-center mt-2">
+            <span>Have an account? </span>
+            <a
+              onClick={() => setDialogState("signIn")}
+              className="underline text-blue-400 hover:cursor-pointer"
+            >
+              Sign In
+            </a>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

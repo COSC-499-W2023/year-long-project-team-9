@@ -154,6 +154,11 @@ export default function SignUpForm({
   });
   return (
     <div ref={signUpRef}>
+      {loading && (
+        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+          <LucideLoader2 className="animate-spin text-primary" size={75} />
+        </div>
+      )}
       {failedSignUpGeneric && !loading && (
         <div className="flex justify-center border border-red-500 rounded p-2">
           <Label className="text-red-500 text-xs">
@@ -175,7 +180,7 @@ export default function SignUpForm({
           </Label>
         </div>
       )}
-      {signUpState === "emailNames" && (
+      {signUpState === "emailNames" && !loading && (
         <SignUpEmailNamesForm
           setDialogState={setDialogState}
           setSignUpState={setSignUpState}
@@ -185,27 +190,25 @@ export default function SignUpForm({
           setFailedSignUpUsernameExists={setFailedSignUpUsernameExists}
         />
       )}
-      {signUpState === "passwordAgeTerms" && (
+      {signUpState === "passwordAgeTerms" && !loading && (
         <SignUpPasswordAgeTermsForm
           setDialogState={setDialogState}
           setSignUpState={setSignUpState}
           setSignUpPasswordAgeTerms={setSignUpPasswordAgeTerms}
         />
       )}
-      {signUpState === "finalCheck" && (
+      {signUpState === "finalCheck" && !loading && (
         <SignUpFinalCheckForm
           setSignUpState={setSignUpState}
           email={signUpEmailNames.email}
           firstName={signUpEmailNames.firstName}
           lastName={signUpEmailNames.lastName}
-          loading={loading}
           triggerSignUp={triggerSignUp}
         />
       )}
-      {signUpState === "verifyEmail" && (
+      {signUpState === "verifyEmail" && !loading && (
         <SignUpVerifyEmailForm
           email={signUpEmailNames.email}
-          loading={loading}
           setDialogState={setDialogState}
           triggerVerifyEmail={triggerVerifyEmail}
           triggerResendVerifyEmail={triggerResendVerifyEmail}

@@ -56,31 +56,35 @@ export default function ForgotPasswordForm({
   }
   return (
     <div className="flex flex-col h-full">
-      <div>
-        {failedForgotPassword && (
-          <div className="flex justify-center border border-red-500 rounded p-2">
-            <Label className="text-red-500 text-xs">
-              Failed To Reset Password, Please Try Again
-            </Label>
-          </div>
-        )}
-        {forgotPasswordState === "email" && (
-          <ForgotPasswordEmailForm
-            loading={loading}
-            setDialogState={setDialogState}
-            triggerSendForgotPasswordEmail={triggerSendForgotPasswordEmail}
-          />
-        )}
-        {forgotPasswordState === "verify" && (
-          <ForgotPasswordVerifyNewPasswordForm
-            loading={loading}
-            email={userEmail}
-            setDialogState={setDialogState}
-            triggerForgotPasswordChange={triggerForgotPasswordChange}
-            triggerSendForgotPasswordEmail={triggerSendForgotPasswordEmail}
-          />
-        )}
-      </div>
+      {loading ? (
+        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
+          <LucideLoader2 className="animate-spin text-primary" size={75} />
+        </div>
+      ) : (
+        <div>
+          {failedForgotPassword && (
+            <div className="flex justify-center border border-red-500 rounded p-2">
+              <Label className="text-red-500 text-xs">
+                Failed To Reset Password, Please Try Again
+              </Label>
+            </div>
+          )}
+          {forgotPasswordState === "email" && (
+            <ForgotPasswordEmailForm
+              setDialogState={setDialogState}
+              triggerSendForgotPasswordEmail={triggerSendForgotPasswordEmail}
+            />
+          )}
+          {forgotPasswordState === "verify" && (
+            <ForgotPasswordVerifyNewPasswordForm
+              email={userEmail}
+              setDialogState={setDialogState}
+              triggerForgotPasswordChange={triggerForgotPasswordChange}
+              triggerSendForgotPasswordEmail={triggerSendForgotPasswordEmail}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }
