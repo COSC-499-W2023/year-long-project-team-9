@@ -1,8 +1,8 @@
 "use client";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
-import { Rooms, Messages } from "stack/database/src/sql.generated";
-import { MessageCircle, Search } from "lucide-react";
+import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
+import { Search } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import { useQueryState } from "nuqs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,6 +12,8 @@ interface ChatListProps {
   userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
+  roomId: string | undefined;
+  setRoomId: Function;
   getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
   getOtherParticipantInitials: Function;
@@ -21,12 +23,17 @@ interface ChatListProps {
   setIsReadTrue: Function;
   isCollapsed?: boolean;
   setChatScrollBoolean: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  getUserViaEmail?: (email: string) => Promise<Users>;
+  getOtherParticipantProfileImg: Function;
 }
 
 export default function ChatList({
   userEmail,
   rooms,
   messages,
+  roomId,
+  setRoomId,
   getOtherParticipantEmail,
   getOtherParticipantName,
   getOtherParticipantInitials,
@@ -35,9 +42,11 @@ export default function ChatList({
   sortRooms,
   setIsReadTrue,
   setChatScrollBoolean,
+  getProfileImgPresignedUrl,
+  getUserViaEmail,
+  getOtherParticipantProfileImg,
 }: ChatListProps) {
   const [search, setSearch] = useQueryState("search");
-  const [roomId, setRoomId] = useQueryState("roomId");
 
   const handleClick = (item: Rooms) => {
     setChatScrollBoolean(true);
@@ -82,6 +91,9 @@ export default function ChatList({
             <div className="flex flex-row gap-2 w-full">
               <Avatar>
                 <AvatarImage
+                  src={getOtherParticipantProfileImg(
+                    getOtherParticipantEmail(item)
+                  )}
                   alt={getOtherParticipantName(getOtherParticipantEmail(item))}
                 />
                 <AvatarFallback>
@@ -145,9 +157,9 @@ export default function ChatList({
   };
 
   return rooms ? (
-    <div className="flex h-screen flex-col min-h-full">
-      <div className="flex items-center p-2 px-5">
-        <h1 className="text-xl font-bold">Chats</h1>
+    <div className="flex h-screen flex-col min-h-full pt-3">
+      <div className="flex items-center  px-5  ">
+        <h1 className="text-xl font-semibold ">Chat</h1>
       </div>
       <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <form>

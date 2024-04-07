@@ -52,27 +52,25 @@ export default function ProfileForm({
   form,
   onSubmit,
   getPresignedUrl,
-  getDownloadPresignedUrl,
+  updateUser,
 }: {
   userData: Users;
   form: any;
   onSubmit: Function;
   getPresignedUrl?: (username: string) => Promise<string>;
-  getDownloadPresignedUrl?: (username: string) => Promise<string>;
+  updateUser?: Function;
 }) {
-  // TODO: Work in progress
   return (
     <div className="overflow-auto p-4">
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
       <ProfileHeader />
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* <form onSubmit={handleSubmit} className="space-y-8"> */}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* <form onSubmit={handleSubmit} className="space-y-8"> */}
           <EmailInput
             form={form}
             isDisabled={true}
             formDescription={
-              "One cannot change their email once an account has been set."
+              "You cannot change your email."
             }
             fieldName="email"
             label="Email"
@@ -81,25 +79,24 @@ export default function ProfileForm({
           <FirstNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you first name."}
+            formDescription={"Other users will see your first name."}
             fieldName={"firstName"}
             label={"First Name"}
-            placeHolder="First Name"
+            placeHolder={userData.givenName}
           ></FirstNameInput>
           <LastNameInput
             form={form}
             isDisabled={false}
-            formDescription={"Other users will see you last name."}
+            formDescription={"Other users will see your last name."}
             fieldName={"lastName"}
             label={"Last Name"}
-            placeHolder={"Last Name"}
+            placeHolder={userData.familyName}
           ></LastNameInput>
           {/* TODO: ProfileImageInput */}
           <ProfileImageInput
             form={form}
             userData={userData}
             getPresignedUrl={getPresignedUrl}
-            getDownloadPresignedUrl={getDownloadPresignedUrl}
           ></ProfileImageInput>
           <div className="text-right gap-2">
             <AccountCancel></AccountCancel>

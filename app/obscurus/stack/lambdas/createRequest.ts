@@ -1,5 +1,5 @@
-import { createFormSchema } from "@/app/request/create/form/createFormSchema";
-import { createRequest } from "@obscurus/database/src/request";
+import { createFormSchema } from "@/app/request/components/create/form/createFormSchema";
+import { createRequest } from "@obscurus/database/src/requests";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {

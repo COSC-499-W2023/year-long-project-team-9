@@ -2,20 +2,33 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import NavBar from "./nav-bar";
+import ConfigureAmplifyClientSide from "./ConfigureAmplifyClientSide";
 import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
-import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
-import { getEmail } from "./functions/authenticationMethods";
-import { Notifications } from "@obscurus/database/src/sql.generated";
-import readNotification from "./functions/readNotification";
-import deleteNotification from "./functions/deleteNotification";
-import Footer from "./footer";
-import { Provider } from "jotai";
-import { create } from "domain";
 import { WebSocketProvider } from "./ws-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { cookies } from "next/headers";
+import { getCurrentUser } from "aws-amplify/auth/server";
+import { runWithAmplifyServerContext } from "./utils/amplifyServerUtils";
+import getUserDataByEmail from "./functions/getUserDataByEmail";
+import { Users as UsersType } from "@obscurus/database/src/sql.generated";
+import getNotificationsViaEmail from "./functions/getNotificationsViaEmail";
+import readNotification from "./functions/readNotification";
+import deleteNotification from "./functions/deleteNotification";
+import { getUserNames } from "./functions/getUserNames";
+import {
+  signUpUser,
+  confirmSignUpUser,
+  resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
+} from "./functions/authenticationMethods";
+import NavBar from "./nav-bar";
+import { getUserViaEmail } from "./functions/getUserViaEmail";
+import { UserProvider } from "./user-provider";
+import { User } from "lucide-react";
+import { redirect } from "next/navigation";
+import getProfileImgPresignedUrl from "./functions/getProfileImgPresignedUrl";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,10 +44,29 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const signedIn = true;
-  // Muhammad
-  // deleteNotifications;
-  // notificationsRead;
+
+
+  async function getCurrentUserServer() {
+    try {
+      const currentUser = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: (contextSpec) => getCurrentUser(contextSpec),
+      });
+      return {
+        signedIn: true,
+        email: currentUser.signInDetails?.loginId ?? "",
+      };
+    } catch (error) {
+      console.log(error);
+      return { signedIn: false, email: "" };
+    }
+  }
+  const { signedIn, email } = await getCurrentUserServer();
+
+
+
+  const userData = await getUserViaEmail(email);
+
 
   return (
     <html lang="en">
@@ -45,25 +77,25 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <WebSocketProvider url={wsUrl}>
-          <TooltipProvider delayDuration={0}>
-            <div className=" flex-col md:flex h-screen ">
-              <NavBar
-                readNotification={readNotification}
-                deleteNotifications={deleteNotification}
-                getNotificationsViaEmail={getNotificationsViaEmail}
-              />
-              <Toaster />
-              {children}
-
-              {/*If not signed in*/}
-
-              {/* <div className="h-screen w-full flex flex-col items-center justify-center">
-            <div className="absolute z-100 top-36 left-56">Top</div>
-            <Home />
-          </div> */}
-              {/* <Footer /> */}
-            </div>
-            </TooltipProvider>
+              <TooltipProvider delayDuration={0}>
+                <NavBar
+                  readNotification={readNotification}
+                  deleteNotifications={deleteNotification}
+                  getNotificationsViaEmail={getNotificationsViaEmail}
+                  signUpUser={signUpUser}
+                  confirmSignUpUser={confirmSignUpUser}
+                  resendConfirmSignUpUser={resendConfirmSignUpUser}
+                  resetUserPassword={resetUserPassword}
+                  confirmResetUserPassword={confirmResetUserPassword}
+                  user={userData?.user}
+                  getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+                />
+                <div className=" flex-col md:flex h-screen pt-16">
+                  <Toaster />
+                  <ConfigureAmplifyClientSide />
+                  {children}
+                </div>
+              </TooltipProvider>
           </WebSocketProvider>
         </ThemeProvider>
       </body>

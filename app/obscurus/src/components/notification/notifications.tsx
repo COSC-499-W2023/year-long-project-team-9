@@ -1,6 +1,5 @@
 import {
   Bell,
-  BellPlus,
   Inbox,
   MessageCircle,
   Trash2,
@@ -13,10 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Notifications } from "@obscurus/database/src/sql.generated";
+import { Notifications as NotificationsType, Users } from "@obscurus/database/src/sql.generated";
 import Link from "next/link";
-import { Card, CardContent, CardTitle } from "../ui/card";
-import { useEffect, useState } from "react";
+import { CardTitle } from "../ui/card";
+import { useEffect } from "react";
 import { Separator } from "../ui/separator";
 import {
   useHasUnreadNotifications,
@@ -24,22 +23,26 @@ import {
 } from "@/app/hooks/use-notifications";
 import { useWebSocket } from "@/app/ws-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { motion } from 'framer-motion';
-
+import { motion } from "framer-motion";
+import { read } from "fs";
+import { useUserData } from "@/app/user-provider";
 
 export default function Notifications({
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
+  user
 }: {
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
+  user?: Users
 }) {
   const [notifcations, setNotifications] = useNotifications();
   const [hasUnreadNotifications, setHasUnreadNotifications] =
     useHasUnreadNotifications();
   const ws = useWebSocket();
+
 
   useEffect(() => {
     const fetchInitialNotifications = async () => {
@@ -48,7 +51,7 @@ export default function Notifications({
         setNotifications(data.notifications);
         setHasUnreadNotifications(
           data.notifications.some(
-            (notification: Notifications) => !notification.isRead
+            (notification: NotificationsType) => !notification.isRead
           )
         );
       } catch (error) {
@@ -83,7 +86,7 @@ export default function Notifications({
     };
   }, [ws, getNotificationsViaEmail]);
 
-  return (
+  return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
@@ -92,22 +95,21 @@ export default function Notifications({
           </Button>
           {hasUnreadNotifications && (
             <div
-              className="absolute top-3 right-16 mt-2 h-2 w-2 rounded-full bg-blue-600  "
+              className="absolute top-3 right-[105px] mt-2 h-2 w-2 rounded-full bg-blue-600  "
               aria-label="Unread Notification"
             ></div>
           )}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80  shadow-lg rounded-lg bg-card p-0">
+      <DropdownMenuContent className="w-80  shadow-lg rounded-lg bg-card p-0 mt-3">
         <CardTitle>
           <div className="font-semibold text-base p-4">Notifications</div>
           <Separator className="bg-accent w-full" />
         </CardTitle>
-        <div className="overflow-y-auto max-h-96">
-          {!notifcations ? (
+        <div className="overflow-y-auto max-h-96 h-96">
+          {!notifcations || !notifcations.length ? (
             <div className="h-full p-4 flex flex-col space-y-4 justify-center items-center text-muted-foreground text-sm">
               <Bell size={20} />
-              <Separator className="bg-muted-foreground" />
               <div>No notifications</div>
             </div>
           ) : (
@@ -160,6 +162,7 @@ export default function Notifications({
                         className="hover:bg-destructive"
                         onClick={() => {
                           deleteNotifications(value.notificationId);
+                          readNotification(value.notificationId);
                           let newNotificationsArray = [
                             ...(notifcations as any),
                           ];
@@ -182,5 +185,7 @@ export default function Notifications({
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
+  ) : (
+    <></>
   );
 }

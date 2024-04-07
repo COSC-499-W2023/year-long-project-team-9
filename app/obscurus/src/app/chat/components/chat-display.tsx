@@ -5,8 +5,8 @@ import {
   Rooms,
   Notifications,
   Messages,
+  Users,
 } from "stack/database/src/sql.generated";
-import { useQueryState } from "nuqs";
 import { Suspense, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,8 @@ interface ChatDisplayProps {
   userEmail: string;
   rooms: Rooms[];
   messages: Messages[];
+  roomId: string | undefined;
+  setRoomId: Function;
   getOtherParticipantEmail: Function;
   getOtherParticipantName: Function;
   getOtherParticipantInitials: Function;
@@ -28,12 +30,17 @@ interface ChatDisplayProps {
   createMessageNotification: Function;
   chatScrollBoolean: boolean;
   setChatScrollBoolean: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  getUserViaEmail?: (email: string) => Promise<Users>;
+  getOtherParticipantProfileImg: Function;
 }
 
 export default function ChatDisplay({
   userEmail,
   rooms,
   messages,
+  roomId,
+  setRoomId,
   getOtherParticipantEmail,
   getOtherParticipantName,
   getOtherParticipantInitials,
@@ -43,9 +50,10 @@ export default function ChatDisplay({
   createMessageNotification,
   chatScrollBoolean,
   setChatScrollBoolean,
+  getProfileImgPresignedUrl,
+  getUserViaEmail,
+  getOtherParticipantProfileImg,
 }: ChatDisplayProps) {
-  const [roomId, setRoomId] = useQueryState("roomId");
-
   const getUserName = (item: Rooms | undefined) => {
     if (item === undefined) {
       return "";
@@ -77,6 +85,7 @@ export default function ChatDisplay({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
+
   const handleClick = () => {
     if (selected) {
       setChatScrollBoolean(true);
@@ -122,7 +131,10 @@ export default function ChatDisplay({
     <div className="flex flex-col h-full">
       <div className="flex flex-row items-center justify-left p-4">
         <Avatar>
-          <AvatarImage alt={otherUserName} />
+          <AvatarImage
+            src={getOtherParticipantProfileImg(otherUserEmail)}
+            alt={otherUserName}
+          />
           <AvatarFallback>{otherUserInitials}</AvatarFallback>
         </Avatar>
         <div className="pl-2 flex flex-col w-[90%]">

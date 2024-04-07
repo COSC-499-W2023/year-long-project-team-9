@@ -17,11 +17,8 @@ export interface Users {
   email: string;
   givenName: string;
   familyName: string;
-  isLoggedInWithSocialIdentityProvider: boolean;
-  isAdmin: boolean;
-  profileImage: string;
-  preference: string;
-  connectionId: string | null;
+  profileImage: string | null;
+  joinedDate: Date;
 }
 
 // Requests table interface

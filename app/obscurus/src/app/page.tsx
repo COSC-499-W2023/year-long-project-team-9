@@ -1,9 +1,9 @@
-import { redirect } from "next/navigation";
-import Submit from "./submit/page";
+"use server";
 import Home from "./landing-page/page";
-// async function getUserEmail() {
-//   //...
-// }
+import amplifyConfig from "@/app/utils/amplifyConfig";
+import { Amplify } from "aws-amplify";
+
+Amplify.configure(amplifyConfig);
 
 async function Page() {
   return <Home />;

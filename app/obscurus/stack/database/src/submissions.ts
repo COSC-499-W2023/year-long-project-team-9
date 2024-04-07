@@ -32,6 +32,15 @@ export function setStatus(status: Status, submissionId: string) {
     .executeTakeFirst();
 }
 
+export function updateIsRead(isRead: boolean, submissionId: string) {
+  return SQL.DB.updateTable("submissions")
+    .set({
+      isRead: isRead,
+    })
+    .where("submissionId", "=", submissionId)
+    .executeTakeFirst();
+}
+
 export function getStatus(submissionId: string) {
   return SQL.DB.selectFrom("submissions")
     .select("status")

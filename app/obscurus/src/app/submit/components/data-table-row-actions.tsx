@@ -50,18 +50,20 @@ export function DataTableRowActions<TData>({
     window.open(url, "_blank");
   }
 
+  const isCompleted = task.status === "COMPLETED";
+
   useEffect(() => {
-    if (task.status === "COMPLETED") {
+    if (isCompleted) {
       setProcessedVideo();
     }
-  });
+  }), [isCompleted];
 
   console.log("submissionId", task.submissionId);
   return (
     <div className="flex justify-center items-center ">
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"outline"}>
+          <Button variant={"outline"} disabled={!isCompleted}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <ExternalLink className="w-4 h-4 " />
@@ -72,6 +74,7 @@ export function DataTableRowActions<TData>({
         </DialogTrigger>
         <DialogContent className="">
           <VideoPlayer
+            filename={"Processed Video"}
             videoUrl={
               url
             }
@@ -79,7 +82,7 @@ export function DataTableRowActions<TData>({
         </DialogContent>
       </Dialog>
       <Separator orientation="vertical" className="mx-2 h-8" />
-      <Button variant={"outline"} onClick={downloadProcessedVideo}>
+      <Button variant={"outline"} onClick={downloadProcessedVideo} disabled={!isCompleted}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Download className="w-4 h-4 " />

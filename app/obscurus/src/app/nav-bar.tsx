@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { use, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -7,7 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Bell, Sun } from "lucide-react";
+import { Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -19,32 +19,38 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
-import { useNotifications } from "./hooks/use-notifications";
+import Authentication from "@/components/authentication/authentication";
+import { useUserData } from "./user-provider";
+import { useUser } from "./hooks/use-user";
+import { Users } from "@obscurus/database/src/sql.generated";
 
 const NavBar = ({
   readNotification,
   deleteNotifications,
   getNotificationsViaEmail,
+  signUpUser,
+  confirmSignUpUser,
+  resendConfirmSignUpUser,
+  resetUserPassword,
+  confirmResetUserPassword,
+  user,
+  getProfileImgPresignedUrl
 }: {
   readNotification: Function;
   deleteNotifications: Function;
   getNotificationsViaEmail: Function;
+  signUpUser: Function;
+  confirmSignUpUser: Function;
+  resendConfirmSignUpUser: Function;
+  resetUserPassword: Function;
+  confirmResetUserPassword: Function;
+  user?: any;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
-  const [signedIn, setSignedIn] = useState(false);
-  const [showSignInDialog, setShowSignInDialog] = useState(false);
-  const handleAuth = (route: string) => {
-    if (signedIn) {
-      router.push(route);
-    } else {
-      setShowSignInDialog(true);
-    }
-  };
 
-  const [currentTab, selectCurrentTab] = useState("/");
-  const [userSignedIn, setUserSignedIn] = useState(false);
 
   const ThemeSwitcher = () => {
     return (
@@ -64,21 +70,15 @@ const NavBar = ({
           <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setTheme("system")}
-            data-testid="system"
-          >
-            System
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
   };
 
-  const Navigation = () => {
+  const Navigation = ({ user }: { user: Users }) => {
     return (
-      <NavigationMenu className="flex flex-row space-x-4 ">
-        <Link href="/" className="">
+      <NavigationMenu className="flex flex-row space-x-6 ">
+        <Link href={user ? "/request" : "/"} className="">
           <Image
             className="min-h-full min-w-full"
             src="/logo.svg"
@@ -88,52 +88,65 @@ const NavBar = ({
           />
         </Link>
 
-        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-4  ">
+        <NavigationMenuList className="flex flex-row items-center justify-center w-full space-x-2 ">
           <Link href="/" className="">
             <NavigationMenuItem className="font-bold text-lg">
               obscurus
             </NavigationMenuItem>
           </Link>
-          <NavigationMenuItem
-            className="font-semibold text-sm cursor-pointer"
-            onClick={() => {
-              scroll("features");
-            }}
-          >
-            Features
-          </NavigationMenuItem>
-
-          <NavigationMenuItem
-            className="font-semibold text-sm cursor-pointer"
-            onClick={() => {
-              scroll("how-to");
-            }}
-          >
-            Get Started
-          </NavigationMenuItem>
-          <NavigationMenuItem
+          {!user && (
+            <>
+              <NavigationMenuItem
+                className="font-semibold text-sm cursor-pointer"
+                onClick={() => {
+                  scroll("features");
+                }}
+              >
+                Features
+              </NavigationMenuItem>
+              <NavigationMenuItem
+                className="font-semibold text-sm cursor-pointer"
+                onClick={() => {
+                  scroll("how-to");
+                }}
+              >
+                Getting Started
+              </NavigationMenuItem>
+            </>
+          )}
+          {/* <NavigationMenuItem
             className="font-semibold text-sm cursor-pointer"
             onClick={() => {
               scroll("about");
             }}
           >
             About
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     );
   };
 
   return (
-    <div className="sticky top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
-      <Navigation />
-      <div className="flex gap-2">
+    <div className="fixed h-16 top-0 z-50 p-4 border-b-2 bg-background flex flex-row justify-between min-w-full w-full ">
+      <Navigation user={user} />
+      <div className="flex flex-row gap-2 items-center">
         <Notifications
           readNotification={readNotification}
           deleteNotifications={deleteNotifications}
           getNotificationsViaEmail={getNotificationsViaEmail}
+          user={user}
         />
         <ThemeSwitcher />
+        <Authentication
+          signUpUser={signUpUser}
+          confirmSignUpUser={confirmSignUpUser}
+          resendConfirmSignUpUser={resendConfirmSignUpUser}
+          resetUserPassword={resetUserPassword}
+          confirmResetUserPassword={confirmResetUserPassword}
+          user={user}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+        />
       </div>
     </div>
   );

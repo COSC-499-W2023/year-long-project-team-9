@@ -1,44 +1,50 @@
 "use client";
 import { useState, useEffect } from "react";
 import Wrapper from "../../wrapper";
-import { Rooms, Messages } from "stack/database/src/sql.generated";
+import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
+import { useWebSocket } from "@/app/ws-provider";
 
 type UserNames = {
   email: string;
   givenName: string;
   familyName: string;
+  profileImage: any;
 };
 
 interface ChatWrapperProps {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   userEmail: string;
-  websocketApiEndpoint: string;
   rooms: Rooms[];
   userNames: UserNames[];
   messages: Messages[];
   createMessage: Function;
   createMessageNotification: Function;
   setIsReadTrue: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  getUserViaEmail?: (email: string) => Promise<Users>;
 }
 
 export default function ChatWrapper({
   defaultLayout,
   defaultCollapsed,
   userEmail,
-  websocketApiEndpoint,
   rooms,
   userNames,
   messages,
   createMessage,
   createMessageNotification,
   setIsReadTrue,
+  getProfileImgPresignedUrl,
+  getUserViaEmail,
 }: ChatWrapperProps) {
+  const ws = useWebSocket();
   const [chatMessages, setChatMessages] = useState<Messages[]>(messages);
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
   const [chatScrollBoolean, setChatScrollBoolean] = useState<boolean>(false);
+  const [roomId, setRoomId] = useState<string | undefined>();
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
@@ -74,6 +80,34 @@ export default function ChatWrapper({
       return "N/A";
     }
   };
+
+  const [profileImage, setProfileImage] = useState<string | undefined>(
+    undefined
+  );
+  const getOtherParticipantProfileImg = (email: string) => {
+    setProfileImage(undefined);
+    const otherParticipant: UserNames[] = userNames.filter(
+      (user) => user.email === email
+    );
+    if (otherParticipant.length > 0) {
+      console.log(otherParticipant[0].familyName);
+      return otherParticipant[0].profileImage;
+    }
+    console.log("test", profileImage);
+    return " ";
+  };
+
+  const getProfileImage = async (imgkey: any) => {
+    if (imgkey === null) {
+      setProfileImage("undefined");
+    } else if (getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      setProfileImage(url);
+    } else {
+      setProfileImage("undefined");
+    }
+  };
+
   const checkUnreadMessages = (item: Rooms) => {
     const roomMessages = chatMessages.filter(
       (message) =>
@@ -108,18 +142,20 @@ export default function ChatWrapper({
       );
     }
   };
+  const checkIfMessageInList = (newMessage: Messages) => {
+    const newMessages = chatMessages.filter(
+      (message) => message.messageId === newMessage.messageId
+    );
+    return newMessages.length > 0;
+  };
 
   useEffect(() => {
-    const ws = new WebSocket(websocketApiEndpoint);
-    // const handleBeforeUnload = () => {
-    //   console.log("Page reloading or closing, disconnecting WebSocket");
-    //   ws.close();
-    // };
-
+    if (!ws) {
+      return;
+    }
     ws.onopen = () => {
       console.log("Connected to WebSocket");
     };
-    // window.addEventListener("beforeunload", handleBeforeUnload);
     setSocket(ws);
 
     ws.onmessage = (event) => {
@@ -137,21 +173,14 @@ export default function ChatWrapper({
     };
 
     return () => {
-      // window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("Disconnecting WebSocket");
       ws.close();
     };
-  }, [chatMessages]);
+  }, [ws, chatMessages]);
   const sendMessage = (messageData: string) => {
     if (socket) {
       socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
     }
-  };
-  const checkIfMessageInList = (newMessage: Messages) => {
-    const newMessages = chatMessages.filter(
-      (message) => message.messageId === newMessage.messageId
-    );
-    return newMessages.length > 0;
   };
 
   return (
@@ -165,6 +194,8 @@ export default function ChatWrapper({
             userEmail={userEmail}
             rooms={chatRooms}
             messages={chatMessages}
+            roomId={roomId}
+            setRoomId={setRoomId}
             getOtherParticipantEmail={getOtherParticipantEmail}
             getOtherParticipantName={getOtherParticipantName}
             getOtherParticipantInitials={getOtherParticipantInitials}
@@ -173,6 +204,9 @@ export default function ChatWrapper({
             sortRooms={sortRooms}
             setIsReadTrue={setIsReadTrue}
             setChatScrollBoolean={setChatScrollBoolean}
+            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+            getUserViaEmail={getUserViaEmail}
+            getOtherParticipantProfileImg={getOtherParticipantProfileImg}
           />
         }
         secondPanel={
@@ -180,6 +214,8 @@ export default function ChatWrapper({
             userEmail={userEmail}
             rooms={chatRooms}
             messages={chatMessages}
+            roomId={roomId}
+            setRoomId={setRoomId}
             getOtherParticipantEmail={getOtherParticipantEmail}
             getOtherParticipantName={getOtherParticipantName}
             getOtherParticipantInitials={getOtherParticipantInitials}
@@ -189,6 +225,9 @@ export default function ChatWrapper({
             createMessageNotification={createMessageNotification}
             chatScrollBoolean={chatScrollBoolean}
             setChatScrollBoolean={setChatScrollBoolean}
+            getUserViaEmail={getUserViaEmail}
+            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+            getOtherParticipantProfileImg={getOtherParticipantProfileImg}
           />
         }
       />

@@ -32,6 +32,7 @@ export default function Home() {
         </div>
       </div>
       <Features />
+      <div id="how-to"></div>
       <HowTo />
       <About />
 

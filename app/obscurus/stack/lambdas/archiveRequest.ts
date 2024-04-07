@@ -1,4 +1,4 @@
-import { archiveRequest } from "@obscurus/database/src/request";
+import { archiveRequest } from "@obscurus/database/src/requests";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {

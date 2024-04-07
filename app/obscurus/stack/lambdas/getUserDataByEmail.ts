@@ -1,4 +1,4 @@
-import { getRequestsViaEmail } from "@obscurus/database/src/request";
+import { getRequestsViaEmail } from "@obscurus/database/src/requests";
 import { Users, getUserDataByEmail } from "@obscurus/database/src/users";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 

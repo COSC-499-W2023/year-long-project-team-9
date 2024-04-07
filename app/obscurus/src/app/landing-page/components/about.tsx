@@ -5,7 +5,7 @@ const About = () => {
     <div className="flex flex-col items-center justify-center " id="about">
       <h1 className="text-2xl font-semibold">Powered by</h1>
       <div
-        className="flex flex-row items-center justify-center p-14 gap-20 align-middle"
+        className="flex flex-row items-center justify-center p-20 gap-7 align-middle"
         data-aos="fade-in"
         data-aos-delay="100"
       >
@@ -19,6 +19,7 @@ const About = () => {
         />
 
         {/*NExt.js*/}
+
         <svg
           width="80px"
           height="80px"
@@ -29,6 +30,7 @@ const About = () => {
           data-aos="fade-in"
           data-aos-delay="200"
           data-testid="nextjs"
+          className="min-w-full min-hfull"
         >
           <g>
             <path
@@ -37,15 +39,8 @@ const About = () => {
             ></path>
           </g>
         </svg>
-        {/*Tailwind CSS*/}
-        <Image
-          src="tailwindcss.svg"
-          className=""
-          alt="Tailwind CSS"
-          data-testid="tailwindcss"
-          width={100}
-          height={100}
-        />
+
+        <Image src="/aws.svg" height={100} width={100} alt="aws" data-testid="aws" />
       </div>
     </div>
   );
