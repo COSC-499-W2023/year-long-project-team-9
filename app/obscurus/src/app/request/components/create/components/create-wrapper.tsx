@@ -14,12 +14,14 @@ export default function CreateWrapper({
   createRequest,
   userData,
   setShowCreate,
+  getProfileImgPresignedUrl
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
   createRequest: Function;
   userData: Users;
   setShowCreate: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
