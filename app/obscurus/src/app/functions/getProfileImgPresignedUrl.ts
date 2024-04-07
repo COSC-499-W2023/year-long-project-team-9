@@ -15,7 +15,7 @@ async function getProfileImgPresignedUrl(submissionId: string): Promise<string> 
   const url = await getSignedUrl(new S3Client({}), command, {
     expiresIn: 3600,
   });
-
+  
   return url;
 }
 

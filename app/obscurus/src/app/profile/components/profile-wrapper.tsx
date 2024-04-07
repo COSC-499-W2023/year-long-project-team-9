@@ -1,11 +1,11 @@
 "use client";
+import { Submissions, Users } from "@obscurus/database/src/sql.generated";
 import Wrapper from "@/app/wrapper";
 import ProfileForm from "./profile-form";
 import ProfileDisplay from "./profile-display";
 import { useState, useEffect } from "react";
-import { Users } from "@obscurus/database/src/sql.generated";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 
@@ -28,6 +28,8 @@ export default function ProfileWrapper({
   getPresignedUrl,
   getProfileImgPresignedUrl,
   updateUser,
+  requestNum,
+  completedVideos,
 }: any) {
   const form = useForm({
     resolver: zodResolver(profileFormSchema),
@@ -97,7 +99,9 @@ export default function ProfileWrapper({
           form={form}
           userData={userData}
           getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-        />
+          requestNum={requestNum}
+          completedVideos={completedVideos}
+        ></ProfileDisplay>
       }
     />
   );

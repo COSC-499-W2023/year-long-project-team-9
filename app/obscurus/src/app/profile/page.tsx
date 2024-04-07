@@ -14,6 +14,7 @@ import { redirect } from "next/navigation";
 import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import { getCurrentUser } from "aws-amplify/auth/server";
 import { getUserViaEmail } from "../functions/getUserViaEmail";
+import { getSubmissions } from "../functions/getSubmissions";
 
 async function Account() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -47,15 +48,26 @@ async function Account() {
     }
   }
   const { signedIn, email } = await getCurrentUserServer();
-
-
-
   const userData = await getUserViaEmail(email);
-
-
   if (!userData) {
     redirect("/");
   }
+
+  const requestPageData: { request: Requests[]; submissions: Submissions[] } =
+    await getRequestsViaEmail(email);
+  const requests: Requests[] = requestPageData.request;
+  const submissions: Submissions[] = await getSubmissions();
+  const requestNum = requests.length;
+  console.log("requests", requestNum);
+
+  const filteredSubmissions: Submissions[] = submissions.filter(submission => {
+    return (
+      submission.requesteeEmail === email &&
+      submission.status === "COMPLETED"
+    );
+  });
+  const completedVideos = filteredSubmissions.length;
+  console.log("submitssions", completedVideos);
 
   return (
     <ProfileWrapper
@@ -65,6 +77,8 @@ async function Account() {
       getPresignedUrl={getPresignedUrl}
       getProfileImgPresignedUrl={getProfileImgPresignedUrl}
       updateUser={updateUser}
+      requestNum={requestNum}
+      completedVideos={completedVideos}
     />
   );
 }

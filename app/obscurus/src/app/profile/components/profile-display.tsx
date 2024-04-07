@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Users } from "@obscurus/database/src/sql.generated";
 import { format } from "date-fns";
 
@@ -8,10 +8,14 @@ export default function ProfileDisplay({
   form,
   userData,
   getProfileImgPresignedUrl,
+  requestNum,
+  completedVideos,
 }: {
   form: any;
   userData: Users;
   getProfileImgPresignedUrl?: (key: string) => Promise<string>;
+  requestNum: number;
+  completedVideos: number;
 }) {
   const [profileImage, setProfileImage] = useState<string | undefined>(
     userData?.profileImage || undefined
@@ -62,12 +66,12 @@ export default function ProfileDisplay({
           <Separator />
           <div className="grid grid-cols-2 gap-4 justify-items-center mt-2 mb-4 text-md">
             <div className="grid grid-cols-1 justify-items-center">
-              <div className="text-muted-foreground text-sm">Requests Sent</div>
-              <div>16</div>
+              <div>Requests Sent</div>
+              <div>{requestNum}</div>
             </div>
             <div className="grid grid-cols-1 justify-items-center">
-              <div className="text-muted-foreground text-sm">Videos Submitted</div>
-              <div>3</div>
+              <div>Videos Submitted</div>
+              <div>{completedVideos}</div>
             </div>
           </div>
           <div className="text-muted-foreground mt-2 text-sm"> Joined: {format(new Date(userData?.joinedDate), "PPP, p")}</div>
