@@ -1,13 +1,11 @@
-"use client";
+import React, { useState } from 'react';
 import Wrapper from "@/app/wrapper";
 import CreateForm from "./create-form";
 import CreateDisplay from "./create-display";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFormSchema } from "../form/createFormSchema";
 import { Users } from "@obscurus/database/src/sql.generated";
-import { useState } from "react";
 import SubmitStatusAlert from "./create-submit-status-alert";
 
 export default function CreateWrapper({
@@ -23,7 +21,10 @@ export default function CreateWrapper({
   userData: Users;
   setShowCreate: Function;
 }) {
-  const form = useForm<z.infer<typeof createFormSchema>>({
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const form = useForm({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
       title: "",
@@ -35,16 +36,21 @@ export default function CreateWrapper({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createFormSchema>) {
-    const createSucess = await createRequest(values);
-    if (createSucess === false) {
-      const button = document.getElementById("failAlert");
-      button?.click();
+  async function onSubmit(values: any) {
+    const createSuccess = await createRequest(values);
+    if (!createSuccess) {
+      setAlertMessage("Failed to create request.");
+      setShowAlert(true);
     } else {
-      const button = document.getElementById("successAlert");
-      button?.click();
+      setAlertMessage("Request created successfully!");
+      setShowAlert(true);
     }
   }
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
+
   return (
     <>
       <Wrapper
@@ -57,13 +63,17 @@ export default function CreateWrapper({
             onSubmit={onSubmit}
             userData={userData}
             setShowCreate={setShowCreate}
-          ></CreateForm>
+          />
         }
         secondPanel={
-          <CreateDisplay form={form} userData={userData}></CreateDisplay>
+          <CreateDisplay form={form} userData={userData} />
         }
       />
-      <SubmitStatusAlert></SubmitStatusAlert>
+      <SubmitStatusAlert
+        show={showAlert}
+        message={alertMessage}
+        onClose={handleCloseAlert}
+      />
     </>
   );
 }

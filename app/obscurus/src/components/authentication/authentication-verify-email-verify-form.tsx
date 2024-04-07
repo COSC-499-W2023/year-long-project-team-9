@@ -23,11 +23,13 @@ const verifyEmailFormSchema = z.object({
 });
 
 export default function VerifyEmailVerifyForm({
+  loading,
   email,
   setDialogState,
   triggerVerifyEmail,
   triggerResendVerifyEmail,
 }: {
+  loading: boolean;
   email: string;
   setDialogState: Function;
   triggerVerifyEmail: Function;
@@ -53,7 +55,7 @@ export default function VerifyEmailVerifyForm({
                 <FormLabel>Verification Code</FormLabel>
                 <FormControl>
                   <div className="flex justify-center">
-                    <InputOTP maxLength={6} {...field}>
+                    <InputOTP maxLength={6} disabled={loading} {...field}>
                       <InputOTPGroup>
                         <InputOTPSlot index={0} />
                         <InputOTPSlot index={1} />
@@ -77,8 +79,13 @@ export default function VerifyEmailVerifyForm({
               Resend Verification Code
             </a>
           </div>
-          <Button type="submit" variant={"default"} className="w-full">
-            Verify
+          <Button
+            type="submit"
+            variant={"default"}
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? <span>Verifying Email</span> : <span>Verify</span>}
           </Button>
           <div className="text-xs text-center mt-2">
             <span>Have an account? </span>

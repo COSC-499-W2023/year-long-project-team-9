@@ -9,6 +9,8 @@ import createMessage from "../functions/createMessage";
 import createMessageNotification from "../functions/createMessageNotification";
 import setIsReadTrue from "../functions/setIsReadTrue";
 import getProfileImgPresignedUrl from "../functions/getProfileImgPresignedUrl";
+import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
+import { getCurrentUser } from "aws-amplify/auth/server";
 
 type UserNames = {
   email: string;
@@ -18,6 +20,22 @@ type UserNames = {
 };
 
 async function Chat() {
+  async function getCurrentUserServer() {
+    try {
+      const currentUser = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: (contextSpec) => getCurrentUser(contextSpec),
+      });
+      console.log(currentUser);
+      return {
+        signedIn: true,
+        email: currentUser.signInDetails?.loginId ?? "",
+      };
+    } catch (error) {
+      console.log(error);
+      return { signedIn: false, email: "" };
+    }
+  }
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined;
@@ -26,12 +44,10 @@ async function Chat() {
       ? JSON.parse(collapsed.value)
       : undefined;
 
-  const userEmail = "imightbejan@gmail.com"
-  const rooms: Rooms[] = await getRoomsViaEmail(userEmail);
+  const { signedIn, email } = await getCurrentUserServer();
+  const rooms: Rooms[] = await getRoomsViaEmail(email);
   const userNames: UserNames[] = await getUserNames();
   const messages: Messages[] = await getMessages();
-  const websocketApiEndpoint =
-    (process.env.NEXT_PUBLIC_WEBSOCKET_API_ENDPOINT as string) ?? "";
 
   if (userNames) {
     const getProfileImage = async () => {
@@ -78,14 +94,15 @@ async function Chat() {
     <ChatWrapper
       defaultLayout={defaultLayout}
       defaultCollapsed={defaultCollapsed}
-      userEmail={userEmail}
-      websocketApiEndpoint={websocketApiEndpoint}
+      userEmail={email}
+      websocketApiEndpoint={""}
       rooms={rooms}
       userNames={userNames}
       messages={messages}
       createMessage={createMessage}
       createMessageNotification={createMessageNotification}
       setIsReadTrue={setIsReadTrue}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
   );
 }

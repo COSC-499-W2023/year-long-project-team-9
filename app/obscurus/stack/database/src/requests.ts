@@ -124,7 +124,8 @@ export async function createRequest(data: any) {
       sendEmailTextBlockViaNoReply(
         validData.data.clientEmail[i].email.toLocaleLowerCase(),
         "obscurus - New Submission Request",
-        `${validData.data.firstName} ${validData.data.lastName} has requested a video from you.`
+        `${validData.data.firstName} ${validData.data.lastName} has requested a video from you.`,
+        "request"
       );
       const insertNotifications = await SQL.DB.insertInto("notifications")
         .values({

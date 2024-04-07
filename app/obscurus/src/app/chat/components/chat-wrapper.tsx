@@ -218,6 +218,7 @@ export default function ChatWrapper({
             setChatScrollBoolean={setChatScrollBoolean}
             getUserViaEmail={getUserViaEmail}
             getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+            getOtherParticipantProfileImg={getOtherParticipantProfileImg}
           />
         }
       />

@@ -31,6 +31,7 @@ interface ChatDisplayProps {
   setChatScrollBoolean: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
   getUserViaEmail?: (email: string) => Promise<Users>;
+  getOtherParticipantProfileImg: Function;
 }
 
 export default function ChatDisplay({
@@ -48,6 +49,7 @@ export default function ChatDisplay({
   setChatScrollBoolean,
   getProfileImgPresignedUrl,
   getUserViaEmail,
+  getOtherParticipantProfileImg,
 }: ChatDisplayProps) {
   const [roomId, setRoomId] = useQueryState("roomId");
 
@@ -82,31 +84,6 @@ export default function ChatDisplay({
     const newChatMessages = [...messages, newChatMessage];
     updateChatMessages(newChatMessages);
   };
-
-  const [profileImage, setProfileImage] = useState('');
-  useEffect(() => {
-    const getProfileImage = async () => {
-      const email = otherUserEmail;
-      if (email && getProfileImgPresignedUrl && getUserViaEmail) {
-        try {
-          const userData = await getUserViaEmail(email);
-          const imgKey = userData.profileImage;
-          if (imgKey !== undefined && imgKey !== null) {
-            const url = await getProfileImgPresignedUrl(imgKey);
-            // console.log(url);
-            setProfileImage(url); 
-          } else {
-            // console.error("image key undefined");
-            setProfileImage(""); 
-          }
-        } catch (error) {
-          console.error("Error fetching profile image:", error);
-        }
-      }
-    };
-
-    getProfileImage();
-  }, [otherUserEmail, getProfileImgPresignedUrl, getUserViaEmail]);
 
   const handleClick = () => {
     if (selected) {
@@ -153,7 +130,7 @@ export default function ChatDisplay({
     <div className="flex flex-col h-full">
       <div className="flex flex-row items-center justify-left p-4">
         <Avatar>
-          <AvatarImage src={profileImage} alt={otherUserName} />
+          <AvatarImage src={getOtherParticipantProfileImg(otherUserEmail)} alt={otherUserName} />
           <AvatarFallback>{otherUserInitials}</AvatarFallback>
         </Avatar>
         <div className="pl-2 flex flex-col w-[90%]">

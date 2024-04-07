@@ -2,11 +2,13 @@ import * as AWS from "aws-sdk";
 export async function sendEmailTextBlockViaNoReply(
   email: string,
   subject: string,
-  textblock: string
+  textblock: string,
+  type: string
 ) {
   const templateData = {
     customsubject: subject,
     textblock: textblock,
+    type: type
   };
   const params = {
     Source: "no-reply@obscurus.me",
