@@ -75,6 +75,7 @@ export default function SubmitList({
     if (!upload.upload && !isShowingVideo.active) {
       const fetchProcessedVideo = async ( item: EnrichedSubmissions) => {
         console.log("fetching processed video", item);
+        console.log("getDownloadPresignedUrl", getDownloadPresignedUrl)
         if (
           item?.status === "COMPLETED" &&
           getDownloadPresignedUrl &&

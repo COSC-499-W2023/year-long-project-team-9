@@ -166,6 +166,7 @@ export const SubmitWrapper = ({
           <SubmitList
             submissions={submissions as EnrichedSubmissions[]}
             updateSubmissionIsRead={updateSubmissionIsRead}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
           />
       }
       secondPanel={
