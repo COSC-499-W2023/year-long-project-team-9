@@ -4,7 +4,6 @@ import Wrapper from "@/app/wrapper";
 import ProfileForm from "./profile-form";
 import ProfileDisplay from "./profile-display";
 import { useState, useEffect } from "react";
-import { Users } from "@obscurus/database/src/sql.generated";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";

@@ -48,7 +48,11 @@ async function Account() {
     }
   }
   const { signedIn, email } = await getCurrentUserServer();
-  const userData: Users = await getUserViaEmail(email);
+  const userData = await getUserViaEmail(email);
+  if (!userData) {
+    redirect("/");
+  }
+
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(email);
   const requests: Requests[] = requestPageData.request;
@@ -61,13 +65,10 @@ async function Account() {
       submission.requesteeEmail === email &&
       submission.status === "COMPLETED"
     );
-  });  
+  });
   const completedVideos = filteredSubmissions.length;
   console.log("submitssions", completedVideos);
 
-  if (!userData) {
-    redirect("/");
-  }
   return (
     <ProfileWrapper
       defaultLayout={defaultLayout}
