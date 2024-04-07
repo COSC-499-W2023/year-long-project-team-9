@@ -12,7 +12,10 @@ import {
 } from "@/components/modified-shadcn-ui-components/modified-alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Inbox } from "lucide-react";
-export default function SubmitStatusAlert() {
+export default function SubmitStatusAlert({ show, message, onClose }: { show: boolean; message: string; onClose: Function }) {
+  if (!show) {
+    return null;
+  }
   return (
     <>
       <AlertDialog>
