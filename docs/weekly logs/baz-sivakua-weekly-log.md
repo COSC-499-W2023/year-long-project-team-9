@@ -179,3 +179,39 @@
 ### Picture of week 6's survey
 ![Screenshot of term 2 week 7&8 team evaluation](img/baz-sivakua/baz-survey-week20.png)
 ---
+
+## Term 2 Week 9
+### March 04 - March 10, 2024
+- This week I worked on Milestone 6: Final Milestone
+- This week's goals were to complete the peer testing session and discuss the feedback. Additionally, I started researching on how to upload images using zod
+
+### Picture of Project Board
+![Screenshot of term 2 week 9 project board tasks](img/baz-sivakua/baz-tasks-week22.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 9 team evaluation](img/baz-sivakua/baz-survey-week22.png)
+---
+
+## Term 2 Week 10
+### March 11 - March 17, 2024
+- This week I worked on Milestone 6: Final Milestone
+- This week's goals were to work on the profile page, specifically making sure to dynamically display the information of the user input
+
+### Picture of Project Board
+![Screenshot of term 2 week 10 project board tasks](img/baz-sivakua/baz-tasks-week23.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 10 team evaluation](img/baz-sivakua/baz-survey-week23.png)
+---
+
+## Term 2 Week 11
+### March 18 - March 24, 2024
+- This week I worked on Milestone 6: Final Milestone
+- This week's goals were to finish the profile page layout, then work on adding user stats functions and uploading profile images to s3 bucket.
+
+### Picture of Project Board
+![Screenshot of term 2 week 10 project board tasks](img/baz-sivakua/baz-tasks-week24.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 10 team evaluation](img/baz-sivakua/baz-survey-week24.png)
+---

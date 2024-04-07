@@ -261,3 +261,59 @@ HashMap:
 ### Picture of Week 7's and 8's Survey
 
 ![Week 7 and 8 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-7-and-8-T-2-survey.png)
+
+## Week 9
+
+### March 04 2024 - March 10 2024
+
+- I worked on Milestone #6.
+
+### Picture of Project Board Week 9
+
+![Week 9 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-9-T-2-board.png)
+
+### Picture of Week 9
+
+![Week 9 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-9-T-2-survey.png)
+
+## Week 10
+
+### March 11 2024 - March 17 2024
+
+- I worked on Milestone #6, and helped others.
+
+### Picture of Project Board Week 10
+
+![Week 10 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-10-T-2-board.png)
+
+### Picture of Week 10
+
+![Week 10 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-10-T-2-survey.png)
+
+## Week 11
+
+### March 18 2024 - March 24 2024
+
+- I worked on Milestone #6, helped with chat and worked on notifications.
+
+### Picture of Project Board Week 11
+
+![Week 11 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-11-T-2-board.png)
+
+### Picture of Week 11
+
+![Week 11 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-11-T-2-survey.png)
+
+## Week 12
+
+### March 25 2024 - March 31 2024
+
+- I worked on Milestone #6, fixed some bugs, and helped others.
+
+### Picture of Project Board Week 12
+
+![Week 12 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-12-T-2-board.png)
+
+### Picture of Week 12
+
+![Week 12 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-11-T-2-survey.png)

@@ -155,7 +155,7 @@
 
 ## T2 Week 1
 
-### January 8 - January 14, 2023
+### January 8 - January 14, 2024
 
 - This week I worked on Milestone #4, Peer Testing #1.
 - The goals for this week were to set up the RDS database in SST, create lambda functions to select all rows from a table, and write a dummy webpage to show the data.
@@ -172,7 +172,7 @@
 
 ## T2 Week 2
 
-### January 15 - January 21, 2023
+### January 15 - January 21, 2024
 
 - This week I worked on Milestone #4, Peer Testing #1.
 - The goals for this week were to set up AWS Cognito and a functioning Sign Up/Sign In page, with helper methods to handle authentication.
@@ -189,7 +189,7 @@
 
 ## T2 Week 3
 
-### January 22 - January 28, 2023
+### January 22 - January 28, 2024
 
 - This week I worked on Milestone #4, Peer Testing #1.
 - The goals for this week were to implement the sign in, forgot password, and sign up functionality to the web app through Cognito and Amplify Auth.
@@ -206,7 +206,7 @@
 
 ## T2 Week 4
 
-### January 29 - February 4, 2023
+### January 29 - February 4, 2024
 
 - This week I worked on Milestone #4, Peer Testing #1.
 - The goals for this week were to perform the peer testing presentation and to examine how Cognito triggers function.
@@ -223,7 +223,7 @@
 
 ## T2 Week 5
 
-### February 5 - February 11, 2023
+### February 5 - February 11, 2024
 
 - This week I worked on Milestone #5, Peer Testing #2.
 - The goals for this week were to set up lambda functions for messaging and create a websocket API to allow users to send messages to each other..
@@ -240,7 +240,7 @@
 
 ## T2 Week 6
 
-### February 12 - February 18, 2023
+### February 12 - February 18, 2024
 
 - This week I worked on Milestone #5, Peer Testing #2.
 - The goals for this week were to begin implementing a chat page and collect chat rooms dynamically based on the user's email.
@@ -257,7 +257,7 @@
 
 ## T2 Week 7
 
-### February 19 - February 25, 2023
+### February 19 - February 25, 2024
 
 - This week I worked on Milestone #5, Peer Testing #2.
 - The goals for this week were to implement server actions that would take new chat messages and send them to both the database and the user's chat log.
@@ -266,7 +266,7 @@
 
 ## T2 Week 8
 
-### February 26 - March 3, 2023
+### February 26 - March 3, 2024
 
 - This week I worked on Milestone #5, Peer Testing #2.
 - The goals for this week were to finish database interactions in the chat page and implement the websocket functions to send and receive messages from other users synchronously.
@@ -278,3 +278,71 @@
 ### Picture of T2 Week 8's Survey
 
 ![T2 Week 6 Survey](img/soren-stenback/T2Week8-Survey-ID4.png)
+
+---
+
+## T2 Week 9
+
+### March 4 - March 10, 2024
+
+- This week I worked on Milestone #5, Peer Testing #2.
+- The goals for this week were to present the current web app for Peer Testing #2 and discuss the feedback.
+
+### Picture of Project Board
+
+![T2 Week 9 Project Board](img/soren-stenback/T2Week9-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 9's Survey
+
+![T2 Week 9 Survey](img/soren-stenback/T2Week9-Survey-ID4.png)
+
+---
+
+## T2 Week 10
+
+### March 11 - March 17, 2024
+
+- This week I worked on Milestone #6, Final Project Review.
+- The goals for this week were to finalise bug fixes to the chat page and research methods to implement authentication.
+
+### Picture of Project Board
+
+![T2 Week 10 Project Board](img/soren-stenback/T2Week10-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 10's Survey
+
+![T2 Week 10 Survey](img/soren-stenback/T2Week10-Survey-ID4.png)
+
+---
+
+## T2 Week 11
+
+### March 18 - March 24, 2024
+
+- This week I worked on Milestone #6, Final Project Review.
+- The goals for this week were to begin setting up the sign in/sign up windows and fix front-end errors in chat/createRequest.
+
+### Picture of Project Board
+
+![T2 Week 11 Project Board](img/soren-stenback/T2Week11-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 11's Survey
+
+![T2 Week 11 Survey](img/soren-stenback/T2Week11-Survey-ID4.png)
+
+---
+
+## T2 Week 12
+
+### March 25 - March 31, 2024
+
+- This week I worked on Milestone #6, Final Project Review.
+- The goals for this week were to implement new auth functions and set up sign in/sign up functions.
+
+### Picture of Project Board
+
+![T2 Week 12 Project Board](img/soren-stenback/T2Week12-ProjectBoard-ID4.png)
+
+### Picture of T2 Week 12's Survey
+
+![T2 Week 12 Survey](img/soren-stenback/T2Week12-Survey-ID4.png)

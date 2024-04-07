@@ -14,6 +14,7 @@ import {
 } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 import { UserPoolEmail, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
+import { HostedZone } from "aws-cdk-lib/aws-route53";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
@@ -309,6 +310,16 @@ export default function SiteStack({ stack }: StackContext) {
       NEXT_PUBLIC_SERVICE_URL: processVideo.url + "",
       NEXT_PUBLIC_USER_POOL_ID: auth.userPoolId,
       NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID: auth.userPoolClientId,
+    },
+    customDomain: {
+      domainName: "obscurus.me",
+      domainAlias: "www.obscurus.me",
+      cdk: {
+        hostedZone: HostedZone.fromHostedZoneAttributes(stack, "MyZone", {
+          hostedZoneId: "Z09403151W7ZFKPC0YJEL",
+          zoneName: "obscurus.me",
+        }),
+      },
     },
   });
 

@@ -482,3 +482,136 @@ Screenshot from peer eval for Week 7:
 ### Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-19.png)
+
+## Week 9 ##
+
+### Applicable Date Range ###
+March 3 -  March 10, 2024
+
+### Tasks Worked On ###
+
+- This week I did a lot of work on the uploading side of things, including working on making recording and uploading files update the statuses of the submissions.
+- I made several server-side functions to manage the uploads, downloads, and status of the submissions, as well as trigger the video processing job.
+- I have been doing a lot of research and experimenting with creating a microservice on ECS with FastAPI to handle the video processsing instead of the Job that we are currently using. The Job does work but I want to get the microservice working. But it is not working yet.
+- I have been doing a lot of UI cleaning up and debugging now that the core is done, but there is still more work to be done.
+- This week was also the peer testing but honestly there were not many surprises and I feel like our team knows what needs to be done to complete the project.
+- Note that I did fix several bugs this week but I still ahve work to do on the uploading process. However, I am makign good progress.
+
+Screenshot from peer eval for Week 9:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-21.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-21.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-21.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-21.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-21.png)
+
+## Week 10 ##
+
+### Applicable Date Range ###
+March 11 -  March 17, 2024
+
+### Tasks Worked On ###
+
+- This week I focused on refining the uploading process and did a lot of work on that front.
+- A major hurdle is managing the videos that are recorded in the browser but I'm close.
+- This week I also did more work on the request lifecycle, adding uddate status functions and adding getDownloadPresignedUrl to eventually allow the user to download the processed video through the UI.
+- I also did some UI work with Soren to make sure the entire panels are not scrollable, rather only the list items
+- I am trying to get the theme switcher to be a simple button rather than a dropdown but I've yet to figure out how to get around the hydration errors it creates.
+- This coming week I hope to finish Submit and my part of the project as a whole.
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-22.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-22.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-22.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-22.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-22.png)
+
+## Week 11 ##
+
+### Applicable Date Range ###
+March 18 -  March 24, 2024
+
+### Tasks Worked On ###
+
+- This week was all about cleaning things up, and I think I did a good job. The video processing pipeline is quite smooth now, and the UI is stable and responsive.
+- One big hurdle I overcame this week was seeting up a WebSocket API endpoint for updating the status of submissions. Using this in combination with a refactoring of Submit, I am now able to update the status of requests/submissions without refreshing the page.
+- To be honest though, I am investigating some other state management solutions like React Query. It seems upating the UI on the server is a bit of a weakspot for Next.js and my solution definitely works, but I would prefer a more optimized solution.
+- However, there is still much to be done before we finish the term so this week will be a lot of work as well.
+
+Screenshot from peer eval for Week 10:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-23.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-23.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-23.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-23.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-23.png)
+
+## Week 12 ##
+
+### Applicable Date Range ###
+March 24 -  March 31, 2024
+
+### Tasks Worked On ###
+
+- I got a lot done this week across the stack. I finally set up my FastAPI microservice on ECS, added real-time notification and status updating, fixed a lot of bugs, and made a lot of UI improvements. I also redisgned how data is fetched so that all the necessary data for a user is fetched when they first go to submit, that way I can avoid additional function calls in the future.
+- This week I basically glued everything together, so now I just need to fix some bugs and standardize things across the app and not just what I worked on.
+- I think I deserve bonus marks for my contributions this week, I really did put in a massive amount of work.
+
+Screenshot from peer eval for Week 12:
+
+![Tasks Worked on](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-24.png)
+
+### Completed Tasks ###
+
+![Completed Tasks](./img/jan-yaeger-dhillon/completed/completed-24.png)
+
+![Completed Tasks 2](./img/jan-yaeger-dhillon/completed/completed-24-2.png)
+
+### In Progress ###
+
+![In Progress](./img/jan-yaeger-dhillon/in-progress/in-progress-24.png)
+
+### To Do ###
+
+![TODO](./img/jan-yaeger-dhillon/todo/todo-24.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-24.png)
