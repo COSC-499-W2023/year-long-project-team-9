@@ -13,6 +13,7 @@ import updateUser from "../functions/updateUser";
 import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import { getCurrentUser } from "aws-amplify/auth/server";
 import { getUserViaEmail } from "../functions/getUserData";
+import { getSubmissions } from "../functions/getSubmissions";
 
 async function Account() {
   async function getCurrentUserServer() {
@@ -44,7 +45,26 @@ async function Account() {
   const requestPageData: { request: Requests[]; submissions: Submissions[] } =
     await getRequestsViaEmail(email);
   const requests: Requests[] = requestPageData.request;
-  const submissions: Submissions[] = requestPageData.submissions;
+  // const submissions: Submissions[] = requestPageData.submissions;
+  const submissions: Submissions[] = await getSubmissions();
+  const requestNum = requests.length;
+  console.log("requests", requestNum);
+  // console.log("submitssions", submissions);
+
+  const filteredSubmissions: Submissions[] = submissions.filter(submission => {
+    return (
+      submission.requesteeEmail === email &&
+      submission.status === "COMPLETED"
+    );
+  });  
+  const completedVideos = filteredSubmissions.length;
+  console.log("submitssions", completedVideos);
+  
+  // const completedVideos = await getCompletedVideo(email);
+
+
+  // console.log("video", completedVideos);
+  
   return (
     <ProfileWrapper
       defaultLayout={defaultLayout}
@@ -53,6 +73,8 @@ async function Account() {
       getPresignedUrl={getPresignedUrl}
       getProfileImgPresignedUrl={getProfileImgPresignedUrl}
       updateUser={updateUser}
+      requestNum={requestNum}
+      completedVideos={completedVideos}
     />
   );
 }

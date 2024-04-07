@@ -1,17 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Users } from "@obscurus/database/src/sql.generated";
 
-export default function ProfileDisplay({ form, userData,
-  getProfileImgPresignedUrl, }: { form: any; userData: Users; getProfileImgPresignedUrl?: (username: string) => Promise<string>; }) {
-  const [file, setFile] = useState<File | undefined>(undefined);
-  // const profileImage = form.getValues("profileImage");
-  // const fileLength = profileImage ? profileImage.length : 0;
-  // if (fileLength > 0) {
-  //   console.log("test", profileImage[0]);
-  //   setFile(profileImage[0]);
-  // }
+export default function ProfileDisplay({ form, userData, requestNum, completedVideos,
+  getProfileImgPresignedUrl, }: { form: any; userData: Users; requestNum: number; completedVideos?: number; getProfileImgPresignedUrl?: (username: string) => Promise<string>; }) {
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   const getProfileImage = async () => {
     const imgkey = userData.profileImage;
@@ -46,11 +39,11 @@ export default function ProfileDisplay({ form, userData,
           <div className="grid grid-cols-2 gap-4 justify-items-center mt-2 mb-4">
             <div className="grid grid-cols-1 justify-items-center">
               <div>Requests Sent</div>
-              <div>16</div>
+              <div>{requestNum}</div>
             </div>
             <div className="grid grid-cols-1 justify-items-center">
               <div>Videos Submitted</div>
-              <div>3</div>
+              <div>{completedVideos}</div>
             </div>
           </div>
           <div className="text-muted-foreground mt-2 text-sm">Joined: January 15 2024</div>
