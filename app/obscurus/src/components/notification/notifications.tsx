@@ -47,7 +47,7 @@ export default function Notifications({
   useEffect(() => {
     const fetchInitialNotifications = async () => {
       try {
-        const data = await getNotificationsViaEmail(email);
+        const data = await getNotificationsViaEmail(user?.email);
         setNotifications(data.notifications);
         setHasUnreadNotifications(
           data.notifications.some(

@@ -13,7 +13,6 @@ import { useUserData } from "@/app/user-provider";
 import { set } from "date-fns";
 
 export const SubmitWrapper = ({
-  userEmail,
   getPresignedUrl,
   getDownloadPresignedUrl,
   sendToService,
@@ -26,7 +25,6 @@ export const SubmitWrapper = ({
   user,
   getProfileImgPresignedUrl,
 }: {
-  userEmail: string;
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
   sendToService?: (
@@ -46,6 +44,7 @@ export const SubmitWrapper = ({
 }) => {
   const [submissions, setSubmissions] = useSubmissions();
   const ws = useWebSocket();
+
 
 
 
@@ -114,7 +113,7 @@ export const SubmitWrapper = ({
                     referenceId: submissionId,
                     type: "SUBMIT",
                     content: `Submission status updated to ${status}`,
-                    email: userEmail,
+                    email: "imightbejan@gmail.com",
                   },
                 },
               })
@@ -169,14 +168,14 @@ export const SubmitWrapper = ({
           />
       }
       secondPanel={
-        <SubmitDisplay
-          getPresignedUrl={getPresignedUrl}
-          getDownloadPresignedUrl={getDownloadPresignedUrl}
-          sendToService={sendToService}
-          updateSubmissionStatus={updateSubmissionStatus}
-          setSubmittedDate={setSubmittedDate}
-          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-        />
+          <SubmitDisplay
+            getPresignedUrl={getPresignedUrl}
+            getDownloadPresignedUrl={getDownloadPresignedUrl}
+            sendToService={sendToService}
+            updateSubmissionStatus={updateSubmissionStatus}
+            setSubmittedDate={setSubmittedDate}
+            getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+          />
       }
     />
   );
