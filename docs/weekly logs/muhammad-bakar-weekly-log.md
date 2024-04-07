@@ -316,4 +316,18 @@ HashMap:
 
 ### Picture of Week 12
 
-![Week 12 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-11-T-2-survey.png)
+![Week 12 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-12-T-2-survey.png)
+
+## Week 13
+
+### March 25 2024 - March 31 2024
+
+- I worked on Milestone #6, fixed some bugs, and helped others, and got help from others.
+
+### Picture of Project Board Week 13
+
+![Week 13 Term 2 Bakar's Board](img/muhammad-bakar/mbakar-week-13-T-2-board.png)
+
+### Picture of Week 13
+
+![Week 13 Term 2 Bakar's Survey](img/muhammad-bakar/mbakar-week-13-T-2-survey.png)
