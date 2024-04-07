@@ -60,9 +60,16 @@ export default function Notifications({
       }
     };
 
+
+    fetchInitialNotifications();
+  }, [user]);
+
+
+  useEffect(() => {
+
     if (!ws) return;
 
-    ws.onmessage = (event) => {
+    const handleWebSocketMessages = (event: any) => {
       console.log("Received message:", event.data);
       const data = JSON.parse(event.data);
       if (data.action === "newNotification") {
@@ -72,20 +79,18 @@ export default function Notifications({
           ...prevNotifications,
         ]);
         setHasUnreadNotifications(true);
-      } else {
-        console.log("Unknown action:", data.action);
-        return;
       }
     };
 
-    fetchInitialNotifications();
+
+    ws.addEventListener("message", handleWebSocketMessages);
 
     return () => {
-      ws.onmessage = null;
-      ws.onerror = null;
-      ws.onclose = null;
+      ws.removeEventListener("message", handleWebSocketMessages);
     };
-  }, [ws, user]);
+  }, [ws]);
+
+
 
   return user ? (
     <DropdownMenu>
