@@ -71,12 +71,14 @@ export default function ForgotPasswordForm({
           )}
           {forgotPasswordState === "email" && (
             <ForgotPasswordEmailForm
+            loading={loading}
               setDialogState={setDialogState}
               triggerSendForgotPasswordEmail={triggerSendForgotPasswordEmail}
             />
           )}
           {forgotPasswordState === "verify" && (
             <ForgotPasswordVerifyNewPasswordForm
+            loading={loading}
               email={userEmail}
               setDialogState={setDialogState}
               triggerForgotPasswordChange={triggerForgotPasswordChange}

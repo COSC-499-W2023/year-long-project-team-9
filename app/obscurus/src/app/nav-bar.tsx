@@ -35,6 +35,7 @@ const NavBar = ({
   confirmResetUserPassword,
   updateUserPassword,
   user,
+  getProfileImgPresignedUrl
 }: {
   readNotification: Function;
   deleteNotifications: Function;
@@ -46,6 +47,7 @@ const NavBar = ({
   confirmResetUserPassword: Function;
   updateUserPassword: Function;
   user?: any;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) => {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -144,8 +146,8 @@ const NavBar = ({
           resendConfirmSignUpUser={resendConfirmSignUpUser}
           resetUserPassword={resetUserPassword}
           confirmResetUserPassword={confirmResetUserPassword}
-          updateUserPassword={updateUserPassword}
           user={user}
+          getProfileImgPresignedUrl={getProfileImgPresignedUrl}
         />
       </div>
     </div>

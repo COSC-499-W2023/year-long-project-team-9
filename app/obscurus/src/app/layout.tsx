@@ -29,6 +29,7 @@ import { getUserViaEmail } from "./functions/getUserViaEmail";
 import { UserProvider } from "./user-provider";
 import { User } from "lucide-react";
 import { redirect } from "next/navigation";
+import getProfileImgPresignedUrl from "./functions/getProfileImgPresignedUrl";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -89,6 +90,7 @@ export default async function RootLayout({
                   confirmResetUserPassword={confirmResetUserPassword}
                   updateUserPassword={updateUserPassword}
                   user={userData?.user}
+                  getProfileImgPresignedUrl={getProfileImgPresignedUrl}
                 />
                 <div className=" flex-col md:flex h-screen pt-16">
                   <Toaster />

@@ -10,8 +10,8 @@ export default function Authentication({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
   user,
+  getProfileImgPresignedUrl,
 
 }: {
   signUpUser: Function;
@@ -19,18 +19,17 @@ export default function Authentication({
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
-  updateUserPassword: Function;
   user?: Users;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
-
-
 
 
   return user ? (
     <AuthenticationSignedIn
-      updateUserPassword={updateUserPassword}
       user={user}
+      getProfileImgPresignedUrl={getProfileImgPresignedUrl}
     />
+
   ) : (
     <AuthenticationSignedOut
       signUpUser={signUpUser}

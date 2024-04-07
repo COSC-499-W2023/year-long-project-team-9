@@ -26,15 +26,14 @@ import { signOut } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
 import { useUserData } from "@/app/user-provider";
 import { Users } from "@obscurus/database/src/sql.generated";
-import getProfileImgPresignedUrl from "@/app/functions/getProfileImgPresignedUrl";
 
 
 export default function AuthenticationSignedIn({
-  updateUserPassword,
-  user
+  user,
+  getProfileImgPresignedUrl
 }: {
-  updateUserPassword: Function;
   user?: Users;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
 
 
@@ -49,7 +48,7 @@ export default function AuthenticationSignedIn({
     };
 
     fetchProfileImage();
-  }, [user, getProfileImgPresignedUrl]);
+  }, [user]);
 
   const userEmail = user?.email || "";
   const firstName = user?.givenName || "";

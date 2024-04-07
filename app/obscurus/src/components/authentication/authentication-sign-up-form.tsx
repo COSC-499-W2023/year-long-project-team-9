@@ -203,12 +203,15 @@ export default function SignUpForm({
           email={signUpEmailNames.email}
           firstName={signUpEmailNames.firstName}
           lastName={signUpEmailNames.lastName}
+          loading={loading}
           triggerSignUp={triggerSignUp}
         />
       )}
       {signUpState === "verifyEmail" && !loading && (
         <SignUpVerifyEmailForm
+
           email={signUpEmailNames.email}
+          loading={loading}
           setDialogState={setDialogState}
           triggerVerifyEmail={triggerVerifyEmail}
           triggerResendVerifyEmail={triggerResendVerifyEmail}
