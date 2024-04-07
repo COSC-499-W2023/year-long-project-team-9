@@ -44,18 +44,23 @@ import { useToast } from "@/components/ui/use-toast";
 import { useIsShowingVideo } from "@/app/hooks/use-is-showing-video";
 import { useSearchParams } from "next/navigation";
 import { useRequest } from "@/app/hooks/use-request";
-import { EnrichedRequests, SubmissionData } from "@obscurus/database/src/types/enrichedRequests";
+import {
+  EnrichedRequests,
+  SubmissionData,
+} from "@obscurus/database/src/types/enrichedRequests";
 
 export default function RequestDisplay({
   userData,
   updateRequestGrouping,
   getProfileImgPresignedUrl,
   handleTimezoneOffset,
+  form
 }: {
   userData: Users;
   updateRequestGrouping: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
   handleTimezoneOffset?: Function;
+  form: any;
 }) {
   const [request, setRequest] = useRequest();
   const [iseShowingVideo, setShowingVideo] = useIsShowingVideo();
@@ -122,6 +127,31 @@ export default function RequestDisplay({
                 <span className="font-medium ">Email: </span>
                 {selected?.requesterEmail}
               </div>
+              <div className="text-xs">
+                  <HoverCard>
+                    <HoverCardTrigger className="text-xs line-clamp-1">
+                      To:{" "}
+                      {selected?.submissions
+                        .filter(
+                          (value) => value.requestId === selected?.requestId
+                        )
+                        .map((item, index: number) => item.requesteeEmail)
+                        .join(", ")}
+                    </HoverCardTrigger>
+                    <HoverCardContent className="max-h-48 overflow-y-auto">
+                      <div>To:{} </div>
+                      <div className="ml-1">
+                        {selected?.submissions
+                          .filter(
+                            (value) => value.requestId === selected?.requestId
+                          )
+                          .map((item, index: number) => (
+                            <div key={index}>• {item.requesteeEmail}</div>
+                          ))}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
               <div className="line-clamp-1 text-xs text-left">
                 <span className="font-medium">Due: </span>
                 {format(new Date(selected?.dueDate), "PPP, p")}
@@ -132,7 +162,7 @@ export default function RequestDisplay({
             <div className="ml-auto text-xs text-muted-foreground grid p-0 justify-between text-right line-clamp-1 text-ellipsis space-y-5 h-full">
               <div>{format(new Date(selected.creationDate), "PPP, p")}</div>
               {selected && (
-                <div className="flex justify-end pt-5">
+                <div className="flex justify-end pt-9">
                   <Badge
                     variant={selected?.blurred ? "default" : "secondary"}
                     className=" w-fit h-full"
@@ -244,9 +274,7 @@ export default function RequestDisplay({
                     <ResponsiveContainer width="100%" height="100%">
                       <DataTable
                         columns={columns}
-                        data={
-                          selected?.submissions as SubmissionData[]
-                        }
+                        data={selected?.submissions as SubmissionData[]}
                       />
                     </ResponsiveContainer>
                   </div>
@@ -262,7 +290,6 @@ export default function RequestDisplay({
   const [requesterProfileImage, setrequesterProfileImage] = useState<
     string | undefined
   >(undefined);
-
 
   return (
     <div className="flex h-full flex-col">

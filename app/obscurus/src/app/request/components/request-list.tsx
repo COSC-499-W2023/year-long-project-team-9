@@ -92,13 +92,9 @@ export default function RequestList({
     });
 
     return (
-      <TabsContent
-        key={status}
-        value={status}
-        className={`${
-          requests ? " overflow-y-scroll h-full mb-4" : "overflow-y-hidden"
-        }`}
-      >
+      <TabsContent key={status} value={status}  className={`${
+        requests ? " overflow-y-scroll h-full mb-4" : "overflow-y-hidden"
+      }`}>
         <div className="flex flex-col gap-2 p-4 pt-0 h-full">
           {filteredRequests?.length === 0 && (
             <div className="flex flex-col w-full h-full justify-center items-center">
@@ -129,9 +125,10 @@ export default function RequestList({
                   </div>
 
                   <div className="ml-auto text-xs w-full flex justify-end">
-                    {formatDistanceToNow(new Date(item.creationDate), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceToNow(
+                      new Date(item.creationDate),
+                      { addSuffix: true }
+                    )}
                   </div>
                 </div>
                 <div className="text-xs font-medium text-ellipsis line-clamp-1">
