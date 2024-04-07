@@ -22,7 +22,6 @@ import {
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
 } from "./functions/authenticationMethods";
 import NavBar from "./nav-bar";
 import { getUserViaEmail } from "./functions/getUserViaEmail";
@@ -88,7 +87,6 @@ export default async function RootLayout({
                   resendConfirmSignUpUser={resendConfirmSignUpUser}
                   resetUserPassword={resetUserPassword}
                   confirmResetUserPassword={confirmResetUserPassword}
-                  updateUserPassword={updateUserPassword}
                   user={userData?.user}
                   getProfileImgPresignedUrl={getProfileImgPresignedUrl}
                 />

@@ -53,8 +53,8 @@ async function Submit() {
 
 
   return (
-
     <SubmitWrapper
+      userEmail={email}
       getPresignedUrl={getPresignedUrl}
       getDownloadPresignedUrl={getDownloadPresignedUrl}
       sendToService={sendToService}

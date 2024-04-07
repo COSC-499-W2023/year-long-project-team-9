@@ -5,7 +5,6 @@ import {
   Requests,
   Submissions,
 } from "@obscurus/database/src/sql.generated";
-import getUserDataByEmail from "../functions/getUserDataByEmail";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import ProfileWrapper from "./components/profile-wrapper";
 import getPresignedUrl from "../functions/getPresignedUrl";

@@ -33,7 +33,6 @@ const NavBar = ({
   resendConfirmSignUpUser,
   resetUserPassword,
   confirmResetUserPassword,
-  updateUserPassword,
   user,
   getProfileImgPresignedUrl
 }: {
@@ -45,7 +44,6 @@ const NavBar = ({
   resendConfirmSignUpUser: Function;
   resetUserPassword: Function;
   confirmResetUserPassword: Function;
-  updateUserPassword: Function;
   user?: any;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) => {

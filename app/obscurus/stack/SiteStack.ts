@@ -91,7 +91,6 @@ export default function SiteStack({ stack }: StackContext) {
         userPool: {
           id: auth.userPoolId,
           clientIds: [auth.userPoolClientId],
-
         },
       },
     },
