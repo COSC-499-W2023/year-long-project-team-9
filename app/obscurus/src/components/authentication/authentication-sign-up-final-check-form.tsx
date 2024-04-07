@@ -8,12 +8,14 @@ export default function SignUpFinalCheckForm({
   email,
   firstName,
   lastName,
+  loading,
   triggerSignUp,
 }: {
   setSignUpState: Function;
   email: string;
   firstName: string;
   lastName: string;
+  loading: boolean;
   triggerSignUp: Function;
 }) {
   return (
@@ -33,14 +35,25 @@ export default function SignUpFinalCheckForm({
           <Input disabled placeholder={lastName} />
         </div>
       </div>
-      <div className="flex flex-row gap-2">
-        <Button onClick={() => setSignUpState("emailNames")} className="w-full">
-          <ArrowLeft /> No, Go Back
-        </Button>
-        <Button onClick={() => triggerSignUp()} className="w-full">
-          Yes, Sign Up <ArrowRight />
-        </Button>
-      </div>
+      {loading ? (
+        <div>
+          <Button className="w-full">
+            Sending Verification Email, Please Wait
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-row gap-2">
+          <Button
+            onClick={() => setSignUpState("emailNames")}
+            className="w-full"
+          >
+            <ArrowLeft /> No, Go Back
+          </Button>
+          <Button onClick={() => triggerSignUp()} className="w-full">
+            Yes, Sign Up <ArrowRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

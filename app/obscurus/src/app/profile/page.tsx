@@ -5,7 +5,6 @@ import {
   Requests,
   Submissions,
 } from "@obscurus/database/src/sql.generated";
-import getUserDataByEmail from "../functions/getUserDataByEmail";
 import { getRequestsViaEmail } from "../functions/getRequestsViaEmail";
 import ProfileWrapper from "./components/profile-wrapper";
 import getPresignedUrl from "../functions/getPresignedUrl";
@@ -17,6 +16,22 @@ import { getCurrentUser } from "aws-amplify/auth/server";
 import { getUserViaEmail } from "../functions/getUserViaEmail";
 
 async function Account() {
+  async function getCurrentUserServer() {
+    try {
+      const currentUser = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: (contextSpec) => getCurrentUser(contextSpec),
+      });
+      console.log(currentUser);
+      return {
+        signedIn: true,
+        email: currentUser.signInDetails?.loginId ?? "",
+      };
+    } catch (error) {
+      console.log(error);
+      return { signedIn: false, email: "" };
+    }
+  }
   const layout = cookies().get("react-resizable-panels:layout");
   const collapsed = cookies().get("react-resizable-panels:collapsed");
   console.log("Layout", layout);
@@ -31,22 +46,6 @@ async function Account() {
       : undefined;
 
 
-
-  async function getCurrentUserServer() {
-    try {
-      const currentUser = await runWithAmplifyServerContext({
-        nextServerContext: { cookies },
-        operation: (contextSpec) => getCurrentUser(contextSpec),
-      });
-      return {
-        signedIn: true,
-        email: currentUser.signInDetails?.loginId ?? "",
-      };
-    } catch (error) {
-      console.log(error);
-      return { signedIn: false, email: "" };
-    }
-  }
   const { signedIn, email } = await getCurrentUserServer();
 
 

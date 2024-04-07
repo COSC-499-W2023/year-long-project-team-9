@@ -60,35 +60,31 @@ export default function VerifyEmailForm({
   }
   return (
     <div className="flex flex-col h-full">
-      {loading ? (
-        <div className="flex flex-col w-full h-full justify-start items-center gap-5">
-          <LucideLoader2 className="animate-spin text-primary" size={75} />
-        </div>
-      ) : (
-        <div>
-          {failedVerify && (
-            <div className="flex justify-center border border-red-500 rounded p-2">
-              <Label className="text-red-500 text-xs">
-                Failed To Verify Email, Please Try Again
-              </Label>
-            </div>
-          )}
-          {verifyEmailState === "email" && (
-            <VerifyEmailEmailForm
-              setDialogState={setDialogState}
-              triggerSendVerifyEmail={triggerSendVerifyEmail}
-            />
-          )}
-          {verifyEmailState === "verify" && (
-            <VerifyEmailVerifyForm
-              email={userEmail}
-              setDialogState={setDialogState}
-              triggerVerifyEmail={triggerVerifyEmail}
-              triggerResendVerifyEmail={triggerResendVerifyEmail}
-            />
-          )}
-        </div>
-      )}
+      <div>
+        {failedVerify && (
+          <div className="flex justify-center border border-red-500 rounded p-2">
+            <Label className="text-red-500 text-xs">
+              Failed To Verify Email, Please Try Again
+            </Label>
+          </div>
+        )}
+        {verifyEmailState === "email" && (
+          <VerifyEmailEmailForm
+            loading={loading}
+            setDialogState={setDialogState}
+            triggerSendVerifyEmail={triggerSendVerifyEmail}
+          />
+        )}
+        {verifyEmailState === "verify" && (
+          <VerifyEmailVerifyForm
+            loading={loading}
+            email={userEmail}
+            setDialogState={setDialogState}
+            triggerVerifyEmail={triggerVerifyEmail}
+            triggerResendVerifyEmail={triggerResendVerifyEmail}
+          />
+        )}
+      </div>
     </div>
   );
 }

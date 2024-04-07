@@ -112,11 +112,7 @@ export default function AuthenticationSignedIn({
                   Update Password
                 </Label>
                 <Separator className="mt-1 mb-2" />
-                <UpdatePasswordForm
-                  updateUserPassword={updateUserPassword}
-                  setIsOpen={setIsOpen}
-                  userEmail={userEmail}
-                />
+                <UpdatePasswordForm setIsOpen={setIsOpen} />
               </AlertDialogDescription>
             </AlertDialogContent>
           </AlertDialog>

@@ -103,16 +103,3 @@ export async function confirmResetUserPassword({
     return false;
   }
 }
-
-export async function updateUserPassword({
-  oldPassword,
-  newPassword,
-}: UpdatePasswordInput) {
-  try {
-    await updatePassword({ oldPassword, newPassword });
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-}
