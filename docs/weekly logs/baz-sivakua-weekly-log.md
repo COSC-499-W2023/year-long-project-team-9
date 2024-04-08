@@ -215,3 +215,16 @@
 ### Picture of week 6's survey
 ![Screenshot of term 2 week 10 team evaluation](img/baz-sivakua/baz-survey-week24.png)
 ---
+
+
+## Term 2 Week 11
+### April 1 - April 7, 2024
+- This week I worked on Milestone 6: Final Milestone
+- This week's goals were to finish all features of the site
+
+### Picture of Project Board
+![Screenshot of term 2 week 10 project board tasks](img/baz-sivakua/baz-tasks-week26.png)
+
+### Picture of week 6's survey
+![Screenshot of term 2 week 10 team evaluation](img/baz-sivakua/baz-survey-week26.png)
+---
