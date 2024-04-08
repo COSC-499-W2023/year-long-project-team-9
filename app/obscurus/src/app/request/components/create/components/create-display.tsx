@@ -173,7 +173,7 @@ export default function CreateDisplay({
         </div>
         <div className="ml-auto text-xs text-muted-foreground grid p-0 m-0 justify-between text-right line-clamp-1 items-center text-ellipsis space-y-5 h-full">
           <div>{format(new Date(), "PPP, p")}</div>
-          <div className="flex justify-end pt-[44px]">
+          <div className="flex justify-end pt-9">
             <Badge
               variant={
                 form.watch("videoProcessing") === true ? "default" : "secondary"

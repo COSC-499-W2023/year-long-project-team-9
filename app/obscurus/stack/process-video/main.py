@@ -323,7 +323,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         print(
             f"SubmissionId: {submission_id}, File Extension: {file_extension}, Requester Email: {requester_email}, Requestee Email: {requestee_email}"
         )
-        await update_submission_status("PROCESSING", submission_id)
+        await update_submission_status("PROCESSING", submission_id, requester_email, requestee_email)
         # await send_email_notification(
         #     recipient_email,
         #     "obscurus",
@@ -337,7 +337,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
     except Exception as e:
         print(f"Error processing video: {e}")
         try:
-            await update_submission_status("FAILED", submission_id)
+            await update_submission_status("FAILED", submission_id, requester_email, requestee_email)
             await create_notification("FAILED", submission_id, requester_email, requestee_email)
             return {"message": "Error processing video"}
         except Exception as error:
@@ -376,10 +376,10 @@ async def process_video_background(submission_id, file_extension, requester_emai
                 CopySource={"Bucket": bucket_name, "Key": converted_key},
                 Key=f"{submission_id}-processed.mp4",
             )
-        await update_submission_status("COMPLETED", submission_id)
+        await update_submission_status("COMPLETED", submission_id, requester_email, requestee_email)
         await create_notification("COMPLETED", submission_id, requester_email, requestee_email)
 
     except Exception as e:
         print(f"Error processing video: {e}")
-        await update_submission_status("FAILED", submission_id)
+        await update_submission_status("FAILED", submission_id, requester_email, requestee_email)
         await create_notification("FAILED", submission_id, requester_email, requestee_email)
