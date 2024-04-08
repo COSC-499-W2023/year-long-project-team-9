@@ -1,40 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# obscurus
 
-First, run the development server:
+[![Seed Status](https://api.seed.run/imightbejan/year-long-project-team-9/stages/prod/build_badge)](https://console.seed.run/imightbejan/year-long-project-team-9)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[obscurus.me](https://obscurus.me) is a serverless web app that facilitates private online communication by allowing users to request and submit videos with face-blurring applied.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- Video submission with optional face-blurring.
+- Serverless architecture ensuring scalability and cost-efficiency.
+- Secure and private online communication.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Prerequisites
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Before you begin, ensure you have met the following requirements:
+- AWS account with appropriate permissions.
+- AWS CLI installed and configured.
+   - Find the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)
+- Node.js v18.x installed.
+- NPM installed (comes with Node.js).
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+Follow these steps to get your development environment set up:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/COSC-499-W2023/year-long-project-team-9.git
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **AWS SSO Login:**
+   To configure your AWS credentials, use AWS Single Sign-On (SSO).
+   ```bash
+   aws sso login
+   ```
+   Follow the instructions to sign in with your AWS credentials in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+3. **Install Dependencies:**
+   Run the following command to install the necessary dependencies:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Start the Development Server:**
+   First, start the SST development environment:
+   ```bash
+   npx sst dev
+   ```
+   Open another terminal window and run the Next.js development server:
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. To deploy the app,
+   ```bash
+   npx sst deploy
+   ```
+
+## SST
+
+- Read more about [SST](https://sst.dev) on their oficial website for more information about things like the Live Lambda environment.
+
+## Seed
+
+- While obscurus can be deployed and developed on entirely from the CLI, we have been using [Seed](https://https://seed.run/) for our CI/CD (in combination with GitHub actions).
+
+## Notes
+
+- The SST console is very useful for running migrations and testing Lambda functions. You can use it when running `npx sst dev` by going to [https://old.console.sst.dev/obscurus/](https://old.console.sst.dev/obscurus/)
+- Because obscurus is entirely serverless, there are times when the requests to the app will take a long time because the Lambda functions have to be warmed up.
+    - Read more [here](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html)
+
+
+## Known issues
+
+- When a user records a video in the browser, the file (.webm) must be converted to mp4 before having the face blurring applied. However, sometimes the conversion results in a loss of quality and the first frame or so is not blurred.
+- The emails sent from the microservice when the video has completed processing do not have the templating applied. This only affects these emails and other emails sent by the app use the proper obscurus template.
+
+
+## WorkMail
+To access WorkMail:
+- Details for `help`:
+    - username: help
+    - email: help@obscurus.me
+    - password: 7x"Xdbupq8v}6wv
+- Details for `no-reply`:
+    - username: no-reply
+    - email: no-reply@obscurus.me
+    - password: yeQ"rCRt.+G9xkU
+- *Note:* The logo is stored in an S3 bucket `obscurus-branding-images`
