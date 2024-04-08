@@ -123,6 +123,7 @@ export default function SubmitDisplay({
     };
 
     fetchProcessedVideo();
+    getRequesterProfileImage(selected?.requester, selected?.requestDetails);
   }, [submissionIdFromQuery, selected]);
 
   const canShowVideo =
@@ -606,7 +607,6 @@ export default function SubmitDisplay({
   };
 
   const RequestHeader = ({ selected }: { selected: EnrichedSubmissions }) => {
-    getRequesterProfileImage(selected?.requester, selected?.requestDetails);
     return (
       <>
         <div className="flex items-start p-4">

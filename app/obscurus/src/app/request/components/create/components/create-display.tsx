@@ -40,13 +40,33 @@ import {
 export default function CreateDisplay({
   form,
   userData,
-  getPfp
+  getProfileImgPresignedUrl
 }: {
   form: any;
   userData: Users;
-  getPfp: Function;
+  getProfileImgPresignedUrl?: (username: string) => Promise<string>;
 }) {
 
+
+  const [requesterProfileImage, setrequesterProfileImage] = useState<
+  string | undefined
+>(undefined);
+const getRequesterProfileImage = async (
+  requester: any,
+  requestDetails: any
+) => {
+  const imgkey = requester.profileImage;
+  const requesterEmail = requestDetails.requesterEmail;
+  if (requesterEmail && getProfileImgPresignedUrl) {
+    const url = await getProfileImgPresignedUrl(imgkey);
+    setrequesterProfileImage(url);
+  }
+};
+
+useEffect(() => {
+  getRequesterProfileImage(userData, form.getValues());
+}
+, [userData]);
 
 
   return (
@@ -112,7 +132,7 @@ export default function CreateDisplay({
       <div className="flex items-start p-4">
         <div className="flex items-start gap-4 text-sm max-w-[65%]">
           <Avatar className="mt-1.5">
-            <AvatarImage alt={userData.givenName}  src={getPfp(userData?.profileImage)} />
+            <AvatarImage alt={userData.givenName}  src={requesterProfileImage} />
             <AvatarFallback>
               {userData.givenName
                 .split(" ")

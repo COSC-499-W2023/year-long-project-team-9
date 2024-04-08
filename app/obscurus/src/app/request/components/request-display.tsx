@@ -49,13 +49,14 @@ import {
   SubmissionData,
 } from "@obscurus/database/src/types/enrichedRequests";
 import PanelLoader from "@/app/submit/components/panel-2-loader";
+import { get } from "http";
 
 export default function RequestDisplay({
   userData,
   updateRequestGrouping,
   getProfileImgPresignedUrl,
   form,
-  getPfp
+  getPfp,
 }: {
   userData: Users;
   updateRequestGrouping: Function;
@@ -63,7 +64,6 @@ export default function RequestDisplay({
   form: any;
   getPfp: Function;
 }) {
-
   console.log("getpfp", getPfp);
   const [request, setRequest] = useRequest();
   const [iseShowingVideo, setShowingVideo] = useIsShowingVideo();
@@ -81,9 +81,20 @@ export default function RequestDisplay({
     if (requestIdFromQuery) {
       setRequest({ requestId: requestIdFromQuery });
     }
+    getRequesterProfileImage(selected?.requester, selected);
   }, [requestIdFromQuery, selected]);
 
-
+  const getRequesterProfileImage = async (
+    requester: any,
+    requestDetails: any
+  ) => {
+    const imgkey = requester.profileImage;
+    const requesterEmail = requestDetails.requesterEmail;
+    if (requesterEmail && getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      setrequesterProfileImage(url);
+    }
+  };
 
   const RequestHeader = ({ selected }: { selected: EnrichedRequests }) => {
     return (
@@ -92,7 +103,7 @@ export default function RequestDisplay({
           <div className="flex items-start gap-4 text-sm max-w-[65%]">
             <Avatar className="mt-1.5">
               <AvatarImage
-                src={getPfp(selected?.requester.profileImage)}
+                src={requesterProfileImage || ""}
                 alt={selected?.requester.givenName || ""}
               />
               <AvatarFallback>
