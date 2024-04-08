@@ -48,12 +48,13 @@ import {
   EnrichedRequests,
   SubmissionData,
 } from "@obscurus/database/src/types/enrichedRequests";
+import PanelLoader from "@/app/submit/components/panel-2-loader";
 
 export default function RequestDisplay({
   userData,
   updateRequestGrouping,
   getProfileImgPresignedUrl,
-  form
+  form,
 }: {
   userData: Users;
   updateRequestGrouping: Function;
@@ -64,7 +65,6 @@ export default function RequestDisplay({
   const [iseShowingVideo, setShowingVideo] = useIsShowingVideo();
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
-
 
   const requestIdFromQuery = useSearchParams().get("submissionId");
 
@@ -79,26 +79,6 @@ export default function RequestDisplay({
     }
   }, [requestIdFromQuery, selected]);
 
-  const [profileImageUrl, setProfileImageUrl] = useState<string>("");
-
-  useEffect(() => {
-    async function fetchProfileImage() {
-      if (request && getProfileImgPresignedUrl && selected?.requesterEmail) {
-        try {
-          const imgUrl = await getProfileImgPresignedUrl(
-            selected?.requesterEmail
-          );
-          setProfileImageUrl(imgUrl);
-          console.log("Profile image url:", imgUrl);
-        } catch (error) {
-          console.error("Failed to load profile image:", error);
-        }
-      }
-    }
-
-    fetchProfileImage();
-  }, [request]);
-
   const RequestHeader = ({ selected }: { selected: EnrichedRequests }) => {
     return (
       <>
@@ -106,7 +86,7 @@ export default function RequestDisplay({
           <div className="flex items-start gap-4 text-sm max-w-[65%]">
             <Avatar className="mt-1.5">
               <AvatarImage
-                src={profileImageUrl}
+                src={selected?.requester.profileImage || ""}
                 alt={selected?.requester.givenName || ""}
               />
               <AvatarFallback>
@@ -127,30 +107,30 @@ export default function RequestDisplay({
                 {selected?.requesterEmail}
               </div>
               <div className="text-xs">
-                  <HoverCard>
-                    <HoverCardTrigger className="text-xs line-clamp-1">
-                      To:{" "}
+                <HoverCard>
+                  <HoverCardTrigger className="text-xs line-clamp-1">
+                    To:{" "}
+                    {selected?.submissions
+                      .filter(
+                        (value) => value.requestId === selected?.requestId
+                      )
+                      .map((item, index: number) => item.requesteeEmail)
+                      .join(", ")}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="max-h-48 overflow-y-auto">
+                    <div>To:{} </div>
+                    <div className="ml-1">
                       {selected?.submissions
                         .filter(
                           (value) => value.requestId === selected?.requestId
                         )
-                        .map((item, index: number) => item.requesteeEmail)
-                        .join(", ")}
-                    </HoverCardTrigger>
-                    <HoverCardContent className="max-h-48 overflow-y-auto">
-                      <div>To:{} </div>
-                      <div className="ml-1">
-                        {selected?.submissions
-                          .filter(
-                            (value) => value.requestId === selected?.requestId
-                          )
-                          .map((item, index: number) => (
-                            <div key={index}>• {item.requesteeEmail}</div>
-                          ))}
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
+                        .map((item, index: number) => (
+                          <div key={index}>• {item.requesteeEmail}</div>
+                        ))}
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
               <div className="line-clamp-1 text-xs text-left">
                 <span className="font-medium">Due: </span>
                 {format(new Date(selected?.dueDate), "PPP, p")}
@@ -180,7 +160,6 @@ export default function RequestDisplay({
 
   const router = useRouter();
 
-
   const handleArchive = async () => {
     if (request && updateRequestGrouping && requests) {
       if (request && updateRequestGrouping) {
@@ -190,7 +169,7 @@ export default function RequestDisplay({
           description: "Request has been archived",
         });
         setRequest({ requestId: null });
-        router.refresh()
+        router.refresh();
       }
     } else {
       console.error("Failed to update status");
@@ -205,7 +184,7 @@ export default function RequestDisplay({
           title: "Unarchived",
           description: "Request has been unarchived",
         });
-        router.refresh()
+        router.refresh();
       }
     } else {
       console.error("Failed to update status");
@@ -221,8 +200,7 @@ export default function RequestDisplay({
           description: "Request has been trashed",
         });
         setRequest({ requestId: null });
-        router.refresh()
-
+        router.refresh();
       }
     } else {
       console.error("Failed to update status");
@@ -286,9 +264,7 @@ export default function RequestDisplay({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleTrash}
-                    >
+                    <AlertDialogAction onClick={handleTrash}>
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -343,22 +319,30 @@ export default function RequestDisplay({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center p-2">{<Toolbar />}</div>
-      <Separator />
-      {selected ? (
-        <div className="h-full">
-          <RequestHeader selected={selected} />
-          <div className="flex p-4 overflow-scroll max-h-[65%]">
-            <div className="flex-1 whitespace-pre-wrap text-sm ">
-              {selected?.description}
-            </div>
+      {requests ? (
+        <>
+          <div className="flex items-center p-2">
+            <Toolbar />
           </div>
-        </div>
+          <Separator />
+          {selected ? (
+            <div className="h-full">
+              <RequestHeader selected={selected} />
+              <div className="flex p-4 overflow-scroll max-h-[65%]">
+                <div className="flex-1 whitespace-pre-wrap text-sm ">
+                  {selected?.description}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col w-full h-full justify-center items-center space-y-3 text-muted-foreground">
+              <FileText className="w-20 h-20" />
+              <div className="font-semibold">No request selected.</div>
+            </div>
+          )}
+        </>
       ) : (
-        <div className="flex flex-col w-full h-full justify-center items-center space-y-3  text-muted-foreground">
-          <FileText className="w-20 h-20" />
-          <div className="font-semibold">No request selected.</div>
-        </div>
+        <PanelLoader />
       )}
     </div>
   );

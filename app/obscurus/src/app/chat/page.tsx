@@ -67,11 +67,7 @@ async function Chat() {
     );
     return roomMessages[roomMessages.length - 1];
   };
-  const handleTimezoneOffset = (item: Messages) => {
-    const messageDateTime = new Date(item.creationDate).getTime();
-    const userTimezoneOffset = -new Date().getTimezoneOffset() * 60 * 1000;
-    return new Date(messageDateTime + userTimezoneOffset);
-  };
+
 
   if (rooms) {
     rooms.sort((a, b) => {
@@ -84,11 +80,7 @@ async function Chat() {
       return dateB.getTime() - dateA.getTime();
     });
   }
-  if (messages) {
-    messages.forEach((message) => {
-      message.creationDate = handleTimezoneOffset(message);
-    });
-  }
+
 
   return (
     <ChatWrapper

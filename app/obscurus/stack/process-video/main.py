@@ -19,6 +19,7 @@ import requests
 import json
 import subprocess
 import websockets
+import numpy as np
 
 # Configure AWS clients
 rekognition = boto3.client("rekognition")
@@ -61,23 +62,7 @@ def anonymize_face_pixelate(image, blocks=10):
     # return the pixelated blurred image
     return image
 
-def apply_faces_to_video(
-    final_timestamps,
-    local_path_to_video,
-    local_output,
-    video_metadata,
-    blur_kernel_size=51,
-):
-    """
-    Applies face blurring to video frames based on detected face coordinates.
-
-    Parameters:
-        final_timestamps (dict): Timestamps and face bounding boxes.
-        local_path_to_video (str): Local path to the source video.
-        local_output (str): Local path for the output video.
-        video_metadata (dict): Metadata of the video, including frame rate and dimensions.
-        blur_kernel_size (int): The size of the blur kernel.
-    """
+def apply_faces_to_video(final_timestamps, local_path_to_video, local_output, video_metadata):
     frame_rate = video_metadata["FrameRate"]
     frame_height = video_metadata["FrameHeight"]
     frame_width = video_metadata["FrameWidth"]
@@ -85,13 +70,13 @@ def apply_faces_to_video(
     height_delta = int(frame_height / 100)
 
     frame_counter = 0
-    fourcc = cv2.VideoWriter_fourcc("M", "J", "P", "G")
+    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
     v = cv2.VideoCapture(local_path_to_video)
     out = cv2.VideoWriter(
         filename=local_output,
         fourcc=fourcc,
         fps=int(frame_rate),
-        frameSize=(frame_width, frame_height),
+        frameSize=(frame_width, frame_height)
     )
 
     while v.isOpened():
@@ -103,17 +88,17 @@ def apply_faces_to_video(
                 upper_bound = int(int(t) / 1000 * frame_rate + frame_rate / 2) + 1
                 if (frame_counter >= lower_bound) and (frame_counter <= upper_bound):
                     for f in faces:
-                        x = int(f["Left"] * frame_width) - width_delta
-                        y = int(f["Top"] * frame_height) - height_delta
-                        w = int(f["Width"] * frame_width) + 2 * width_delta
-                        h = int(f["Height"] * frame_height) + 2 * height_delta
+                        x = int(f['Left'] * frame_width) - width_delta
+                        y = int(f['Top'] * frame_height) - height_delta
+                        w = int(f['Width'] * frame_width) + 2 * width_delta
+                        h = int(f['Height'] * frame_height) + 2 * height_delta
 
                         x1, y1 = x, y
                         x2, y2 = x1 + w, y1 + h
 
-                        to_blur = frame[y1:y2, x1:x2]
-                        blurred = anonymize_face_pixelate(to_blur, blocks=10)
-                        frame[y1:y2, x1:x2] = blurred
+                        roi = frame[y1:y2, x1:x2]
+                        blurred_roi = anonymize_face_pixelate(roi)
+                        frame[y1:y2, x1:x2] = blurred_roi
             out.write(frame)
             frame_counter += 1
         else:
@@ -350,6 +335,7 @@ async def process_video_background(submission_id, file_extension, requester_emai
         #convert to mp4 if the video is not in mp4 format (webm does not work with rekognition)
         original_key = f"{submission_id}.{file_extension}"
         converted_key = original_key
+        print("original_key", original_key)
         if file_extension.lower() != "mp4":
             converted_key = f"{submission_id}.mp4"
             local_webm_path = f"/tmp/{original_key}"
