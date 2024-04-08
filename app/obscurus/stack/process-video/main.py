@@ -245,7 +245,7 @@ async def update_submission_status(status: str, submission_id: str, requester_em
             }
         )
         await websocket.send(message)
-        print(f"Status updated to {status} for submission {submission_id}")
+        print(f"Status updated to {status} for submission {submission_id} and emails {requester_email} and {requestee_email}")
 
 
 
@@ -267,7 +267,7 @@ async def create_notification(status: str, submission_id: str, requester_email, 
                 }
             )
             await websocket.send(message)
-            print(f"Status updated to {status} for submission {submission_id}")
+            print(f"Notification sent to {requestee_email}")
             message2 = json.dumps(
                 {
                     "action": "newNotification",
@@ -282,6 +282,7 @@ async def create_notification(status: str, submission_id: str, requester_email, 
                 }
             )
             await websocket.send(message2)
+            print(f"Notification sent to {requester_email}")
 
 
 
