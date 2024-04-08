@@ -93,17 +93,19 @@ export const SubmitWrapper = ({
 
   const updateSubmissionStatus = async (
     status: string,
-    submissionId: string
+    submissionId: string,
+    requesterEmail: string,
+    requesteeEmail: string
   ) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
       const message = JSON.stringify({
         action: "updateSubmissionStatus",
-        data: { status, submissionId },
+        data: { status, submissionId, requesterEmail, requesteeEmail},
       });
       ws.send(message);
 
       if (updateStatus && ws.readyState === WebSocket.OPEN) {
-        await updateStatus(status, submissionId);
+        await updateStatus(status, submissionId, requesterEmail, requesteeEmail);
         {
           status !== "ARCHIVED" &&
             status !== "TRASHED" &&
@@ -124,7 +126,7 @@ export const SubmitWrapper = ({
       }
     } else {
       if (updateStatus) {
-        await updateStatus(status, submissionId);
+        await updateStatus(status, submissionId, requesterEmail, requesteeEmail);
       } else {
         console.error("WebSocket not connected");
       }
