@@ -53,10 +53,9 @@ export default function CreateDisplay({
 >(undefined);
 const getRequesterProfileImage = async (
   requester: any,
-  requestDetails: any
 ) => {
   const imgkey = requester.profileImage;
-  const requesterEmail = requestDetails.requesterEmail;
+  const requesterEmail = requester.email;
   if (requesterEmail && getProfileImgPresignedUrl) {
     const url = await getProfileImgPresignedUrl(imgkey);
     setrequesterProfileImage(url);
@@ -64,7 +63,7 @@ const getRequesterProfileImage = async (
 };
 
 useEffect(() => {
-  getRequesterProfileImage(userData, form.getValues());
+  getRequesterProfileImage(userData);
 }
 , [userData]);
 
@@ -198,7 +197,7 @@ useEffect(() => {
         </div>
         <div className="ml-auto text-xs text-muted-foreground grid p-0 m-0 justify-between text-right line-clamp-1 items-center text-ellipsis space-y-5 h-full">
           <div>{format(new Date(), "PPP, p")}</div>
-          <div className="flex justify-end pt-9">
+          <div className="flex justify-end pt-8">
             <Badge
               variant={
                 form.watch("videoProcessing") === true ? "default" : "secondary"

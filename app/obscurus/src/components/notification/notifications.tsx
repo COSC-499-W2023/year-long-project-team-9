@@ -99,7 +99,7 @@ export default function Notifications({
           <Button variant="ghost" size="icon" className="p-0 m-0">
             <Bell size={20} />
           </Button>
-          {hasUnreadNotifications && (
+          {hasUnreadNotifications && notifcations?.length && (
             <div
               className="absolute top-3 right-[105px] mt-2 h-2 w-2 rounded-full bg-blue-600  "
               aria-label="Unread Notification"

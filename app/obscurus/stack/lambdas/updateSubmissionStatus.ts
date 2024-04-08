@@ -28,7 +28,7 @@ export const main: APIGatewayProxyHandlerV2 = async (event: any) => {
 
     messageData = JSON.stringify({
       action: "updateSubmissionStatus",
-      data: { submissionId, newStatus }
+      data: { submissionId, newStatus, requesterEmail: parsedBody.requesterEmail, requesteeEmail: parsedBody.requesteeEmail }
     });
 
     console.log("Message data:", messageData);
