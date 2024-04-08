@@ -2666,11 +2666,12 @@ Complete Project
 ![screenshot of burnupchart](img/team-weekly-log-img/week-26/burnup-week26.png)
 
 ### Table View of Completed Tasks
+All tasks were completed. 
 
 ![screenshot of completed board tasks](img/team-weekly-log-img/week-26/completed-week26.png)
 
 ### Test Report
 
-TODO
+![test report](img/team-weekly-log-img/week-26/testreport-week26.png)
 
 ---
