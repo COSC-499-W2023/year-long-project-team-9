@@ -85,13 +85,15 @@ export default function SubmitDisplay({
   const [upload, setUpload] = useUpload();
   const [iseShowingVideo, setShowingVideo] = useIsShowingVideo();
   const { toast } = useToast();
-  const [processedVideo, setProcessedVideo] = useProcessedVideo();
+  const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
   const submissionIdFromQuery = useSearchParams().get("submissionId");
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
   // }
+
+
 
   const [submissions] = useSubmissions();
   const selected = submissions?.find(
@@ -101,6 +103,26 @@ export default function SubmitDisplay({
     if (submissionIdFromQuery) {
       setSubmission({ submissionId: submissionIdFromQuery });
     }
+    const fetchProcessedVideo = async () => {
+      if (
+        selected?.status === "COMPLETED" &&
+        getDownloadPresignedUrl &&
+        selected.submissionId
+      ) {
+        try {
+          const videoUrl = await getDownloadPresignedUrl(selected.submissionId);
+          setProcessedVideo(videoUrl);
+        } catch (error) {
+          console.error("Error fetching processed video:", error);
+          toast({
+            title: "Error",
+            description: "Failed to load processed video.",
+          });
+        }
+      }
+    };
+
+    fetchProcessedVideo();
   }, [submissionIdFromQuery, selected]);
 
   const canShowVideo =
@@ -591,7 +613,7 @@ export default function SubmitDisplay({
           <div className="flex items-start gap-4 text-sm max-w-[70%]">
             <Avatar className="mt-1.5">
               <AvatarImage
-                src={getPfp(selected?.requester.profileImage)}
+                src={requesterProfileImage}
                 alt={selected?.requester.givenName}
               />
               <AvatarFallback>
@@ -707,7 +729,7 @@ export default function SubmitDisplay({
         <div className="flex flex-col space-y-2 p-4">
           <Suspense fallback={<Loading />}>
             <VideoPlayer
-              videoUrl={processedVideo.url ? processedVideo.url : ""}
+              videoUrl={processedVideo || ""}
               filename={"Processed Video"}
             />
             {selected.submittedDate && (
@@ -727,7 +749,7 @@ export default function SubmitDisplay({
 
         <div className="flex justify-start items-center space-x-3 p-3">
           <div className="absolute bottom-10 right-5">
-            <Link href={processedVideo.url || ""}>
+            <Link href={processedVideo || ""}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button

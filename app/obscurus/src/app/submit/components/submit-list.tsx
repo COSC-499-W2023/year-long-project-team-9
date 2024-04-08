@@ -75,27 +75,6 @@ export default function SubmitList({
   const handleClick = (item: EnrichedSubmissions) => {
 
     if (!upload.upload && !isShowingVideo.active) {
-      const fetchProcessedVideo = async ( item: EnrichedSubmissions) => {
-        console.log("fetching processed video", item);
-        console.log("getDownloadPresignedUrl", getDownloadPresignedUrl)
-        if (
-          item?.status === "COMPLETED" &&
-          getDownloadPresignedUrl &&
-          item.submissionId
-        ) {
-          try {
-            const videoUrl = await getDownloadPresignedUrl(item.submissionId);
-            setProcessedVideo({ url: videoUrl });
-            console.log("Processed video url:", videoUrl);
-          } catch (error) {
-            console.error("Error fetching processed video:", error);
-            toast({
-              title: "Error",
-              description: "Failed to load processed video.",
-            });
-          }
-        }
-      };
 
       const submission =
         (submissions &&
@@ -109,7 +88,6 @@ export default function SubmitList({
         if (submission.isRead === false) {
           updateSubmissionIsRead(submission.submissionId, true);
         }
-        fetchProcessedVideo(submission);
       }
 
     }
