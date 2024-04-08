@@ -34,15 +34,22 @@ export default function RequestList({
   requests,
   // handleTimezoneOffset,
   setShowCreate,
+  getPfp
 }: {
   requests: EnrichedRequests[];
   // handleTimezoneOffset: Function;
   setShowCreate: Function;
+  getPfp: Function;
 }) {
   const [request, setRequest] = useRequest();
   const [search, setSearch] = useSearch();
   const [sort, setSort] = useSort();
   const [tab, setTab] = useTab();
+
+
+
+
+
 
   const sortRequests = (a: EnrichedRequests, b: EnrichedRequests) => {
     switch (sort.sort) {

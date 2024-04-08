@@ -170,6 +170,15 @@ export default function RequestWrapper({
     fetchRequests();
   }, [userData]);
 
+
+  const getPfp = async (imgkey: any) => {
+    console.log("Getting profile image", imgkey);
+    if (getProfileImgPresignedUrl) {
+      const url = await getProfileImgPresignedUrl(imgkey);
+      return url;
+    }
+  }
+
   return (
     <>
       <Wrapper
@@ -188,18 +197,20 @@ export default function RequestWrapper({
             <RequestList
               requests={requests as EnrichedRequests[]}
               setShowCreate={setShowCreate}
+              getPfp={getPfp}
             />
           )
         }
         secondPanel={
           showCreate ? (
-            <CreateDisplay form={form} userData={userData}  />
+            <CreateDisplay form={form} userData={userData} getPfp={getPfp}  />
           ) : (
             <RequestDisplay
               userData={userData}
               updateRequestGrouping={updateRequestGrouping}
               getProfileImgPresignedUrl={getProfileImgPresignedUrl}
               form={form}
+              getPfp={getPfp}
             />
           )
         }

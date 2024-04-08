@@ -54,10 +54,12 @@ export default function SubmitList({
   submissions,
   updateSubmissionIsRead,
   getDownloadPresignedUrl,
+  getPfp,
 }: {
   submissions: EnrichedSubmissions[];
   updateSubmissionIsRead: Function;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
+  getPfp: Function;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [search, setSearch] = useSearch();

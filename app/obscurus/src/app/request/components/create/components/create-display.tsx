@@ -40,10 +40,15 @@ import {
 export default function CreateDisplay({
   form,
   userData,
+  getPfp
 }: {
   form: any;
   userData: Users;
+  getPfp: Function;
 }) {
+
+
+
   return (
     <div className="flex h-full flex-col">
       {/* <Toggle/> */}
@@ -107,7 +112,7 @@ export default function CreateDisplay({
       <div className="flex items-start p-4">
         <div className="flex items-start gap-4 text-sm max-w-[65%]">
           <Avatar className="mt-1.5">
-            <AvatarImage alt={userData.givenName} />
+            <AvatarImage alt={userData.givenName}  src={getPfp(userData?.profileImage)} />
             <AvatarFallback>
               {userData.givenName
                 .split(" ")

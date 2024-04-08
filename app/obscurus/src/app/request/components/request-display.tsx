@@ -55,12 +55,16 @@ export default function RequestDisplay({
   updateRequestGrouping,
   getProfileImgPresignedUrl,
   form,
+  getPfp
 }: {
   userData: Users;
   updateRequestGrouping: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
   form: any;
+  getPfp: Function;
 }) {
+
+  console.log("getpfp", getPfp);
   const [request, setRequest] = useRequest();
   const [iseShowingVideo, setShowingVideo] = useIsShowingVideo();
   const { toast } = useToast();
@@ -79,6 +83,8 @@ export default function RequestDisplay({
     }
   }, [requestIdFromQuery, selected]);
 
+
+
   const RequestHeader = ({ selected }: { selected: EnrichedRequests }) => {
     return (
       <>
@@ -86,7 +92,7 @@ export default function RequestDisplay({
           <div className="flex items-start gap-4 text-sm max-w-[65%]">
             <Avatar className="mt-1.5">
               <AvatarImage
-                src={selected?.requester.profileImage || ""}
+                src={getPfp(selected?.requester.profileImage)}
                 alt={selected?.requester.givenName || ""}
               />
               <AvatarFallback>

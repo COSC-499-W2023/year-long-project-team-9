@@ -158,6 +158,19 @@ export const SubmitWrapper = ({
     fetchUserData();
   }, [user]);
 
+  const getPfp = async (imgkey: any) => {
+    console.log("Getting profile image", imgkey);
+    if (getProfileImgPresignedUrl) {
+      try{
+        const url = await getProfileImgPresignedUrl(imgkey);
+        return url;
+      } catch (error) {
+        console.log(error);
+        return " ";
+      }
+    }
+  }
+
   return (
     <Wrapper
       defaultLayout={defaultLayout}
@@ -168,6 +181,7 @@ export const SubmitWrapper = ({
             submissions={submissions as EnrichedSubmissions[]}
             updateSubmissionIsRead={updateSubmissionIsRead}
             getDownloadPresignedUrl={getDownloadPresignedUrl}
+            getPfp={getPfp}
           />
       }
       secondPanel={
@@ -178,6 +192,7 @@ export const SubmitWrapper = ({
           updateSubmissionStatus={updateSubmissionStatus}
           setSubmittedDate={setSubmittedDate}
           getProfileImgPresignedUrl={getProfileImgPresignedUrl}
+          getPfp={getPfp}
         />
       }
     />

@@ -65,6 +65,7 @@ export default function SubmitDisplay({
   updateSubmissionStatus,
   setSubmittedDate,
   getProfileImgPresignedUrl,
+  getPfp
 }: {
   getPresignedUrl?: (submissionId: string) => Promise<string>;
   getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
@@ -78,6 +79,7 @@ export default function SubmitDisplay({
   updateSubmissionStatus?: Function;
   setSubmittedDate?: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
+  getPfp: Function;
 }) {
   const [submission, setSubmission] = useSubmission();
   const [upload, setUpload] = useUpload();
@@ -589,7 +591,7 @@ export default function SubmitDisplay({
           <div className="flex items-start gap-4 text-sm max-w-[70%]">
             <Avatar className="mt-1.5">
               <AvatarImage
-                src={requesterProfileImage}
+                src={getPfp(selected?.requester.profileImage)}
                 alt={selected?.requester.givenName}
               />
               <AvatarFallback>
