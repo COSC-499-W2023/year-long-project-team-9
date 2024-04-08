@@ -2545,7 +2545,7 @@ Complete Project
 - **Status:** Complete
 - **Assignee(s):** Jan-Yaeger Dhillon
 - **Associated Milestone Goal:** Milestone Goal: Complete
-- **Description:** Fully add SES to Submit Page Flow
+- **Description:** Decide and implement SES usage in Submit Page Flow
 
 ### Task 3: Project integration
 
