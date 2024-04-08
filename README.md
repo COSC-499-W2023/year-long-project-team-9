@@ -64,7 +64,7 @@ Follow these steps to get your development environment set up:
 
 ## SST
 
-- Read more about [SST](https://sst.dev) on their oficial website for more information about things like the Live Lambda environment.
+- Read more about [SST](https://sst.dev) on their official website for more information about things like the Live Lambda environment.
 
 ## Seed
 
@@ -73,7 +73,7 @@ Follow these steps to get your development environment set up:
 ## Notes
 
 - The SST console is very useful for running migrations and testing Lambda functions. You can use it when running `npx sst dev` by going to [https://old.console.sst.dev/obscurus/](https://old.console.sst.dev/obscurus/)
-- Because obscurus is entirely serverless, there are times when the requests to the app will take a long time because the Lambda functions have to be warmed up.
+- Because obscurus is entirely serverless, there are times when the requests to the app will experience extra latency because AWS Lambda functions can experience "cold starts".
     - Read more [here](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html)
 - Because the microservice is only created when the stack is deployed, video processing does not work when using `npx sst dev`. You must deploy using `npx sst dev`.
 
