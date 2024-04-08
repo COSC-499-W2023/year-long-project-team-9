@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { statuses } from "@/app/submit/statuses";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -20,6 +21,21 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between">
+      <Input
+        placeholder="Filter requests..."
+        value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+        onChange={(event) =>
+          table.getColumn("title")?.setFilterValue(event.target.value)
+        }
+        className="h-8 w-[150px] lg:w-[250px]"
+      />
+      {table.getColumn("status") && (
+        <DataTableFacetedFilter
+          column={table.getColumn("status")}
+          title="Status"
+          options={statuses}
+        />
+      )}
       <div className="flex flex-1 items-center space-x-2">
         {isFiltered && (
           <Button

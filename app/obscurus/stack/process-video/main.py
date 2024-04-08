@@ -32,18 +32,34 @@ rekognition = boto3.client("rekognition")
 s3 = boto3.client("s3")
 
 
-def anonymize_face_median_blur(image, kernel_size=51):
+def anonymize_face_pixelate(image, blocks=10):
     """
-    Applies a median blur to an image to anonymize faces.
-
-    Parameters:
-        image (ndarray): The image to be blurred.
-        kernel_size (int): The size of the kernel. Larger values result in a more blurred image.
-
+    Computes a pixelated blur with OpenCV
+    Args:
+        image (ndarray): The image to be blurred
+        blocks (int): Number of pixel blocks (default is 10)
     Returns:
-        ndarray: The blurred image.
+        image (ndarray): The blurred image
     """
-    return cv2.medianBlur(image, kernel_size)
+    # divide the input image into NxN blocks
+    (h, w) = image.shape[:2]
+    x_coordinates, y_coordinates = np.linspace(0, w, blocks + 1, dtype="int"), np.linspace(0, h, blocks + 1, dtype="int")
+
+    # loop over the blocks along x and y axis
+    for i in range(1, len(y_coordinates)):
+        for j in range(1, len(x_coordinates)):
+            # compute the first and last (x, y)-coordinates for the current block
+            first_x, last_x = x_coordinates[j - 1], x_coordinates[j]
+            first_y, last_y = y_coordinates[i - 1], y_coordinates[i]
+            # extract the ROI
+            roi = image[first_y:last_y, first_x:last_x]
+            # compute the mean of the ROI
+            (b, g, r) = [int(x) for x in cv2.mean(roi)[:3]]
+            # draw a rectangle with the mean RGB values over the ROI in the original image
+            cv2.rectangle(image, (first_x, first_y), (last_x, last_y), (b, g, r), -1)
+
+    # return the pixelated blurred image
+    return image
 
 def apply_faces_to_video(
     final_timestamps,
@@ -96,7 +112,7 @@ def apply_faces_to_video(
                         x2, y2 = x1 + w, y1 + h
 
                         to_blur = frame[y1:y2, x1:x2]
-                        blurred = anonymize_face_median_blur(to_blur, kernel_size=blur_kernel_size)
+                        blurred = anonymize_face_pixelate(to_blur, blocks=10)
                         frame[y1:y2, x1:x2] = blurred
             out.write(frame)
             frame_counter += 1
@@ -186,7 +202,7 @@ def convert_to_mp4(input_video, output_video):
     command = [
         "ffmpeg",
         "-i", input_video,
-        "-ss", "00:00:00.04",
+        "-ss", "00:00:00.1",
         "-c", "copy",
         "-strict", "-2",
         "-movflags", "faststart",
@@ -248,16 +264,6 @@ async def update_submission_status(status: str, submission_id: str):
         print(f"Status updated to {status} for submission {submission_id}")
 
 
-#Sends an email notification to the user
-async def send_email_notification(email: str, subject: str, body: str):
-    ses_client = boto3.client("ses", region_name="us-west-2")
-    ses_client.send_email(
-        Source="no-reply@obscurus.me",
-        Destination={"ToAddresses": [email]},
-        Message={"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}},
-    )
-    print(f"Email notification sent to {email}")
-
 
 #Creates a notification in the database and sends a message to the websocket endpoint to broadcast on the front end
 async def create_notification(status: str, submission_id: str, email: str):
@@ -315,9 +321,6 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         print(f"Error processing video: {e}")
         try:
             await update_submission_status("FAILED", submission_id)
-            await send_email_notification(
-                recipient_email, submission_id, "Error processing video"
-            )
             await create_notification("FAILED", submission_id, recipient_email)
             return {"message": "Error processing video"}
         except Exception as error:
@@ -357,17 +360,9 @@ async def process_video_background(submission_id, file_extension, recipient_emai
                 Key=f"{submission_id}-processed.mp4",
             )
         await update_submission_status("COMPLETED", submission_id)
-        await send_email_notification(
-            recipient_email,
-            "obscurus",
-            "Your video has been processed",
-        )
         await create_notification("COMPLETED", submission_id, recipient_email)
 
     except Exception as e:
         print(f"Error processing video: {e}")
         await update_submission_status("FAILED", submission_id)
-        await send_email_notification(
-            recipient_email, submission_id, "Error processing video: {e}"
-        )
         await create_notification("FAILED", submission_id, recipient_email)

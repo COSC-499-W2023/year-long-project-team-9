@@ -53,13 +53,11 @@ export default function RequestDisplay({
   userData,
   updateRequestGrouping,
   getProfileImgPresignedUrl,
-  handleTimezoneOffset,
   form
 }: {
   userData: Users;
   updateRequestGrouping: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
-  handleTimezoneOffset?: Function;
   form: any;
 }) {
   const [request, setRequest] = useRequest();

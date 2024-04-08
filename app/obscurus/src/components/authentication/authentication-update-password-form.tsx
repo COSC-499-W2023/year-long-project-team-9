@@ -70,7 +70,7 @@ export default function UpdatePasswordForm({
     }
   }
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full text-primary">
       <div>
         {failedUpdatePassword && (
           <div className="flex justify-center border border-red-500 rounded p-2">

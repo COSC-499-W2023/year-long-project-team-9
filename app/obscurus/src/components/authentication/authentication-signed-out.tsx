@@ -37,7 +37,7 @@ export default function AuthenticationSignedOut({
   return (
     <AlertDialog onOpenChange={() => setDialogState("signIn")}>
       <AlertDialogTrigger asChild>
-        <Button size="sm" className="align-top mt-0.5">
+        <Button size="sm" className="align-top mt-0.5 font-bold">
           Sign In
         </Button>
       </AlertDialogTrigger>
@@ -50,7 +50,7 @@ export default function AuthenticationSignedOut({
         <AlertDialogDescription className="justify-center w-full max-h-full overflow-auto">
           {dialogState === "signIn" && (
             <div>
-              <Label className="flex justify-start text-2xl text-primary font-bold">
+              <Label className="flex justify-start text-2xl text-primary font-black">
                 Sign In
               </Label>
               <Separator className="mt-1 mb-2" />
@@ -59,7 +59,7 @@ export default function AuthenticationSignedOut({
           )}
           {dialogState === "signUp" && (
             <div>
-              <Label className="flex justify-start text-2xl font-black">
+              <Label className="flex justify-start text-2xl text-primary font-black">
                 Sign Up
               </Label>
               <Separator className="mt-1 mb-2" />
@@ -73,7 +73,7 @@ export default function AuthenticationSignedOut({
           )}
           {dialogState === "forgotPassword" && (
             <div>
-              <Label className="flex justify-center text-xl">
+              <Label className="flex justify-center text-primary text-xl">
                 Forgot Password
               </Label>
               <Separator className="mt-1 mb-2" />
@@ -86,7 +86,7 @@ export default function AuthenticationSignedOut({
           )}
           {dialogState === "verifyEmail" && (
             <div>
-              <Label className="flex justify-start text-2xl font-black">
+              <Label className="flex justify-start text-2xl text-primary font-black">
                 Verify Email
               </Label>
               <Separator className="mt-1 mb-2" />

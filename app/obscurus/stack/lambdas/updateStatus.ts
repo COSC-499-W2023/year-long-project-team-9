@@ -5,6 +5,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any) => {
   const data = JSON.parse(event.body);
   console.log("Updating submission status:", data);
   await Submissions.setStatus(data.status, data.submissionId);
+
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },

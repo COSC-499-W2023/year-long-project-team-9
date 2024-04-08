@@ -94,9 +94,9 @@ export default function AuthenticationSignedIn({
             <DropdownMenuItem>Profile</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
-          <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <AlertDialog open={isOpen} onOpenChange={setIsOpen} >
             <AlertDialogTrigger asChild>
-              <span className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+              <span className=" text-primary relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
                 Change Password
               </span>
             </AlertDialogTrigger>
@@ -107,7 +107,7 @@ export default function AuthenticationSignedIn({
                 </AlertDialogCancel>
               </AlertDialogHeader>
               <AlertDialogDescription className="justify-center w-full max-h-full overflow-auto">
-                <Label className="flex justify-start text-2xl font-black">
+                <Label className="text-primary flex justify-start text-2xl font-black">
                   Update Password
                 </Label>
                 <Separator className="mt-1 mb-2" />

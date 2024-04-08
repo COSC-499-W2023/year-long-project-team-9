@@ -4,6 +4,7 @@ import { SQL } from "./sql";
 import type { Submissions } from "./sql.generated";
 import { request } from "http";
 import { Status } from "./types/status";
+import { sendEmailTextBlockViaNoReply } from "@obscurus/ses/src/sendEmailTextBlockViaNoReply";
 
 export function list() {
   return SQL.DB.selectFrom("submissions").selectAll().execute();
@@ -24,6 +25,14 @@ export function insert(newValues: Submissions) {
 }
 
 export function setStatus(status: Status, submissionId: string) {
+  if (status === "COMPLETED") {
+    sendEmailTextBlockViaNoReply(
+      "imightbejan@gmail.com",
+      "obscurus - New Submission Request",
+      `Your submission request has completed processing!`,
+      "submit"
+    );
+  }
   return SQL.DB.updateTable("submissions")
     .set({
       status: status,

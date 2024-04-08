@@ -187,9 +187,6 @@ export default function RequestWrapper({
           ) : (
             <RequestList
               requests={requests as EnrichedRequests[]}
-              // handleTimezoneOffset={(date: Date) =>
-              //   new Date(date.getTime() - new Date().getTimezoneOffset() * 60000)
-              // }
               setShowCreate={setShowCreate}
             />
           )
@@ -202,11 +199,6 @@ export default function RequestWrapper({
               userData={userData}
               updateRequestGrouping={updateRequestGrouping}
               getProfileImgPresignedUrl={getProfileImgPresignedUrl}
-              handleTimezoneOffset={(date: Date) =>
-                new Date(
-                  date.getTime() - new Date().getTimezoneOffset() * 60000
-                )
-              }
               form={form}
             />
           )
