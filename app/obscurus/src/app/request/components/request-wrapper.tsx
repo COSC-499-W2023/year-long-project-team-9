@@ -203,7 +203,7 @@ export default function RequestWrapper({
         }
         secondPanel={
           showCreate ? (
-            <CreateDisplay form={form} userData={userData} getPfp={getPfp}  />
+            <CreateDisplay form={form} userData={userData} getProfileImgPresignedUrl={getProfileImgPresignedUrl}  />
           ) : (
             <RequestDisplay
               userData={userData}
