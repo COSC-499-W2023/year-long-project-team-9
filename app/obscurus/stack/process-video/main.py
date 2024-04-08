@@ -247,7 +247,17 @@ async def update_submission_status(status: str, submission_id: str, requester_em
         await websocket.send(message)
         print(f"Status updated to {status} for submission {submission_id} and emails {requester_email} and {requestee_email}")
 
-
+async def send_email_notification(email: str, subject: str, body: str):
+    ses_client = boto3.client("ses", region_name="us-west-2")
+    ses_client.send_email(
+        Source="no-reply@obscurus.me",
+        Destination={"ToAddresses": [email]},
+        Message={
+            "Subject": {"Data": subject},
+            "Body": {"Html": {"Data": body}}
+        }
+    )
+    print(f"Email notification sent to {email}")
 
 #Creates a notification in the database and sends a message to the websocket endpoint to broadcast on the front end
 async def create_notification(status: str, submission_id: str, requester_email, requestee_email):
@@ -364,6 +374,16 @@ async def process_video_background(submission_id, file_extension, requester_emai
             )
         await update_submission_status("COMPLETED", submission_id, requester_email, requestee_email)
         await create_notification("COMPLETED", submission_id, requester_email, requestee_email)
+        await send_email_notification(
+            requester_email,
+            "obscurus - Video Processed!",
+            "Your video has been processed!",
+        )
+        await send_email_notification(
+            requestee_email,
+            "obscurus - New Submission!",
+            "You have a new submission!",
+        )
 
     except Exception as e:
         print(f"Error processing video: {e}")
