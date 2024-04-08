@@ -15,20 +15,25 @@ export const main: APIGatewayProxyHandlerV2 = async (event: any) => {
     console.log("Parsed body:", parsedBody);
     const submissionId = parsedBody.submissionId;
     const newStatus = parsedBody.status;
+    const requesterEmail = parsedBody.requesterEmail;
+    const requesteeEmail = parsedBody.requesteeEmail;
 
 
 
     console.log("Updating submission status:", submissionId, newStatus);
 
+    console.log("Requester email:", requesterEmail);
+    console.log("Requestee email:", requesteeEmail);
+
     if (!submissionId || !newStatus) {
       return { statusCode: 400, body: "Bad Request: Missing submissionId or newStatus" };
     }
 
-    await Submissions.setStatus(newStatus, submissionId, parsedBody.requesterEmail, parsedBody.requesteeEmail);
+    await Submissions.setStatus(newStatus, submissionId, requesterEmail, requesteeEmail);
 
     messageData = JSON.stringify({
       action: "updateSubmissionStatus",
-      data: { submissionId, newStatus, requesterEmail: parsedBody.requesterEmail, requesteeEmail: parsedBody.requesteeEmail }
+      data: { submissionId, newStatus, requesterEmail, requesteeEmail}
     });
 
     console.log("Message data:", messageData);

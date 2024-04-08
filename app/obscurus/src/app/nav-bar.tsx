@@ -77,7 +77,7 @@ const NavBar = ({
 
   const Navigation = ({ user }: { user: Users }) => {
     return (
-      <NavigationMenu className="flex flex-row space-x-6 ">
+      <NavigationMenu className="flex flex-row space-x-4 ">
         <Link href={user ? "/request" : "/"} className="">
           <Image
             className="min-h-full min-w-full"
