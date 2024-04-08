@@ -3,7 +3,7 @@
 
 [![Seed Status](https://api.seed.run/imightbejan/year-long-project-team-9/stages/prod/build_badge)](https://console.seed.run/imightbejan/year-long-project-team-9)
 
-obscurus is a serverless web app that facilitates private online communication by allowing users to request and submit videos with face-blurring applied.
+[obscurus.me](https://obscurus.me) is a serverless web app that facilitates private online communication by allowing users to request and submit videos with face-blurring applied.
 
 ## Features
 
@@ -48,37 +48,43 @@ Follow these steps to get your development environment set up:
    ```
 
 5. **Start the Development Server:**
-   First, start the (SST) development environment:
+   First, start the SST development environment:
    ```bash
    npx sst dev
    ```
-   Open another terminal window and run the development server:
+   Open another terminal window and run the Next.js development server:
    ```bash
    npm run dev
    ```
-6. To deploy the app,
+
+6. **Deploying to AWS CloudFront:** To deploy the app,
    ```bash
    npx sst deploy
    ```
 
 ## SST
 
-Read more about [SST](https://sst.dev) on their oficial website for more information about things like the Live Lambda environment.
+- Read more about [SST](https://sst.dev) on their oficial website for more information about things like the Live Lambda environment.
 
-## NOTES
+## Seed
 
-- Because obscurus is entirely serverless, there are times when the requests to the app will take a long time because the lambda functions have to be warmed up.
-- Read more [here](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html)
+- While obscurus can be deployed and developed on entirely from the CLI, we have been using [Seed](https://https://seed.run/) for our CI/CD (in combination with GitHub actions).
+
+## Notes
+
+- The SST console is very useful for running migrations and testing Lambda functions. You can use it when running `npx sst dev` by going to [https://old.console.sst.dev/obscurus/](https://old.console.sst.dev/obscurus/)
+- Because obscurus is entirely serverless, there are times when the requests to the app will take a long time because the Lambda functions have to be warmed up.
+    - Read more [here](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html)
+- Because the microservice is only created when the stack is deployed, video processing does not work when using `npx sst dev`. You must deploy using `npx sst dev`.
 
 
 ## Known issues
 
-- When a user records a video in the browser, the file must be converted to mp4 before having the face blurring applied. However, sometimes the conversion results in a loss of quality and the first frame or so is not blurred.
+- When a user records a video in the browser, the file (.webm) must be converted to mp4 before having the face blurring applied. However, sometimes the conversion results in a loss of quality and the first frame or so is not blurred.
 - The emails sent from the microservice when the video has completed processing do not have the templating applied. This only affects these emails and other emails sent by the app use the proper obscurus template.
 
 
-
-# WorkMail
+## WorkMail
 To access WorkMail:
 - Details for `help`:
     - username: help

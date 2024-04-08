@@ -53,7 +53,7 @@ Follow these steps to get your development environment set up:
    npm run dev
    ```
 
-5. To deploy the app,
+5. **Deploying to AWS CloudFront:** To deploy the app,
    ```bash
    npx sst deploy
    ```
@@ -71,7 +71,7 @@ Follow these steps to get your development environment set up:
 - The SST console is very useful for running migrations and testing Lambda functions. You can use it when running `npx sst dev` by going to [https://old.console.sst.dev/obscurus/](https://old.console.sst.dev/obscurus/)
 - Because obscurus is entirely serverless, there are times when the requests to the app will take a long time because the Lambda functions have to be warmed up.
     - Read more [here](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html)
-
+- Because the microservice is only created when the stack is deployed, video processing does not work when using `npx sst dev`. You must deploy using `npx sst dev`.
 
 ## Known issues
 
