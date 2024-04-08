@@ -137,10 +137,12 @@ export default function RequestList({
                 <div className="text-xs font-medium text-ellipsis line-clamp-1">
                   {/* {item.requester.givenName} {item.requester.familyName} */}
                 </div>
-                <div className="text-xs">
-                  {item.requesterEmail.length > 30
-                    ? item.requesterEmail.substring(0, 30) + "..."
-                    : item.requesterEmail}
+                <div className="text-xs line-clamp-1 text-ellipsis">
+                  To:{" "}
+                  {item?.submissions
+                    .filter((value) => value.requestId === item?.requestId)
+                    .map((item, index: number) => item.requesteeEmail)
+                    .join(", ")}
                 </div>
               </div>
               <div className="line-clamp-2 text-xs text-muted-foreground">

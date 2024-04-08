@@ -24,6 +24,18 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function CreateDisplay({
   form,
@@ -32,90 +44,111 @@ export default function CreateDisplay({
   form: any;
   userData: Users;
 }) {
-  const [currentDate, setCurrentDate] = useState("");
-  useEffect(() => {
-    const now = new Date();
-    const formattedDate = format(now, "PPpp");
-    setCurrentDate(formattedDate);
-  }, []);
   return (
     <div className="flex h-full flex-col">
       {/* <Toggle/> */}
-      <div className="flex items-center p-2">
-        {/* Toolbar states */}
-        <div className="flex flex-row justify-between w-full items-center gap-2">
-          <div className="flex">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" disabled={true}>
-                  <div>
-                    <Archive className="h-4 w-4" />
-                    <span className="sr-only">Archive</span>
-                  </div>
-
+      <div className="flex flex-row justify-between w-full items-center gap-2">
+        <div className="flex p-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <div>
+                  <Archive className="h-4 w-4" />
                   <span className="sr-only">Archive</span>
-                </Button>
-              </TooltipTrigger>
+                </div>
 
-              <TooltipContent>Archive</TooltipContent>
-            </Tooltip>
-            <Separator orientation="vertical" className="mx-2 h-8" />
-            <Tooltip>
+                <span className="sr-only">Archive</span>
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Archive</TooltipContent>
+          </Tooltip>
+          <Separator orientation="vertical" className="mx-2 h-8" />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Move to trash</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure you want to trash this request?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>Continue</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TooltipTrigger>
+            <TooltipContent>Move to trash</TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="flex ml-auto pr-3">
+          <Tooltip>
+            <Button variant="ghost" size="icon">
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" disabled={true}>
-                  <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">Move to trash</span>
-                </Button>
+                <ListVideo className="h-4 w-4" />
               </TooltipTrigger>
-              <TooltipContent>Move to trash</TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="flex ml-auto">
-            <Button variant={"ghost"} disabled={true}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ListVideo className="w-4 h-4 ml-5" />
-                </TooltipTrigger>
-                <TooltipContent>View Video List</TooltipContent>
-              </Tooltip>
             </Button>
-          </div>
+            <TooltipContent>View Submissions</TooltipContent>
+          </Tooltip>
         </div>
       </div>
       <Separator />
-
-      <div className="h-full">
-        <div className="flex items-start p-4">
-          <div className="flex items-start gap-4 text-sm">
-            <Avatar>
-              <AvatarImage alt={userData.givenName} />
-              <AvatarFallback>
-                {userData.givenName
-                  .split(" ")
-                  .map((chunk) => chunk[0])
-                  .join("")}
-                {userData.familyName
-                  .split(" ")
-                  .map((chunk) => chunk[0])
-                  .join("")}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col items-start gap-1 break-all">
-              <div className="font-semibold">
-                {form.watch("title") === "" ? "Title" : form.watch("title")}
-              </div>
-              <div className="line-clamp-3 text-xs text-ellipsis ">
-                <span className="font-medium">From: </span>
-                {userData.givenName} {userData.familyName}{" "}
-              </div>
-              <div className="line-clamp-3 text-xs text-ellipsis  ">
-                <span className="font-medium ">Email: </span>
-                {userData.email}
-              </div>
-              <div className="text-xs">
-                <HoverCard>
-                  <HoverCardTrigger className="text-xs line-clamp-1">
-                    To:{" "}
+      <div className="flex items-start p-4">
+        <div className="flex items-start gap-4 text-sm max-w-[65%]">
+          <Avatar className="mt-1.5">
+            <AvatarImage alt={userData.givenName} />
+            <AvatarFallback>
+              {userData.givenName
+                .split(" ")
+                .map((chunk) => chunk[0])
+                .join("")}
+              {userData.familyName
+                .split(" ")
+                .map((chunk) => chunk[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+          <div className="grid gap-1 text-ellipsis line-clamp-1 ">
+            <div className="font-semibold line-clamp-1">
+              {form.watch("title") === "" ? "Title" : form.watch("title")}
+            </div>
+            <div className="line-clamp-3 text-xs text-ellipsis ">
+              <span className="font-medium">From: </span>
+              {userData.givenName} {userData.familyName}{" "}
+            </div>
+            <div className="line-clamp-3 text-xs text-ellipsis  ">
+              <span className="font-medium ">Email: </span>
+              {userData.email}
+            </div>
+            <div className="text-xs">
+              <HoverCard>
+                <HoverCardTrigger className="text-xs line-clamp-1">
+                  To:{" "}
+                  {form
+                    .watch("clientEmail")
+                    .map((item: { email: string }, index: number) =>
+                      item.email !== ""
+                        ? item.email.toLocaleLowerCase()
+                        : form.getValues("clientEmail").length === 1
+                        ? "Email"
+                        : `Email ${index + 1}`
+                    )
+                    .join(", ")}
+                </HoverCardTrigger>
+                <HoverCardContent className="max-h-48 overflow-y-auto">
+                  <div>To:{} </div>
+                  <div className="ml-1">
                     {form
                       .watch("clientEmail")
                       .map((item: { email: string }, index: number) =>
@@ -126,45 +159,36 @@ export default function CreateDisplay({
                           : `Email ${index + 1}`
                       )
                       .join(", ")}
-                  </HoverCardTrigger>
-                  <HoverCardContent className="max-h-48 overflow-y-auto">
-                    <div>To: </div>
-                    <div className="ml-1">
-                      {form
-                        .watch("clientEmail")
-                        .map((item: { email: string }, index: number) => (
-                          <div key={index}>
-                            •{" "}
-                            {form.getValues("clientEmail").length === 1
-                              ? item.email === ""
-                                ? "Email"
-                                : item.email.toLocaleLowerCase()
-                              : item.email === ""
-                              ? `Email ${index + 1}`
-                              : item.email.toLocaleLowerCase()}
-                          </div>
-                        ))}
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              </div>
-              <div className="line-clamp-1 text-xs">
-                <span className="font-medium">Processing: </span>
-                {form.watch("videoProcessing") === true
-                  ? "Blurred"
-                  : "Not Blurred"}{" "}
-                | <span className="font-medium">Due: </span>
-                {form.watch("dueDate") === undefined
-                  ? "Due Date"
-                  : format(new Date(form.watch("dueDate")), "PPpp")}
-              </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            </div>
+            <div className="line-clamp-1 text-xs text-left">
+              <span className="font-medium">Due: </span>
+              {form.watch("dueDate") === undefined
+                ? "Due Date"
+                : format(new Date(form.watch("dueDate")), "PPpp")}
             </div>
           </div>
-
-          <div className="ml-auto text-xs text-muted-foreground">
-            {currentDate}
+        </div>
+        <div className="ml-auto text-xs text-muted-foreground grid p-0 m-0 justify-between text-right line-clamp-1 items-center text-ellipsis space-y-5 h-full">
+          <div>{format(new Date(), "PPP, p")}</div>
+          <div className="flex justify-end pt-[44px]">
+            <Badge
+              variant={
+                form.watch("videoProcessing") === true ? "default" : "secondary"
+              }
+              className=" w-fit h-full"
+            >
+              {form.watch("videoProcessing") === true
+                ? "Blurred"
+                : "Not Blurred"}{" "}
+            </Badge>
           </div>
         </div>
+      </div>
+
+      <div className="h-full">
         <Separator />
         <div className="p-4 overflow-y-auto grow h-[65%]">
           <div className="flex-1 whitespace-pre-wrap text-sm ">
