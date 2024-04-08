@@ -375,12 +375,12 @@ async def process_video_background(submission_id, file_extension, requester_emai
         await update_submission_status("COMPLETED", submission_id, requester_email, requestee_email)
         await create_notification("COMPLETED", submission_id, requester_email, requestee_email)
         await send_email_notification(
-            requester_email,
+            requestee_email,
             "obscurus - Video Processed!",
             "Your video has been processed!",
         )
         await send_email_notification(
-            requestee_email,
+            requester_email,
             "obscurus - New Submission!",
             "You have a new submission!",
         )
