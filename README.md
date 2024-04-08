@@ -16,6 +16,7 @@ obscurus is a serverless web app that facilitates private online communication b
 Before you begin, ensure you have met the following requirements:
 - AWS account with appropriate permissions.
 - AWS CLI installed and configured.
+   - Find the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)
 - Node.js v18.x installed.
 - NPM installed (comes with Node.js).
 

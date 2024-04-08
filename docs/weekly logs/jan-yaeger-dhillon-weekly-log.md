@@ -615,3 +615,20 @@ Screenshot from peer eval for Week 12:
 ### Screenshot of Project Board:
 
 ![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-24.png)
+
+## Week 13 ##
+
+### Applicable Date Range ###
+March 31 -  April 7, 2024
+
+### Tasks Worked On ###
+
+- This was the last week so I was just finishing up everything.
+- There were many many many bugs that needed to be fixed across the stack and I worked tirelessly this week at the cost of my own mental health.
+- I believe I am eligible for bonus marks for this week's contirbutions.
+
+![Tasks Worked On](./img/jan-yaeger-dhillon/tasks-worked-on/tasks-worked-on-25.png)
+
+### Screenshot of Project Board:
+
+![Project Board](./img/jan-yaeger-dhillon/project-board/project-board-25.png)
