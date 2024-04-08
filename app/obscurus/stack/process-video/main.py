@@ -252,12 +252,12 @@ def process_video(timestamps, response, submission_id, file_extension):
 app = FastAPI()
 
 #Sends a message to the websocket endpoint to update the status of a submission
-async def update_submission_status(status: str, submission_id: str):
+async def update_submission_status(status: str, submission_id: str, requester_email: str, requestee_email: str):
     async with websockets.connect(ws_api_url) as websocket:
         message = json.dumps(
             {
                 "action": "updateSubmissionStatus",
-                "data": {"status": status, "submissionId": submission_id},
+                "data": {"status": status, "submissionId": submission_id, "requesterEmail": requester_email, "requesteeEmail": requestee_email},
             }
         )
         await websocket.send(message)
@@ -266,23 +266,39 @@ async def update_submission_status(status: str, submission_id: str):
 
 
 #Creates a notification in the database and sends a message to the websocket endpoint to broadcast on the front end
-async def create_notification(status: str, submission_id: str, email: str):
-    async with websockets.connect(ws_api_url) as websocket:
-        message = json.dumps(
-            {
-                "action": "newNotification",
-                "data": {
-                    "notification": {
-                        "referenceId": submission_id,
-                        "type": "SUBMIT",
-                        "content": f"Submission status updated to {status}",
-                        "email": email,
-                    }
-                },
-            }
-        )
-        await websocket.send(message)
-        print(f"Status updated to {status} for submission {submission_id}")
+async def create_notification(status: str, submission_id: str, requester_email, requestee_email):
+    if status == "COMPLETED":
+        async with websockets.connect(ws_api_url) as websocket:
+            message = json.dumps(
+                {
+                    "action": "newNotification",
+                    "data": {
+                        "notification": {
+                            "referenceId": submission_id,
+                            "type": "SUBMIT",
+                            "content": f"Your submission has finished processing!",
+                            "email": requestee_email,
+                        }
+                    },
+                }
+            )
+            await websocket.send(message)
+            print(f"Status updated to {status} for submission {submission_id}")
+            message2 = json.dumps(
+                {
+                    "action": "newNotification",
+                    "data": {
+                        "notification": {
+                            "referenceId": submission_id,
+                            "type": "SUBMIT",
+                            "content": f"New submission received!",
+                            "email": requester_email,
+                        }
+                    },
+                }
+            )
+            await websocket.send(message2)
+
 
 
 @app.get("/")
@@ -296,7 +312,8 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         data = await request.json()
         submission_id = data.get("submission_id")
         file_extension = data.get("file_extension")
-        recipient_email = data.get("email")
+        requester_email = data.get("requester_email")
+        requestee_email = data.get("requestee_email")
         blurred = data.get("blurred")
         print("blurred", blurred)
         if not submission_id or not file_extension:
@@ -304,7 +321,7 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
                 status_code=400, detail="Missing submission_id or file_extension"
             )
         print(
-            f"SubmissionId: {submission_id}, File Extension: {file_extension}, Email: {recipient_email}"
+            f"SubmissionId: {submission_id}, File Extension: {file_extension}, Requester Email: {requester_email}, Requestee Email: {requestee_email}"
         )
         await update_submission_status("PROCESSING", submission_id)
         # await send_email_notification(
@@ -312,23 +329,23 @@ async def handle_process_vide(request: Request, background_tasks: BackgroundTask
         #     "obscurus",
         #     "Your video is being processed",
         # )
-        await create_notification("PROCESSING", submission_id, recipient_email)
+        await create_notification("PROCESSING", submission_id, requester_email, requestee_email)
         background_tasks.add_task(
-            process_video_background, submission_id, file_extension, recipient_email, blurred
+            process_video_background, submission_id, file_extension, requester_email, requestee_email, blurred
         )
         return {"message": "Video processing started"}
     except Exception as e:
         print(f"Error processing video: {e}")
         try:
             await update_submission_status("FAILED", submission_id)
-            await create_notification("FAILED", submission_id, recipient_email)
+            await create_notification("FAILED", submission_id, requester_email, requestee_email)
             return {"message": "Error processing video"}
         except Exception as error:
             print("Error updating status:", error)
             return {"message": "Error processing video"}
 
 
-async def process_video_background(submission_id, file_extension, recipient_email, blurred):
+async def process_video_background(submission_id, file_extension, requester_email, requestee_email, blurred):
     try:
         #convert to mp4 if the video is not in mp4 format (webm does not work with rekognition)
         original_key = f"{submission_id}.{file_extension}"
@@ -360,9 +377,9 @@ async def process_video_background(submission_id, file_extension, recipient_emai
                 Key=f"{submission_id}-processed.mp4",
             )
         await update_submission_status("COMPLETED", submission_id)
-        await create_notification("COMPLETED", submission_id, recipient_email)
+        await create_notification("COMPLETED", submission_id, requester_email, requestee_email)
 
     except Exception as e:
         print(f"Error processing video: {e}")
         await update_submission_status("FAILED", submission_id)
-        await create_notification("FAILED", submission_id, recipient_email)
+        await create_notification("FAILED", submission_id, requester_email, requestee_email)

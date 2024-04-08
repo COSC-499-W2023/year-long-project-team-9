@@ -71,7 +71,8 @@ export default function SubmitDisplay({
   sendToService?: (
     submissionId: string,
     fileExt: string,
-    email: string,
+    requesterEmail: string,
+    requesteeEmail: string,
     blurred: boolean
   ) => Promise<string>;
   updateSubmissionStatus?: Function;
@@ -143,6 +144,7 @@ export default function SubmitDisplay({
             sendToService(
               submission.submissionId,
               fileExt,
+              selected?.requestDetails.requesterEmail,
               selected?.requesteeEmail,
               selected?.requestDetails.blurred
             );

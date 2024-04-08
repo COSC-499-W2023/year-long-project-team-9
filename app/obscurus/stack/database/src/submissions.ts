@@ -1,7 +1,7 @@
 export * as Submissions from "./submissions";
 
 import { SQL } from "./sql";
-import type { Submissions } from "./sql.generated";
+import type { Submissions, Users } from "./sql.generated";
 import { request } from "http";
 import { Status } from "./types/status";
 import { sendEmailTextBlockViaNoReply } from "@obscurus/ses/src/sendEmailTextBlockViaNoReply";
@@ -24,12 +24,18 @@ export function insert(newValues: Submissions) {
     .execute();
 }
 
-export function setStatus(status: Status, submissionId: string) {
+export function setStatus(status: Status, submissionId: string, requesterEmail: string, requesteeEmail: string) {
   if (status === "COMPLETED") {
     sendEmailTextBlockViaNoReply(
-      "imightbejan@gmail.com",
-      "obscurus - New Submission Request",
-      `Your submission request has completed processing!`,
+      requesteeEmail,
+      "obscurus - Submission Completed!",
+      `Your submission has completed processing!`,
+      "submit"
+    );
+    sendEmailTextBlockViaNoReply(
+      requesterEmail,
+      "obscurus - New Submission!",
+      `A new submission has been received!`,
       "submit"
     );
   }

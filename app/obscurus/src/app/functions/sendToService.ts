@@ -5,7 +5,8 @@ const url = process.env.NEXT_PUBLIC_SERVICE_URL as string;
 const sendToService = async (
   submissionId: string,
   fileExt: string,
-  email: string,
+  requesterEmail: string,
+  requesteeEmail: string,
   blurred: boolean,
 ) => {
   console.log("sendToService", url);
@@ -14,7 +15,8 @@ const sendToService = async (
     body: JSON.stringify({
       submission_id: submissionId,
       file_extension: fileExt,
-      email: email,
+      requester_email: requesterEmail,
+      requestee_email: requesteeEmail,
       blurred: blurred,
     }),
   });
