@@ -136,6 +136,7 @@ export default function Notifications({
                         : `/profile`
                     }
                     passHref
+                    className="w-full"
                   >
                     <Button
                       variant={"ghost"}
