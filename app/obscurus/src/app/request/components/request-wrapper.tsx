@@ -30,6 +30,7 @@ export default function RequestWrapper({
   getProfileImgPresignedUrl,
   getEnrichedRequestsByEmail,
   updateRequest,
+  getDownloadPresignedUrl
 }: {
   defaultLayout: number[];
   defaultCollapsed: boolean;
@@ -41,6 +42,7 @@ export default function RequestWrapper({
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
   getEnrichedRequestsByEmail?: Function;
   updateRequest?: Function;
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }) {
   const [showCreate, setShowCreate] = useState(false);
   const [requests, setRequests] = useRequests();
@@ -211,6 +213,7 @@ export default function RequestWrapper({
               getProfileImgPresignedUrl={getProfileImgPresignedUrl}
               form={form}
               getPfp={getPfp}
+              getDownloadPresignedUrl={getDownloadPresignedUrl}
             />
           )
         }

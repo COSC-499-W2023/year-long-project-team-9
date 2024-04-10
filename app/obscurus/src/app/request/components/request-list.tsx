@@ -29,12 +29,14 @@ import { useSearch } from "@/app/hooks/use-search";
 import { useSort } from "@/app/hooks/use-sort";
 import { useTab } from "@/app/hooks/use-tab";
 import PanelLoader from "@/app/submit/components/panel-1-loader";
+import { useRouter, useSearchParams } from "next/navigation";
+import { setRequestMeta } from "next/dist/server/request-meta";
 
 export default function RequestList({
   requests,
   // handleTimezoneOffset,
   setShowCreate,
-  getPfp
+  getPfp,
 }: {
   requests: EnrichedRequests[];
   // handleTimezoneOffset: Function;
@@ -45,11 +47,6 @@ export default function RequestList({
   const [search, setSearch] = useSearch();
   const [sort, setSort] = useSort();
   const [tab, setTab] = useTab();
-
-
-
-
-
 
   const sortRequests = (a: EnrichedRequests, b: EnrichedRequests) => {
     switch (sort.sort) {
@@ -63,10 +60,19 @@ export default function RequestList({
           new Date(a.creationDate).getTime() -
           new Date(b.creationDate).getTime()
         );
+      case "due":
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       default:
-        return 0;
+        return (
+          new Date(b.creationDate).getTime() -
+          new Date(a.creationDate).getTime()
+        );
     }
   };
+
+  const submissionIdFromQuery = useSearchParams().get("submissionId");
+
+  const router = useRouter();
 
   console.log("Requests in request list", requests);
   const sortedRequests =
@@ -74,6 +80,15 @@ export default function RequestList({
 
   const handleClick = (item: EnrichedRequests) => {
     setRequest(item);
+    if (
+      submissionIdFromQuery &&
+      !item.submissions.find((s) => s.submissionId === submissionIdFromQuery)
+    ) {
+      //unfortunately means a new request must be clicked twice to de-select the one from the query param,
+      // but fixing this would involve having to refactor notifications to not use query params
+      router.replace("/request");
+      setRequest({ ...request, requestId: request.requestId });
+    }
   };
 
   const statuses = ["all", "archived"];
@@ -166,7 +181,7 @@ export default function RequestList({
                 )}
 
                 {item.grouping === "ARCHIVED" && (
-                  <Badge variant={"default"}>Archived</Badge>
+                  <Badge variant={"outline"}>Archived</Badge>
                 )}
               </div>
             </button>

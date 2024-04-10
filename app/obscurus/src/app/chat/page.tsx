@@ -60,6 +60,12 @@ async function Chat() {
     getProfileImage();
   }
 
+  const handleTimezoneOffset = (item: Messages) => {
+    const messageDateTime = new Date(item.creationDate).getTime();
+    const userTimezoneOffset = -new Date().getTimezoneOffset() * 60 * 1000;
+    return new Date(messageDateTime + userTimezoneOffset);
+  };
+
   const getLatestMessage = (item: Rooms): Messages => {
     const currRoomId = item.roomId;
     const roomMessages = messages.filter(
@@ -67,7 +73,6 @@ async function Chat() {
     );
     return roomMessages[roomMessages.length - 1];
   };
-
 
   if (rooms) {
     rooms.sort((a, b) => {
@@ -78,6 +83,11 @@ async function Chat() {
         ? new Date(getLatestMessage(b).creationDate)
         : new Date(0);
       return dateB.getTime() - dateA.getTime();
+    });
+  }
+  if (messages) {
+    messages.forEach((message) => {
+      message.creationDate = handleTimezoneOffset(message);
     });
   }
 

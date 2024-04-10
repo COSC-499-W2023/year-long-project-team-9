@@ -29,12 +29,12 @@ import { useUserData } from "@/app/user-provider";
 
 export default function Notifications({
   readNotification,
-  deleteNotifications,
+  deleteNotification,
   getNotificationsViaEmail,
   user
 }: {
   readNotification: Function;
-  deleteNotifications: Function;
+  deleteNotification: Function;
   getNotificationsViaEmail: Function;
   user?: Users
 }) {
@@ -120,7 +120,7 @@ export default function Notifications({
             </div>
           ) : (
             notifcations.map((value, index) => (
-              <>
+              !value.isTrashed &&  <>
                 <div
                   className="flex items-center gap-2 p-2 rounded-lg transition-all w-full justify-between"
                   key={value.notificationId}
@@ -168,7 +168,7 @@ export default function Notifications({
                         variant={"outline"}
                         className="hover:bg-destructive"
                         onClick={() => {
-                          deleteNotifications(value.notificationId);
+                          deleteNotification(value.notificationId);
                           readNotification(value.notificationId);
                           let newNotificationsArray = [
                             ...(notifcations as any),

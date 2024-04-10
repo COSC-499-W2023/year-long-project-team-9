@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import useScroll from "@/app/hooks/scroll";
 import Notifications from "@/components/notification/notifications";
 import Authentication from "@/components/authentication/authentication";
@@ -26,7 +26,7 @@ import { Users } from "@obscurus/database/src/sql.generated";
 
 const NavBar = ({
   readNotification,
-  deleteNotifications,
+  deleteNotification,
   getNotificationsViaEmail,
   signUpUser,
   confirmSignUpUser,
@@ -37,7 +37,7 @@ const NavBar = ({
   getProfileImgPresignedUrl,
 }: {
   readNotification: Function;
-  deleteNotifications: Function;
+  deleteNotification: Function;
   getNotificationsViaEmail: Function;
   signUpUser: Function;
   confirmSignUpUser: Function;
@@ -50,6 +50,7 @@ const NavBar = ({
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const scroll = useScroll();
+  const path = usePathname();
 
   const ThemeSwitcher = () => {
     return (
@@ -76,7 +77,7 @@ const NavBar = ({
   const Navigation = ({ user }: { user: Users }) => {
     return (
       <NavigationMenu className="flex flex-row space-x-4 ">
-        <Link href={user ? "/request" : "/"} className="">
+        <Link href={"/"} className="">
           <Image
             className="min-h-full min-w-full"
             src="/logo.svg"
@@ -92,7 +93,7 @@ const NavBar = ({
               obscurus
             </NavigationMenuItem>
           </Link>
-          {!user && (
+          {path === "/" && (
             <>
               <NavigationMenuItem
                 className="font-semibold text-sm cursor-pointer"
@@ -131,7 +132,7 @@ const NavBar = ({
       <div className="flex flex-row gap-2 items-center">
         <Notifications
           readNotification={readNotification}
-          deleteNotifications={deleteNotifications}
+          deleteNotification={deleteNotification}
           getNotificationsViaEmail={getNotificationsViaEmail}
           user={user}
         />

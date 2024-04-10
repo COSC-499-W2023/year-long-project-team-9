@@ -15,7 +15,13 @@ import {
 import * as cdk from "aws-cdk-lib";
 import { UserPoolEmail, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
-import updateRequest from "@/app/functions/updateRequest";
+import { Duration } from "aws-cdk-lib";
+import {
+  CachePolicy,
+  CacheQueryStringBehavior,
+  CacheHeaderBehavior,
+  CacheCookieBehavior,
+} from "aws-cdk-lib/aws-cloudfront";
 
 export default function SiteStack({ stack }: StackContext) {
   const chumBucket = new Bucket(stack, "ChumBucket", {
@@ -304,6 +310,12 @@ export default function SiteStack({ stack }: StackContext) {
 
   api.bind([wsApi]);
 
+  const serverCachePolicy = new CachePolicy(
+    stack,
+    "ServerCache",
+    NextjsSite.buildDefaultServerCachePolicyProps()
+  );
+
   const site = new NextjsSite(stack, "site", {
     bind: [chumBucket, chumBucket, rds, api, wsApi, processVideo],
     permissions: [rekognitionPolicyStatement, wsApi],
@@ -322,6 +334,9 @@ export default function SiteStack({ stack }: StackContext) {
           zoneName: "obscurus.me",
         }),
       },
+    },
+    cdk: {
+      serverCachePolicy,
     },
   });
 
