@@ -88,8 +88,8 @@ export default function RequestDisplay({
     requester: any,
     requestDetails: any
   ) => {
-    const imgkey = requester.profileImage;
-    const requesterEmail = requestDetails.requesterEmail;
+    const imgkey = requester?.profileImage;
+    const requesterEmail = requestDetails?.requesterEmail;
     if (requesterEmail && getProfileImgPresignedUrl) {
       const url = await getProfileImgPresignedUrl(imgkey);
       setrequesterProfileImage(url);
@@ -304,7 +304,7 @@ export default function RequestDisplay({
               </DrawerTrigger>
               <TooltipContent>Submissions</TooltipContent>
             </Tooltip>
-            <DrawerContent className="h-[80%]">
+            <DrawerContent>
               <div className="w-full ">
                 <DrawerHeader>
                   <DrawerTitle>Submissions</DrawerTitle>
@@ -312,7 +312,7 @@ export default function RequestDisplay({
                     View all submissions for {selected?.requestTitle}
                   </DrawerDescription>
                 </DrawerHeader>
-                <div className=" md:pb-10 md:mb-24">
+                <div className="  md:mb-12 lg:mb-24 max-h-[450px]">
                   <div className="mt-3 overflow-y-scroll ">
                     <ResponsiveContainer width="100%" height="100%">
                       <DataTable

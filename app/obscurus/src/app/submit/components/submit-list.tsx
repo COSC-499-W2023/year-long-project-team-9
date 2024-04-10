@@ -1,9 +1,9 @@
 "use client";
-import { ComponentProps } from "react";
+import { ComponentProps, useState } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/app/functions/utils";
 import { Badge } from "@/components/ui/badge";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   FileText,
   ListVideo,
@@ -71,6 +71,11 @@ export default function SubmitList({
 
   const { toast } = useToast();
 
+  const submissionIdFromQuery = useSearchParams().get("submissionId");
+
+  const [undoQuery, setUndoQuery] = useState(false);
+
+  const router = useRouter();
 
   const handleClick = (item: EnrichedSubmissions) => {
 
@@ -82,12 +87,28 @@ export default function SubmitList({
             (submission) => submission.submissionId === item.submissionId
           )) ||
         null;
+
+
+
       if (submission) {
         console.log(updateSubmissionIsRead)
         setSubmission({ ...submission, submissionId: submission.submissionId });
         if (submission.isRead === false) {
           updateSubmissionIsRead(submission.submissionId, true);
         }
+        if (submissionIdFromQuery && submissionIdFromQuery !== item.submissionId) {
+          //unfortunately means a new request must be clicked twice to de-select the one from the query param,
+          // but fixing this would involve having to refactor notifications to not use query params
+          setUndoQuery(true);
+          router.replace("/submit");
+          setSubmission({ ...submission, submissionId: submission.submissionId });
+          if (submission.isRead === false) {
+            updateSubmissionIsRead(submission.submissionId, true);
+          }
+        }
+
+
+
       }
 
     }
@@ -279,7 +300,7 @@ export default function SubmitList({
                 <DrawerTitle>Submissions</DrawerTitle>
                 <DrawerDescription>View all submissions</DrawerDescription>
               </DrawerHeader>
-              <div className=" md:pb-10 md:mb-24">
+              <div className=" md:mb-12 lg:mb-24 max-h-[450px]">
                 <div className="mt-3 overflow-y-scroll ">
                   <ResponsiveContainer width="100%" height="100%">
                     <DataTable columns={columns} data={submissions || []} />

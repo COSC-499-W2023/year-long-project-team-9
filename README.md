@@ -17,8 +17,8 @@ Before you begin, ensure you have met the following requirements:
 - AWS account with appropriate permissions.
 - AWS CLI installed and configured.
    - Find the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)
-- Node.js v18.x installed.
-- NPM installed (comes with Node.js).
+- Node.js v18.17 installed.
+- NPM installed.
 
 ## Installation
 
@@ -86,12 +86,5 @@ Follow these steps to get your development environment set up:
 
 ## WorkMail
 To access WorkMail:
-- Details for `help`:
-    - username: help
-    - email: help@obscurus.me
-    - password: 7x"Xdbupq8v}6wv
-- Details for `no-reply`:
-    - username: no-reply
-    - email: no-reply@obscurus.me
-    - password: yeQ"rCRt.+G9xkU
+- Please contact jansdhillon@gmail.com if you need access to the help@obscurus.me or no-reply@obscurus.me addresses.
 - *Note:* The logo is stored in an S3 bucket `obscurus-branding-images`

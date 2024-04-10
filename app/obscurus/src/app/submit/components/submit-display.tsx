@@ -87,7 +87,7 @@ export default function SubmitDisplay({
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
-  const submissionIdFromQuery = useSearchParams().get("submissionId");
+
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -99,7 +99,10 @@ export default function SubmitDisplay({
   const selected = submissions?.find(
     (sub) => sub.submissionId === submission.submissionId
   );
+
+  const submissionIdFromQuery = useSearchParams().get("submissionId");
   useEffect(() => {
+
     if (submissionIdFromQuery) {
       setSubmission({ submissionId: submissionIdFromQuery });
     }
@@ -484,7 +487,7 @@ export default function SubmitDisplay({
     });
     return (
       <>
-        <form className="flex flex-col w-full h-full p-10 space-y-2">
+        <form className="flex flex-col w-full h-full p-4 lg:p-10 space-y-2">
           {/* <div className="flex w-full justify-start ">
             <h2 className=" font-semibold">
               Select or record a video to submit
@@ -502,9 +505,9 @@ export default function SubmitDisplay({
             {isDragActive ? (
               <div>Drop your video here</div>
             ) : (
-              <div className="flex flex-col space-y-5">
+              <div className="flex flex-col space-y-2 lg:space-y-5 container">
                 <div className="w-full flex items-center justify-center ">
-                  <LucideUploadCloud className="w-48 h-48 " />
+                  <LucideUploadCloud className="h-24 w-24  lg:w-48 lg:h-48 " />
                 </div>
                 <input
                   id="file-input"
@@ -515,22 +518,22 @@ export default function SubmitDisplay({
                   accept="video/mp4, video/quicktime"
                 />
 
-                <div className="flex flex-col space-y-5 ">
+                <div className="flex flex-col space-y-2 lg:space-y-5 ">
                   <div className=" flex justify-center space-x-4">
-                    <Button onClick={handleUploadClick} className="">
+                    <Button onClick={handleUploadClick} className="" size={"sm"}>
                       Choose File
                     </Button>
-                    <Button onClick={() => setRecord(true)}>Record</Button>
+                    <Button onClick={() => setRecord(true)} size={"sm"}>Record</Button>
                   </div>
-                  <div className=" text-center py-3">
+                  <div className=" text-center py-1 lg:py-3 text-sm">
                     ...or drag and drop a video here
                   </div>
                   <Separator />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-sm">
                   <div className=" text-center">Accepted filetypes:</div>
 
-                  <div className="text-sm text-center text-muted-foreground">
+                  <div className="text-xs text-center text-muted-foreground">
                     {" "}
                     MP4, MOV
                   </div>
@@ -676,8 +679,8 @@ export default function SubmitDisplay({
     requester: any,
     requestDetails: any
   ) => {
-    const imgkey = requester.profileImage;
-    const requesterEmail = requestDetails.requesterEmail;
+    const imgkey = requester?.profileImage;
+    const requesterEmail = requestDetails?.requesterEmail;
     if (requesterEmail && getProfileImgPresignedUrl) {
       const url = await getProfileImgPresignedUrl(imgkey);
       setrequesterProfileImage(url);
@@ -726,7 +729,7 @@ export default function SubmitDisplay({
       <div className="h-full w-full">
         <RequestHeader selected={selected} />
 
-        <div className="flex flex-col space-y-2 p-4">
+        <div className="flex flex-col space-y-2 p-10 container lg:p-4">
           <Suspense fallback={<Loading />}>
             <VideoPlayer
               videoUrl={processedVideo || ""}
@@ -803,11 +806,11 @@ export default function SubmitDisplay({
             getPresignedUrl &&
             sendToService &&
             submission ? (
-            <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
+            <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center container">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
                 {record ? (
-                  <div className="flex flex-col  w-full min-w-full rounded-t-lg items-center justify-center  ">
+                  <div className="flex flex-col  w-full min-w-full rounded-t-lg items-center justify-center container mb-16  ">
                     <div className=" flex items-center justify-center rounded-t-md  w-full min-w-full">
                       <Suspense fallback={<div>Failed to load webcam</div>}>
                         <Webcam
