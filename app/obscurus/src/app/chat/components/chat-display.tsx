@@ -88,7 +88,6 @@ export default function ChatDisplay({
 
   const handleClick = () => {
     if (selected) {
-      setChatScrollBoolean(true);
       const newMessageUUID = uuidv7();
       const newMessage: Messages = {
         messageId: newMessageUUID,
@@ -110,8 +109,6 @@ export default function ChatDisplay({
         isTrashed: false,
       };
       setChatMessage("");
-      addNewChatMessage(newMessage);
-      createMessage(newMessage);
       sendMessage(JSON.stringify(newMessage));
       createMessageNotification(newNotification);
     }

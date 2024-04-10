@@ -80,7 +80,7 @@ export default async function RootLayout({
               <TooltipProvider delayDuration={0}>
                 <NavBar
                   readNotification={readNotification}
-                  deleteNotifications={deleteNotification}
+                  deleteNotification={deleteNotification}
                   getNotificationsViaEmail={getNotificationsViaEmail}
                   signUpUser={signUpUser}
                   confirmSignUpUser={confirmSignUpUser}

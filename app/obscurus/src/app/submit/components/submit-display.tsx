@@ -431,7 +431,7 @@ export default function SubmitDisplay({
 
   const DisplayUploadedVideo = () => {
     return (
-      <div className="flex flex-col w-fit h-full pt-16">
+      <div className="flex flex-col w-fit h-full">
         {loading && (
           <div className="flex flex-col w-full h-full justify-center items-center gap-5">
             <LucideLoader2 className="animate-spin text-primary" size={75} />
@@ -487,7 +487,7 @@ export default function SubmitDisplay({
     });
     return (
       <>
-        <form className="flex flex-col w-full h-full p-4 lg:p-10 space-y-2">
+        <form className="flex flex-col w-full h-full p-4 lg:px-10 lg:pb-10 space-y-2">
           {/* <div className="flex w-full justify-start ">
             <h2 className=" font-semibold">
               Select or record a video to submit
@@ -505,9 +505,9 @@ export default function SubmitDisplay({
             {isDragActive ? (
               <div>Drop your video here</div>
             ) : (
-              <div className="flex flex-col space-y-2 lg:space-y-5 container">
+              <div className="flex flex-col space-y-1 lg:space-y-5 container  mb-10">
                 <div className="w-full flex items-center justify-center ">
-                  <LucideUploadCloud className="h-24 w-24  lg:w-48 lg:h-48 " />
+                  <LucideUploadCloud className="h-24 w-24  lg:w-36 lg:h-36 " />
                 </div>
                 <input
                   id="file-input"
@@ -518,7 +518,7 @@ export default function SubmitDisplay({
                   accept="video/mp4, video/quicktime"
                 />
 
-                <div className="flex flex-col space-y-2 lg:space-y-5 ">
+                <div className="flex flex-col space-y-2 lg:space-y-3 ">
                   <div className=" flex justify-center space-x-4">
                     <Button onClick={handleUploadClick} className="" size={"sm"}>
                       Choose File
@@ -528,10 +528,7 @@ export default function SubmitDisplay({
                   <div className=" text-center py-1 lg:py-3 text-sm">
                     ...or drag and drop a video here
                   </div>
-                  <Separator />
-                </div>
-                <div className="flex flex-col text-sm">
-                  <div className=" text-center">Accepted filetypes:</div>
+                  <div className=" text-center text-sm">Accepted filetypes:</div>
 
                   <div className="text-xs text-center text-muted-foreground">
                     {" "}
@@ -729,24 +726,13 @@ export default function SubmitDisplay({
       <div className="h-full w-full">
         <RequestHeader selected={selected} />
 
-        <div className="flex flex-col space-y-2 p-10 container lg:p-4">
+        <div className="flex flex-col space-y-2 p-10 container lg:p-4  max-h-[80%] max-w-[82%]">
           <Suspense fallback={<Loading />}>
             <VideoPlayer
               videoUrl={processedVideo || ""}
               filename={"Processed Video"}
+              submittedDate={selected?.submittedDate}
             />
-            {selected.submittedDate && (
-              <div className="text-xs text-muted-foreground">
-                Submitted on:{" "}
-                {format(new Date(selected.submittedDate), "PPP, p")}
-              </div>
-            )}
-            {/* {selected.submittedDate && (
-              <div>
-                Submitted on:{" "}
-                {format(new Date(selected.submittedDate), "PPP, p")}
-              </div>
-            )} */}
           </Suspense>
         </div>
 

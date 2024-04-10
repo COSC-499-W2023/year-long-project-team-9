@@ -57,12 +57,14 @@ export default function RequestDisplay({
   getProfileImgPresignedUrl,
   form,
   getPfp,
+  getDownloadPresignedUrl,
 }: {
   userData: Users;
   updateRequestGrouping: Function;
   getProfileImgPresignedUrl?: (username: string) => Promise<string>;
   form: any;
   getPfp: Function;
+  getDownloadPresignedUrl?: (submissionId: string) => Promise<string>;
 }) {
   console.log("getpfp", getPfp);
   const [request, setRequest] = useRequest();
@@ -70,7 +72,7 @@ export default function RequestDisplay({
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
-  const requestIdFromQuery = useSearchParams().get("submissionId");
+  const submissionIdFromQuery = useSearchParams().get("submissionId");
 
   const [requests] = useRequests();
   const selected = requests
@@ -78,11 +80,15 @@ export default function RequestDisplay({
     : undefined;
 
   useEffect(() => {
-    if (requestIdFromQuery) {
-      setRequest({ requestId: requestIdFromQuery });
+    if (submissionIdFromQuery) {
+      const requestId = requests?.find( (req) => req.submissions.find( (sub) => sub.submissionId === submissionIdFromQuery)?.requestId);
+
+      if (requestId) {
+        setRequest(requestId);
+      }
     }
     getRequesterProfileImage(selected?.requester, selected);
-  }, [requestIdFromQuery, selected]);
+  }, [submissionIdFromQuery, selected]);
 
   const getRequesterProfileImage = async (
     requester: any,

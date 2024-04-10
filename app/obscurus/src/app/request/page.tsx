@@ -18,6 +18,7 @@ import { runWithAmplifyServerContext } from "../utils/amplifyServerUtils";
 import getEnrichedRequestsByEmail from "../functions/getEnrichedRequestsByEmail";
 import { getCurrentUser } from "aws-amplify/auth/server";
 import updateRequest from "../functions/updateRequest";
+import getDownloadPresignedUrl from "../functions/getDownloadPresignedUrl";
 
 async function Request() {
   const layout = cookies().get("react-resizable-panels:layout");
@@ -64,6 +65,7 @@ async function Request() {
       getProfileImgPresignedUrl={getProfileImgPresignedUrl}
       getEnrichedRequestsByEmail={getEnrichedRequestsByEmail}
       updateRequest={updateRequest}
+      getDownloadPresignedUrl={getDownloadPresignedUrl}
     />
   );
 }

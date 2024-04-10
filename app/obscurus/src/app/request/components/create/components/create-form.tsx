@@ -60,7 +60,7 @@ export default function CreateForm({
             <CreateFormDueDateInput form={form}></CreateFormDueDateInput>
             <VideoProcessingInput form={form}></VideoProcessingInput>
             <DescriptionInput form={form}></DescriptionInput>
-            <div className="flex flex-col-2 float-right">
+            <div className="flex flex-col-2 float-right pb-8">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
@@ -84,9 +84,7 @@ export default function CreateForm({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <a href="/request/create">
-                      <Button>Continue</Button>
-                    </a>
+                    <Button  onClick={() => setShowCreate(false)}>Continue</Button>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

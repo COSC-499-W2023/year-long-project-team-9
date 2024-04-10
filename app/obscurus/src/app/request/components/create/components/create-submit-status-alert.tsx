@@ -26,7 +26,7 @@ export default function SubmitStatusAlert() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <a href="/request">
-              <Button variant="ghost">
+              <Button variant="outline">
                 <Inbox className="mr-2 h-4 w-4" />
                 Back to Requests
               </Button>

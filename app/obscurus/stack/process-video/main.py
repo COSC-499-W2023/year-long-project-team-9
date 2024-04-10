@@ -188,7 +188,6 @@ def convert_to_mp4(input_video, output_video):
         "ffmpeg",
         "-i", input_video,
         "-c", "copy",
-        "-ss", "00:00:00.04",
         "-strict", "-2",
         "-movflags", "faststart",
         output_video
@@ -285,7 +284,7 @@ async def create_notification(status: str, submission_id: str, requester_email, 
                     "data": {
                         "notification": {
                             "referenceId": submission_id,
-                            "type": "SUBMIT",
+                            "type": "REQUEST",
                             "content": f"New submission received!",
                             "email": requester_email,
                         }

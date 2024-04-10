@@ -92,6 +92,6 @@ export const columns: ColumnDef<SubmissionData>[] = [
         className="text-center"
       />
     ),
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => <DataTableRowActions row={row}  getDownloadPresignedUrl={getDownloadPresignedUrl} />,
   },
 ];

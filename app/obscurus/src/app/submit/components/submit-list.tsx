@@ -136,7 +136,10 @@ export default function SubmitList({
           new Date(b.requestDetails.dueDate).getTime()
         );
       default:
-        return 0;
+        return (
+          new Date(b.requestDetails.creationDate).getTime() -
+          new Date(a.requestDetails.creationDate).getTime()
+        )
     }
   };
 

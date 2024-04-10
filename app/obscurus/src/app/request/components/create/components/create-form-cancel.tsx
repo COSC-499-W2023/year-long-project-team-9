@@ -28,7 +28,7 @@ export default function CreateCancel(form: any) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
             inputs.
@@ -36,9 +36,7 @@ export default function CreateCancel(form: any) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <a href="/request/create">
             <Button>Continue</Button>
-          </a>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -16,6 +16,7 @@ import { get } from "http";
 import { use, useEffect, useState } from "react";
 import VideoPlayer from "@/app/submit/components/video-player";
 import { SubmissionsForRequestSchema } from "../../types/types-for-request";
+import { useRouter } from "next/navigation";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -29,29 +30,39 @@ export function DataTableRowActions<TData>({
   console.log("row", row);
   const task = SubmissionsForRequestSchema.parse(row.original);
 
+  console.log("task", task);
   const [url, setUrl] = useState<string>("");
 
   console.log(getDownloadPresignedUrl);
 
+  const isCompleted = task.status === "COMPLETED";
   const setProcessedVideo = async () => {
     if (!getDownloadPresignedUrl) return;
-    const url = await getDownloadPresignedUrl(task.submissionId);
-    console.log(task.submissionId);
-    setUrl(url);
-    console.log("download url", url);
+    if (isCompleted){
+      console.log("task.submissionId", task.submissionId)
+      const url = await getDownloadPresignedUrl(task.submissionId);
+      console.log(task.submissionId);
+      setUrl(url);
+      console.log("download url", url);
+    }
+
   };
+
+  const router = useRouter();
 
   const downloadProcessedVideo = async () => {
-    window.open(url, "_blank");
+    url && router.push(url);
   };
 
-  const isCompleted = task.status === "COMPLETED";
+
 
   useEffect(() => {
     if (isCompleted) {
       setProcessedVideo();
     }
-  }), [isCompleted];
+  }),
+    [isCompleted, task.submissionId];
+
 
   console.log("submissionId", task.submissionId);
   return (
@@ -72,7 +83,11 @@ export function DataTableRowActions<TData>({
         </DialogContent>
       </Dialog>
       <Separator orientation="vertical" className="mx-2 h-8" />
-      <Button variant={"outline"} onClick={downloadProcessedVideo} disabled={!isCompleted}>
+      <Button
+        variant={"outline"}
+        onClick={downloadProcessedVideo}
+        disabled={!isCompleted}
+      >
         <Tooltip>
           <TooltipTrigger asChild>
             <Download className="w-4 h-4 " />

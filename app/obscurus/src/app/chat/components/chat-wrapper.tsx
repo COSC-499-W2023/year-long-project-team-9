@@ -5,6 +5,7 @@ import { Rooms, Messages, Users } from "stack/database/src/sql.generated";
 import ChatList from "./chat-list";
 import ChatDisplay from "./chat-display";
 import { useWebSocket } from "@/app/ws-provider";
+import { set } from "date-fns";
 
 type UserNames = {
   email: string;
@@ -45,7 +46,6 @@ export default function ChatWrapper({
   const [chatRooms, setChatRooms] = useState<Rooms[]>(rooms);
   const [chatScrollBoolean, setChatScrollBoolean] = useState<boolean>(false);
   const [roomId, setRoomId] = useState<string | undefined>();
-  const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const getOtherParticipantEmail = (item: Rooms | undefined) => {
     if (item === undefined) {
@@ -90,10 +90,8 @@ export default function ChatWrapper({
       (user) => user.email === email
     );
     if (otherParticipant.length > 0) {
-      console.log(otherParticipant[0].familyName);
       return otherParticipant[0].profileImage;
     }
-    console.log("test", profileImage);
     return " ";
   };
 
@@ -153,35 +151,34 @@ export default function ChatWrapper({
     if (!ws) {
       return;
     }
-    ws.onopen = () => {
-      console.log("Connected to WebSocket");
-    };
-    setSocket(ws);
-
-    ws.onmessage = (event) => {
-      console.log("Here");
-      const messageData = event.data;
+    const handleWebSocketMessages = (event: any) => {
       try {
-        const messageJSON: Messages = JSON.parse(messageData);
-        if (!checkIfMessageInList(messageJSON)) {
-          const newMessages = [...chatMessages, messageJSON];
-          setChatMessages(newMessages);
+        const messageJSON = JSON.parse(event.data);
+        if (messageJSON && !checkIfMessageInList(messageJSON)) {
+          setChatMessages((prevMessages) => [...prevMessages, messageJSON]);
         }
-      } catch {
-        console.log("Message data is not valid JSON");
+      } catch (error) {
+        console.error("Failed to parse message data:", error);
       }
     };
 
+    ws.addEventListener("message", handleWebSocketMessages);
+
     return () => {
-      console.log("Disconnecting WebSocket");
-      ws.close();
+      ws.removeEventListener("message", handleWebSocketMessages);
     };
-  }, [ws, chatMessages]);
+  }, [ws]);
+
   const sendMessage = (messageData: string) => {
-    if (socket) {
-      socket.send(JSON.stringify({ action: "sendmessage", data: messageData }));
+    console.log("Sent message: ", messageData);
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ action: "sendmessage", data: messageData }));
     }
+    createMessage(JSON.parse(messageData));
+    setChatScrollBoolean(true);
+
   };
+
 
   return (
     <>
