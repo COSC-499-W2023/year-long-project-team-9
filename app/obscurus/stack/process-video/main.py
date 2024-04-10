@@ -188,6 +188,7 @@ def convert_to_mp4(input_video, output_video):
         "ffmpeg",
         "-i", input_video,
         "-c", "copy",
+        "-ss", "00:00:00.04",
         "-strict", "-2",
         "-movflags", "faststart",
         output_video

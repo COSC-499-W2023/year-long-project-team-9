@@ -7,7 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -34,7 +34,7 @@ const NavBar = ({
   resetUserPassword,
   confirmResetUserPassword,
   user,
-  getProfileImgPresignedUrl
+  getProfileImgPresignedUrl,
 }: {
   readNotification: Function;
   deleteNotifications: Function;
@@ -51,23 +51,21 @@ const NavBar = ({
   const router = useRouter();
   const scroll = useScroll();
 
-
   const ThemeSwitcher = () => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" data-testid="theme-toggle">
-            <Sun size={20} className="stroke-primary fill-primary" />
+          <Button variant="ghost" size="icon">
+            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onClick={() => setTheme("light")}
-            data-testid="light"
-          >
+          <DropdownMenuItem onClick={() => setTheme("light")}>
             Light
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")} data-testid="dark">
+          <DropdownMenuItem onClick={() => setTheme("dark")}>
             Dark
           </DropdownMenuItem>
         </DropdownMenuContent>

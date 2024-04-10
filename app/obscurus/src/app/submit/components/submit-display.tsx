@@ -87,7 +87,7 @@ export default function SubmitDisplay({
   const { toast } = useToast();
   const [processedVideo, setProcessedVideo] = useState<string | null>(null);
 
-  const submissionIdFromQuery = useSearchParams().get("submissionId");
+
 
   // if (!request) {
   //   setRequest(requests && requests[0]);
@@ -99,7 +99,10 @@ export default function SubmitDisplay({
   const selected = submissions?.find(
     (sub) => sub.submissionId === submission.submissionId
   );
+
+  const submissionIdFromQuery = useSearchParams().get("submissionId");
   useEffect(() => {
+
     if (submissionIdFromQuery) {
       setSubmission({ submissionId: submissionIdFromQuery });
     }
@@ -502,9 +505,9 @@ export default function SubmitDisplay({
             {isDragActive ? (
               <div>Drop your video here</div>
             ) : (
-              <div className="flex flex-col space-y-5">
+              <div className="flex flex-col space-y-2 md:space-y-5 container">
                 <div className="w-full flex items-center justify-center ">
-                  <LucideUploadCloud className="w-48 h-48 " />
+                  <LucideUploadCloud className="w-36 h-36 md:w-48 md:h-48 " />
                 </div>
                 <input
                   id="file-input"
@@ -515,7 +518,7 @@ export default function SubmitDisplay({
                   accept="video/mp4, video/quicktime"
                 />
 
-                <div className="flex flex-col space-y-5 ">
+                <div className="flex flex-col space-y-2 md:space-y-5 ">
                   <div className=" flex justify-center space-x-4">
                     <Button onClick={handleUploadClick} className="">
                       Choose File
@@ -676,8 +679,8 @@ export default function SubmitDisplay({
     requester: any,
     requestDetails: any
   ) => {
-    const imgkey = requester.profileImage;
-    const requesterEmail = requestDetails.requesterEmail;
+    const imgkey = requester?.profileImage;
+    const requesterEmail = requestDetails?.requesterEmail;
     if (requesterEmail && getProfileImgPresignedUrl) {
       const url = await getProfileImgPresignedUrl(imgkey);
       setrequesterProfileImage(url);
@@ -803,7 +806,7 @@ export default function SubmitDisplay({
             getPresignedUrl &&
             sendToService &&
             submission ? (
-            <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center">
+            <div className="flex h-full flex-col p-10 space-y-5 items-center justify-center container">
               {/* <Progress value={10} /> */}
               <div className="w-full h-full flex flex-col justify-center items-center space-y-3 border rounded-md border-card">
                 {record ? (
