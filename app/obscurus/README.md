@@ -1,4 +1,3 @@
-
 # obscurus
 
 [![Seed Status](https://api.seed.run/imightbejan/year-long-project-team-9/stages/prod/build_badge)](https://console.seed.run/imightbejan/year-long-project-team-9)
@@ -40,18 +39,14 @@ Follow these steps to get your development environment set up:
    ```
    Follow the instructions to sign in with your AWS credentials in your browser.
 
-3. **Navigate to the App Directory:**
-   ```bash
-   cd app/obscurus
-   ```
 
-4. **Install Dependencies:**
+3. **Install Dependencies:**
    Run the following command to install the necessary dependencies:
    ```bash
    npm install
    ```
 
-5. **Start the Development Server:**
+4. **Start the Development Server:**
    First, start the SST development environment:
    ```bash
    npx sst dev
@@ -61,7 +56,7 @@ Follow these steps to get your development environment set up:
    npm run dev
    ```
 
-6. **Deploying to AWS CloudFront:** To deploy the app,
+5. **Deploying to AWS CloudFront:** To deploy the app,
    ```bash
    npx sst deploy
    ```
@@ -79,8 +74,7 @@ Follow these steps to get your development environment set up:
 - The SST console is very useful for running migrations and testing Lambda functions. You can use it when running `npx sst dev` by going to [https://old.console.sst.dev/obscurus/](https://old.console.sst.dev/obscurus/)
 - Because obscurus is entirely serverless, there are times when the requests to the app will experience extra latency because AWS Lambda functions can experience "cold starts".
     - Read more [here](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html)
-- Because the microservice is only created when the stack is deployed, video processing does not work when using `npx sst dev`. You must deploy using `npx sst dev`.
-
+- Because the microservice is only created when the stack is deployed, video processing does not work when using `npx sst dev`. You must deploy using `npx sst deploy`.
 
 ## Known issues
 
